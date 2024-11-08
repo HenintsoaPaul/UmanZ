@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import axios from 'axios';
+
+// Columns a afficher
 const cols = [{
     key: 'poste',
     label: 'Poste',
@@ -49,10 +52,52 @@ const lignes = [
         ]
     }
 ];
+
+// Variable pour stocker les données de l'API
+const annonces = ref([])
+
+async function loadAnnonces() {
+  try {
+    // Récupération des données de l'API
+    const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
+    const response = await axios.get(apiUrl)
+    
+    if (response.status === 200) {
+      annonces.value = response.data;
+    } else {
+      console.error('Erreur lors de la récupération des annonces')
+    }
+  } catch (error) {
+    console.error('Erreur lors de la requête API:', error)
+  }
+}
+
+// Appel de la fonction pour charger les données au chargement du composant
+loadAnnonces();
+
+
+// Filtre par recherche
+const q = ref('')
+
+const filteredLignes = computed(() => {
+  if (!q.value) {
+    return lignes
+  }
+
+  return lignes.filter((person) => {
+    return Object.values(person).some((value) => {
+      return String(value).toLowerCase().includes(q.value.toLowerCase())
+    })
+  })
+})
 </script>
 
 <template>
     <h1>Liste des annonces</h1>
 
-    <UTable :columns="cols" :rows="lignes" />
+    <div class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
+      <UInput v-model="q" placeholder="Filtrer les annonces..." />
+    </div>
+
+    <UTable :columns="cols" :rows="filteredLignes" />
 </template>
