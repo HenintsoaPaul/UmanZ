@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import axios from 'axios';
 import { ref } from 'vue'
 
 // Interfaces
@@ -44,9 +45,20 @@ const form = ref<Form>({
 })
 
 // Method
-const submitForm = () => {
-    console.log(toRaw(form.value));
-}
+const submitForm = async () => {
+    try {
+        console.log(toRaw(form.value));
+        
+        const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
+        console.log(apiUrl);
+        
+
+        const response = await axios.post(apiUrl, toRaw(form.value));
+        console.log('Form submitted successfully:', response.data);
+    } catch (error) {
+        console.error('Error submitting form:', error);
+    }
+};
 </script>
 
 <template>

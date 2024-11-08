@@ -13,5 +13,11 @@ export default defineNuxtConfig({
   ],
   plugins: [
     '~/plugins/iconify.js',
-  ]
+    '~/plugins/devalue.js'
+  ],
+  runtimeConfig: {
+    public: {
+      apiUrl: "http://localhost:8081/fufu"
+    }
+  }
 })
