@@ -5,12 +5,12 @@ CREATE TABLE competence(
    UNIQUE(competence)
 );
 
-CREATE TABLE talents(
-   id_candidat SERIAL,
+CREATE TABLE talent(
+   id_talent SERIAL,
    nom VARCHAR(50)  NOT NULL,
    prenom VARCHAR(50)  NOT NULL,
    mail VARCHAR(50)  NOT NULL,
-   PRIMARY KEY(id_candidat)
+   PRIMARY KEY(id_talent)
 );
 
 CREATE TABLE poste(
@@ -44,13 +44,13 @@ CREATE TABLE entretien(
    date_entretien DATE NOT NULL,
    note INTEGER,
    motif VARCHAR(255) ,
+   id_annonce INTEGER NOT NULL,
    id_etat_entretien INTEGER NOT NULL,
-   id_candidat INTEGER NOT NULL,
-   id_poste INTEGER NOT NULL,
+   id_talent INTEGER NOT NULL,
    PRIMARY KEY(id_entretien),
+   FOREIGN KEY(id_annonce) REFERENCES annonce(id_annonce),
    FOREIGN KEY(id_etat_entretien) REFERENCES etat_entretien(id_etat_entretien),
-   FOREIGN KEY(id_candidat) REFERENCES talents(id_candidat),
-   FOREIGN KEY(id_poste) REFERENCES poste(id_poste)
+   FOREIGN KEY(id_talent) REFERENCES talent(id_talent)
 );
 
 CREATE TABLE contrat(
@@ -58,22 +58,22 @@ CREATE TABLE contrat(
    contrat VARCHAR(100)  NOT NULL,
    date_debut DATE NOT NULL,
    date_fin DATE,
-   id_candidat INTEGER NOT NULL,
+   id_talent INTEGER NOT NULL,
    id_type_contrat INTEGER NOT NULL,
    PRIMARY KEY(id_contrat),
-   FOREIGN KEY(id_candidat) REFERENCES talents(id_candidat),
+   FOREIGN KEY(id_talent) REFERENCES talent(id_talent),
    FOREIGN KEY(id_type_contrat) REFERENCES type_contrat(id_type_contrat)
 );
 
-CREATE TABLE candidat_competence(
+CREATE TABLE talent_competence(
    id_competence INTEGER,
-   id_candidat INTEGER,
-   PRIMARY KEY(id_competence, id_candidat),
+   id_talent INTEGER,
+   PRIMARY KEY(id_competence, id_talent),
    FOREIGN KEY(id_competence) REFERENCES competence(id_competence),
-   FOREIGN KEY(id_candidat) REFERENCES talents(id_candidat)
+   FOREIGN KEY(id_talent) REFERENCES talent(id_talent)
 );
 
-CREATE TABLE Asso_12(
+CREATE TABLE competence_annonce(
    id_competence INTEGER,
    id_annonce INTEGER,
    PRIMARY KEY(id_competence, id_annonce),
@@ -82,11 +82,11 @@ CREATE TABLE Asso_12(
 );
 
 CREATE TABLE experience_utilisateur(
-   id_candidat INTEGER,
+   id_talent INTEGER,
    id_poste INTEGER,
    ans NUMERIC(11,2)   NOT NULL,
-   PRIMARY KEY(id_candidat, id_poste),
-   FOREIGN KEY(id_candidat) REFERENCES talents(id_candidat),
+   PRIMARY KEY(id_talent, id_poste),
+   FOREIGN KEY(id_talent) REFERENCES talent(id_talent),
    FOREIGN KEY(id_poste) REFERENCES poste(id_poste)
 );
 
