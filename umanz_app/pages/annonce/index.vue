@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 // Columns a afficher
-const cols = [{
+const headers = [{
     key: 'poste',
     label: 'Poste',
     sortable: true
@@ -57,19 +57,19 @@ const lignes = [
 const annonces = ref([])
 
 async function loadAnnonces() {
-  try {
-    // Récupération des données de l'API
-    const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
-    const response = await axios.get(apiUrl)
-    
-    if (response.status === 200) {
-      annonces.value = response.data;
-    } else {
-      console.error('Erreur lors de la récupération des annonces')
+    try {
+        // Récupération des données de l'API
+        const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
+        const response = await axios.get(apiUrl)
+
+        if (response.status === 200) {
+            annonces.value = response.data;
+        } else {
+            console.error('Erreur lors de la récupération des annonces')
+        }
+    } catch (error) {
+        console.error('Erreur lors de la requête API:', error)
     }
-  } catch (error) {
-    console.error('Erreur lors de la requête API:', error)
-  }
 }
 
 // Appel de la fonction pour charger les données au chargement du composant
@@ -80,24 +80,50 @@ loadAnnonces();
 const q = ref('')
 
 const filteredLignes = computed(() => {
-  if (!q.value) {
-    return lignes
-  }
+    if (!q.value) {
+        return lignes
+    }
 
-  return lignes.filter((person) => {
-    return Object.values(person).some((value) => {
-      return String(value).toLowerCase().includes(q.value.toLowerCase())
+    return lignes.filter((person) => {
+        return Object.values(person).some((value) => {
+            return String(value).toLowerCase().includes(q.value.toLowerCase())
+        })
     })
-  })
+});
+
+// ---
+const expand = ref({
+    openedRows: [],
+    row: {}
 })
+
+const canditerFn = () => {
+    console.log("Envoi candidature");
+    // REquete base
+}
+
+const supprimerFn = () => {
+    console.log("Supprimer mon annonce");
+    // Verifier tompony
+    // Requete base
+}
 </script>
 
 <template>
     <h1>Liste des annonces</h1>
 
     <div class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
-      <UInput v-model="q" placeholder="Filtrer les annonces..." />
+        <UInput v-model="q" placeholder="Filtrer les annonces..." />
     </div>
 
-    <UTable :columns="cols" :rows="filteredLignes" />
+    <UTable :columns="headers" :rows="filteredLignes" v-model:expand="expand">
+        <template #expand="{ row }">
+            <div class="p-4">
+                <pre>{{ row }}</pre>
+
+                <button class="btn-candidater" @click="canditerFn">Candidater</button>
+                <button class="btn-supprimer" @click="supprimerFn">Supprimer</button>
+            </div>
+        </template>
+    </UTable>
 </template>
