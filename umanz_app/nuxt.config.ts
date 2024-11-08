@@ -8,5 +8,10 @@ export default defineNuxtConfig({
       mode: 'out-in'
     }
   },
-  modules: ['@nuxt/ui']
+  modules: [
+    '@nuxt/ui',
+  ],
+  plugins: [
+    '~/plugins/iconify.js',
+  ]
 })

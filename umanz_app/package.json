@@ -10,7 +10,9 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@iconify/vue": "^4.1.2",
     "@nuxt/ui": "^2.19.2",
+    "@nuxtjs/auth-next": "^5.0.0-1667386184.dfbbb54",
     "nuxt": "^3.14.159",
     "vue": "latest",
     "vue-router": "latest",

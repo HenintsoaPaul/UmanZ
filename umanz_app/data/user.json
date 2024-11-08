@@ -1,0 +1,26 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "email": "user1@example.com",
+            "role": "user"
+        },
+        {
+            "id": 2,
+            "email": "admin@example.com",
+            "role": "admin"
+        }
+    ],
+    "posts": [
+        {
+            "id": 1,
+            "title": "Post 1",
+            "content": "Contenu du premier post"
+        },
+        {
+            "id": 2,
+            "title": "Post 2",
+            "content": "Contenu du deuxième post"
+        }
+    ]
+}
