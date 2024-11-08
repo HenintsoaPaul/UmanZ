@@ -1,6 +1,58 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+
+// Interfaces
+interface Form {
+    dateAnnonce: string;
+    dateExpiration: string;
+    poste: string;
+    descPoste: string;
+    competences: string[];
+    experiences: ExperienceItem[];
+}
+
+interface CompetenceOption {
+    value: string;
+    label: string;
+}
+
+interface ExperienceItem {
+    value: string;
+    label: string;
+    duree: number;
+}
+
+// Data
+const competences: CompetenceOption[] = [
+    { value: 'option1', label: 'Conduite' },
+    { value: 'option2', label: 'Dynamisme' },
+    { value: 'option3', label: 'Ponctualite' },
+]
+
+const experiences: ExperienceItem[] = [
+    { value: 'option1', label: 'Informaticien', duree: 0 },
+    { value: 'option2', label: 'Gardien', duree: 0 },
+]
+
+const form = ref<Form>({
+    dateAnnonce: '',
+    dateExpiration: '',
+    poste: '',
+    descPoste: '',
+    competences: [],
+    experiences: [...experiences]
+})
+
+// Method
+const submitForm = () => {
+    console.log(toRaw(form.value));
+}
+</script>
+
 <template>
-    <div class="annonce-form">
+    <div class="absence-form">
         <h1>Ajouter Annonce</h1>
+
         <form @submit.prevent="submitForm">
             <!-- Daty -->
             <div class="form-group">
@@ -34,11 +86,9 @@
             <!-- Experiences -->
             <div class="form-group">
                 <label>Experiences:</label>
-                <div v-for="(option, index) in experiences" :key="option.value" class="checkbox-group">
-                    <input type="checkbox" :id="option.value" :value="option.value"
-                        v-model="form.experiences[index].value" />
-                    <label :for="option.value">{{ option.label }}</label>
-                    <input type="number" v-if="form.experiences[index]?.value" v-model="form.experiences[index].duree"
+                <div v-for="(item, index) in experiences" :key="index" class="checkbox-group">
+                    <label :for="item.value">{{ item.label }}</label>
+                    <input type="number" v-model="form.experiences.find(i => i.label === item.label)!.duree"
                         placeholder="Durée (années)" />
                 </div>
             </div>
@@ -47,61 +97,3 @@
         </form>
     </div>
 </template>
-
-<script>
-export default {
-    data() {
-        return {
-            form: {
-                dateAnnonce: '',
-                dateExpiration: '',
-                poste: '',
-                descPoste: '',
-                competences: [],
-                experiences: [
-                    { value: 'option1', duree: 0 },
-                    { value: 'option2', duree: 0 },
-                ],
-            },
-            competences: [
-                { value: 'option1', label: 'Conduite' },
-                { value: 'option2', label: 'Dynamisme' },
-                { value: 'option3', label: 'Ponctualite' },
-            ],
-            experiences: [
-                { value: 'option1', label: 'Informaticien', duree: 0 },
-                { value: 'option2', label: 'Gardien', duree: 0 },
-            ],
-        };
-    },
-    methods: {
-        submitForm() {
-            console.log( this.form );
-            // Handle form submission
-        }
-    }
-};
-</script>
-
-<style scoped>
-.annonce-form {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.checkbox-group {
-    display: flex;
-    align-items: center;
-}
-
-.checkbox-group input {
-    margin-right: 10px;
-}
-</style>
