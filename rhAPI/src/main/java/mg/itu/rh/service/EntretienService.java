@@ -2,6 +2,7 @@ package mg.itu.rh.service;
 
 import java.util.List;
 
+import mg.itu.rh.dto.EntretienDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,15 @@ public class EntretienService {
 
     public Entretien save(Entretien entretien){
         return entretienRepository.save(entretien);
+    }
+
+    public Entretien save(EntretienDTO entretienDTO){
+        Entretien entretien=new Entretien();
+        entretien.setIdEntretien(entretienDTO.getIdEntretien());
+        entretien.setDateEntretien(entretienDTO.getDateEntretien());
+        entretien.setNote(entretienDTO.getNote());
+        entretien.setMotif(entretienDTO.getMotif());
+        return this.save(entretien);
     }
 
     public Entretien valider(Long idEntretien){

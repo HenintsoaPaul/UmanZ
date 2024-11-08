@@ -1,0 +1,43 @@
+- Utilisateur
+    - Login (Antema)
+    - Liste annonce
+        - date rupture: null
+        - date expiration: superieur @ androany
+    - Insertion Entretien
+        - Insertion anaty table entretien de le etat atao candidature
+    - Liste conge
+        - Liste conge nalainle olona hatrzay mfanaraka amle contrat rehetra
+    - Insertion conge
+        - Alaina le contrat tsy manana rupture anle utilisateur connecte
+        - Manambotra conge de manana anle id anle contrat iny
+    - Création profil
+        - insertion profil talent
+    - Création CV
+        - insertion talent_comptence manana anle id anle utilisateur connecte
+        - insertion experience_talent manana anle id anle utilisateur connecte
+    - Insertion formation
+        - Alaina le contrat tsy manana rupture anle utilisateur connecte
+        - Alaina le id formation nangatahany
+        - inserena ao am participation le id contrat sy id formation
+-  Admin
+    - Login
+    - Annonce (Antema)
+        - Liste poste mexiste
+        - Liste competences
+        - Insertion ana annonce
+    - Formation
+        - Insertion ana formation
+    - Candidature (Entretien ny table an'io) (Antema)
+        - Liste candidat
+            - Alaina ny entretien izay null ny id_enfant any filtré par état
+        - Validation entretien
+            - Insertion ana entretien vaovao de le entretien taloha iny setena ny enfant any ho lasa le entretien vaovao
+    - Contrat
+        - Après validation farany tadidina le id anle talent
+        - Insertion ana contrat (Apetaka ao le id talent)
+        - Insertion ana rupture de contrat
+    - Absence (Antema)
+        - Insertion Absence
+        - Liste absence
+    - Conge
+        - Liste anle conge miaraka amle talent

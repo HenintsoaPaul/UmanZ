@@ -2,11 +2,9 @@ package mg.itu.rh.controller;
 
 import java.util.List;
 
+import mg.itu.rh.dto.EntretienDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -33,6 +31,10 @@ public class EntretienController {
     public void validate(@PathVariable("id") Long idEntretien) {
         entretienService.valider(idEntretien);
     }
-    
+
+    @PutMapping("/")
+    public Entretien update(@RequestBody EntretienDTO entretien){
+        return entretienService.save(entretien);
+    }
     
 }

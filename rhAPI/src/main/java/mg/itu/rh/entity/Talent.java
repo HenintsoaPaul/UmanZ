@@ -1,12 +1,11 @@
 package mg.itu.rh.entity;
 
+import java.util.List;
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonView;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import mg.itu.rh.other.POV;
 
@@ -27,4 +26,17 @@ public class Talent {
 
     @JsonView({POV.Public.class})
     private String mail;
+
+    @ManyToMany
+    @JoinTable(
+        name = "talent_competence",
+        joinColumns = @JoinColumn(name = "id_talent"),
+        inverseJoinColumns = @JoinColumn(name = "id_competence")
+    )
+    @JsonView({POV.Public.class})
+    private Set<Competence> contacts;
+
+    @JsonView({POV.Public.class})
+    @OneToMany(mappedBy="talent",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    private List<ExperienceTalent> experienceTalents;
 }

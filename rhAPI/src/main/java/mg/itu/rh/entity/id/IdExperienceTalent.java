@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Embeddable
 @EqualsAndHashCode
-public class IdExperiencePoste implements Serializable {
+public class IdExperienceTalent implements Serializable {
     private Long idAnnonce;
     private Long idPoste;
 }

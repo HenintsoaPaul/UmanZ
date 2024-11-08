@@ -24,11 +24,11 @@ INSERT INTO competence(competence) VALUES
     ('Analyse de données');
 
 -- Insertion de données dans la table `talents`
-INSERT INTO talent(nom, prenom, mail) VALUES
-    ('Dupont', 'Jean', 'jean.dupont@example.com'),
-    ('Martin', 'Sophie', 'sophie.martin@example.com'),
-    ('Durand', 'Pierre', 'pierre.durand@example.com'),
-    ('Bernard', 'Lucie', 'lucie.bernard@example.com');
+INSERT INTO talent(nom, prenom, mail,password) VALUES
+    ('Dupont', 'Jean', 'jean.dupont@example.com',''),
+    ('Martin', 'Sophie', 'sophie.martin@example.com',''),
+    ('Durand', 'Pierre', 'pierre.durand@example.com',''),
+    ('Bernard', 'Lucie', 'lucie.bernard@example.com','');
 
 -- Insertion de données dans la table `annonce`
 INSERT INTO annonce(date_annonce, id_poste) VALUES
@@ -65,7 +65,7 @@ INSERT INTO competence_annonce(id_competence, id_annonce) VALUES
     (4, 4); -- Analyse de données pour l'annonce de Data Analyst
 
 -- Insertion de données dans la table `experience_utilisateur`
-INSERT INTO experience_utilisateur(id_talent, id_poste, ans) VALUES
+INSERT INTO experience_talent(id_talent, id_poste, ans) VALUES
     (1, 1, 2.5), -- Jean Dupont a 2.5 ans d'expérience en Développement Backend
     (2, 2, 1.0), -- Sophie Martin a 1 an d'expérience en Développement Frontend
     (3, 3, 3.0), -- Pierre Durand a 3 ans d'expérience en Gestion de projet
