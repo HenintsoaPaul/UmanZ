@@ -27,6 +27,13 @@ public class Talent {
     @JsonView({POV.Public.class})
     private String mail;
 
+    @JsonView({POV.Public.class})
+    private String password;
+
+    @JsonView({POV.Public.class})
+    @Column(name = "is_admin")
+    private boolean isAdmin;
+
     @ManyToMany
     @JoinTable(
         name = "talent_competence",
