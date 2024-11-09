@@ -1,9 +1,9 @@
 - Utilisateur
     - Login (Antema)
-    - (Vita) Liste annonce
+    - (Vita) Liste annonce url: "/annonce/disponible" method:"GET"
         - date rupture: null
         - date expiration: superieur @ androany
-    - Insertion Entretien
+    - (Vita) Insertion Entretien url: "/entretien/candiat" method:"POST"
         - Insertion anaty table entretien de le etat atao candidature
     - Liste conge
         - Liste conge nalainle olona hatrzay mfanaraka amle contrat rehetra

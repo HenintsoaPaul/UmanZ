@@ -1,8 +1,9 @@
 package mg.itu.rh.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
-import mg.itu.rh.dto.EntretienDTO;
+import mg.itu.rh.dto.EntretienCandidatureDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,18 +18,33 @@ public class EntretienService {
     private EntretienRepository entretienRepository;
 
     @Autowired
+    private AnnonceService annonceService;
+
+    @Autowired
+    private TalentService talentService;
+
+    @Autowired
     private EtatEntretienRepository etatEntretienRepository;
 
     public Entretien save(Entretien entretien){
         return entretienRepository.save(entretien);
     }
 
-    public Entretien save(EntretienDTO entretienDTO){
-        Entretien entretien=new Entretien();
-        entretien.setIdEntretien(entretienDTO.getIdEntretien());
-        entretien.setDateEntretien(entretienDTO.getDateEntretien());
-        entretien.setNote(entretienDTO.getNote());
+    public Entretien saveCandidat(EntretienCandidatureDTO entretienDTO)throws Exception{
+        Entretien entretien=new Entretien(entretienDTO);
+        entretien.setTalent(talentService.findById(entretienDTO.getIdTalent()));
+        entretien.setAnnonce(annonceService.findAnnonceById(entretienDTO.getIdAnnonce()));
         entretien.setMotif(entretienDTO.getMotif());
+        entretien.setEtatEntretien(etatEntretienRepository.findByNiveau(2));
+        return this.save(entretien);
+    }
+
+    public Entretien save(EntretienCandidatureDTO entretienDTO)throws Exception{
+        Entretien entretien=new Entretien(entretienDTO);
+        entretien.setTalent(talentService.findById(entretienDTO.getIdTalent()));
+        entretien.setAnnonce(annonceService.findAnnonceById(entretienDTO.getIdAnnonce()));
+        entretien.setMotif(entretienDTO.getMotif());
+        entretien.setEtatEntretien(etatEntretienRepository.findByNiveau(entretienDTO.getNiveau()));
         return this.save(entretien);
     }
 

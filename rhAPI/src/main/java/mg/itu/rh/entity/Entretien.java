@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
+import mg.itu.rh.dto.EntretienCandidatureDTO;
 import mg.itu.rh.other.POV;
 
 @Entity
@@ -24,9 +25,13 @@ public class Entretien {
     @JsonView({POV.Public.class})
     private Long idEntretien;
 
-    @Column(name="date_entretien")
+    @Column(name="date_creation")
     @JsonView({POV.Public.class})
-    private LocalDate dateEntretien;
+    private LocalDate dateCreation;
+
+    @Column(name="date_validation")
+    @JsonView({POV.Public.class})
+    private LocalDate dateValidation;
 
     @JsonView({POV.Public.class})
     private int note;
@@ -48,4 +53,14 @@ public class Entretien {
     @JoinColumn(name="id_etat_entretien")
     @JsonView({POV.Public.class})
     private EtatEntretien etatEntretien;
+
+    public Entretien(EntretienCandidatureDTO entretienDTO){
+        this.setIdEntretien(entretienDTO.getIdEntretien());
+        this.setDateCreation(entretienDTO.getDateCreation());
+        if(this.getDateCreation()==null){
+            this.setDateCreation(LocalDate.now());
+        }
+        this.setDateValidation(entretienDTO.getDateValidation());
+        this.setNote(entretienDTO.getNote());
+    }
 }
