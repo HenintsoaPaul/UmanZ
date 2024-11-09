@@ -1,6 +1,5 @@
 package mg.itu.rh.service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import mg.itu.rh.dto.EntretienCandidatureDTO;
@@ -63,4 +62,9 @@ public class EntretienService {
         EtatEntretien etatEntretien=etatEntretienRepository.findById(idEtat).orElseThrow(()->new RuntimeException("Etat non trouve"));
         return entretienRepository.findByEtatEntretien(etatEntretien);
     }
+
+    public List<Entretien> getCandidaList() {
+        return entretienRepository.findAllWhereEnfantIsNull();
+    }
+    
 }
