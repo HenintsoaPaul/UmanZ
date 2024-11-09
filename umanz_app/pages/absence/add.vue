@@ -1,109 +1,58 @@
-<template>
-    <div class="absence-form">
-        <h1>Ajouter Absence</h1>
+<script setup lang="ts">
+import { ref } from 'vue';
+import axios from 'axios';
+import type { Absence } from '~/types';
 
 
-        <form @submit.prevent="submitForm">
-            <!-- Daty -->
-            <div class="form-group">
-                <label for="dateAnnonce">Date d'Annonce:</label>
-                <input type="date" id="dateAnnonce" v-model="form.dateAnnonce" required />
-            </div>
-            <div class="form-group">
-                <label for="dateExpiration">Date d'Expiration:</label>
-                <input type="date" id="dateExpiration" v-model="form.dateExpiration" required />
-            </div>
+// Data
+const form = ref<Absence>({
+    id_absence: 0,
+    motif: '',
+    date_absence: new Date(),
+    id_contrat: 0
+});
 
-            <!-- Poste -->
-            <div class="form-group">
-                <label for="poste">Poste:</label>
-                <input type="text" id="poste" v-model="form.poste" required />
-            </div>
-            <div class="form-group">
-                <label for="descPoste">Description du Poste:</label>
-                <textarea id="descPost" v-model="form.descPoste"></textarea>
-            </div>
+// Method
+const submitForm = async () => {
+    try {
+        console.log(toRaw(form.value));
 
-            <!-- Competences -->
-            <div class="form-group">
-                <label>Competences:</label>
-                <div v-for="option in competences" :key="option.value" class="checkbox-group">
-                    <input type="checkbox" :id="option.value" :value="option.value" v-model="form.competences" />
-                    <label :for="option.value">{{ option.label }}</label>
-                </div>
-            </div>
+        const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
+        console.log(apiUrl);
 
-            <!-- Experiences -->
-            <div class="form-group">
-                <label>Experiences:</label>
-                <div v-for="(option, index) in experiences" :key="option.value" class="checkbox-group">
-                    <input type="checkbox" :id="option.value" :value="option.value"
-                        v-model="form.experiences[index].value" />
-                    <label :for="option.value">{{ option.label }}</label>
-                    <input type="number" v-if="form.experiences[index]?.value" v-model="form.experiences[index].duree"
-                        placeholder="Durée (années)" />
-                </div>
-            </div>
-
-            <button type="submit">Soumettre</button>
-        </form>
-    </div>
-</template>
-
-<script>
-export default {
-    data() {
-        return {
-            form: {
-                dateAnnonce: '',
-                dateExpiration: '',
-                poste: '',
-                descPoste: '',
-                competences: [],
-                experiences: [
-                    { value: 'option1', duree: 0 },
-                    { value: 'option2', duree: 0 },
-                ],
-            },
-            competences: [
-                { value: 'option1', label: 'Conduite' },
-                { value: 'option2', label: 'Dynamisme' },
-                { value: 'option3', label: 'Ponctualite' },
-            ],
-            experiences: [
-                { value: 'option1', label: 'Informaticien', duree: 0 },
-                { value: 'option2', label: 'Gardien', duree: 0 },
-            ],
-        };
-    },
-    methods: {
-        submitForm() {
-            console.log( this.form );
-            // Handle form submission
-        }
+        const response = await axios.post(`${apiUrl}/absences`, form.value);
+        console.log('Form submitted successfully:', response.data);
+    } catch (error) {
+        console.error('Error submitting form:', error);
     }
 };
 </script>
 
-<style scoped>
-.annonce-form {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-}
+<template>
+    <div class="absence-form">
+        <h1>Ajouter Absence</h1>
 
-.form-group {
-    margin-bottom: 15px;
-}
+        <form @submit.prevent="submitForm">
+            <!-- Motif -->
+            <div class="form-group">
+                <label for="motif">Motif:</label>
+                <input type="text" id="motif" v-model="form.motif" />
+            </div>
 
-.checkbox-group {
-    display: flex;
-    align-items: center;
-}
+            <!-- Date Absence -->
+            <div class="form-group">
+                <label for="date_absence">Date d'Absence:</label>
+                <input type="date" id="date_absence" v-model="form.date_absence" required />
+            </div>
 
-.checkbox-group input {
-    margin-right: 10px;
-}
-</style>
+            <!-- ID Contrat -->
+            <div class="form-group">
+                <label for="id_contrat">ID Contrat:</label>
+                <input type="number" id="id_contrat" v-model="form.id_contrat" required />
+            </div>
+
+            <button type="submit"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Soumettre</button>
+        </form>
+    </div>
+</template>

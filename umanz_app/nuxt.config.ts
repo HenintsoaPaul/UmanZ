@@ -12,8 +12,7 @@ export default defineNuxtConfig({
     '@nuxt/ui',
   ],
   plugins: [
-    '~/plugins/iconify.js',
-    '~/plugins/devalue.js'
+    '~/plugins/iconify.js'
   ],
   runtimeConfig: {
     public: {
