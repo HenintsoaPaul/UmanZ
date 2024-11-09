@@ -1,24 +1,22 @@
 package mg.itu.rh.controller;
 
-import java.util.List;
-
+import mg.itu.rh.entity.TypeRupture;
+import mg.itu.rh.service.TypeRuptureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import mg.itu.rh.entity.TypeContrat;
-import mg.itu.rh.repository.TypeContratRepository;
-
+import java.util.List;
 
 @RestController
-@RequestMapping("/type")
-public class TypeContratController {
+@RequestMapping("/type_rupture")
+public class TypeRuptureController {
     @Autowired
-    private TypeContratRepository typeContratRepository;
+    private TypeRuptureService typeRuptureService;
+
     @GetMapping
-    public List<TypeContrat> getTypeContrat() {
-        return typeContratRepository.findAll();
+    public List<TypeRupture> findAll(){
+        return typeRuptureService.findAll();
     }
-    
 }

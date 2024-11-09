@@ -5,9 +5,9 @@
         - (Vita) date expiration: superieur @ androany
     - (Vita) Insertion Entretien url: "/entretien/candiat" method:"POST"
         - (Vita) Insertion anaty table entretien de le etat atao candidature
-    - Liste conge
+    - (Vita) Liste conge url:"/conge/talent/{idTalent}"
         - Liste conge nalainle olona hatrzay mfanaraka amle contrat rehetra
-    - Insertion conge
+    - (Vita) Insertion conge url:"conge/talent" method:"POST"
         - Alaina le contrat tsy manana rupture anle utilisateur connecte
         - Manambotra conge de manana anle id anle contrat iny
     - Création profil
@@ -33,12 +33,15 @@
             - Alaina ny entretien izay null ny id_enfant any filtré par état
         - Validation entretien
             - Insertion ana entretien vaovao de le entretien taloha iny setena ny enfant any ho lasa le entretien vaovao
-    - Contrat
-        - Après validation farany tadidina le id anle talent
-        - Insertion ana contrat (Apetaka ao le id talent)
-        - Insertion ana rupture de contrat
+    - (Vita) Contrat
+        - (Vita) Liste type contrat url:"/type"
+        - (Vita) Insertion ana contrat (Apetaka ao le id talent) url:"/contrat" method:"POST"
+        - (Vita) Liste type de rupture url:"/type_rupture"
+        - (Vita) Insertion ana rupture de contrat url:"/rupture" method:"POST"
     - Absence (Antema)
         - Insertion Absence
         - Liste absence
-    - Conge
-        - Liste anle conge miaraka amle talent
+    - (Vita) Conge
+        - (Vita) Liste ana conge valide url:"/conge"
+        - (Vita) Liste anle conge mangataka validation url:"/conge/non_valide"
+        - (Vita) Validation conge url:"/conge/validation/{idConge}"
