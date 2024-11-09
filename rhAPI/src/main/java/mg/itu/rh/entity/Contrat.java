@@ -2,6 +2,7 @@ package mg.itu.rh.entity;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
+import mg.itu.rh.other.POV;
 
 @Entity
 @Data
@@ -35,4 +37,7 @@ public class Contrat {
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="id_type_contrat")
     private TypeContrat typeContrat;
+
+    @Column(name = "nb_jour_conge_an")
+    private int nbJourCongeAn;
 }
