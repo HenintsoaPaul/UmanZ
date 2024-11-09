@@ -26,14 +26,15 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     const userEmail = formState.email;
     const userPassword = formState.password;
 
-    const user = await authenticate(userEmail, userPassword);
-    if (user === null) {
-      formState.error = 'Utilisateur inconnu'
-    } else {
+    const apiUrl = useRuntimeConfig().public.apiUrl;
+    const user = await authenticate(userEmail, userPassword, `${apiUrl}/talent/users`);
+
+    if (typeof (user) != "string" && user != null) {
       localStorage.setItem('idUser', user.idTalent.toString());
       localStorage.setItem('isAdmin', user.isAdmin.toString());
-      formState.error = '';
-      // router.push('/'); 
+      router.push('/'); 
+    } else {
+      formState.error = 'Utilisateur inconnu'
     }
   }
 }
