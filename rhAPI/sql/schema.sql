@@ -11,6 +11,7 @@ CREATE TABLE talent(
                        prenom VARCHAR(50)  NOT NULL,
                        mail VARCHAR(50)  NOT NULL,
                        password VARCHAR(255) ,
+                       is_admin BOOLEAN NOT NULL,
                        PRIMARY KEY(id_talent)
 );
 
@@ -25,7 +26,8 @@ CREATE TABLE etat_entretien(
                                id_etat_entretien SERIAL,
                                etat_entretien VARCHAR(100)  NOT NULL,
                                niveau SMALLINT,
-                               PRIMARY KEY(id_etat_entretien)
+                               PRIMARY KEY(id_etat_entretien),
+                               UNIQUE(niveau)
 );
 
 CREATE TABLE type_contrat(
@@ -112,6 +114,7 @@ CREATE TABLE conge(
                       date_debut DATE NOT NULL,
                       nb_jour INTEGER NOT NULL,
                       motif VARCHAR(50) ,
+                      date_validation DATE,
                       id_contrat INTEGER NOT NULL,
                       PRIMARY KEY(id_conge),
                       FOREIGN KEY(id_contrat) REFERENCES contrat(id_contrat)
