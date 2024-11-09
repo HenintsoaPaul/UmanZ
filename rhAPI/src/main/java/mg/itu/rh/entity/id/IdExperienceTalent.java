@@ -9,8 +9,8 @@ import java.io.Serializable;
 @Embeddable
 @EqualsAndHashCode
 public class IdExperienceTalent implements Serializable {
-    @Column(name = "id_annonce")
-    private Long idAnnonce;
+    @Column(name = "id_talent")
+    private Long idTalent;
     @Column(name = "id_poste")
     private Long idPoste;
 }

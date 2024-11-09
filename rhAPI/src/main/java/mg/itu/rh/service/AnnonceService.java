@@ -15,4 +15,8 @@ public class AnnonceService {
     public List<Annonce> findAnnonceAvailable(){
         return annonceRepository.findAnnonceAvailable();
     }
+
+    public Annonce findAnnonceById(Long id)throws Exception{
+        return annonceRepository.findById(id).orElseThrow(()->new RuntimeException("Annonce non reconnue"));
+    }
 }

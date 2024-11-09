@@ -24,4 +24,6 @@ public class EtatEntretien {
     @Column(name="etat_entretien")
     @JsonView({POV.Public.class})
     private String etatEntretien;
+
+    private int niveau;
 }

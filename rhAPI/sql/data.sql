@@ -1,11 +1,12 @@
 -- Insérer des données dans la table etat_entretien (corrigé)
-INSERT INTO etat_entretien (etat_entretien) VALUES
-                                                ('Refuse'),
-                                                ('Candidat'),
-                                                ('1e Entretien'),
-                                                ('1e Entretien valide'),
-                                                ('2e Entretien'),
-                                                ('En attente de contrat');
+INSERT INTO etat_entretien (etat_entretien,niveau) VALUES
+                                                ('Refuse',1),
+                                                ('Candidat',2),
+                                                ('1e Entretien',3),
+                                                ('1e Entretien valide',4),
+                                                ('2e Entretien',5),
+                                                ('En attente de contrat',6),
+                                                ('Contrat valide',7);
 
 -- Insérer des données dans la table type_contrat (corrigé)
 INSERT INTO type_contrat (type_contrat) VALUES
