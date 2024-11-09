@@ -1,3 +1,12 @@
+export interface Talent {
+    idTalent: number,
+    nom: string,
+    prenom: string,
+    mail: string,
+    password: string,
+    isAdmin: boolean
+}
+
 export interface Competence {
     idCompetence: number,
     competence: string

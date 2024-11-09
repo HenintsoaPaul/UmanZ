@@ -57,8 +57,13 @@ const expand = ref({
     row: {}
 })
 
-const canditerFn = () => {
-    console.log("Candidater");
+const canditerFn = (idAnnonce: number) => {
+    const idTalent = localStorage.getItem('id_talent');
+    if (idTalent) {
+        console.log(`Candidater pour l'annonce ${idAnnonce} en etant le talent ${idTalent}`);
+    } else {
+        console.error('Utilisateur non connecté');
+    }
 }
 </script>
 
@@ -81,7 +86,7 @@ const canditerFn = () => {
                     </div>
 
                     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                        @click="canditerFn">
+                        @click="canditerFn(row.idAnnonce)">
                         Candidater
                     </button>
                 </div>
