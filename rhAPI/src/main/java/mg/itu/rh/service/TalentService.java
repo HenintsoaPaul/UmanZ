@@ -13,4 +13,8 @@ public class TalentService {
     public Talent findById(Long id){
         return talentRepository.findById(id).orElseThrow(()->new RuntimeException("Talent non reconnue"));
     }
+
+    public Talent findByEmailAndPassword(String email,String password){
+        return talentRepository.findByEmailAndPassword(email,password).orElse(null);
+    }
 }
