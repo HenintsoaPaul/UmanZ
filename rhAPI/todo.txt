@@ -22,8 +22,9 @@
 -  Admin
     - Login
     - Annonce (Antema)
-        - Liste poste mexiste
-        - Liste competences
+        - Formulaire
+            - Liste poste mexiste
+            - Liste competences
         - Insertion ana annonce
     - Formation
         - Insertion ana formation
