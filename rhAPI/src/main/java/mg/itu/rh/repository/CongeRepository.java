@@ -17,11 +17,14 @@ public interface CongeRepository extends JpaRepository<Conge,Long> {
     @Query(value = "SELECT SUM(nb_jour) " +
             "FROM conge " +
             "WHERE id_contrat = :idContrat " +
-            "AND EXTRACT(YEAR FROM date_debut) = EXTRACT(YEAR FROM CURRENT_DATE) and not date_validation is null" +
+            "AND EXTRACT(YEAR FROM date_debut) = EXTRACT(YEAR FROM CURRENT_DATE) and not date_validation is null " +
             "GROUP BY id_contrat",nativeQuery = true)
     int findNbJourCongePris(@Param("idContrat") Long idContrat);
 
     @Query("select new mg.itu.rh.dto.CongeTalentDTO(c.contrat.talent,c.nbJour,c.dateDebut,c.motif) from Conge c where not c.dateValidation is null")
     public List<CongeTalentDTO> findAllWithTalent();
+
+    @Query("select new mg.itu.rh.dto.CongeTalentDTO(c.contrat.talent,c.nbJour,c.dateDebut,c.motif) from Conge c where c.dateValidation is null")
+    public List<CongeTalentDTO> findAllWithTalentNonValide();
 
 }

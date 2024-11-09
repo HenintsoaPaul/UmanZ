@@ -40,5 +40,7 @@
     - Absence (Antema)
         - Insertion Absence
         - Liste absence
-    - Conge
-        - Liste anle conge miaraka amle talent
+    - (Vita) Conge
+        - (Vita) Liste ana conge valide url:"/conge"
+        - (Vita) Liste anle conge mangataka validation url:"/conge/non_valide"
+        - (Vita) Validation conge url:"/conge/validation/{idConge}"

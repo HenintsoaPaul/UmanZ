@@ -8,6 +8,7 @@ import mg.itu.rh.repository.CongeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -18,8 +19,18 @@ public class CongeService {
     @Autowired
     private ContratService contratService;
 
-    public List<CongeTalentDTO> findAll(){
+    public List<CongeTalentDTO> findAllValide(){
         return congeRepository.findAllWithTalent();
+    }
+
+    public Conge validate(Long idConge){
+        Conge conge=congeRepository.findById(idConge).orElseThrow(()->new RuntimeException("Conge non reconnue"));
+        conge.setDateValidation(LocalDate.now());
+        return congeRepository.save(conge);
+    }
+
+    public List<CongeTalentDTO> findAllNonValide(){
+        return congeRepository.findAllWithTalentNonValide();
     }
 
     public List<Conge> findCongeByIdTalent(Long idTalent){
