@@ -1,5 +1,5 @@
 - Utilisateur
-    - Login (Antema)
+    - (Vita) Login url: "/talent/user?email={email}&password={Password}"
     - (Vita) Liste annonce url: "/annonce/disponible" method:"GET"
         - (Vita) date rupture: null
         - (Vita) date expiration: superieur @ androany
@@ -20,7 +20,6 @@
         - Alaina le id formation nangatahany
         - inserena ao am participation le id contrat sy id formation
 -  Admin
-    - Login
     - Annonce (Antema)
         - Formulaire
             - Liste poste mexiste
