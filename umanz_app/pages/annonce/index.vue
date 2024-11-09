@@ -110,7 +110,7 @@ const supprimerFn = () => {
 </script>
 
 <template>
-    <h1>Liste des annonces</h1>
+    <h1 class="text-2xl font-bold mb-4">Liste des annonces</h1>
 
     <div class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
         <UInput v-model="q" placeholder="Filtrer les annonces..." />
@@ -121,8 +121,10 @@ const supprimerFn = () => {
             <div class="p-4">
                 <pre>{{ row }}</pre>
 
-                <button class="btn-candidater" @click="canditerFn">Candidater</button>
-                <button class="btn-supprimer" @click="supprimerFn">Supprimer</button>
+                <button class="btn-candidater bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
+                    @click="canditerFn">
+                    Candidater
+                </button>
             </div>
         </template>
     </UTable>
