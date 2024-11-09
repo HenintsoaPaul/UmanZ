@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
+import mg.itu.rh.dto.ContratDTO;
 import mg.itu.rh.other.POV;
 
 @Entity
@@ -40,4 +41,31 @@ public class Contrat {
 
     @Column(name = "nb_jour_conge_an")
     private int nbJourCongeAn;
+
+    @Column(name = "salaire_horaire")
+    private double salaireHoraire;
+
+    @Column(name = "nb_jour_semaine")
+    private int nbJourSemaine;
+
+    @Column(name = "nb_heure_jour")
+    private double nbHeureJour;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_poste")
+    private Poste poste;
+
+    public Contrat(ContratDTO contratDTO){
+        this.setContrat(contratDTO.getContrat());
+        this.setNbHeureJour(contratDTO.getNbHeureJour());
+        this.setNbJourSemaine(contratDTO.getNbJourSemaine());
+        this.setSalaireHoraire(contratDTO.getSalaireHoraire());
+        this.setDateFin(contratDTO.getDateFin());
+        this.setDateDebut(contratDTO.getDateDebut());
+        this.setNbJourCongeAn(contratDTO.getNbJourCongeAn());
+    }
+
+    public Contrat(){
+
+    }
 }
