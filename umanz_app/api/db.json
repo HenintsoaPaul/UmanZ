@@ -1,54 +1,112 @@
 {
-    "talents": [
-      {
-        "id": 1,
-        "id_talent": 1,
-        "nom": "Dupont",
-        "prenom": "Jean",
-        "mail": "jean.dupont@example.com",
-        "password": "password1"
-      },
-      {
-        "id": 2,
-        "id_talent": 2,
-        "nom": "Martin",
-        "prenom": "Marie",
-        "mail": "marie.martin@example.com",
-        "password": "password2"
-      },
-      {
-        "id": 3,
-        "id_talent": 3,
-        "nom": "Durand",
-        "prenom": "Pierre",
-        "mail": "pierre.durand@example.com",
-        "password": "password3"
-      }
-    ],
-    "cv": [
-      {
-        "id": 1,
-        "id_talent": 1,
-        "competences": [
-          { "id_competence": 1, "id_talent": 1, "point": 5 },
-          { "id_competence": 2, "id_talent": 1, "point": 3 }
-        ],
-        "experiences": [
-          { "id_poste": 1, "id_talent": 1, "ans": 2 },
-          { "id_poste": 2, "id_talent": 1, "ans": 1 }
-        ]
-      },
-      {
-        "id": 2,
-        "id_talent": 2,
-        "competences": [
-          { "id_competence": 3, "id_talent": 2, "point": 4 },
-          { "id_competence": 4, "id_talent": 2, "point": 5 }
-        ],
-        "experiences": [
-          { "id_poste": 3, "id_talent": 2, "ans": 3 },
-          { "id_poste": 4, "id_talent": 2, "ans": 2 }
-        ]
-      }
-    ]
+  "talents": [
+    {
+      "id": 1,
+      "id_talent": 1,
+      "nom": "Dupont",
+      "prenom": "Jean",
+      "mail": "jean.dupont@example.com",
+      "password": "password1"
+    },
+    {
+      "id": 2,
+      "id_talent": 2,
+      "nom": "Martin",
+      "prenom": "Marie",
+      "mail": "marie.martin@example.com",
+      "password": "password2"
+    },
+    {
+      "id": 3,
+      "id_talent": 3,
+      "nom": "Durand",
+      "prenom": "Pierre",
+      "mail": "pierre.durand@example.com",
+      "password": "password3"
+    }
+  ],
+  "cv": [
+    {
+      "id": 1,
+      "id_talent": 1,
+      "competences": [
+        {
+          "id_competence": 1,
+          "id_talent": 1,
+          "point": 5
+        },
+        {
+          "id_competence": 2,
+          "id_talent": 1,
+          "point": 3
+        }
+      ],
+      "experiences": [
+        {
+          "id_poste": 1,
+          "id_talent": 1,
+          "ans": 2
+        },
+        {
+          "id_poste": 2,
+          "id_talent": 1,
+          "ans": 1
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "id_talent": 2,
+      "competences": [
+        {
+          "id_competence": 3,
+          "id_talent": 2,
+          "point": 4
+        },
+        {
+          "id_competence": 4,
+          "id_talent": 2,
+          "point": 5
+        }
+      ],
+      "experiences": [
+        {
+          "id_poste": 3,
+          "id_talent": 2,
+          "ans": 3
+        },
+        {
+          "id_poste": 4,
+          "id_talent": 2,
+          "ans": 2
+        }
+      ]
+    }
+  ],
+  "entretiens": [
+    {
+      "id": 1,
+      "id_entretien": 1,
+      "date_creation": "2023-01-15T00:00:00Z",
+      "date_validation": "2023-01-20T00:00:00Z",
+      "note": 4,
+      "motif": "Annual review",
+      "id_enfant": 1,
+      "id_annonce": 1,
+      "id_etat_entretien": 1,
+      "id_talent": 1
+    },
+    {
+      "id": 2,
+      "id_entretien": 2,
+      "date_creation": "2023-02-10T00:00:00Z",
+      "date_validation": "2023-02-15T00:00:00Z",
+      "note": 5,
+      "motif": "Project completion",
+      "id_enfant": 2,
+      "id_annonce": 2,
+      "id_etat_entretien": 2,
+      "id_talent": 2
+    }
+  ]
 }

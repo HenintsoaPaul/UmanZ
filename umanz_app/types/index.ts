@@ -41,3 +41,15 @@ export interface CV {
     competences: TalentCompetence[],
     experiences: ExperienceTalent[]
 }
+
+export interface Entretien {
+    id_entretien: number,
+    date_creation: Date,
+    date_validation: Date,
+    note?: number,
+    motif: string,
+    id_enfant?: number,
+    id_annonce: number,
+    id_etat_entretien: number,
+    id_talent: number,
+}
