@@ -1,3 +1,34 @@
+export interface Competence {
+    idCompetence: number,
+    competence: string
+}
+
+export interface CompetenceAnnonce {
+    competence: Competence,
+    point: number
+}
+
+export interface Poste {
+    idPoste: number,
+    description: string
+}
+
+export interface ExperiencePoste {
+    poste: Poste,
+    ans: number
+}
+
+export interface Annonce {
+    idAnnonce: number,
+    poste: Poste,
+    dateAnnonce: string,
+    dateExpiration: string,
+    dateRupture: string | null,
+    experiencePostes: ExperiencePoste[],
+    competenceAnnonces: CompetenceAnnonce[]
+}
+
+
 export interface Absence {
     id_absence: number,
     motif?: string,
