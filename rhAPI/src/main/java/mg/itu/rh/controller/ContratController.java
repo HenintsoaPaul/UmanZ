@@ -19,6 +19,20 @@ public class ContratController {
     @Autowired
     private ContratService contratService;
 
+    /*
+    * {
+    *       "contrat":"Contrat mahafinaritra",
+    *       "dateDebut":"2025-01-01",
+    *       "dateFin":"2025-12-12",
+    *       "salaireHoraire":125000,
+    *       "nbJourSemaine":5,
+    *       "nbJourCongeAn":20,
+    *       "nbHeureJour":8,
+    *       "idPoste":11,
+    *       "idTalent":4,
+    *       "idTypeContrat":3
+    * }
+    * */
     @PostMapping
     @JsonView(POV.Public.class)
     public Contrat save(@RequestBody ContratDTO contratDTO){
