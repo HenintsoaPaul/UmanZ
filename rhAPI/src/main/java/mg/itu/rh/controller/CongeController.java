@@ -2,6 +2,7 @@ package mg.itu.rh.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import mg.itu.rh.dto.CongeDTO;
+import mg.itu.rh.dto.CongeTalentDTO;
 import mg.itu.rh.entity.Conge;
 import mg.itu.rh.other.POV;
 import mg.itu.rh.service.CongeService;
@@ -13,9 +14,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/conge")
 public class CongeController {
-
     @Autowired
     private CongeService congeService;
+
+    @GetMapping
+    @JsonView(POV.Full.class)
+    public List<CongeTalentDTO> findALl(){
+        return  congeService.findAll();
+    }
 
     @GetMapping("/talent/{id}")
     @JsonView(POV.Public.class)

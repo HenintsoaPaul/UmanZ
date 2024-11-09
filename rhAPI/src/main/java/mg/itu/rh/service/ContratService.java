@@ -12,6 +12,6 @@ public class ContratService {
     private ContratRepository contratRepository;
 
     public Contrat findActualContratByIdTalent(Long idTalent){
-        return contratRepository.findActualContratByIdTalent(idTalent).orElseThrow(()->new RuntimeException("Cette personne n'est pas un employe"));
+        return contratRepository.findActualContratByIdTalent(idTalent).orElseThrow(()->new RuntimeException("Cette personne n'est pas un employe ou n'est plus un employe"));
     }
 }

@@ -27,7 +27,11 @@ public class Conge {
     @JsonView({POV.Public.class})
     private String motif;
 
+    @Column(name = "date_validation")
+    private LocalDate dateValidation;
+
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonView({POV.Public.class})
     @JoinColumn(name = "id_contrat")
     private Contrat contrat;
 

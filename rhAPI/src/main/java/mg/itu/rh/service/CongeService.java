@@ -1,6 +1,7 @@
 package mg.itu.rh.service;
 
 import mg.itu.rh.dto.CongeDTO;
+import mg.itu.rh.dto.CongeTalentDTO;
 import mg.itu.rh.entity.Conge;
 import mg.itu.rh.entity.Contrat;
 import mg.itu.rh.repository.CongeRepository;
@@ -16,6 +17,10 @@ public class CongeService {
 
     @Autowired
     private ContratService contratService;
+
+    public List<CongeTalentDTO> findAll(){
+        return congeRepository.findAllWithTalent();
+    }
 
     public List<Conge> findCongeByIdTalent(Long idTalent){
         return congeRepository.findCongeByIdTalent(idTalent);
