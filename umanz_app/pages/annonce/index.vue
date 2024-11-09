@@ -57,10 +57,25 @@ const expand = ref({
     row: {}
 })
 
-const canditerFn = (idAnnonce: number) => {
-    const idTalent = localStorage.getItem('id_talent');
+const canditerFn = async (idAnnonce: number) => {
+    const idTalent = localStorage.getItem('idUser');
     if (idTalent) {
-        console.log(`Candidater pour l'annonce ${idAnnonce} en etant le talent ${idTalent}`);
+        const apiUrl = useRuntimeConfig().public.apiUrl;
+        try {
+            const candidature = {
+                idTalent: Number(idTalent),
+                idAnnonce: Number(idAnnonce),
+            }
+            const response = await axios.post(`${apiUrl}/entretien/candiat`, candidature);
+
+            if (response.status === 200) {
+                console.log('Candidature envoyée avec succès', candidature);
+            } else {
+                console.error('Erreur lors de l\'envoi de la candidature', response.data);
+            }
+        } catch (error) {
+            console.error('Erreur lors de la requête API:', error);
+        }
     } else {
         console.error('Utilisateur non connecté');
     }
