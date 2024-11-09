@@ -2,26 +2,23 @@
 import axios from 'axios';
 import type { Annonce } from '~/types';
 
-// Columns a afficher
 const headers = [
     {
         key: 'idAnnonce',
         label: 'ID',
         sortable: true,
-    }, {
-        key: 'poste.description',
-        label: 'Desc Poste',
-    }, {
+    },
+    {
         key: 'dateAnnonce',
         label: 'Date Annonce',
         sortable: true
-    }, {
+    },
+    {
         key: 'dateExpiration',
         label: 'Date Expiration',
         sortable: true
     }
 ];
-
 
 // Variable pour stocker les données de l'API
 const lignes = ref<Annonce[]>([]);
@@ -55,28 +52,40 @@ async function loadAnnonces() {
 
 loadAnnonces();
 
+const expand = ref({
+    openedRows: [],
+    row: {}
+})
+
 const canditerFn = () => {
     console.log("Candidater");
 }
 </script>
 
 <template>
-    <h1 class="text-2xl font-bold mb-4">Liste des annonces</h1>
+    <div class="container mx-auto">
+        <h1 class="text-3xl font-bold mb-6 text-center">Liste des annonces</h1>
 
-    <div class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
-        <UInput v-model="q" placeholder="Filtrer les annonces..." />
+        <div class="flex justify-center mb-4">
+            <UInput v-model="q" placeholder="Filtrer les annonces..."
+                class="w-full max-w-md px-4 py-2  rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+
+        <UTable :columns="headers" :rows="filteredLignes" v-model:expand="expand"
+            class="w-full shadow-md rounded-lg overflow-hidden">
+            <template #expand="{ row }">
+                <div class="p-4">
+                    <div class="mb-4">
+                        <h3 class="text-xl font-semibold mb-2">Description:</h3>
+                        <p class="text-gray-700">{{ row.poste.description }}</p>
+                    </div>
+
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        @click="canditerFn">
+                        Candidater
+                    </button>
+                </div>
+            </template>
+        </UTable>
     </div>
-
-    <UTable :columns="headers" :rows="filteredLignes" v-model:expand="expand">
-        <template #expand="{ row }">
-            <div class="p-4">
-                <pre>{{ row }}</pre>
-
-                <button class="btn-candidater bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-                    @click="canditerFn">
-                    Candidater
-                </button>
-            </div>
-        </template>
-    </UTable>
 </template>
