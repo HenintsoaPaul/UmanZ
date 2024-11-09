@@ -11,11 +11,11 @@ public class ExperienceTalent {
     private IdExperienceTalent id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_poste")
+    @JoinColumn(name = "id_poste",updatable = false,insertable = false)
     private Poste poste;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_talent")
+    @JoinColumn(name = "id_talent",insertable = false,updatable = false)
     private Talent talent;
 
     private int ans;

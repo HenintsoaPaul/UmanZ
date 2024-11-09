@@ -1,6 +1,6 @@
 - Utilisateur
     - Login (Antema)
-    - Liste annonce
+    - (Vita) Liste annonce
         - date rupture: null
         - date expiration: superieur @ androany
     - Insertion Entretien
@@ -22,8 +22,9 @@
 -  Admin
     - Login
     - Annonce (Antema)
-        - Liste poste mexiste
-        - Liste competences
+        - Formulaire
+            - Liste poste mexiste
+            - Liste competences
         - Insertion ana annonce
     - Formation
         - Insertion ana formation

@@ -1,5 +1,6 @@
 package mg.itu.rh.entity;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonView;
@@ -34,4 +35,20 @@ public class Annonce {
     @OneToMany(mappedBy="annonce",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     @JsonView({POV.Full.class})
     private List<ExperiencePoste> experiencePostes;
+
+    @Column(name = "date_annonce")
+    @JsonView({POV.Full.class})
+    private LocalDate dateAnnonce;
+
+    @JsonView({POV.Full.class})
+    @Column(name = "date_expiration")
+    private LocalDate dateExpiration;
+
+    @JsonView({POV.Full.class})
+    @Column(name = "date_rupture")
+    private LocalDate dateRupture;
+
+    @OneToMany(mappedBy = "annonce",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonView({POV.Full.class})
+    private List<CompetenceAnnonce> competenceAnnonces;
 }
