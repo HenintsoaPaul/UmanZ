@@ -4,3 +4,11 @@ export interface Absence {
     date_absence: Date,
     id_contrat: number,
 }
+
+export interface Talent {
+    id_talent: number,
+    nom: string,
+    prenom: string,
+    mail: string,
+    password: string,
+}
