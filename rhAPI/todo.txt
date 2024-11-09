@@ -1,6 +1,6 @@
 - Utilisateur
     - Login (Antema)
-    - Liste annonce
+    - (Vita) Liste annonce
         - date rupture: null
         - date expiration: superieur @ androany
     - Insertion Entretien
