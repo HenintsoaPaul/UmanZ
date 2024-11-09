@@ -5,9 +5,9 @@
         - (Vita) date expiration: superieur @ androany
     - (Vita) Insertion Entretien url: "/entretien/candiat" method:"POST"
         - (Vita) Insertion anaty table entretien de le etat atao candidature
-    - Liste conge
+    - (Vita) Liste conge url:"/conge/talent/{idTalent}"
         - Liste conge nalainle olona hatrzay mfanaraka amle contrat rehetra
-    - Insertion conge
+    - (Vita) Insertion conge url:"conge/talent" method:"POST"
         - Alaina le contrat tsy manana rupture anle utilisateur connecte
         - Manambotra conge de manana anle id anle contrat iny
     - Création profil

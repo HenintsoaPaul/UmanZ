@@ -35,4 +35,7 @@ public class Contrat {
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="id_type_contrat")
     private TypeContrat typeContrat;
+
+    @Column(name = "nb_jour_conge_an")
+    private int nbJourCongeAn;
 }
