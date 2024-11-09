@@ -7,5 +7,17 @@ export default defineNuxtConfig({
       name: 'page',
       mode: 'out-in'
     }
+  },
+  modules: [
+    '@nuxt/ui',
+  ],
+  plugins: [
+    '~/plugins/iconify.js',
+    '~/plugins/devalue.js'
+  ],
+  runtimeConfig: {
+    public: {
+      apiUrl: "http://localhost:8081/fufu"
+    }
   }
 })
