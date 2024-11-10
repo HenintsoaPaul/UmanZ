@@ -18,6 +18,6 @@ public class ExperiencePosteService {
     }
 
     public List<ExperiencePoste> findByIds(List<Long> ids) {
-        return experiencePosteRepository.findAllById(ids);
+        return experiencePosteRepository.findByIdIn(ids);
     }
 }

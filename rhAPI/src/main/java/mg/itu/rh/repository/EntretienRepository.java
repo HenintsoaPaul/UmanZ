@@ -13,6 +13,6 @@ import mg.itu.rh.entity.EtatEntretien;
 public interface EntretienRepository extends JpaRepository<Entretien, Long> {
     public List<Entretien> findByEtatEntretien(EtatEntretien etatEntretien);
 
-    @Query("SELECT e FROM Entretien e WHERE e.id_enfant IS NULL")
+    @Query("SELECT e FROM Entretien e WHERE e.enfant.idEntretien IS NULL")
     public List<Entretien> findAllWhereEnfantIsNull();
 }

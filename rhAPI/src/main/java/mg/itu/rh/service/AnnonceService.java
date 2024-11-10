@@ -6,7 +6,6 @@ import mg.itu.rh.entity.CompetenceAnnonce;
 import mg.itu.rh.entity.ExperiencePoste;
 import mg.itu.rh.entity.Poste;
 import mg.itu.rh.repository.AnnonceRepository;
-import mg.itu.rh.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +19,10 @@ public class AnnonceService {
     @Autowired
     private PosteService posteService;
 
-    @Autowired
-    private CompetenceService competenceAnnonceService;
+//    @Autowired
+//    private CompetenceService competenceService;
+
+    private CompetenceAnnonceService competenceAnnonceService;
 
     @Autowired
     private ExperiencePosteService experiencePosteService;

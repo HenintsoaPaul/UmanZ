@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface ExperiencePosteRepository extends JpaRepository<ExperiencePoste, Long> {
-    public List<ExperiencePoste> findAllById(List<Long> ids);
+    public List<ExperiencePoste> findByIdIn( List<Long> ids);
 }

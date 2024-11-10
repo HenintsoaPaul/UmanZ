@@ -14,5 +14,5 @@ public interface CompetenceRepository extends JpaRepository<Competence, Long> {
     @Query("select c from Competence c")
     public List<Competence> findAllCompetences();
 
-    public List<CompetenceAnnonce> findAllById(List<Long> ids);
+//    public List<CompetenceAnnonce> findAllById(List<Long> ids);
 }
