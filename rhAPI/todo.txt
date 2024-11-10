@@ -26,8 +26,8 @@
             - (Vita) Liste competences url: "/competences"
             - (Vita) Liste experience_post url: "/experience" --------- KDFJDAKFJDASFK
         - (Vita) Insertion ana annonce url: "/annonce/save"
-    - Formation
-        - Insertion ana formation
+    - (Vita) Formation
+        - (Vita) Insertion ana formation
     - Candidature (Entretien ny table an'io) (Antema)
         - (Vita) Liste candidat url: "/candidats"
             - Alaina ny entretien izay null ny id_enfant any filtré par état
