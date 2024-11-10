@@ -1,5 +1,5 @@
 - Utilisateur
-    - Login (Antema)
+    - (Vita) Login url: "/talent/user?email={email}&password={Password}"
     - (Vita) Liste annonce url: "/annonce/disponible" method:"GET"
         - (Vita) date rupture: null
         - (Vita) date expiration: superieur @ androany
@@ -20,27 +20,27 @@
         - Alaina le id formation nangatahany
         - inserena ao am participation le id contrat sy id formation
 -  Admin
-    - Login
-    - Annonce (Antema)
-        - Formulaire
-            - Liste poste mexiste
-            - Liste competences
-        - Insertion ana annonce
+    - (Vita) Annonce (Antema)
+        - (Vita) Formulaire
+            - (Vita) Liste poste mexiste url: "/postes"
+            - (Vita) Liste competences url: "/competences"
+            - (Vita) Liste experience_post url: "/experience"
+        - (Vita) Insertion ana annonce url: "/annonce/save"
     - Formation
         - Insertion ana formation
     - Candidature (Entretien ny table an'io) (Antema)
-        - Liste candidat
+        - (Vita) Liste candidat url: "/candidats"
             - Alaina ny entretien izay null ny id_enfant any filtré par état
-        - Validation entretien
+        - (vitany rayan)Validation entretien url : "/validate/{id}"
             - Insertion ana entretien vaovao de le entretien taloha iny setena ny enfant any ho lasa le entretien vaovao
     - (Vita) Contrat
         - (Vita) Liste type contrat url:"/type"
         - (Vita) Insertion ana contrat (Apetaka ao le id talent) url:"/contrat" method:"POST"
         - (Vita) Liste type de rupture url:"/type_rupture"
         - (Vita) Insertion ana rupture de contrat url:"/rupture" method:"POST"
-    - Absence (Antema)
-        - Insertion Absence
-        - Liste absence
+    - (Vita) Absence (Antema)
+        - (Vita) Insertion Absence 
+        - (Vita) Liste absence url: "/absences"
     - (Vita) Conge
         - (Vita) Liste ana conge valide url:"/conge"
         - (Vita) Liste anle conge mangataka validation url:"/conge/non_valide"

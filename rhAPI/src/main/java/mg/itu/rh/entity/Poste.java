@@ -18,7 +18,19 @@ public class Poste {
     @JsonView({POV.Full.class})
     private Long idPoste;
 
+    @Column(name = "nom_poste")
+    @JsonView({POV.Public.class})
+    private String nomPoste;
+
     @Column(name="description_poste")
     @JsonView({POV.Full.class})
     private String description;
+
+    public Poste() {}
+
+    public Poste(Long idPoste, String nomPoste, String descriptionPoste) {
+        this.idPoste = idPoste;
+        this.nomPoste = nomPoste;
+        this.description = descriptionPoste;
+    }
 }
