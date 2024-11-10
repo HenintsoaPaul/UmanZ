@@ -20,4 +20,11 @@ public class Competence {
 
     @JsonView({POV.Full.class})
     private String competence;
+
+    public Competence() {}
+
+    public Competence(Long idCompetence, String competence) {
+        this.idCompetence = idCompetence;
+        this.competence = competence;
+    }
 }

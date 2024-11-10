@@ -1,6 +1,6 @@
 package mg.itu.rh.repository;
 
-import mg.itu.rh.entity.Poste;
+import mg.itu.rh.entity.Absence;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PosteRepository extends JpaRepository<Poste, Long> {
-    @Query("select c from Poste c")
-    public List<Poste> findAllPostes();
+public interface AbsenceRepository extends JpaRepository<Absence, Long> {
+    @Query("select a from Absence a")
+    public List<Absence> findAllAbsences();
 }
