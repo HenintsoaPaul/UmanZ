@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 import type { Talent } from '~/types';
-// import { useRuntimeConfig } from '#imports'; // Ensure you have this import if you're using Nuxt.js
+import { useRuntimeConfig } from '#imports'; // Ensure you have this import if you're using Nuxt.js
 
 // Columns à afficher
 const headers = [
@@ -12,33 +12,8 @@ const headers = [
     { key: 'mail', label: 'Email', sortable: true }
 ];
 
-// Données d'exemple pour les talents
-const talents = ref<Talent[]>([
-    {
-        id_talent: 1,
-        nom: 'Dupont',
-        prenom: 'Jean',
-        mail: 'jean.dupont@example.com',
-        password: 'password1'
-    },
-    {
-        id_talent: 2,
-        nom: 'Martin',
-        prenom: 'Marie',
-        mail: 'marie.martin@example.com',
-        password: 'password2'
-    },
-    {
-        id_talent: 3,
-        nom: 'Durand',
-        prenom: 'Pierre',
-        mail: 'pierre.durand@example.com',
-        password: 'password3'
-    }
-]);
-
 // Variable pour stocker les données de l'API
-const apiTalents = ref([]);
+const apiTalents = ref<Talent[]>([]);
 
 // Fonction pour charger les données des talents depuis l'API
 async function loadTalents() {
@@ -57,17 +32,19 @@ async function loadTalents() {
 }
 
 // Appel de la fonction pour charger les données au chargement du composant
-loadTalents();
+onMounted(() => {
+    loadTalents();
+});
 
 // Filtre par recherche
 const q = ref('');
 
 const filteredTalents = computed(() => {
     if (!q.value) {
-        return talents.value;
+        return apiTalents.value;
     }
 
-    return talents.value.filter((talent) => {
+    return apiTalents.value.filter((talent) => {
         return Object.values(talent).some((value) => {
             return String(value).toLowerCase().includes(q.value.toLowerCase());
         });
@@ -84,7 +61,3 @@ const filteredTalents = computed(() => {
 
     <UTable :columns="headers" :rows="filteredTalents" />
 </template>
-
-<style scoped>
-/* Ajoutez vos styles personnalisés ici si nécessaire */
-</style>
