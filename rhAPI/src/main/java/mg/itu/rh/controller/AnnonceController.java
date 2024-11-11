@@ -16,20 +16,20 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/annonce")
+@RequestMapping( "/annonce" )
 public class AnnonceController {
     @Autowired
     private AnnonceService annonceService;
 
-    @GetMapping("/disponible")
-    @JsonView(POV.Full.class)
-    public List<Annonce> getAnnonceDisponible(){
+    @GetMapping( "/disponible" )
+    @JsonView( POV.Public.class )
+    public List<Annonce> getAnnonceDisponible() {
         return annonceService.findAnnonceAvailable();
     }
 
     @PostMapping()
-    @JsonView(POV.Full.class)
-    public Annonce save(@RequestBody AnnonceDTO annonceDTO) {
-        return annonceService.save(annonceDTO);
+    @JsonView( POV.Full.class )
+    public Annonce save( @RequestBody AnnonceDTO annonceDTO ) {
+        return annonceService.save( annonceDTO );
     }
 }
