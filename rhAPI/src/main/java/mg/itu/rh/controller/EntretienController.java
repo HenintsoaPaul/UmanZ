@@ -49,4 +49,8 @@ public class EntretienController {
         return entretienService.save(entretien);
     }
     
+    @GetMapping("/candidats")
+    public List<Entretien> getCandidaList() {
+        return entretienService.getCandidaList();
+    }
 }

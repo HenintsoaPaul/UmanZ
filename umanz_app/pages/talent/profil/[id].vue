@@ -8,9 +8,9 @@ import type { Talent } from '~/types';
 // State
 const talent = ref<Talent | null>(null);
 const profilePicture = ref('/default-profile.png');
-const phone = ref('123-456-7890');
-const address = ref('123 Main St, Anytown, USA');
-const bio = ref('A short bio about the talent.');
+const phone = ref('');
+const address = ref('');
+const bio = ref('');
 
 // Get the route
 const route = useRoute();
@@ -22,6 +22,10 @@ const fetchTalent = async (id: number) => {
         const response = await axios.get(`${apiUrl}/talents/${id}`);
         if (response.status === 200) {
             talent.value = response.data;
+            profilePicture.value = response.data.profilePicture || '/default-profile.png';
+            phone.value = response.data.phone || 'N/A';
+            address.value = response.data.address || 'N/A';
+            bio.value = response.data.bio || 'N/A';
         } else {
             console.error('Erreur lors de la récupération du talent');
         }
@@ -34,8 +38,6 @@ const fetchTalent = async (id: number) => {
 onMounted(() => {
     const talentId = Number(route.params.id);
     if (!isNaN(talentId)) {
-        console.log(talentId)
-
         fetchTalent(talentId);
     } else {
         console.error('Invalid talent ID');

@@ -108,5 +108,35 @@
       "id_etat_entretien": 2,
       "id_talent": 2
     }
+  ],
+  "absences": [
+    {
+      "id": 1,
+      "id_absence": 1,
+      "id_talent": 1,
+      "date_absence": "2023-10-01T00:00:00Z",
+      "motif": "Maladie"
+    },
+    {
+      "id": 2,
+      "id_absence": 2,
+      "id_talent": 2,
+      "date_absence": "2023-10-05T00:00:00Z",
+      "motif": "Congé"
+    },
+    {
+      "id": 3,
+      "id_absence": 3,
+      "id_talent": 3,
+      "date_absence": "2023-10-10T00:00:00Z",
+      "motif": "Formation"
+    },
+    {
+      "id": 4,
+      "id_absence": 4,
+      "id_talent": 1,
+      "date_absence": "2023-10-15T00:00:00Z",
+      "motif": "Maladie"
+    }
   ]
 }

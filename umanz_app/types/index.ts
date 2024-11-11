@@ -1,8 +1,80 @@
-export interface Absence {
-    id_absence: number,
+export interface Formation {
+    idFormation: number,
+    nomFormation: string,
+    date_debut: string,
+    date_fin: string
+}
+
+
+export interface Conge {
+    idConge: number,
+    dateDebut: string,
+    nbJour: number,
     motif?: string,
-    date_absence: Date,
-    id_contrat: number,
+    dateValidation?: string,
+    contrat: Contrat
+}
+
+export interface Contrat {
+    idContrat: number,
+    contrat: string,
+    dateDebut: string,
+    dateFin?: string,
+    salaireHoraire: number,
+    nbJourSemaine: number,
+    nbJourCongeAn: number,
+    nbHeureJour: number,
+    poste: Poste,
+    talent: Talent,
+    idTypeContrat: number
+}
+
+
+export interface Talent {
+    idTalent: number,
+    nom: string,
+    prenom: string,
+    mail: string,
+    password: string,
+    isAdmin: boolean
+}
+
+export interface Competence {
+    idCompetence: number,
+    competence: string
+}
+
+export interface CompetenceAnnonce {
+    competence: Competence,
+    point: number
+}
+
+export interface Poste {
+    idPoste: number,
+    description: string
+}
+
+export interface ExperiencePoste {
+    poste: Poste,
+    ans: number
+}
+
+export interface Annonce {
+    idAnnonce: number,
+    poste: Poste,
+    dateAnnonce: string,
+    dateExpiration: string,
+    dateRupture: string | null,
+    experiencePostes: ExperiencePoste[],
+    competenceAnnonces: CompetenceAnnonce[]
+}
+
+
+export interface Absence {
+    idAbsence: number,
+    motif?: string,
+    dateAbsence: string,
+    idContrat: number,
 }
 
 export interface Talent {
