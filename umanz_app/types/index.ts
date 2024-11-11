@@ -24,7 +24,7 @@ export interface Contrat {
     nbJourSemaine: number,
     nbJourCongeAn: number,
     nbHeureJour: number,
-    idPoste: number,
+    poste: Poste,
     talent: Talent,
     idTypeContrat: number
 }
