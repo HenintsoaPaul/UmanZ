@@ -1,5 +1,6 @@
 package mg.itu.rh.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,5 +21,17 @@ public interface EntretienRepository extends JpaRepository<Entretien, Long> {
     @Query( "SELECT e FROM Entretien e " +
             "WHERE e.etatEntretien.idEtatEntretien = :etat " +
             "AND e.annonce.idAnnonce = :idAnnonce" )
-    List<Entretien> findAllByIdAnnonceAndEtat( @Param( "idAnnonce" ) Long idAnnonce, @Param( "etat" ) Long etat );
+    List<Entretien> findAllByIdAnnonceAndEtat(
+            @Param( "idAnnonce" ) Long idAnnonce,
+            @Param( "etat" ) Long etat
+    );
+
+    @Query( "SELECT e FROM Entretien e " +
+            "WHERE e.etatEntretien.idEtatEntretien = 2 " +
+            "AND e.annonce.idAnnonce = :idAnnonce " +
+            "AND e.talent.idTalent = :idTalent" )
+    Entretien findCandidatureByAnnonceAndTalent(
+            @Param( "idAnnonce" ) Long idAnnonce,
+            @Param( "idTalent" ) Long idTalent
+    );
 }

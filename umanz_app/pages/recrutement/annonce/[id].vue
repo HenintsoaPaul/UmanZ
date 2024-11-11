@@ -1,104 +1,56 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
-import { Competence, type Annonce, type CompetenceAnnonce, type ExperiencePoste, type Talent } from '~/types';
 import { useRoute } from 'vue-router';
-
-const annonce = ref<Annonce | null>(null);
-const candidats = ref<Talent[]>([]);
-const competences = ref<CompetenceAnnonce[]>([]);
-const experiences = ref<ExperiencePoste[]>([]);
+import type { Annonce, CompetenceAnnonce, ExperiencePoste, Talent } from '~/types';
 
 const route = useRoute();
+const apiUrl = useRuntimeConfig().public.apiUrl as string;
+const annonceId = computed(() => route.params.id);
 
-const columnsCandidats = ref([
-    {
-        key: "nom",
-        label: "Nom"
-    },
-    {
-        key: "prenom",
-        label: "Prenom"
-    },
-    {
-        key: "mail",
-        label: "E-mail"
-    },
-]);
-const candidatsEndpoint = ref<string>("");
+const { data: annonce, error: annonceError } = useAsyncData<Annonce>(() =>
+    $fetch(`${apiUrl}/annonce/${annonceId.value}`)
+);
 
-const loadAnnonceDetails = async (apiUrl: string) => {
-    try {
-        const id = route.params.id;
-        const response = await axios.get(`${apiUrl}/annonce/${id}`);
+const { data: candidats, error: candidatsError } = useAsyncData<Talent[]>(() =>
+    $fetch(`${apiUrl}/annonce/${annonceId.value}/candidats`)
+);
 
-        if (response.status === 200) {
-            annonce.value = response.data;
-        } else {
-            console.error('Erreur lors de la récupération de l\'annonce', response.data);
-        }
-    } catch (error) {
-        console.error('Erreur lors de la requête API:', error);
-    }
-};
+const { data: competences, error: competencesError } = useAsyncData<CompetenceAnnonce[]>(() =>
+    $fetch(`${apiUrl}/annonce/${annonceId.value}/competences`)
+);
 
+const { data: experiences, error: experiencesError } = useAsyncData<ExperiencePoste[]>(() =>
+    $fetch(`${apiUrl}/annonce/${annonceId.value}/experiences`)
+);
 
-const loadCompetences = async (apiUrl: string) => {
-    try {
-        const id = route.params.id;
-        const response = await axios.get(`${apiUrl}/annonce/${id}/competences`);
+// Table Candidats
+const columnsCandidats = [
+    { key: "idTalent", label: "ID" },
+    { key: "nom", label: "Nom" },
+    { key: "prenom", label: "Prenom" },
+    { key: "mail", label: "E-mail" },
+];
 
-        if (response.status === 200) {
-            competences.value = response.data;
-        } else {
-            console.error('Erreur lors de la récupération de l\'annonce', response.data);
-        }
-    } catch (error) {
-        console.error('Erreur lors de la requête API:', error);
-    }
-};
-
-const loadCandidats = async (apiUrl: string) => {
-    try {
-        const id = route.params.id;
-        const response = await axios.get(`${apiUrl}/annonce/${id}/candidats`);
-
-        if (response.status === 200) {
-            candidats.value = response.data;
-        } else {
-            console.error('Erreur lors de la récupération des candidats', response.data);
-        }
-    } catch (error) {
-        console.error('Erreur lors de la requête API:', error);
-    }
-};
-
-const loadExperiences = async (apiUrl: string) => {
-    try {
-        const id = route.params.id;
-        const response = await axios.get(`${apiUrl}/annonce/${id}/experiences`);
-
-        if (response.status === 200) {
-            experiences.value = response.data;
-        } else {
-            console.error('Erreur lors de la récupération des expériences', response.data);
-        }
-    } catch (error) {
-        console.error('Erreur lors de la requête API:', error);
-    }
-};
-
-onMounted(() => {
-    const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
-
-    loadAnnonceDetails(apiUrl);
-    loadCandidats(apiUrl);
-    loadCompetences(apiUrl);
-    loadExperiences(apiUrl);
-
-    const id = route.params.id;
-    candidatsEndpoint.value = `${apiUrl}/annonce/${id}/candidats`;
+const expand = ref({
+    openedRows: [],
+    row: {}
 });
+
+const validerFn = async (talentId: number) => {
+    try {
+        const response = await $fetch(`${apiUrl}/entretien/validate`, {
+            method: 'POST',
+            body: {
+                idAnnonce: Number(annonceId.value),
+                idTalent: talentId,
+            }
+        });
+        console.log('Candidat validé:', response);
+    } catch (error) {
+        console.error('Erreur lors de la validation du candidat:', error);
+    }
+    console.log("validation...");
+    
+}
 </script>
 
 <template>
@@ -130,9 +82,18 @@ onMounted(() => {
             Loading Details...
         </div>
 
-        <div v-if="candidats.length">
-            <MyTable title="Candidats" :columns="columnsCandidats" :rows="candidats"
-                :api-endpoint="candidatsEndpoint" />
+        <div v-if="candidats?.length">
+            <UTable :columns="columnsCandidats" :rows="candidats" v-model:expand="expand"
+                class="w-full shadow-md rounded-lg overflow-hidden">
+                <template #expand="{ row }">
+                    <div class="p-4">
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                            @click="validerFn(row.idTalent)">
+                            Valider
+                        </button>
+                    </div>
+                </template>
+            </UTable>
         </div>
         <div v-else>
             Loading Candidats...

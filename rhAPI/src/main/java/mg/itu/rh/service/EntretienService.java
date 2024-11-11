@@ -1,9 +1,12 @@
 package mg.itu.rh.service;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import mg.itu.rh.dto.EntretienCandidatureDTO;
+import mg.itu.rh.dto.EntretienValidationDTO;
 import mg.itu.rh.entity.Talent;
 import org.springframework.stereotype.Service;
 
@@ -52,10 +55,24 @@ public class EntretienService {
         return this.save( entretien );
     }
 
-    public Entretien valider( Long idEntretien ) {
-        Entretien entretien = entretienRepository.findById( idEntretien ).orElseThrow( () -> new RuntimeException( "Entretien non retrouve" ) );
-        EtatEntretien etatEntretien = etatEntretienRepository.findById( entretien.getEtatEntretien().getIdEtatEntretien() + 1 ).orElseThrow( () -> new RuntimeException( "On ne peut plus le valider" ) );
-        entretien.setEtatEntretien( etatEntretien );
+    public Entretien valider( EntretienValidationDTO dto ) {
+        LocalDate dateValidation = LocalDate.now();
+
+        Entretien entretien = entretienRepository.findCandidatureByAnnonceAndTalent( dto.getIdAnnonce(), dto.getIdTalent() );
+
+        EtatEntretien etatEntretien = etatEntretienRepository.findById( entretien.getEtatEntretien().getIdEtatEntretien() + 1 )
+                .orElseThrow( () -> new RuntimeException( "On ne peut plus le valider" ) );
+
+        Entretien entretienFille = new Entretien();
+        entretienFille.setDateCreation( dateValidation );
+        entretienFille.setEtatEntretien( etatEntretien );
+        entretienFille.setTalent( entretien.getTalent() );
+        entretienFille.setAnnonce( entretien.getAnnonce() );
+
+        this.save( entretienFille );
+
+        entretien.setEnfant( entretienFille );
+        entretien.setDateValidation( dateValidation );
         return this.save( entretien );
     }
 

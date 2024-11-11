@@ -3,6 +3,7 @@ package mg.itu.rh.controller;
 import java.util.List;
 
 import mg.itu.rh.dto.EntretienCandidatureDTO;
+import mg.itu.rh.dto.EntretienValidationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,43 +14,45 @@ import mg.itu.rh.other.POV;
 import mg.itu.rh.service.EntretienService;
 
 
-
 @RestController
-@RequestMapping("/entretien")
+@RequestMapping( "/entretien" )
 public class EntretienController {
+    private final EntretienService entretienService;
 
-    @Autowired
-    private EntretienService entretienService;
+    public EntretienController( EntretienService entretienService ) {
+        this.entretienService = entretienService;
+    }
 
-    @GetMapping("/etat/{id}")
-    @JsonView(POV.Public.class)
-    public List<Entretien> findByEtat(@PathVariable("id")Long idEtat) {
-        return entretienService.findByEtat(idEtat);
+    @GetMapping( "/etat/{id}" )
+    @JsonView( POV.Public.class )
+    public List<Entretien> findByEtat( @PathVariable( "id" ) Long idEtat ) {
+        return entretienService.findByEtat( idEtat );
     }
 
     /*
-    * {
-    *       "idTalent":3,
-    *       "idAnnonce":1
-    * }
-    * */
-    @PostMapping("/candiat")
-    @JsonView(POV.Public.class)
-    private Entretien saveCandidat(@RequestBody EntretienCandidatureDTO entretienCandidat)throws Exception{
-        return entretienService.saveCandidat(entretienCandidat);
+     * { "idTalent":3, "idAnnonce":1 }
+     * */
+    @PostMapping( "/candiat" )
+    @JsonView( POV.Public.class )
+    private Entretien saveCandidat( @RequestBody EntretienCandidatureDTO entretienCandidat ) {
+        return entretienService.saveCandidat( entretienCandidat );
     }
 
-    @GetMapping("/validate/{id}")
-    public void validate(@PathVariable("id") Long idEntretien) {
-        entretienService.valider(idEntretien);
+    /*
+     * { "idTalent":3, "idAnnonce":1 }
+     * */
+    @PostMapping( "/validate" )
+    public void validate( @RequestBody EntretienValidationDTO validation ) {
+        entretienService.valider( validation );
     }
 
-    @PutMapping("/")
-    public Entretien update(@RequestBody EntretienCandidatureDTO entretien)throws Exception{
-        return entretienService.save(entretien);
+    @PutMapping( "/" )
+    public Entretien update( @RequestBody EntretienCandidatureDTO entretien )
+            throws Exception {
+        return entretienService.save( entretien );
     }
-    
-    @GetMapping("/candidats")
+
+    @GetMapping( "/candidats" )
     public List<Entretien> getCandidaList() {
         return entretienService.getCandidaList();
     }
