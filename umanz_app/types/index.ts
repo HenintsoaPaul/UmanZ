@@ -71,10 +71,10 @@ export interface Annonce {
 
 
 export interface Absence {
-    id_absence: number,
+    idAbsence: number,
     motif?: string,
-    date_absence: Date,
-    id_contrat: number,
+    dateAbsence: string,
+    idContrat: number,
 }
 
 export interface Talent {

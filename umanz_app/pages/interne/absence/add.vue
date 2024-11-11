@@ -1,15 +1,35 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import axios from 'axios';
-import type { Absence } from '~/types';
+import type { Absence, Contrat } from '~/types';
 
 
 // Data
 const form = ref<Absence>({
-    id_absence: 0,
+    idAbsence: 0,
     motif: '',
-    date_absence: new Date(),
-    id_contrat: 0
+    dateAbsence: new Date().toString(),
+    idContrat: 0
+});
+
+const contrats = ref<Contrat[]>([]); // État réactif pour stocker les contrats
+
+// Charger les contrats depuis l'API
+const loadContrats = async () => {
+    try {
+        const response = await axios.get('/api/contrats');
+        if (response.status === 200) {
+            contrats.value = response.data;
+        } else {
+            console.error('Erreur lors de la récupération des contrats', response.data);
+        }
+    } catch (error) {
+        console.error('Erreur lors de la requête API:', error);
+    }
+};
+
+onMounted(() => {
+    loadContrats();
 });
 
 // Method
@@ -42,13 +62,19 @@ const submitForm = async () => {
             <!-- Date Absence -->
             <div class="form-group">
                 <label for="date_absence">Date d'Absence:</label>
-                <input type="date" id="date_absence" v-model="form.date_absence" required />
+                <input type="date" id="date_absence" v-model="form.dateAbsence" required />
             </div>
 
-            <!-- ID Contrat -->
-            <div class="form-group">
-                <label for="id_contrat">ID Contrat:</label>
-                <input type="number" id="id_contrat" v-model="form.id_contrat" required />
+            <!-- Contrat -->
+            <div class="mb-4">
+                <label for="id_contrat" class="block text-gray-700">Contrat</label>
+                <select v-model="form.idContrat" id="id_contrat"
+                    class="w-full p-2 border border-gray-300 rounded mt-1">
+                    <option value="" disabled>Choisir un contrat</option>
+                    <option v-for="contrat in contrats" :key="contrat.idContrat" :value="contrat.idContrat">
+                        {{ contrat.talent.nom }} - {{ contrat.talent.prenom }}
+                    </option>
+                </select>
             </div>
 
             <button type="submit"
