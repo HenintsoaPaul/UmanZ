@@ -19,38 +19,30 @@ public class AnnonceService {
     @Autowired
     private PosteService posteService;
 
-//    @Autowired
-//    private CompetenceService competenceService;
-
+    @Autowired
     private CompetenceAnnonceService competenceAnnonceService;
 
     @Autowired
     private ExperiencePosteService experiencePosteService;
 
-    public List<Annonce> findAnnonceAvailable(){
+    public List<Annonce> findAnnonceAvailable() {
         return annonceRepository.findAnnonceAvailable();
     }
 
-    public Annonce findAnnonceById(Long id)throws Exception{
-        return annonceRepository.findById(id).orElseThrow(()->new RuntimeException("Annonce non reconnue"));
+    public Annonce findAnnonceById( Long id ) {
+        return annonceRepository.findById( id ).orElseThrow( () -> new RuntimeException( "Annonce non reconnue" ) );
     }
 
-    public Annonce save(AnnonceDTO annonceDTO) {
+    public Annonce save( AnnonceDTO annonceDTO ) {
         Annonce annonce = new Annonce();
+        annonce.setDateAnnonce( annonceDTO.getDateAnnonce() );
+        annonce.setDateExpiration( annonceDTO.getDateExpiration() );
+        annonce.setDateRupture( annonceDTO.getDateRupture() );
+        annonce.setPoste( posteService.findById( annonceDTO.getIdPoste() ) );
 
-        annonce.setDateAnnonce(annonceDTO.getDateAnnonce());
-        annonce.setDateExpiration(annonceDTO.getDateExpiration());
-        annonce.setDateRupture(annonceDTO.getDateRupture());
-
-        Poste poste = posteService.findById(annonceDTO.getIdPoste());
-        annonce.setPoste(poste);
-
-        List<ExperiencePoste> experiencePostes = experiencePosteService.findByIds(annonceDTO.getIdExperiencePostes());
-        annonce.setExperiencePostes(experiencePostes);
-
-        List<CompetenceAnnonce> competenceAnnonces = competenceAnnonceService.findByIds(annonceDTO.getIdCompetences());
-        annonce.setCompetenceAnnonces(competenceAnnonces);
-
-        return annonceRepository.save(annonce);
+        Annonce an = annonceRepository.save( annonce );
+        experiencePosteService.saveAll( annonceDTO.getExperiences(), an );
+        competenceAnnonceService.saveAll( annonceDTO.getCompetences(), an );
+        return an;
     }
 }

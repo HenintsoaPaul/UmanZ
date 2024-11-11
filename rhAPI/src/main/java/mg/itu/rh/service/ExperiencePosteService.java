@@ -1,5 +1,6 @@
 package mg.itu.rh.service;
 
+import mg.itu.rh.entity.Annonce;
 import mg.itu.rh.entity.ExperiencePoste;
 import mg.itu.rh.repository.ExperiencePosteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,17 @@ public class ExperiencePosteService {
         return experiencePosteRepository.findAll();
     }
 
-    public List<ExperiencePoste> findByIds(List<Long> ids) {
-        return experiencePosteRepository.findByIdIn(ids);
+    public List<ExperiencePoste> findByIds( List<Long> ids ) {
+        return experiencePosteRepository.findByIdIn( ids );
+    }
+
+    public void saveAll( List<ExperiencePoste> experiencePostes, Annonce annonce ) {
+        for ( ExperiencePoste experiencePoste : experiencePostes )
+            save( experiencePoste, annonce );
+    }
+
+    public ExperiencePoste save( ExperiencePoste experiencePoste, Annonce annonce ) {
+        experiencePoste.setAnnonce( annonce );
+        return experiencePosteRepository.save( experiencePoste );
     }
 }

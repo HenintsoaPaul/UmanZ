@@ -27,7 +27,7 @@ public class AnnonceController {
         return annonceService.findAnnonceAvailable();
     }
 
-    @PostMapping("/save")
+    @PostMapping()
     @JsonView(POV.Full.class)
     public Annonce save(@RequestBody AnnonceDTO annonceDTO) {
         return annonceService.save(annonceDTO);
