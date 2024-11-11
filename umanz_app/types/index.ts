@@ -6,6 +6,30 @@ export interface Formation {
 }
 
 
+export interface Conge {
+    idConge: number,
+    dateDebut: string,
+    nbJour: number,
+    motif?: string,
+    dateValidation?: string,
+    contrat: Contrat
+}
+
+export interface Contrat {
+    idContrat: number,
+    contrat: string,
+    dateDebut: string,
+    dateFin?: string,
+    salaireHoraire: number,
+    nbJourSemaine: number,
+    nbJourCongeAn: number,
+    nbHeureJour: number,
+    idPoste: number,
+    talent: Talent,
+    idTypeContrat: number
+}
+
+
 export interface Talent {
     idTalent: number,
     nom: string,
