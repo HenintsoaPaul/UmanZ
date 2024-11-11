@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import axios from 'axios';
-import type { Annonce, Formation } from '~/types';
+import type { Formation } from '~/types';
 
 const headers = [
     {

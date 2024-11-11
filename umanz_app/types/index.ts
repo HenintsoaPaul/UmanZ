@@ -1,3 +1,11 @@
+export interface Formation {
+    idFormation: number,
+    nomFormation: string,
+    date_debut: string,
+    date_fin: string
+}
+
+
 export interface Talent {
     idTalent: number,
     nom: string,
