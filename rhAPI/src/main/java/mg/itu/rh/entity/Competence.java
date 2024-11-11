@@ -18,7 +18,7 @@ public class Competence {
     @JsonView({POV.Public.class})
     private Long idCompetence;
 
-    @JsonView({POV.Full.class})
+    @JsonView({POV.Public.class})
     private String competence;
 
     public Competence() {}

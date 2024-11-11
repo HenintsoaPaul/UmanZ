@@ -49,11 +49,6 @@ export interface CompetenceAnnonce {
     point: number
 }
 
-export interface Poste {
-    idPoste: number,
-    description: string
-}
-
 export interface ExperiencePoste {
     poste: Poste,
     ans: number
@@ -85,11 +80,6 @@ export interface Talent {
     password: string,
 }
 
-export interface Competence {
-    id_competence: number;
-    competence: string;
-}
-
 export interface TalentCompetence {
     id_competence: number,
     id_talent: number,
@@ -97,9 +87,9 @@ export interface TalentCompetence {
 }
 
 export interface Poste {
-    id_poste: number,
-    nom_poste: string,
-    description_poste?: string,
+    idPoste: number,
+    nomPoste: string,
+    description: string,
 }
 
 export interface ExperienceTalent {

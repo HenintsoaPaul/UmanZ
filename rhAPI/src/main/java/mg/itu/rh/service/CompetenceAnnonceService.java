@@ -26,4 +26,9 @@ public class CompetenceAnnonceService {
         competence.setAnnonce( annonce );
         return competenceAnnonceRepository.save( competence );
     }
+
+    public List<CompetenceAnnonce> findAllByIdAnnonce( Long idAnnonce ) {
+        Long etatCandidature = 2L;
+        return competenceAnnonceRepository.findAllByIdAnnonceAndEtat( idAnnonce, etatCandidature );
+    }
 }

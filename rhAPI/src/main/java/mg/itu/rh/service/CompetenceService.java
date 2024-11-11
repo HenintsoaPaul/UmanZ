@@ -4,18 +4,21 @@ import mg.itu.rh.entity.Competence;
 import mg.itu.rh.entity.CompetenceAnnonce;
 import mg.itu.rh.repository.CompetenceAnnonceRepository;
 import mg.itu.rh.repository.CompetenceRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class CompetenceService {
-    @Autowired
-    private CompetenceRepository competenceRepository;
+    private final EntretienService entretienService;
+    private final CompetenceRepository competenceRepository;
+    private final CompetenceAnnonceRepository competenceAnnonceRepository;
 
-    @Autowired
-    private CompetenceAnnonceRepository competenceAnnonceRepository;
+    public CompetenceService( EntretienService es, CompetenceRepository competenceRepository, CompetenceAnnonceRepository competenceAnnonceRepository ) {
+        this.entretienService = es;
+        this.competenceRepository = competenceRepository;
+        this.competenceAnnonceRepository = competenceAnnonceRepository;
+    }
 
     public List<Competence> findAll() {
         return competenceRepository.findAllCompetences();

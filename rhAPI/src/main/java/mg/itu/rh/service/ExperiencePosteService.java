@@ -31,4 +31,9 @@ public class ExperiencePosteService {
         experiencePoste.setAnnonce( annonce );
         return experiencePosteRepository.save( experiencePoste );
     }
+
+    public List<ExperiencePoste> findAllByIdAnnonce( Long idAnnonce ) {
+        Long etatCandidature = 2L;
+        return experiencePosteRepository.findAllByIdAnnonceAndEtat( idAnnonce, etatCandidature );
+    }
 }

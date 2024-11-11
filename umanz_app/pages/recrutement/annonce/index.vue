@@ -6,7 +6,10 @@ const headers = [
     {
         key: 'idAnnonce',
         label: 'ID',
-        sortable: true,
+    },
+    {
+        key: 'poste.nomPoste',
+        label: 'Poste',
     },
     {
         key: 'dateAnnonce',
@@ -50,7 +53,9 @@ async function loadAnnonces() {
     }
 }
 
-loadAnnonces();
+onMounted(() => {
+    loadAnnonces();
+})
 
 const expand = ref({
     openedRows: [],
@@ -103,6 +108,11 @@ const canditerFn = async (idAnnonce: number) => {
                     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                         @click="canditerFn(row.idAnnonce)">
                         Candidater
+                    </button>
+
+                    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2"
+                        @click="$router.push(`/recrutement/annonce/${row.idAnnonce}`)">
+                        Voir Détails
                     </button>
                 </div>
             </template>

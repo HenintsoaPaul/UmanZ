@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import axios from 'axios';
 import { ref } from 'vue'
+import type { Poste } from '~/types';
 
 // Interfaces
 interface Form {
@@ -44,14 +45,35 @@ const form = ref<Form>({
     experiences: [...experiences]
 })
 
+const postes = ref<Poste[]>([]);
+
+const loadPoste = async (apiUrl: string) => {
+    try {
+        const response = await axios.get(`${apiUrl}/postes`);
+
+        if (response.status === 200) {
+            postes.value = response.data;
+        } else {
+            console.error('Erreur lors de la récupération des postes', response.data);
+        }
+    } catch (error) {
+        console.error('Erreur lors de la requête API:', error);
+    }
+};
+
+onMounted(() => {
+    const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
+    loadPoste(apiUrl);
+})
+
 // Method
 const submitForm = async () => {
     try {
         console.log(toRaw(form.value));
-        
+
         const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
         console.log(apiUrl);
-        
+
 
         const response = await axios.post(apiUrl, toRaw(form.value));
         console.log('Form submitted successfully:', response.data);
@@ -78,12 +100,10 @@ const submitForm = async () => {
 
             <!-- Poste -->
             <div class="form-group">
-                <label for="poste">Poste:</label>
-                <input type="text" id="poste" v-model="form.poste" required />
-            </div>
-            <div class="form-group">
-                <label for="descPoste">Description du Poste:</label>
-                <textarea id="descPost" v-model="form.descPoste"></textarea>
+                <select id="poste" v-model="form.poste" required>
+                    <option v-for="poste in postes" :key="poste.idPoste" :value="poste.idPoste">{{ poste.nomPoste }}
+                    </option>
+                </select>
             </div>
 
             <!-- Competences -->
