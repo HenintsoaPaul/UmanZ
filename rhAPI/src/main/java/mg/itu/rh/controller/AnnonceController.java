@@ -4,22 +4,36 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import mg.itu.rh.dto.AnnonceDTO;
 import mg.itu.rh.entity.Annonce;
+import mg.itu.rh.entity.Talent;
 import mg.itu.rh.other.POV;
 import mg.itu.rh.service.AnnonceService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import mg.itu.rh.service.EntretienService;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping( "/annonce" )
 public class AnnonceController {
-    @Autowired
-    private AnnonceService annonceService;
+    private final AnnonceService annonceService;
+    private final EntretienService entretienService;
+
+    public AnnonceController( AnnonceService as, EntretienService entretienService ) {
+        this.annonceService = as;
+        this.entretienService = entretienService;
+    }
+
+    @GetMapping( "/{id}" )
+    @JsonView( POV.Public.class )
+    public Annonce getAnnonce( @PathVariable( "id" ) Long id ) {
+        return annonceService.findById( id );
+    }
+
+    @GetMapping( "/{id}/candidats" )
+    @JsonView( POV.Public.class )
+    public List<Talent> getCandidatsAnnonce( @PathVariable( "id" ) Long id ) {
+        return entretienService.findAllCandidatsOfAnnonce( id );
+    }
 
     @GetMapping( "/disponible" )
     @JsonView( POV.Public.class )

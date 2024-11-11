@@ -2,35 +2,35 @@ package mg.itu.rh.service;
 
 import mg.itu.rh.dto.AnnonceDTO;
 import mg.itu.rh.entity.Annonce;
-import mg.itu.rh.entity.CompetenceAnnonce;
-import mg.itu.rh.entity.ExperiencePoste;
-import mg.itu.rh.entity.Poste;
 import mg.itu.rh.repository.AnnonceRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class AnnonceService {
-    @Autowired
-    private AnnonceRepository annonceRepository;
+    private final AnnonceRepository annonceRepository;
 
-    @Autowired
-    private PosteService posteService;
+    private final PosteService posteService;
 
-    @Autowired
-    private CompetenceAnnonceService competenceAnnonceService;
+    private final CompetenceAnnonceService competenceAnnonceService;
 
-    @Autowired
-    private ExperiencePosteService experiencePosteService;
+    private final ExperiencePosteService experiencePosteService;
+
+    public AnnonceService( AnnonceRepository annonceRepository, PosteService posteService, CompetenceAnnonceService competenceAnnonceService, ExperiencePosteService experiencePosteService ) {
+        this.annonceRepository = annonceRepository;
+        this.posteService = posteService;
+        this.competenceAnnonceService = competenceAnnonceService;
+        this.experiencePosteService = experiencePosteService;
+    }
 
     public List<Annonce> findAnnonceAvailable() {
         return annonceRepository.findAnnonceAvailable();
     }
 
-    public Annonce findAnnonceById( Long id ) {
-        return annonceRepository.findById( id ).orElseThrow( () -> new RuntimeException( "Annonce non reconnue" ) );
+    public Annonce findById( Long id ) {
+        return annonceRepository.findById( id ).orElseThrow(
+                () -> new RuntimeException( "Annonce non reconnue" ) );
     }
 
     public Annonce save( AnnonceDTO annonceDTO ) {
@@ -41,6 +41,7 @@ public class AnnonceService {
         annonce.setPoste( posteService.findById( annonceDTO.getIdPoste() ) );
 
         Annonce an = annonceRepository.save( annonce );
+        // Save into tables liaisons
         experiencePosteService.saveAll( annonceDTO.getExperiences(), an );
         competenceAnnonceService.saveAll( annonceDTO.getCompetences(), an );
         return an;

@@ -1,9 +1,10 @@
 package mg.itu.rh.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import mg.itu.rh.dto.EntretienCandidatureDTO;
-import org.springframework.beans.factory.annotation.Autowired;
+import mg.itu.rh.entity.Talent;
 import org.springframework.stereotype.Service;
 
 import mg.itu.rh.entity.Entretien;
@@ -13,58 +14,74 @@ import mg.itu.rh.repository.EtatEntretienRepository;
 
 @Service
 public class EntretienService {
-    @Autowired
-    private EntretienRepository entretienRepository;
+    private final EntretienRepository entretienRepository;
 
-    @Autowired
-    private AnnonceService annonceService;
+    private final AnnonceService annonceService;
 
-    @Autowired
-    private TalentService talentService;
+    private final TalentService talentService;
 
-    @Autowired
-    private EtatEntretienRepository etatEntretienRepository;
+    private final EtatEntretienRepository etatEntretienRepository;
 
-    public Entretien save(Entretien entretien){
-        return entretienRepository.save(entretien);
+    public EntretienService( EntretienRepository entretienRepository, AnnonceService annonceService, TalentService talentService, EtatEntretienRepository etatEntretienRepository ) {
+        this.entretienRepository = entretienRepository;
+        this.annonceService = annonceService;
+        this.talentService = talentService;
+        this.etatEntretienRepository = etatEntretienRepository;
     }
 
-    public Entretien saveCandidat(EntretienCandidatureDTO entretienDTO)throws Exception{
-        Entretien entretien=new Entretien(entretienDTO);
-        entretien.setTalent(talentService.findById(entretienDTO.getIdTalent()));
-        entretien.setAnnonce(annonceService.findAnnonceById(entretienDTO.getIdAnnonce()));
-        entretien.setMotif(entretienDTO.getMotif());
-        entretien.setEtatEntretien(etatEntretienRepository.findByNiveau(2));
-        return this.save(entretien);
+    public Entretien save( Entretien entretien ) {
+        return entretienRepository.save( entretien );
     }
 
-    public Entretien save(EntretienCandidatureDTO entretienDTO)throws Exception{
-        Entretien entretien=new Entretien(entretienDTO);
-        entretien.setTalent(talentService.findById(entretienDTO.getIdTalent()));
-        entretien.setAnnonce(annonceService.findAnnonceById(entretienDTO.getIdAnnonce()));
-        entretien.setMotif(entretienDTO.getMotif());
-        entretien.setEtatEntretien(etatEntretienRepository.findByNiveau(entretienDTO.getNiveau()));
-        return this.save(entretien);
+    public Entretien saveCandidat( EntretienCandidatureDTO entretienDTO ) {
+        Entretien entretien = new Entretien( entretienDTO );
+        entretien.setTalent( talentService.findById( entretienDTO.getIdTalent() ) );
+        entretien.setAnnonce( annonceService.findById( entretienDTO.getIdAnnonce() ) );
+        entretien.setMotif( entretienDTO.getMotif() );
+        entretien.setEtatEntretien( etatEntretienRepository.findByNiveau( 2 ) );
+        return this.save( entretien );
     }
 
-    public Entretien valider(Long idEntretien){
-        Entretien entretien=entretienRepository.findById(idEntretien).orElseThrow(()->new RuntimeException("Entretien non retrouve"));
-        EtatEntretien etatEntretien=etatEntretienRepository.findById(entretien.getEtatEntretien().getIdEtatEntretien()+1).orElseThrow(()->new RuntimeException("On ne peut plus le valider"));
-        entretien.setEtatEntretien(etatEntretien);
-        return this.save(entretien);
+    public Entretien save( EntretienCandidatureDTO entretienDTO )
+            throws Exception {
+        Entretien entretien = new Entretien( entretienDTO );
+        entretien.setTalent( talentService.findById( entretienDTO.getIdTalent() ) );
+        entretien.setAnnonce( annonceService.findById( entretienDTO.getIdAnnonce() ) );
+        entretien.setMotif( entretienDTO.getMotif() );
+        entretien.setEtatEntretien( etatEntretienRepository.findByNiveau( entretienDTO.getNiveau() ) );
+        return this.save( entretien );
     }
 
-    public List<Entretien> findAll(){
+    public Entretien valider( Long idEntretien ) {
+        Entretien entretien = entretienRepository.findById( idEntretien ).orElseThrow( () -> new RuntimeException( "Entretien non retrouve" ) );
+        EtatEntretien etatEntretien = etatEntretienRepository.findById( entretien.getEtatEntretien().getIdEtatEntretien() + 1 ).orElseThrow( () -> new RuntimeException( "On ne peut plus le valider" ) );
+        entretien.setEtatEntretien( etatEntretien );
+        return this.save( entretien );
+    }
+
+    public List<Entretien> findAll() {
         return entretienRepository.findAll();
     }
 
-    public List<Entretien> findByEtat(Long idEtat){
-        EtatEntretien etatEntretien=etatEntretienRepository.findById(idEtat).orElseThrow(()->new RuntimeException("Etat non trouve"));
-        return entretienRepository.findByEtatEntretien(etatEntretien);
+    public List<Entretien> findByEtat( Long idEtat ) {
+        EtatEntretien etatEntretien = etatEntretienRepository.findById( idEtat ).orElseThrow( () -> new RuntimeException( "Etat non trouve" ) );
+        return entretienRepository.findByEtatEntretien( etatEntretien );
     }
 
     public List<Entretien> getCandidaList() {
         return entretienRepository.findAllWhereEnfantIsNull();
     }
-    
+
+    public List<Entretien> findAllByIdAnnonce( Long idAnnonce ) {
+        Long etatCandidature = 2L;
+        return entretienRepository.findAllByIdAnnonceAndEtat( idAnnonce, etatCandidature );
+    }
+
+    public List<Talent> findAllCandidatsOfAnnonce( Long idAnnonce ) {
+        List<Talent> talents = new ArrayList<>();
+        for ( Entretien entretien : this.findAllByIdAnnonce( idAnnonce ) ) {
+            talents.add( entretien.getTalent() );
+        }
+        return talents;
+    }
 }
