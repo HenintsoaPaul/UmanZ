@@ -48,8 +48,21 @@ const validerFn = async (talentId: number) => {
     } catch (error) {
         console.error('Erreur lors de la validation du candidat:', error);
     }
-    console.log("validation...");
-    
+}
+
+const refuserFn = async (talentId: number) => {
+    try {
+        const response = await $fetch(`${apiUrl}/entretien/deny`, {
+            method: 'POST',
+            body: {
+                idAnnonce: Number(annonceId.value),
+                idTalent: talentId,
+            }
+        });
+        console.log('Candidat Refuse:', response);
+    } catch (error) {
+        console.error('Erreur lors de la validation du refus:', error);
+    }
 }
 </script>
 
@@ -82,14 +95,22 @@ const validerFn = async (talentId: number) => {
             Loading Details...
         </div>
 
+        <h1 class="text-3xl font-bold mb-6 text-center">Candidats En Attente de Validation</h1>
+
         <div v-if="candidats?.length">
             <UTable :columns="columnsCandidats" :rows="candidats" v-model:expand="expand"
                 class="w-full shadow-md rounded-lg overflow-hidden">
                 <template #expand="{ row }">
                     <div class="p-4">
+
+
                         <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                             @click="validerFn(row.idTalent)">
                             Valider
+                        </button>
+                        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                            @click="refuserFn(row.idTalent)">
+                            Refuser
                         </button>
                     </div>
                 </template>

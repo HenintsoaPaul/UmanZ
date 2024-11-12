@@ -38,12 +38,14 @@ public class EntretienController {
         return entretienService.saveCandidat( entretienCandidat );
     }
 
-    /*
-     * { "idTalent":3, "idAnnonce":1 }
-     * */
     @PostMapping( "/validate" )
     public void validate( @RequestBody EntretienValidationDTO validation ) {
         entretienService.valider( validation );
+    }
+
+    @PostMapping( "/deny" )
+    public void deny( @RequestBody EntretienValidationDTO validation ) {
+        entretienService.refuser( validation );
     }
 
     @PutMapping( "/" )

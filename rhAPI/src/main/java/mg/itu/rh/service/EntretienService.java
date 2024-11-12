@@ -97,8 +97,23 @@ public class EntretienService {
     public List<Talent> findAllCandidatsOfAnnonce( Long idAnnonce ) {
         List<Talent> talents = new ArrayList<>();
         for ( Entretien entretien : this.findAllByIdAnnonce( idAnnonce ) ) {
-            talents.add( entretien.getTalent() );
+            if ( entretien.getDateValidation() == null ) {
+                talents.add( entretien.getTalent() );
+            }
         }
         return talents;
+    }
+
+    public Entretien refuser( EntretienValidationDTO dto ) {
+        LocalDate dateValidation = LocalDate.now();
+
+        Entretien entretien = entretienRepository.findCandidatureByAnnonceAndTalent( dto.getIdAnnonce(), dto.getIdTalent() );
+
+        EtatEntretien etatEntretien = etatEntretienRepository.findById( 1L )
+                .orElseThrow( () -> new RuntimeException( "On ne peut plus le valider" ) );
+
+        entretien.setDateValidation( dateValidation );
+        entretien.setEtatEntretien( etatEntretien );
+        return this.save( entretien );
     }
 }
