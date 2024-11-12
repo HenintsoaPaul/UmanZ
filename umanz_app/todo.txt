@@ -1,0 +1,9 @@
+Annonce (Utilisateur) (Henintsoa)
+Conge (Utilisateur) (Tiarintsoa)
+Profil & CV & contrat (Henintsoa)
+
+Entretien liste & note & validation (Henintsoa)
+Contrat & entretien & insert & liste Contrat (Mitia)
+Rupture | promotion & demission & expulsion (Ryan)
+Conge liste Emp calendrier & validation demande (Antema)
+Absence form insert & liste calendrier (Antema)
