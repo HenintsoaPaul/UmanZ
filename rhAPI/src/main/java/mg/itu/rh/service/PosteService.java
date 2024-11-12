@@ -9,11 +9,15 @@ import java.util.List;
 
 @Service
 public class PosteService {
-    @Autowired
-    private PosteRepository posteRepository;
+    private final PosteRepository posteRepository;
 
-    public Poste findById(Long id){
-        return posteRepository.findById(id).orElseThrow(()->new RuntimeException("Poste non reconnue"));
+    public PosteService( PosteRepository posteRepository ) {
+        this.posteRepository = posteRepository;
+    }
+
+    public Poste findById( Long id ) {
+        return posteRepository.findById( id )
+                .orElseThrow( () -> new RuntimeException( "Poste non reconnue" ) );
     }
 
     public List<Poste> findAll() {

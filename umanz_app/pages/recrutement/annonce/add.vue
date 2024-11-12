@@ -29,9 +29,11 @@ const formKdj = reactive<Form>({
     experiences: []
 });
 
+const loading = ref(false);
+
 const onSubmit = async () => {
+    loading.value = true;
     try {
-        
         formKdj.dateAnnonce = form.dateAnnonce;
         formKdj.dateExpiration = form.dateExpiration;
         formKdj.idPoste = form.idPoste;
@@ -40,13 +42,22 @@ const onSubmit = async () => {
 
         console.log(toRaw(formKdj));
 
-        const response = await $fetch(apiUrl, {
+        const response = await $fetch(`${apiUrl}/annonce`, {
             method: 'POST',
             body: toRaw(formKdj)
         });
         console.log('Form submitted successfully:', response);
     } catch (error) {
         console.error('Error submitting form:', error);
+        // Afficher une notification à l'utilisateur
+        // useToast().add({
+        //     title: 'Erreur lors de la soumission',
+        //     description: "Une erreur s'est produite lors de la soumission du formulaire.",
+        //     // status: 'error'
+        // });
+    }
+    finally {
+        loading.value = false;
     }
 };
 
@@ -130,8 +141,10 @@ onMounted(updateData);
                 </div>
             </div>
 
-            <button type="submit"
-                class="w-full inline-flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Soumettre</button>
+            <button type="submit" :disabled="loading"
+                class="w-full inline-flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                {{ loading ? 'Chargement...' : 'Soumettre' }}
+            </button>
         </form>
     </div>
 </template>

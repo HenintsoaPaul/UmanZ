@@ -37,13 +37,12 @@ public class AnnonceService {
         Annonce annonce = new Annonce();
         annonce.setDateAnnonce( annonceDTO.getDateAnnonce() );
         annonce.setDateExpiration( annonceDTO.getDateExpiration() );
-        annonce.setDateRupture( annonceDTO.getDateRupture() );
         annonce.setPoste( posteService.findById( annonceDTO.getIdPoste() ) );
 
         Annonce an = annonceRepository.save( annonce );
         // Save into tables liaisons
-        experiencePosteService.saveAll( annonceDTO.getExperiences(), an );
-        competenceAnnonceService.saveAll( annonceDTO.getCompetences(), an );
+        experiencePosteService.saveAllFromDTO( annonceDTO.getExperiences(), an );
+        competenceAnnonceService.saveAllFromDTO( annonceDTO.getCompetences(), an );
         return an;
     }
 }
