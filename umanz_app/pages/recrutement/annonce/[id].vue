@@ -5,22 +5,12 @@ import type { Annonce, CompetenceAnnonce, ExperiencePoste, Talent } from '~/type
 const route = useRoute();
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const annonceId = computed(() => route.params.id);
+const url = computed(() => `${apiUrl}/annonce/${annonceId.value}`);
 
-const { data: annonce, error: annonceError } = useAsyncData<Annonce>(() =>
-    $fetch(`${apiUrl}/annonce/${annonceId.value}`)
-);
-
-const { data: candidats, error: candidatsError } = useAsyncData<Talent[]>(() =>
-    $fetch(`${apiUrl}/annonce/${annonceId.value}/candidats`)
-);
-
-const { data: competences, error: competencesError } = useAsyncData<CompetenceAnnonce[]>(() =>
-    $fetch(`${apiUrl}/annonce/${annonceId.value}/competences`)
-);
-
-const { data: experiences, error: experiencesError } = useAsyncData<ExperiencePoste[]>(() =>
-    $fetch(`${apiUrl}/annonce/${annonceId.value}/experiences`)
-);
+const { data: annonce, error: annonceError } = useFetch<Annonce>(`${url}`);
+const { data: candidats, error: candidatsError, refresh: refreshCandidats } = useFetch<Talent[]>(`${url}/candidats`);
+const { data: competences, error: competencesError } = useFetch<CompetenceAnnonce[]>(`${url}/competences`);
+const { data: experiences, error: experiencesError } = useFetch<ExperiencePoste[]>(`${url}/experiences`);
 
 const successMessage = ref('');
 const errorMessage = ref('');
@@ -38,19 +28,6 @@ const expand = ref({
     row: {}
 });
 
-const updatedCandidats = async () => {
-    const { data: updatedCandidats, error: updatedCandidatsError } = await useAsyncData<Talent[]>(() =>
-        $fetch(`${apiUrl}/annonce/${annonceId.value}/candidats`)
-    );
-    if (updatedCandidatsError) {
-        errorMessage.value = 'Erreur lors de la mise à jour des candidats';
-        successMessage.value = '';
-        console.error('Erreur lors de la mise à jour des candidats:', updatedCandidatsError);
-    } else {
-        candidats.value = updatedCandidats.value;
-    }
-}
-
 const validerFn = async (talentId: number) => {
     try {
         const response = await $fetch(`${apiUrl}/entretien/validate`, {
@@ -64,7 +41,7 @@ const validerFn = async (talentId: number) => {
         errorMessage.value = '';
 
         console.log('Candidat validé:', response);
-        updatedCandidats();
+        await refreshCandidats();
     } catch (error) {
         errorMessage.value = 'Erreur lors de la validation du candidat';
         successMessage.value = '';
@@ -85,7 +62,7 @@ const refuserFn = async (talentId: number) => {
         errorMessage.value = '';
 
         console.log('Candidat refusé:', response);
-        updatedCandidats();
+        await refreshCandidats()
     } catch (error) {
         errorMessage.value = 'Erreur lors du refus du candidat';
         successMessage.value = '';
