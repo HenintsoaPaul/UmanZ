@@ -22,6 +22,9 @@ const { data: experiences, error: experiencesError } = useAsyncData<ExperiencePo
     $fetch(`${apiUrl}/annonce/${annonceId.value}/experiences`)
 );
 
+const successMessage = ref('');
+const errorMessage = ref('');
+
 // Table Candidats
 const columnsCandidats = [
     { key: "idTalent", label: "ID" },
@@ -35,6 +38,19 @@ const expand = ref({
     row: {}
 });
 
+const updatedCandidats = async () => {
+    const { data: updatedCandidats, error: updatedCandidatsError } = await useAsyncData<Talent[]>(() =>
+        $fetch(`${apiUrl}/annonce/${annonceId.value}/candidats`)
+    );
+    if (updatedCandidatsError) {
+        errorMessage.value = 'Erreur lors de la mise à jour des candidats';
+        successMessage.value = '';
+        console.error('Erreur lors de la mise à jour des candidats:', updatedCandidatsError);
+    } else {
+        candidats.value = updatedCandidats.value;
+    }
+}
+
 const validerFn = async (talentId: number) => {
     try {
         const response = await $fetch(`${apiUrl}/entretien/validate`, {
@@ -44,8 +60,14 @@ const validerFn = async (talentId: number) => {
                 idTalent: talentId,
             }
         });
+        successMessage.value = 'Candidat validé avec succès';
+        errorMessage.value = '';
+
         console.log('Candidat validé:', response);
+        updatedCandidats();
     } catch (error) {
+        errorMessage.value = 'Erreur lors de la validation du candidat';
+        successMessage.value = '';
         console.error('Erreur lors de la validation du candidat:', error);
     }
 }
@@ -59,40 +81,36 @@ const refuserFn = async (talentId: number) => {
                 idTalent: talentId,
             }
         });
-        console.log('Candidat Refuse:', response);
+        successMessage.value = 'Candidat refusé avec succès';
+        errorMessage.value = '';
+
+        console.log('Candidat refusé:', response);
+        updatedCandidats();
     } catch (error) {
-        console.error('Erreur lors de la validation du refus:', error);
+        errorMessage.value = 'Erreur lors du refus du candidat';
+        successMessage.value = '';
+        console.error('Erreur lors du refus du candidat:', error);
     }
 }
 </script>
 
 <template>
     <div class="container mx-auto">
-        <h1 class="text-3xl font-bold mb-6 text-center">Détails de l'annonce</h1>
-
-        <div v-if="annonce">
-            <h2 class="text-2xl font-semibold">{{ annonce?.poste.nomPoste }}</h2>
-            <p><strong>Description:</strong> {{ annonce?.poste.description }}</p>
-            <p><strong>Date Annonce:</strong> {{ annonce?.dateAnnonce }}</p>
-            <p><strong>Date Expiration:</strong> {{ annonce?.dateExpiration }}</p>
-            <p><strong>Date Rupture:</strong> {{ annonce?.dateRupture || 'N/A' }}</p>
-
-            <h3 class="text-xl font-semibold mt-4">Compétences requises:</h3>
-            <ul>
-                <li v-for="comp in competences" :key="comp.competence.idCompetence">
-                    {{ comp.competence.competence }} - {{ comp.point }} points
-                </li>
-            </ul>
-
-            <h3 class="text-xl font-semibold mt-4">Expériences requises:</h3>
-            <ul>
-                <li v-for="exp in experiences" :key="exp.poste.idPoste">
-                    {{ exp.poste.nomPoste }} - {{ exp.ans }} ans
-                </li>
-            </ul>
+        <div v-if="annonce && competences && experiences">
+            <AnnonceDetails :annonce="annonce" :competences="competences" :experiences="experiences" />
         </div>
         <div v-else>
             Loading Details...
+        </div>
+
+        <div v-if="annonceError" class="text-red-500">
+            Erreur lors du chargement de l'annonce: {{ annonceError.message }}
+        </div>
+        <div v-if="competencesError" class="text-red-500">
+            Erreur lors du chargement des compétences: {{ competencesError.message }}
+        </div>
+        <div v-if="experiencesError" class="text-red-500">
+            Erreur lors du chargement des expériences: {{ experiencesError.message }}
         </div>
 
         <h1 class="text-3xl font-bold mb-6 text-center">Candidats En Attente de Validation</h1>
@@ -102,8 +120,6 @@ const refuserFn = async (talentId: number) => {
                 class="w-full shadow-md rounded-lg overflow-hidden">
                 <template #expand="{ row }">
                     <div class="p-4">
-
-
                         <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                             @click="validerFn(row.idTalent)">
                             Valider
@@ -118,6 +134,18 @@ const refuserFn = async (talentId: number) => {
         </div>
         <div v-else>
             Loading Candidats...
+        </div>
+
+        <div v-if="candidatsError" class="text-red-500">
+            Erreur lors du chargement des candidats: {{ candidatsError.message }}
+        </div>
+
+        <div v-if="successMessage" class="text-green-500">
+            {{ successMessage }}
+        </div>
+
+        <div v-if="errorMessage" class="text-red-500">
+            {{ errorMessage }}
         </div>
     </div>
 </template>
