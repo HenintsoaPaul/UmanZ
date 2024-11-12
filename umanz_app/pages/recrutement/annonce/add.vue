@@ -7,13 +7,21 @@ const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const { data: postes, refresh: refreshPostes } = useFetch<Poste[]>(`${apiUrl}/postes`);
 const { data: competences, refresh: refreshCompetences } = useFetch<Competence[]>(`${apiUrl}/competences`);
 
-const form = ref<{
+interface Form {
     dateAnnonce: string;
     dateExpiration: string;
     idPoste: string;
     competences: CompetenceAnnonce[];
     experiences: ExperiencePoste[];
-}>({
+}
+const form = reactive<Form>({
+    dateAnnonce: '',
+    dateExpiration: '',
+    idPoste: '',
+    competences: [],
+    experiences: []
+});
+const formKdj = reactive<Form>({
     dateAnnonce: '',
     dateExpiration: '',
     idPoste: '',
@@ -23,10 +31,18 @@ const form = ref<{
 
 const onSubmit = async () => {
     try {
-        console.log(toRaw(form.value));
+        
+        formKdj.dateAnnonce = form.dateAnnonce;
+        formKdj.dateExpiration = form.dateExpiration;
+        formKdj.idPoste = form.idPoste;
+        formKdj.competences = form.competences.filter(cp => cp.point > 0).map(cp => toRaw(cp));
+        formKdj.experiences = form.experiences.filter(exp => exp.ans > 0).map(exp => toRaw(exp));
+
+        console.log(toRaw(formKdj));
+
         const response = await $fetch(apiUrl, {
             method: 'POST',
-            body: toRaw(form.value)
+            body: toRaw(formKdj)
         });
         console.log('Form submitted successfully:', response);
     } catch (error) {
@@ -42,13 +58,13 @@ const updateData = async () => {
 
 const updateForm = () => {
     if (postes.value && competences.value) {
-        form.value.experiences = postes.value.map(pt => ({
+        form.experiences = postes.value.map(pt => ({
             ans: 0,
-            poste: pt
+            poste: toRaw(pt)
         }));
-        form.value.competences = competences.value.map(cp => ({
+        form.competences = competences.value.map(cp => ({
             point: 0,
-            competence: cp
+            competence: toRaw(cp)
         }));
     }
 };
