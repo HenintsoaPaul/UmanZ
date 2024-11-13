@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Contrat } from '~/types';
 
-const { promotionFn, expulsionFn } = useContratActions();
+const { promotionFn, expulsionFn, demissionFn } = useContratActions();
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const { data: contrats, error: contratError } = useFetch<Contrat[]>(`${apiUrl}/contrat`);
 
@@ -40,7 +40,7 @@ const filteredLignes = computed(() => {
 const expand = ref({
     openedRows: [],
     row: {}
-})
+});
 </script>
 
 <template>
@@ -55,7 +55,7 @@ const expand = ref({
         <UTable :columns="headers" :rows="filteredLignes" v-model:expand="expand"
             class="w-full shadow-md rounded-lg overflow-hidden">
             <template #expand="{ row }">
-                <ContratDetails :contrat="row" :promotion-fn="promotionFn" :explusion-fn="expulsionFn" />
+                <ContratDetails :contrat="row" :promotion-fn="promotionFn" :explusion-fn="expulsionFn" :demission-fn="demissionFn" :api-url="apiUrl" />
             </template>
         </UTable>
     </div>

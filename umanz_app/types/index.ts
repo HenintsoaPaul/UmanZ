@@ -107,3 +107,8 @@ export interface Entretien {
     annonce: Annonce,
     etatEntretien: EtatEntretien
 }
+
+export interface Rupture {
+    dateRupture: string,
+    idContrat: number
+}

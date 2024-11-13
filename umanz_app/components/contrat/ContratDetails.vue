@@ -3,9 +3,11 @@ import { defineProps } from 'vue';
 import type { Contrat } from '~/types';
 
 const props = defineProps<{
+    apiUrl: string;
     contrat: Contrat;
     promotionFn: (idContrat: number) => Promise<void>;
-    explusionFn: (idContrat: number) => Promise<void>;
+    explusionFn: (idContrat: number, apiUrl: string) => Promise<void>;
+    demissionFn: (idContrat: number, apiUrl: string) => Promise<void>;
 }>();
 </script>
 
@@ -40,8 +42,12 @@ const props = defineProps<{
             Promotion
         </button>
         <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-            @click="props.explusionFn(contrat.idContrat)">
-            Explusion
+            @click="props.explusionFn(contrat.idContrat, props.apiUrl)">
+            Licenciement
+        </button>
+        <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded"
+            @click="props.demissionFn(contrat.idContrat, props.apiUrl)">
+            Demission
         </button>
     </div>
 </template>
