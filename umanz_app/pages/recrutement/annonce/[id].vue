@@ -7,10 +7,10 @@ const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const annonceId = computed(() => route.params.id);
 const url = computed(() => `${apiUrl}/annonce/${annonceId.value}`);
 
-const { data: annonce, error: annonceError } = useFetch<Annonce>(`${url}`);
-const { data: candidats, error: candidatsError, refresh: refreshCandidats } = useFetch<Talent[]>(`${url}/candidats`);
-const { data: competences, error: competencesError } = useFetch<CompetenceAnnonce[]>(`${url}/competences`);
-const { data: experiences, error: experiencesError } = useFetch<ExperiencePoste[]>(`${url}/experiences`);
+const { data: annonce, error: annonceError } = useFetch<Annonce>(`${url.value}`);
+const { data: candidats, error: candidatsError, refresh: refreshCandidats } = useFetch<Talent[]>(`${url.value}/candidats`);
+const { data: competences, error: competencesError } = useFetch<CompetenceAnnonce[]>(`${url.value}/competences`);
+const { data: experiences, error: experiencesError } = useFetch<ExperiencePoste[]>(`${url.value}/experiences`);
 
 const successMessage = ref('');
 const errorMessage = ref('');

@@ -1,6 +1,5 @@
 package mg.itu.rh.service;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,13 +51,25 @@ public class EntretienService {
         entretien.setAnnonce( annonceService.findById( entretienDTO.getIdAnnonce() ) );
         entretien.setMotif( entretienDTO.getMotif() );
         entretien.setEtatEntretien( etatEntretienRepository.findByNiveau( entretienDTO.getNiveau() ) );
+        entretien.setNote( 0 );
         return this.save( entretien );
     }
 
     public Entretien valider( EntretienValidationDTO dto ) {
         LocalDate dateValidation = LocalDate.now();
 
-        Entretien entretien = entretienRepository.findCandidatureByAnnonceAndTalent( dto.getIdAnnonce(), dto.getIdTalent() );
+        Entretien entretien;
+        if ( dto.getIdEntretien() == null ) {
+            // Case: Validation candidature
+            entretien = entretienRepository.findCandidatureByAnnonceAndTalent( dto.getIdAnnonce(), dto.getIdTalent() );
+        } else {
+            // Case: Validation Entretien
+            entretien = entretienRepository.findById( dto.getIdEntretien() )
+                    .orElseThrow( () -> new RuntimeException( "Entretien not found" ) );
+            entretien.setNote( dto.getNote() );
+            String motif = dto.getMotif();
+            if ( !motif.isEmpty() ) entretien.setMotif( motif );
+        }
 
         EtatEntretien etatEntretien = etatEntretienRepository.findById( entretien.getEtatEntretien().getIdEtatEntretien() + 1 )
                 .orElseThrow( () -> new RuntimeException( "On ne peut plus le valider" ) );
@@ -107,7 +118,15 @@ public class EntretienService {
     public Entretien refuser( EntretienValidationDTO dto ) {
         LocalDate dateValidation = LocalDate.now();
 
-        Entretien entretien = entretienRepository.findCandidatureByAnnonceAndTalent( dto.getIdAnnonce(), dto.getIdTalent() );
+        Entretien entretien;
+        if ( dto.getIdEntretien() == null ) {
+            // Case: Refus candidature
+            entretien = entretienRepository.findCandidatureByAnnonceAndTalent( dto.getIdAnnonce(), dto.getIdTalent() );
+        } else {
+            // Case: Refus Entretien
+            entretien = entretienRepository.findById( dto.getIdEntretien() )
+                    .orElseThrow( () -> new RuntimeException( "Entretien not found" ) );
+        }
 
         EtatEntretien etatEntretien = etatEntretienRepository.findById( 1L )
                 .orElseThrow( () -> new RuntimeException( "On ne peut plus le valider" ) );
@@ -115,5 +134,10 @@ public class EntretienService {
         entretien.setDateValidation( dateValidation );
         entretien.setEtatEntretien( etatEntretien );
         return this.save( entretien );
+    }
+
+    public Entretien findById( Long id ) {
+        return entretienRepository.findById( id )
+                .orElseThrow( () -> new RuntimeException( "Entretien not found" ) );
     }
 }

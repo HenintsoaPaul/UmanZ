@@ -3,6 +3,7 @@ package mg.itu.rh.service;
 import mg.itu.rh.dto.CompetenceAnnonceDTO;
 import mg.itu.rh.entity.Annonce;
 import mg.itu.rh.entity.CompetenceAnnonce;
+import mg.itu.rh.entity.id.IdCompetenceAnnonce;
 import mg.itu.rh.repository.CompetenceAnnonceRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,28 +19,21 @@ public class CompetenceAnnonceService {
         this.competenceAnnonceRepository = competenceAnnonceRepository;
     }
 
-    public List<CompetenceAnnonce> findByIds( List<Long> ids ) {
-        return competenceAnnonceRepository.findByIdIn( ids );
-    }
-
-    public void saveAll( List<CompetenceAnnonce> competences, Annonce annonce ) {
-        for ( CompetenceAnnonce competence : competences )
-            save( competence, annonce );
-    }
-
     public void saveAllFromDTO( List<CompetenceAnnonceDTO> competences, Annonce annonce ) {
         for ( CompetenceAnnonceDTO competence : competences )
             save( competence, annonce );
     }
 
-    private CompetenceAnnonce save( CompetenceAnnonce competence, Annonce annonce ) {
-        competence.setAnnonce( annonce );
-        return competenceAnnonceRepository.save( competence );
-    }
-
     private CompetenceAnnonce save( CompetenceAnnonceDTO dto, Annonce annonce ) {
         CompetenceAnnonce ca = dto.getCompetenceAnnonce( competenceService );
+        IdCompetenceAnnonce id = new IdCompetenceAnnonce( annonce.getIdAnnonce(), dto.getCompetence().getIdCompetence() );
+        ca.setId( id );
         return this.save( ca, annonce );
+    }
+
+    private CompetenceAnnonce save( CompetenceAnnonce competenceAnnonce, Annonce annonce ) {
+        competenceAnnonce.setAnnonce( annonce );
+        return competenceAnnonceRepository.save( competenceAnnonce );
     }
 
     public List<CompetenceAnnonce> findAllByIdAnnonce( Long idAnnonce ) {

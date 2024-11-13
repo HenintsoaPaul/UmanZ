@@ -3,6 +3,7 @@ package mg.itu.rh.service;
 import mg.itu.rh.dto.ExperiencePosteDTO;
 import mg.itu.rh.entity.Annonce;
 import mg.itu.rh.entity.ExperiencePoste;
+import mg.itu.rh.entity.id.IdExperiencePoste;
 import mg.itu.rh.repository.ExperiencePosteRepository;
 import org.springframework.stereotype.Service;
 
@@ -22,22 +23,15 @@ public class ExperiencePosteService {
         return experiencePosteRepository.findAll();
     }
 
-    public List<ExperiencePoste> findByIds( List<Long> ids ) {
-        return experiencePosteRepository.findByIdIn( ids );
-    }
-
-    public void saveAll( List<ExperiencePoste> experiencePostes, Annonce annonce ) {
-        for ( ExperiencePoste experiencePoste : experiencePostes )
-            save( experiencePoste, annonce );
-    }
-
     public void saveAllFromDTO( List<ExperiencePosteDTO> experiencePostesDTO, Annonce annonce ) {
         for ( ExperiencePosteDTO dto : experiencePostesDTO )
             save( dto, annonce );
     }
 
     public ExperiencePoste save( ExperiencePosteDTO dto, Annonce annonce ) {
+        IdExperiencePoste id = new IdExperiencePoste(annonce.getIdAnnonce(), dto.getPoste().getIdPoste() );
         ExperiencePoste expPoste = dto.getExperiencePoste( posteService );
+        expPoste.setId( id );
         return this.save( expPoste, annonce );
     }
 

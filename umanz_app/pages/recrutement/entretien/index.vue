@@ -1,102 +1,82 @@
 <script setup lang="ts">
-import axios from 'axios';
 import type { Entretien } from '~/types';
 
 const headers = [
     {
-        key: 'id_entretien',
+        key: 'idEntretien',
         label: 'ID',
         sortable: true
     },
     {
-        key: 'id_talent',
+        key: 'talent.idTalent',
         label: 'Talent',
         sortable: true
     },
     {
-        key: 'date_creation',
+        key: 'dateCreation',
         label: 'Date Creation',
         sortable: true
     },
     {
-        key: 'date_validation',
+        key: 'dateValidation',
         label: 'Date Validation',
         sortable: true
     },
-    {
-        key: 'note',
-        label: 'Note',
-        sortable: true
-    },
-    {
-        key: 'motif',
-        label: 'Motif',
-        sortable: true
-    }
 ];
 
-// Variable pour stocker les données de l'API
-const lignes = ref<Entretien[]>([]);
-const q = ref('');
+const apiUrl = useRuntimeConfig().public.apiUrl as string;
+const etatEntretien = ref<number>(3);
+const url = computed(() => `${apiUrl}/entretien/etat/${etatEntretien.value}`);
 
+const { data: entretiens, error: entretiensError, refresh: refreshEntretiens } = useFetch<Entretien[]>(`${url.value}`);
+
+// Variable pour stocker les données de l'API
+const q = ref('');
 const filteredLignes = computed(() => {
     return q.value ?
-        lignes.value.filter((e: Entretien) =>
+        entretiens.value?.filter((e: Entretien) =>
             Object.values(e).some((value) =>
                 String(value).toLowerCase().includes(q.value.toLowerCase())
             )
-        ) : lignes.value;
+        ) : entretiens.value;
 });
-
-async function loadAnnonces() {
-    try {
-        const apiUrl: string = "http://localhost:911";
-
-        const response = await axios.get(`${apiUrl}/entretiens`);
-
-        if (response.status === 200 && Array.isArray(response.data)) {
-            console.log(toRaw(response.data));
-
-            lignes.value = response.data;
-        } else {
-            console.error('Erreur lors de la récupération des annonces', response.data);
-        }
-    } catch (error) {
-        console.error('Erreur lors de la requête API:', error);
-    }
-}
-
-loadAnnonces();
 
 const expand = ref({
     openedRows: [],
     row: {}
 })
 
-const note = ref<number>(0);
+const validerFn = async (entretien: Entretien) => {
+    if ( entretien.note <= 0 || entretien.note >= 20 ) return;
 
-const validerFn = async (id_entretien: number) => {
-    if (!note.value) {
-        const apiUrl = useRuntimeConfig().public.apiUrl;
-        try {
-            const params = {
-                note: note.value,
-                id_entretien: id_entretien
+    try {
+        const response = await $fetch(`${apiUrl}/entretien/validate`, {
+            method: 'POST',
+            body: {
+                idEntretien: entretien.idEntretien,
+                note: entretien.note,
+                motif: entretien.motif
             }
+        });
+        console.log('Entretien validé:', response);
+        await refreshEntretiens();
+    } catch (error) {
+        console.error('Erreur lors de la validation de l\' Entretien:', error);
+    }
+}
 
-console.log(params);
-
-
-            const response = await axios.post(`${apiUrl}/entretien/candiat`, params);
-
-            if (response.status === 200) {
-                console.log('Valiation envoyée avec succès', params);
-            } else {
-                console.error('Erreur lors de la validation', response.data);
+const refuserFn = async (entretien: Entretien) => {
+    try {
+        const response = await $fetch(`${apiUrl}/entretien/deny`, {
+            method: 'POST',
+            body: {
+                idEntretien: entretien.idEntretien,
             }
-        } catch (error) {
-            console.error('Erreur lors de la requête API:', error);
-        }
+        });
+        console.log('Entretien refusé:', response);
+        await refreshEntretiens()
+    } catch (error) {
+        console.error('Erreur lors du refus de la validation:', error);
     }
 }
 </script>
@@ -109,19 +89,27 @@ console.log(params);
             <UInput v-model="q" placeholder="Filtrer les annonces..." class="w-full max-w-md px-4 py-2 rounded-lg" />
         </div>
 
-        <UTable :columns="headers" :rows="filteredLignes" v-model:expand="expand">
-            <template #expand="{ row }">
-                <div class="p-4">
-                    <UInput v-model="note" placeholder="Ajouter la note..."
-                        class="w-full max-w-md px-4 py-2 rounded-lg" />
-
-
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                        @click="validerFn(row.id_entretien)">
-                        Valider
-                    </button>
-                </div>
-            </template>
-        </UTable>
+        <template v-if="entretiens">
+            <UTable :columns="headers" :rows="filteredLignes" v-model:expand="expand">
+                <template #expand="{ row }">
+                    <div class="p-4">
+                        <UInput v-model="row.note" type="number" min="0" max="20" placeholder="Ajouter la note..."
+                            class="w-full max-w-md px-4 py-2 rounded-lg" />
+                        <UInput v-model="row.motif" type="text" placeholder="Ajouter motif..."
+                            class="w-full max-w-md px-4 py-2 rounded-lg" />
+    
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                            @click="validerFn(row)"
+                            :disabled="row.note <= 0" >
+                            Valider
+                        </button>
+                        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                            @click="refuserFn(row)">
+                            Refuser
+                        </button>
+                    </div>
+                </template>
+            </UTable>
+        </template>
     </div>
 </template>
