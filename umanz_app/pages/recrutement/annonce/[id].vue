@@ -1,106 +1,128 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
-import type { Annonce, Talent } from '~/types';
 import { useRoute } from 'vue-router';
+import type { Annonce, CompetenceAnnonce, ExperiencePoste, Talent } from '~/types';
 
-const annonce = ref<Annonce | null>(null);
-const candidats = ref<Talent[]>([]);
 const route = useRoute();
+const apiUrl = useRuntimeConfig().public.apiUrl as string;
+const annonceId = computed(() => route.params.id);
+const url = computed(() => `${apiUrl}/annonce/${annonceId.value}`);
 
-const columnsCandidats = ref([
-    {
-        key: "nom",
-        label: "Nom"
-    },
-    {
-        key: "prenom",
-        label: "Prenom"
-    },
-    {
-        key: "mail",
-        label: "E-mail"
-    },
-]);
-const candidatsEndpoint = ref<string>("");
+const { data: annonce, error: annonceError } = useFetch<Annonce>(`${url}`);
+const { data: candidats, error: candidatsError, refresh: refreshCandidats } = useFetch<Talent[]>(`${url}/candidats`);
+const { data: competences, error: competencesError } = useFetch<CompetenceAnnonce[]>(`${url}/competences`);
+const { data: experiences, error: experiencesError } = useFetch<ExperiencePoste[]>(`${url}/experiences`);
 
-const loadAnnonceDetails = async (apiUrl: string) => {
-    try {
-        const id = route.params.id;
-        const response = await axios.get(`${apiUrl}/annonce/${id}`);
+const successMessage = ref('');
+const errorMessage = ref('');
 
-        if (response.status === 200) {
-            annonce.value = response.data;
-        } else {
-            console.error('Erreur lors de la récupération de l\'annonce', response.data);
-        }
-    } catch (error) {
-        console.error('Erreur lors de la requête API:', error);
-    }
-};
+// Table Candidats
+const columnsCandidats = [
+    { key: "idTalent", label: "ID" },
+    { key: "nom", label: "Nom" },
+    { key: "prenom", label: "Prenom" },
+    { key: "mail", label: "E-mail" },
+];
 
-const loadCandidats = async (apiUrl: string) => {
-    try {
-        const id = route.params.id;
-        const response = await axios.get(`${apiUrl}/annonce/${id}/candidats`);
-
-        if (response.status === 200) {
-            candidats.value = response.data;
-        } else {
-            console.error('Erreur lors de la récupération des candidats', response.data);
-        }
-    } catch (error) {
-        console.error('Erreur lors de la requête API:', error);
-    }
-};
-
-onMounted(() => {
-    const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
-
-    loadAnnonceDetails(apiUrl);
-    loadCandidats(apiUrl);
-
-    const id = route.params.id;
-    candidatsEndpoint.value = `${apiUrl}/annonce/${id}/candidats`;
+const expand = ref({
+    openedRows: [],
+    row: {}
 });
+
+const validerFn = async (talentId: number) => {
+    try {
+        const response = await $fetch(`${apiUrl}/entretien/validate`, {
+            method: 'POST',
+            body: {
+                idAnnonce: Number(annonceId.value),
+                idTalent: talentId,
+            }
+        });
+        successMessage.value = 'Candidat validé avec succès';
+        errorMessage.value = '';
+
+        console.log('Candidat validé:', response);
+        await refreshCandidats();
+    } catch (error) {
+        errorMessage.value = 'Erreur lors de la validation du candidat';
+        successMessage.value = '';
+        console.error('Erreur lors de la validation du candidat:', error);
+    }
+}
+
+const refuserFn = async (talentId: number) => {
+    try {
+        const response = await $fetch(`${apiUrl}/entretien/deny`, {
+            method: 'POST',
+            body: {
+                idAnnonce: Number(annonceId.value),
+                idTalent: talentId,
+            }
+        });
+        successMessage.value = 'Candidat refusé avec succès';
+        errorMessage.value = '';
+
+        console.log('Candidat refusé:', response);
+        await refreshCandidats()
+    } catch (error) {
+        errorMessage.value = 'Erreur lors du refus du candidat';
+        successMessage.value = '';
+        console.error('Erreur lors du refus du candidat:', error);
+    }
+}
 </script>
 
 <template>
     <div class="container mx-auto">
-        <h1 class="text-3xl font-bold mb-6 text-center">Détails de l'annonce</h1>
-
-        <div v-if="annonce">
-            <h2 class="text-2xl font-semibold">{{ annonce.poste.nom_poste }}</h2>
-            <p><strong>Description:</strong> {{ annonce.poste.description_poste }}</p>
-            <p><strong>Date Annonce:</strong> {{ annonce.dateAnnonce }}</p>
-            <p><strong>Date Expiration:</strong> {{ annonce.dateExpiration }}</p>
-            <p><strong>Date Rupture:</strong> {{ annonce.dateRupture || 'N/A' }}</p>
-
-            <h3 class="text-xl font-semibold mt-4">Compétences requises:</h3>
-            <ul>
-                <li v-for="comp in annonce.competenceAnnonces" :key="comp.competence.idCompetence">
-                    {{ comp.competence.competence }} - {{ comp.point }} points
-                </li>
-            </ul>
-
-            <h3 class="text-xl font-semibold mt-4">Expériences requises:</h3>
-            <ul>
-                <li v-for="exp in annonce.experiencePostes" :key="exp.poste.idPoste">
-                    {{ exp.poste.nom_poste }} - {{ exp.ans }} ans
-                </li>
-            </ul>
+        <div v-if="annonce && competences && experiences">
+            <AnnonceDetails :annonce="annonce" :competences="competences" :experiences="experiences" />
         </div>
         <div v-else>
             Loading Details...
         </div>
 
-        <div v-if="candidats.length">
-            <h2 class="text-2xl font-semibold mt-6">Candidats</h2>
-            <MyTable :columns="columnsCandidats" :rows="candidats" :api-endpoint="candidatsEndpoint"/>
+        <div v-if="annonceError" class="text-red-500">
+            Erreur lors du chargement de l'annonce: {{ annonceError.message }}
+        </div>
+        <div v-if="competencesError" class="text-red-500">
+            Erreur lors du chargement des compétences: {{ competencesError.message }}
+        </div>
+        <div v-if="experiencesError" class="text-red-500">
+            Erreur lors du chargement des expériences: {{ experiencesError.message }}
+        </div>
+
+        <h1 class="text-3xl font-bold mb-6 text-center">Candidats En Attente de Validation</h1>
+
+        <div v-if="candidats?.length">
+            <UTable :columns="columnsCandidats" :rows="candidats" v-model:expand="expand"
+                class="w-full shadow-md rounded-lg overflow-hidden">
+                <template #expand="{ row }">
+                    <div class="p-4">
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                            @click="validerFn(row.idTalent)">
+                            Valider
+                        </button>
+                        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                            @click="refuserFn(row.idTalent)">
+                            Refuser
+                        </button>
+                    </div>
+                </template>
+            </UTable>
         </div>
         <div v-else>
             Loading Candidats...
         </div>
+
+        <div v-if="candidatsError" class="text-red-500">
+            Erreur lors du chargement des candidats: {{ candidatsError.message }}
+        </div>
+
+        <div v-if="successMessage" class="text-green-500">
+            {{ successMessage }}
+        </div>
+
+        <div v-if="errorMessage" class="text-red-500">
+            {{ errorMessage }}
+        </div>
     </div>
-</template></ul>
-</div>
+</template>

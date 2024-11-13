@@ -3,33 +3,61 @@ package mg.itu.rh.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import mg.itu.rh.dto.AnnonceDTO;
-import mg.itu.rh.entity.Annonce;
+import mg.itu.rh.entity.*;
 import mg.itu.rh.other.POV;
-import mg.itu.rh.service.AnnonceService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import mg.itu.rh.service.*;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/annonce")
+@RequestMapping( "/annonce" )
 public class AnnonceController {
-    @Autowired
-    private AnnonceService annonceService;
+    private final AnnonceService annonceService;
+    private final EntretienService entretienService;
+    private final CompetenceAnnonceService competenceAnnonceService;
+    private final ExperiencePosteService experiencePosteService;
 
-    @GetMapping("/disponible")
-    @JsonView(POV.Full.class)
-    public List<Annonce> getAnnonceDisponible(){
+    public AnnonceController( AnnonceService as, EntretienService es, CompetenceAnnonceService competenceAnnonceService, ExperiencePosteService experiencePosteService ) {
+        this.annonceService = as;
+        this.entretienService = es;
+        this.competenceAnnonceService = competenceAnnonceService;
+        this.experiencePosteService = experiencePosteService;
+    }
+
+    @GetMapping( "/{id}" )
+    @JsonView( POV.Public.class )
+    public Annonce getAnnonce( @PathVariable( "id" ) Long id ) {
+        return annonceService.findById( id );
+    }
+
+    @GetMapping( "/{id}/candidats" )
+    @JsonView( POV.Public.class )
+    public List<Talent> getCandidatsAnnonce( @PathVariable( "id" ) Long id ) {
+        return entretienService.findAllCandidatsOfAnnonce( id );
+    }
+
+    @GetMapping( "/{id}/competences" )
+    @JsonView( POV.Public.class )
+    public List<CompetenceAnnonce> getCompetencesAnnonce( @PathVariable( "id" ) Long id ) {
+        return competenceAnnonceService.findAllByIdAnnonce( id );
+    }
+
+    @GetMapping( "/{id}/experiences" )
+    @JsonView( POV.Public.class )
+    public List<ExperiencePoste> getExperiencesAnnonce( @PathVariable( "id" ) Long id ) {
+        return experiencePosteService.findAllByIdAnnonce( id );
+    }
+
+    @GetMapping( "/disponible" )
+    @JsonView( POV.Public.class )
+    public List<Annonce> getAnnonceDisponible() {
         return annonceService.findAnnonceAvailable();
     }
 
-    @PostMapping("/save")
-    @JsonView(POV.Full.class)
-    public Annonce save(@RequestBody AnnonceDTO annonceDTO) {
-        return annonceService.save(annonceDTO);
+    @PostMapping()
+    @JsonView( POV.Full.class )
+    public Annonce save( @RequestBody AnnonceDTO annonceDTO ) {
+        return annonceService.save( annonceDTO );
     }
 }

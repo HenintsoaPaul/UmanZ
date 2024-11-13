@@ -21,8 +21,10 @@ public class Contrat {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id_contrat")
+    @JsonView(POV.Public.class)
     private Long idContrat;
 
+    @JsonView(POV.Public.class)
     private String contrat;
 
     @Column(name="date_debut")

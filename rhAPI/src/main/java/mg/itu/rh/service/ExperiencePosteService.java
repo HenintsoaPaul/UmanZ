@@ -1,23 +1,53 @@
 package mg.itu.rh.service;
 
+import mg.itu.rh.dto.ExperiencePosteDTO;
+import mg.itu.rh.entity.Annonce;
 import mg.itu.rh.entity.ExperiencePoste;
 import mg.itu.rh.repository.ExperiencePosteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class ExperiencePosteService {
+    private final PosteService posteService;
+    private final ExperiencePosteRepository experiencePosteRepository;
 
-    @Autowired
-    private ExperiencePosteRepository experiencePosteRepository;
+    public ExperiencePosteService( PosteService posteService, ExperiencePosteRepository experiencePosteRepository ) {
+        this.posteService = posteService;
+        this.experiencePosteRepository = experiencePosteRepository;
+    }
 
     public List<ExperiencePoste> findAll() {
         return experiencePosteRepository.findAll();
     }
 
-    public List<ExperiencePoste> findByIds(List<Long> ids) {
-        return experiencePosteRepository.findByIdIn(ids);
+    public List<ExperiencePoste> findByIds( List<Long> ids ) {
+        return experiencePosteRepository.findByIdIn( ids );
+    }
+
+    public void saveAll( List<ExperiencePoste> experiencePostes, Annonce annonce ) {
+        for ( ExperiencePoste experiencePoste : experiencePostes )
+            save( experiencePoste, annonce );
+    }
+
+    public void saveAllFromDTO( List<ExperiencePosteDTO> experiencePostesDTO, Annonce annonce ) {
+        for ( ExperiencePosteDTO dto : experiencePostesDTO )
+            save( dto, annonce );
+    }
+
+    public ExperiencePoste save( ExperiencePosteDTO dto, Annonce annonce ) {
+        ExperiencePoste expPoste = dto.getExperiencePoste( posteService );
+        return this.save( expPoste, annonce );
+    }
+
+    public ExperiencePoste save( ExperiencePoste experiencePoste, Annonce annonce ) {
+        experiencePoste.setAnnonce( annonce );
+        return experiencePosteRepository.save( experiencePoste );
+    }
+
+    public List<ExperiencePoste> findAllByIdAnnonce( Long idAnnonce ) {
+        Long etatCandidature = 2L;
+        return experiencePosteRepository.findAllByIdAnnonceAndEtat( idAnnonce, etatCandidature );
     }
 }

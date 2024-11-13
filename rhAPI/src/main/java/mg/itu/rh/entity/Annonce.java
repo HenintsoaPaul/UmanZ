@@ -31,24 +31,24 @@ public class Annonce {
     @JoinColumn(name="id_poste")
     @JsonView({POV.Public.class})
     private Poste poste;
-    
-    @OneToMany(mappedBy="annonce",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-    @JsonView({POV.Full.class})
-    private List<ExperiencePoste> experiencePostes;
 
+    @JsonView({POV.Public.class})
     @Column(name = "date_annonce")
-    @JsonView({POV.Full.class})
     private LocalDate dateAnnonce;
 
-    @JsonView({POV.Full.class})
+    @JsonView({POV.Public.class})
     @Column(name = "date_expiration")
     private LocalDate dateExpiration;
 
-    @JsonView({POV.Full.class})
+    @JsonView({POV.Public.class})
     @Column(name = "date_rupture")
     private LocalDate dateRupture;
 
     @OneToMany(mappedBy = "annonce",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonView({POV.Full.class})
     private List<CompetenceAnnonce> competenceAnnonces;
+
+    @OneToMany(mappedBy="annonce",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    @JsonView({POV.Full.class})
+    private List<ExperiencePoste> experiencePostes;
 }

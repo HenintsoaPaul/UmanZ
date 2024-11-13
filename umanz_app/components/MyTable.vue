@@ -13,6 +13,7 @@ interface RowData {
 }
 
 interface TableProps {
+    title?: string
     columns: Column[]
     rows: RowData[]
     apiEndpoint?: string
@@ -63,7 +64,7 @@ watch(expand, (newExpand) => {
 
 <template>
     <div class="container mx-auto">
-        <h1 class="text-3xl font-bold mb-6 text-center">{{ headers[0].label }}</h1>
+        <h2 v-if="title" class="text-2xl font-bold mb-6 text-center">{{ title }}</h2>
 
         <UTable :columns="headers" :rows="lignes" v-model:expand="expand"
             class="w-full shadow-md rounded-lg overflow-hidden">

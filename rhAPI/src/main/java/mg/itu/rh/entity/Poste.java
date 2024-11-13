@@ -23,7 +23,7 @@ public class Poste {
     private String nomPoste;
 
     @Column(name="description_poste")
-    @JsonView({POV.Full.class})
+    @JsonView({POV.Public.class})
     private String description;
 
     public Poste() {}
