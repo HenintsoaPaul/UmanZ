@@ -8,4 +8,6 @@ import java.time.LocalDate;
 public class EntretienValidationDTO {
     private Long idTalent;
     private Long idAnnonce;
+    private Long idEntretien;
+    private Long note;
 }
