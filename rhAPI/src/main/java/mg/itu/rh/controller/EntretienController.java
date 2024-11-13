@@ -22,10 +22,22 @@ public class EntretienController {
         this.entretienService = entretienService;
     }
 
+    @GetMapping( "/{id}" )
+    @JsonView( POV.Public.class )
+    public Entretien findById( @PathVariable( "id" ) Long id ) {
+        return entretienService.findById( id );
+    }
+
     @GetMapping( "/etat/{id}" )
     @JsonView( POV.Public.class )
     public List<Entretien> findByEtat( @PathVariable( "id" ) Long idEtat ) {
         return entretienService.findByEtat( idEtat );
+    }
+
+    @GetMapping( "/candidats" )
+    @JsonView( POV.Public.class )
+    public List<Entretien> getCandidaList() {
+        return entretienService.getCandidaList();
     }
 
     /*
@@ -53,10 +65,5 @@ public class EntretienController {
     public Entretien update( @RequestBody EntretienCandidatureDTO entretien )
             throws Exception {
         return entretienService.save( entretien );
-    }
-
-    @GetMapping( "/candidats" )
-    public List<Entretien> getCandidaList() {
-        return entretienService.getCandidaList();
     }
 }

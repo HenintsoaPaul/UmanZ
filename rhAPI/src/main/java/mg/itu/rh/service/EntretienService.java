@@ -135,4 +135,9 @@ public class EntretienService {
         entretien.setEtatEntretien( etatEntretien );
         return this.save( entretien );
     }
+
+    public Entretien findById( Long id ) {
+        return entretienRepository.findById( id )
+                .orElseThrow( () -> new RuntimeException( "Entretien not found" ) );
+    }
 }

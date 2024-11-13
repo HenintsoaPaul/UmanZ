@@ -104,6 +104,11 @@ export interface CV {
     experiences: ExperienceTalent[]
 }
 
+export interface EtatEntretien {
+    idEtatEntretien: number,
+    etatEntretien: string
+}
+
 export interface Entretien {
     idEntretien: number,
     dateCreation: Date,
@@ -112,8 +117,5 @@ export interface Entretien {
     motif: string,
     talent: Talent
     annonce: Annonce,
-    // "etatEntretien": {
-    //     "idEtatEntretien": 2,
-    //     "etatEntretien": "Candidat"
-    // },
+    etatEntretien: EtatEntretien
 }
