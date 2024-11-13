@@ -36,7 +36,9 @@ export interface Talent {
     prenom: string,
     mail: string,
     password: string,
-    isAdmin: boolean
+    isAdmin: boolean,
+    competences: CompetenceTalent[],
+    experiences: ExperienceTalent[]
 }
 
 export interface Competence {
@@ -72,20 +74,6 @@ export interface Absence {
     idContrat: number,
 }
 
-export interface Talent {
-    id_talent: number,
-    nom: string,
-    prenom: string,
-    mail: string,
-    password: string,
-}
-
-export interface TalentCompetence {
-    id_competence: number,
-    id_talent: number,
-    point: number,
-}
-
 export interface Poste {
     idPoste: number,
     nomPoste: string,
@@ -93,15 +81,15 @@ export interface Poste {
 }
 
 export interface ExperienceTalent {
-    id_poste: number,
-    id_talent: number,
+    poste: Poste,
+    talent: Talent,
     ans: number,
 }
 
-export interface CV {
-    id_talent: number;
-    competences: TalentCompetence[],
-    experiences: ExperienceTalent[]
+export interface CompetenceTalent {
+    competence: Competence,
+    talent: Talent,
+    point: number,
 }
 
 export interface EtatEntretien {
