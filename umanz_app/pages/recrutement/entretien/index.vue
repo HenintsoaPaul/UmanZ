@@ -17,6 +17,11 @@ const headers = [
         label: 'Date Creation',
         sortable: true
     },
+    {
+        key: 'dateValidation',
+        label: 'Date Validation',
+        sortable: true
+    },
 ];
 
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
@@ -42,14 +47,15 @@ const expand = ref({
 })
 
 const validerFn = async (entretien: Entretien) => {
-    if ( entretien.note <= 0 ) return;
+    if ( entretien.note <= 0 || entretien.note >= 20 ) return;
 
     try {
-        const response = await $fetch(`${apiUrl}/entretien/validate/first`, {
+        const response = await $fetch(`${apiUrl}/entretien/validate`, {
             method: 'POST',
             body: {
                 idEntretien: entretien.idEntretien,
-                note: entretien.note
+                note: entretien.note,
+                motif: entretien.motif
             }
         });
         console.log('Entretien validé:', response);
@@ -87,7 +93,9 @@ const refuserFn = async (entretien: Entretien) => {
             <UTable :columns="headers" :rows="filteredLignes" v-model:expand="expand">
                 <template #expand="{ row }">
                     <div class="p-4">
-                        <UInput v-model="row.note" placeholder="Ajouter la note..."
+                        <UInput v-model="row.note" type="number" min="0" max="20" placeholder="Ajouter la note..."
+                            class="w-full max-w-md px-4 py-2 rounded-lg" />
+                        <UInput v-model="row.motif" type="text" placeholder="Ajouter motif..."
                             class="w-full max-w-md px-4 py-2 rounded-lg" />
     
                         <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"

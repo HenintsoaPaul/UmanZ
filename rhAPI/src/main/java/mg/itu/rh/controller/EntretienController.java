@@ -38,13 +38,15 @@ public class EntretienController {
     }
 
     @PostMapping( "/validate" )
-    public void validate( @RequestBody EntretienValidationDTO validation ) {
-        entretienService.valider( validation );
+    @JsonView( POV.Full.class )
+    public Entretien validate( @RequestBody EntretienValidationDTO validation ) {
+        return entretienService.valider( validation );
     }
 
     @PostMapping( "/deny" )
-    public void deny( @RequestBody EntretienValidationDTO validation ) {
-        entretienService.refuser( validation );
+    @JsonView( POV.Full.class )
+    public Entretien deny( @RequestBody EntretienValidationDTO validation ) {
+        return entretienService.refuser( validation );
     }
 
     @PutMapping( "/" )

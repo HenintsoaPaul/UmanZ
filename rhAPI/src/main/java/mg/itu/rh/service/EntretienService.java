@@ -58,7 +58,18 @@ public class EntretienService {
     public Entretien valider( EntretienValidationDTO dto ) {
         LocalDate dateValidation = LocalDate.now();
 
-        Entretien entretien = entretienRepository.findCandidatureByAnnonceAndTalent( dto.getIdAnnonce(), dto.getIdTalent() );
+        Entretien entretien;
+        if ( dto.getIdEntretien() == null ) {
+            // Case: Validation candidature
+            entretien = entretienRepository.findCandidatureByAnnonceAndTalent( dto.getIdAnnonce(), dto.getIdTalent() );
+        } else {
+            // Case: Validation Entretien
+            entretien = entretienRepository.findById( dto.getIdEntretien() )
+                    .orElseThrow( () -> new RuntimeException( "Entretien not found" ) );
+            entretien.setNote( dto.getNote() );
+            String motif = dto.getMotif();
+            if ( !motif.isEmpty() ) entretien.setMotif( motif );
+        }
 
         EtatEntretien etatEntretien = etatEntretienRepository.findById( entretien.getEtatEntretien().getIdEtatEntretien() + 1 )
                 .orElseThrow( () -> new RuntimeException( "On ne peut plus le valider" ) );
