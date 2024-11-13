@@ -6,10 +6,10 @@ import type { Absence } from '~/types';
 
 // Data
 const form = ref<Absence>({
-    id_absence: 0,
+    idAbsence: 0,
     motif: '',
-    date_absence: new Date(),
-    id_contrat: 0
+    dateAbsence: new Date().toString(),
+    idContrat: 0
 });
 
 // Method
@@ -42,13 +42,13 @@ const submitForm = async () => {
             <!-- Date Absence -->
             <div class="form-group">
                 <label for="date_absence">Date d'Absence:</label>
-                <input type="date" id="date_absence" v-model="form.date_absence" required />
+                <input type="date" id="date_absence" v-model="form.dateAbsence" required />
             </div>
 
             <!-- ID Contrat -->
             <div class="form-group">
                 <label for="id_contrat">ID Contrat:</label>
-                <input type="number" id="id_contrat" v-model="form.id_contrat" required />
+                <input type="number" id="id_contrat" v-model="form.idContrat" required />
             </div>
 
             <button type="submit"
