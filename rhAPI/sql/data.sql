@@ -83,7 +83,7 @@ INSERT INTO entretien (date_creation, date_validation, note, motif, id_enfant, i
 VALUES ('2023-02-15', '2023-02-20', 85, 'Entretien positif', NULL, 1, 4, 1),
        ('2023-03-10', '2023-03-15', 90, 'Candidat qualifié', NULL, 2, 5, 2),
        ('2023-04-05', NULL, NULL, 'En attente de validation', 1, 3, 1, 3),
-       ('2023-05-01', '2023-05-05', 70, 'Compétences insuffisantes', NULL, 4, 2, 4),
+       ('2023-05-01', NULL, 70, 'Compétences insuffisantes', NULL, 4, 2, 4),
        ('2023-06-01', NULL, NULL, 'Annulation', 2, 5, 6, 5);
 
 INSERT INTO rupture (date_rupture, motif, id_type_rupture, id_contrat)
@@ -179,9 +179,10 @@ VALUES (10, 5, 3);
 INSERT INTO experience_poste (id_poste, id_annonce, ans)
 VALUES (11, 6, 6); -- 6 ans d'expérience en architecture logicielle
 
-INSERT INTO conge (date_debut, nb_jour, motif, id_contrat)
-VALUES ('2024-12-01', 5, 'Congé annuel', 1),      -- Congé annuel pour le contrat 1
-       ('2024-12-15', 3, 'Congé maladie', 2),     -- Congé maladie pour le contrat 2
+INSERT INTO conge (date_debut, date_validation, nb_jour, motif, id_contrat)
+VALUES ('2024-12-01', '2024-12-01', 5, 'Congé annuel', 1),      -- Congé annuel pour le contrat 1
+       ('2024-12-15', '2024-12-15', 3, 'Congé maladie', 2),     -- Congé maladie pour le contrat 2
        ('2024-11-20', 7, 'Congé parental', 3),    -- Congé parental pour le contrat 3
        ('2024-11-05', 10, 'Congé sabbatique', 4), -- Congé sabbatique pour le contrat 4
-       ('2024-12-10', 4, 'Congé urgent', 5);
+       ('2024-12-10', '2024-12-10', 4, 'Congé urgent', 5),
+       ('2024-08-10', '2024-08-10', 5, 'Congé annuel', 1);

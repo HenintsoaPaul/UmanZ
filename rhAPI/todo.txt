@@ -1,5 +1,5 @@
 - Utilisateur
-    - (Vita) Login url: "/talent/user?email={email}&password={Password}"
+    - (Vita) Login url: "/talents/user?email={email}&password={Password}"
     - (Vita) Liste annonce url: "/annonce/disponible" method:"GET"
         - (Vita) date rupture: null
         - (Vita) date expiration: superieur @ androany
