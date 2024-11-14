@@ -49,10 +49,10 @@ public class AnnonceController {
         return experiencePosteService.findAllByIdAnnonce( id );
     }
 
-    @GetMapping( "/disponible" )
+    @GetMapping( "/disponible/{id}" )
     @JsonView( POV.Public.class )
-    public List<Annonce> getAnnonceDisponible() {
-        return annonceService.findAnnonceAvailable();
+    public List<Compatibilite> getAnnonceDisponible(@PathVariable("id")Long id) {
+        return annonceService.findAnnonceAvailable(id);
     }
 
     @PostMapping()

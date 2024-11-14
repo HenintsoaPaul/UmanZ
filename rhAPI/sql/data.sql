@@ -13,6 +13,39 @@ INSERT INTO type_contrat (type_contrat)
 VALUES ('Contrat d''essaie'),
        ('Contrat duree determine (CDD)'),
        ('Contrat duree indetermine (CDI)');
+
+INSERT INTO niveau_langue(nom_niveau_langue,niveau_langue)
+VALUES ('Debutant',1),
+       ('Intermediaire',2),
+       ('Avance',3);
+
+INSERT INTO langue(langue)
+VALUES ('Malagasy'),
+       ('Français'),
+       ('Anglais'),
+       ('Allemand'),
+       ('Mandarin');
+
+INSERT INTO niveau_diplome(nom_niveau_diplome,niveau_diplome)
+VALUES ('Baccalaureat',1),
+       ('Licence',2),
+       ('Master',3),
+       ('Doctorat',4);
+
+INSERT INTO diplome(nom_diplome,id_niveau_diplome)
+VALUES ('Serie C',1),
+       ('Serie D',1),
+       ('Serie A',1),
+       ('Informatique',2),
+       ('Informatique',3),
+       ('Informatique',4),
+       ('Gestion',2),
+       ('Gestion',3),
+       ('Gestion',4),
+       ('Mathematique',2),
+       ('Mathematique',3),
+       ('Mathematique',4);
+
 INSERT INTO competence (competence)
 VALUES ('Cloud Computing'),
        ('Machine Learning'),
@@ -42,6 +75,35 @@ VALUES ('Dupont', 'Jean', 'jean.dupont@example.com', 'password1', true),
        ('Petit', 'Louis', 'louis.petit@example.com', 'password3', false),
        ('Durand', 'Emma', 'emma.durand@example.com', 'password4', false),
        ('Leroy', 'Paul', 'paul.leroy@example.com', 'password5', false);
+
+insert into talent_langue(id_talent,id_langue,id_niveau_langue)
+VALUES (1,1,3),
+       (1,2,2),
+       (1,3,1),
+       (2,1,3),
+       (2,2,3),
+       (2,4,2),
+       (3,1,2),
+       (3,3,3),
+       (4,1,2),
+       (4,2,2),
+       (4,3,3),
+       (4,4,3),
+       (5,1,1);
+
+insert into talent_diplome(id_talent,id_diplome)
+VALUES (1,1),
+       (1,4),
+       (1,5),
+       (2,2),
+       (2,7),
+       (3,1),
+       (3,10),
+       (4,2),
+       (4,4),
+       (5,1),
+       (5,10),
+       (5,11);
 
 INSERT INTO poste (nom_poste, description_poste)
 VALUES ('Développeur', 'Responsable du développement des applications'),
@@ -106,6 +168,32 @@ VALUES ('2024-10-15', 'Innovative Solutions', '2025-01-15', 6),
        ('2024-11-07', 'Consultancy Hub', '2025-04-10', 9),
        ('2024-11-09', 'WebGenius', '2025-05-15', 10),
        ('2024-11-10', 'CodeCrafters', '2025-06-20', 11);
+
+insert into annonce_langue (id_annonce,id_langue,id_niveau_langue)
+VALUES (1,1,3),
+       (1,2,2),
+       (1,3,1),
+       (2,2,3),
+       (2,3,2),
+       (2,1,3),
+       (3,1,1),
+       (3,4,3),
+       (3,5,1),
+       (4,1,3),
+       (5,1,2),
+       (5,2,2),
+       (6,1,1),
+       (6,5,3);
+
+insert into annonce_diplome (id_annonce,id_diplome)
+values (1,4),
+       (2,5),
+       (2,10),
+       (3,2),
+       (4,7),
+       (5,12),
+       (6,1),
+       (6,2);
 
 -- Ingénieur DevOps (poste 6)
 INSERT INTO competence_annonce (id_competence, id_annonce, point)
@@ -182,7 +270,39 @@ VALUES (11, 6, 6); -- 6 ans d'expérience en architecture logicielle
 INSERT INTO conge (date_debut, date_validation, nb_jour, motif, id_contrat)
 VALUES ('2024-12-01', '2024-12-01', 5, 'Congé annuel', 1),      -- Congé annuel pour le contrat 1
        ('2024-12-15', '2024-12-15', 3, 'Congé maladie', 2),     -- Congé maladie pour le contrat 2
-       ('2024-11-20', 7, 'Congé parental', 3),    -- Congé parental pour le contrat 3
-       ('2024-11-05', 10, 'Congé sabbatique', 4), -- Congé sabbatique pour le contrat 4
+       ('2024-11-20', null ,7, 'Congé parental', 3),    -- Congé parental pour le contrat 3
+       ('2024-11-05', null ,10, 'Congé sabbatique', 4), -- Congé sabbatique pour le contrat 4
        ('2024-12-10', '2024-12-10', 4, 'Congé urgent', 5),
        ('2024-08-10', '2024-08-10', 5, 'Congé annuel', 1);
+
+insert into compatibilite(id_annonce,id_talent,pourcentage)
+values (1,1,20.23),
+       (1,2,50.14),
+       (1,3,33.33),
+       (1,4,44.44),
+       (1,5,82.25),
+       (2,1,61.125),
+       (2,2,15.122),
+       (2,3,39.99),
+       (2,4,24.75),
+       (2,5,32.25),
+       (3,1,12.44),
+       (3,2,22.55),
+       (3,3,10.26),
+       (3,4,52.12),
+       (3,5,63.45),
+       (4,1,30.25),
+       (4,2,72.15),
+       (4,3,75),
+       (4,4,46),
+       (4,5,43.15),
+       (5,1,14.25),
+       (5,2,37.15),
+       (5,3,69.999),
+       (5,4,74.365),
+       (5,5,17.35),
+       (6,1,20.153),
+       (6,2,46.58),
+       (6,3,73.145),
+       (6,4,83.63),
+       (6,5,93.333);

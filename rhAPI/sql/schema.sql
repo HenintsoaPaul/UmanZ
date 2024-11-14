@@ -62,6 +62,28 @@ CREATE TABLE type_rupture(
                              UNIQUE(nom_type_rupture)
 );
 
+CREATE TABLE niveau_diplome(
+                               id_niveau_diplome SERIAL,
+                               niveau_diplome INTEGER NOT NULL,
+                               nom_niveau_diplome VARCHAR(50)  NOT NULL,
+                               PRIMARY KEY(id_niveau_diplome),
+                               UNIQUE(niveau_diplome)
+);
+
+CREATE TABLE langue(
+                       id_langue SERIAL,
+                       langue VARCHAR(50) ,
+                       PRIMARY KEY(id_langue)
+);
+
+CREATE TABLE niveau_langue(
+                              id_niveau_langue SERIAL,
+                              nom_niveau_langue VARCHAR(50) ,
+                              niveau_langue INTEGER,
+                              PRIMARY KEY(id_niveau_langue),
+                              UNIQUE(niveau_langue)
+);
+
 CREATE TABLE entretien(
                           id_entretien SERIAL,
                           date_creation DATE NOT NULL,
@@ -129,6 +151,14 @@ CREATE TABLE absence(
                         FOREIGN KEY(id_contrat) REFERENCES contrat(id_contrat)
 );
 
+CREATE TABLE diplome(
+                        id_diplome SERIAL,
+                        nom_diplome VARCHAR(50) ,
+                        id_niveau_diplome INTEGER NOT NULL,
+                        PRIMARY KEY(id_diplome),
+                        FOREIGN KEY(id_niveau_diplome) REFERENCES niveau_diplome(id_niveau_diplome)
+);
+
 CREATE TABLE talent_competence(
                                   id_competence INTEGER,
                                   id_talent INTEGER,
@@ -181,4 +211,49 @@ CREATE TABLE participation(
                               PRIMARY KEY(id_contrat, id_formation),
                               FOREIGN KEY(id_contrat) REFERENCES contrat(id_contrat),
                               FOREIGN KEY(id_formation) REFERENCES formation(id_formation)
+);
+
+CREATE TABLE talent_diplome(
+                               id_talent INTEGER,
+                               id_diplome INTEGER,
+                               PRIMARY KEY(id_talent, id_diplome),
+                               FOREIGN KEY(id_talent) REFERENCES talent(id_talent),
+                               FOREIGN KEY(id_diplome) REFERENCES diplome(id_diplome)
+);
+
+CREATE TABLE talent_langue(
+                              id_talent INTEGER,
+                              id_langue INTEGER,
+                              id_niveau_langue INTEGER,
+                              PRIMARY KEY(id_talent, id_langue, id_niveau_langue),
+                              FOREIGN KEY(id_talent) REFERENCES talent(id_talent),
+                              FOREIGN KEY(id_langue) REFERENCES langue(id_langue),
+                              FOREIGN KEY(id_niveau_langue) REFERENCES niveau_langue(id_niveau_langue)
+);
+
+CREATE TABLE annonce_diplome(
+                                id_annonce INTEGER,
+                                id_diplome INTEGER,
+                                PRIMARY KEY(id_annonce, id_diplome),
+                                FOREIGN KEY(id_annonce) REFERENCES annonce(id_annonce),
+                                FOREIGN KEY(id_diplome) REFERENCES diplome(id_diplome)
+);
+
+CREATE TABLE annonce_langue(
+                               id_annonce INTEGER,
+                               id_langue INTEGER,
+                               id_niveau_langue INTEGER,
+                               PRIMARY KEY(id_annonce, id_langue, id_niveau_langue),
+                               FOREIGN KEY(id_annonce) REFERENCES annonce(id_annonce),
+                               FOREIGN KEY(id_langue) REFERENCES langue(id_langue),
+                               FOREIGN KEY(id_niveau_langue) REFERENCES niveau_langue(id_niveau_langue)
+);
+
+CREATE TABLE compatibilite(
+                              id_talent INTEGER,
+                              id_annonce INTEGER,
+                              pourcentage NUMERIC(15,2)  ,
+                              PRIMARY KEY(id_talent, id_annonce),
+                              FOREIGN KEY(id_talent) REFERENCES talent(id_talent),
+                              FOREIGN KEY(id_annonce) REFERENCES annonce(id_annonce)
 );

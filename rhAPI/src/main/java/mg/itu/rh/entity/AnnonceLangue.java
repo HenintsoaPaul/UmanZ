@@ -1,8 +1,10 @@
 package mg.itu.rh.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Data;
 import mg.itu.rh.entity.id.IdAnnonceLangue;
+import mg.itu.rh.other.POV;
 
 @Entity
 @Data
@@ -17,9 +19,11 @@ public class AnnonceLangue {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_langue",insertable = false,updatable = false)
+    @JsonView({POV.Public.class})
     private Langue langue;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonView({POV.Public.class})
     @JoinColumn(name = "id_niveau_langue",insertable = false,updatable = false)
     private NiveauLangue niveauLangue;
 }

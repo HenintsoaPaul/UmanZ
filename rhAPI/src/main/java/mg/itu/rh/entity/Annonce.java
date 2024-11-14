@@ -52,4 +52,8 @@ public class Annonce {
     )
     @JsonView({POV.Public.class})
     private Set<Diplome> diplomes;
+
+    @OneToMany(mappedBy="annonce",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    @JsonView({POV.Public.class})
+    private List<AnnonceLangue> annonceLangues;
 }
