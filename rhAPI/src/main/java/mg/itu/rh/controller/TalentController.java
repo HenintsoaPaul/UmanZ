@@ -23,7 +23,7 @@ public class TalentController {
 
     @GetMapping
     @JsonView( POV.Public.class )
-    public List<Talent> findById() {
+    public List<Talent> findAll() {
         return talentService.findAll();
     }
 

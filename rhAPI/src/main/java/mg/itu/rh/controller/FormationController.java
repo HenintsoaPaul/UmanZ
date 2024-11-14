@@ -2,30 +2,34 @@ package mg.itu.rh.controller;
 
 import mg.itu.rh.entity.Formation;
 import mg.itu.rh.repository.FormationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import mg.itu.rh.service.FormationService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/formations")
+@RequestMapping( "/formations" )
 public class FormationController {
+    private final FormationRepository formationRepository;
+    private final FormationService formationService;
 
-    @Autowired
-    private FormationRepository formationRepository;
-
-    /**
-     *
-     * @param formation {
-     *      "nomFormation": "Power up",
-     *      "dateDebut": "2024-11-11",
-     *      "dateFin": "2024-11-13"
-     * }
-     * @return la formation créée
-     */
-    @PostMapping
-    public Formation create(Formation formation) {
-        return formationRepository.save(formation);
+    public FormationController( FormationRepository formationRepository, FormationService formationService ) {
+        this.formationRepository = formationRepository;
+        this.formationService = formationService;
     }
 
+    @PostMapping
+    public Formation create( @RequestBody Formation formation ) {
+        return formationRepository.save( formation );
+    }
+
+    @GetMapping
+    public List<Formation> getAll() {
+        return formationRepository.findAll();
+    }
+
+    @GetMapping( "/disponible" )
+    public List<Formation> getAllDisponible() {
+        return formationService.findAllDisponible();
+    }
 }

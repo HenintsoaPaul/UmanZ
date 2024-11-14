@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { Contrat } from '~/types';
 
-const { promotionFn, expulsionFn, demissionFn } = useContratActions();
+const { expulsionFn, demissionFn } = useContratActions();
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
-const { data: contrats, error: contratError } = useFetch<Contrat[]>(`${apiUrl}/contrat`);
+const { data: contrats } = useFetch<Contrat[]>(`${apiUrl}/contrat`);
 
 const headers = [
     {
@@ -52,11 +52,16 @@ const expand = ref({
                 class="w-full max-w-md px-4 py-2  rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
 
-        <UTable :columns="headers" :rows="filteredLignes" v-model:expand="expand"
-            class="w-full shadow-md rounded-lg overflow-hidden">
-            <template #expand="{ row }">
-                <ContratDetails :contrat="row" :promotion-fn="promotionFn" :explusion-fn="expulsionFn" :demission-fn="demissionFn" :api-url="apiUrl" />
-            </template>
-        </UTable>
+        <div v-if="contrats">
+            <UTable :columns="headers" :rows="filteredLignes" v-model:expand="expand"
+                class="w-full shadow-md rounded-lg overflow-hidden">
+                <template #expand="{ row }">
+                    <ContratDetails :contrat="row" :explusion-fn="expulsionFn" :demission-fn="demissionFn" :api-url="apiUrl" />
+                </template>
+            </UTable>
+        </div>
+        <div v-else>
+            Loading Contrats...
+        </div>
     </div>
 </template>
