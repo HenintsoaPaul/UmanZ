@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface CongeRepository extends JpaRepository<Conge,Long> {
-    @Query("select new mg.itu.rh.entity.Conge(conge.idConge,conge.dateDebut,conge.nbJour,conge.motif) from Conge conge join conge.contrat contrat join contrat.talent talent where talent.idTalent=:idTalent and not conge.dateValidation is null")
+    @Query("select new mg.itu.rh.entity.Conge(conge.idConge,conge.dateDebut,conge.nbJour,conge.motif,contrat) from Conge conge join conge.contrat contrat join contrat.talent talent where talent.idTalent=:idTalent and not conge.dateValidation is null")
     public List<Conge> findCongeByIdTalent(@Param("idTalent") Long idTalent);
 
     @Query(value = "SELECT SUM(nb_jour) " +
