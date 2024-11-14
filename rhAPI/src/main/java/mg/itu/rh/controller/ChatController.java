@@ -2,7 +2,10 @@ package mg.itu.rh.controller;
 
 import mg.itu.rh.entity.Chat;
 import mg.itu.rh.repository.ChatRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/chat")
@@ -15,7 +18,8 @@ public class ChatController {
     }
 
     @PostMapping
-    public String chat(@RequestParam("message") String message) {
+    public String chat(@RequestBody Map<String, String> payload) {
+        String message = payload.get("message");
         Chat chatResponse = chatRepository.findResponse(message);
         return chatResponse == null ?
                 "Désolé, je ne comprends pas votre question." :

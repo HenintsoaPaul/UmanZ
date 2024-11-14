@@ -1,13 +1,12 @@
 <script setup>
 import { ref } from 'vue'
+import axios from "axios";
 
-const messages = ref([
-  { text: 'Hello', type: 'user' },
-  { text: 'World XD', type: 'bot' },
-  { text: 'How are you?', type: 'user' },
-])
+const messages = ref([])
 
 const userInput = ref('')
+
+const apiUrl = useRuntimeConfig().public.apiUrl;
 
 const sendMessage = () => {
   if (userInput.value.trim() === '') return
@@ -15,8 +14,12 @@ const sendMessage = () => {
   const message = userInput.value.trim()
   messages.value.push({text: message, type: 'user'})
 
-  $axios.$post('/api/chat', {message}).then(response => {
-    messages.value.push({text: response.answer, type: 'bot'})
+  axios.post(
+      `${apiUrl}/chat`,
+      {'message': message}
+  )
+  .then(response => {
+      messages.value.push({text: response.data, type: 'bot'})
   })
 
   userInput.value = ''
