@@ -62,6 +62,14 @@ CREATE TABLE type_rupture(
                              UNIQUE(nom_type_rupture)
 );
 
+CREATE TABLE chat(
+                     id_chat SERIAL,
+                     mot_cle VARCHAR(50)  NOT NULL,
+                     reponse TEXT NOT NULL,
+                     PRIMARY KEY(id_chat),
+                     UNIQUE(mot_cle)
+);
+
 CREATE TABLE entretien(
                           id_entretien SERIAL,
                           date_creation DATE NOT NULL,
