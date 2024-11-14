@@ -112,3 +112,8 @@ export interface Rupture {
     dateRupture: string,
     idContrat: number
 }
+
+export interface TypeContrat {
+    idTypeContrat: number,
+    typeContrat: string,
+}

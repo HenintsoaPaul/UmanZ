@@ -5,7 +5,6 @@ import type { Contrat } from '~/types';
 const props = defineProps<{
     apiUrl: string;
     contrat: Contrat;
-    promotionFn: (idContrat: number) => Promise<void>;
     explusionFn: (idContrat: number, apiUrl: string) => Promise<void>;
     demissionFn: (idContrat: number, apiUrl: string) => Promise<void>;
 }>();
@@ -37,10 +36,6 @@ const props = defineProps<{
             </div>
         </div>
 
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            @click="props.promotionFn(contrat.idContrat)">
-            Promotion
-        </button>
         <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
             @click="props.explusionFn(contrat.idContrat, props.apiUrl)">
             Licenciement

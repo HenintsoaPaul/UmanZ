@@ -1,9 +1,10 @@
 Annonce (Utilisateur) (Henintsoa) -- Vita
 Profil & CV (Henintsoa)
-contrat (Henintsoa)
+Entretien liste & note & validation (Henintsoa) -- Vita
+contrat (Henintsoa) -- Vita
+
 Conge (Utilisateur) (Tiarintsoa)
 
-Entretien liste & note & validation (Henintsoa) -- Vita
 Contrat & entretien & insert & liste Contrat (Mitia)
 Rupture | promotion & demission & expulsion (Ryan)
 Conge liste Emp calendrier & validation demande (Antema)
