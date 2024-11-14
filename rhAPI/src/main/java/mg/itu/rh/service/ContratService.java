@@ -6,6 +6,8 @@ import mg.itu.rh.repository.ContratRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ContratService {
 
@@ -40,5 +42,9 @@ public class ContratService {
         contrat.setTypeContrat(typeContratService.findById(contratDTO.getIdTypeContrat()));
         contrat.setPoste(posteService.findById(contratDTO.getIdPoste()));
         return this.save(contrat);
+    }
+
+    public List<Contrat> findAll() {
+        return contratRepository.findAll();
     }
 }
