@@ -19,7 +19,7 @@ const apiTalents = ref<Talent[]>([]);
 async function loadTalents() {
     try {
         const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
-        const response = await axios.get(`${apiUrl}/talent`);
+        const response = await axios.get(`${apiUrl}/talents`);
 
         if (response.status === 200) {
             apiTalents.value = response.data;

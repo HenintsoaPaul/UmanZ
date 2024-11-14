@@ -9,7 +9,7 @@ import CV from '~/components/talent/CV.vue';
 const route = useRoute();
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const talentId = computed(() => route.params.id);
-const { data: talent, error: talentError } = useFetch<Talent>(`${apiUrl}/talent/${talentId.value}`);
+const { data: talent, error: talentError } = useFetch<Talent>(`${apiUrl}/talents/${talentId.value}`);
 
 const profilePicture = ref('/default-profile.png');
 

@@ -27,7 +27,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     const userPassword = formState.password;
 
     const apiUrl = useRuntimeConfig().public.apiUrl;
-    const user = await authenticate(userEmail, userPassword, `${apiUrl}/talent/users`);
+    const user = await authenticate(userEmail, userPassword, `${apiUrl}/talents/users`);
 
     if (typeof (user) != "string" && user != null) {
       localStorage.setItem('idUser', user.idTalent.toString());
