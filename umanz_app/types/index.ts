@@ -1,10 +1,16 @@
 export interface Formation {
     idFormation: number,
     nomFormation: string,
-    date_debut: string,
-    date_fin: string
+    dateDebut: string,
+    dateFin: string,
+    competenceCibles: CompetenceCible[]
 }
 
+export interface CompetenceCible {
+    competence: Competence,
+    idFormation: number,
+    pointGagne: number,
+}
 
 export interface Conge {
     idConge: number,

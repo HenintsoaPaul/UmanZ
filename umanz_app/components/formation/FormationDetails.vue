@@ -16,8 +16,17 @@ const props = defineProps<{
         <p class="text-gray-700">{{ formation.nomFormation }}</p>
     </div>
 
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+    <div class="mb-4" v-if="formation.competenceCibles.length">
+        <h3 class="text-xl font-semibold mb-2">Competences Cibles:</h3>
+        <ul>
+            <li v-for="(cible, i) in formation.competenceCibles" :key="i">
+                {{ cible.competence.competence }} - Manampy {{ cible.pointGagne }}
+            </li>
+        </ul>
+    </div>
+
+    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
         @click="participerFn(props.idContrat, formation.idFormation, props.apiUrl)">
-        Candidater
+        Participer
     </button>
 </template>

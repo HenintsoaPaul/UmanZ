@@ -3,7 +3,6 @@ package mg.itu.rh.controller;
 import mg.itu.rh.entity.Formation;
 import mg.itu.rh.repository.FormationRepository;
 import mg.itu.rh.service.FormationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

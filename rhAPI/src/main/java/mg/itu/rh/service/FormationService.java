@@ -17,4 +17,9 @@ public class FormationService {
     public List<Formation> findAllDisponible() {
         return formationRepository.findAllDisponible();
     }
+
+    public Formation findById( Long idFormation ) {
+        return formationRepository.findById( idFormation )
+                .orElseThrow( () -> new RuntimeException( "Formation with id " + idFormation + " not found" ) );
+    }
 }

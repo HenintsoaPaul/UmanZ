@@ -1,5 +1,8 @@
-Annonce (Utilisateur) (Henintsoa) -- Vita
 Profil & CV (Henintsoa) -- Vita
+Annonce (Utilisateur) (Henintsoa) -- Vita
+Formation:
+    - liste (Henintsoa) -- Vita
+    - add (Henintsoa) -- Vita
 Entretien liste & note & validation (Henintsoa) -- Vita
 contrat (Henintsoa) -- Vita
 
