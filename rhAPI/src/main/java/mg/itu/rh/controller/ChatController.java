@@ -2,10 +2,7 @@ package mg.itu.rh.controller;
 
 import mg.itu.rh.entity.Chat;
 import mg.itu.rh.repository.ChatRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/chat")
@@ -17,7 +14,7 @@ public class ChatController {
         this.chatRepository = chatRepository;
     }
 
-    @GetMapping
+    @PostMapping
     public String chat(@RequestParam("message") String message) {
         Chat chatResponse = chatRepository.findResponse(message);
         return chatResponse == null ?
