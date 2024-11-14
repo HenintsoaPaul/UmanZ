@@ -2,19 +2,11 @@ package mg.itu.rh.entity;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Data;
 import mg.itu.rh.other.POV;
 
@@ -51,4 +43,13 @@ public class Annonce {
     @OneToMany(mappedBy="annonce",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     @JsonView({POV.Full.class})
     private List<ExperiencePoste> experiencePostes;
+
+    @ManyToMany
+    @JoinTable(
+            name = "annonce_diplome",
+            joinColumns = @JoinColumn(name = "id_annonce"),
+            inverseJoinColumns = @JoinColumn(name = "id_diplome")
+    )
+    @JsonView({POV.Public.class})
+    private Set<Diplome> diplomes;
 }
