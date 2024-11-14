@@ -6,7 +6,7 @@ import { useRuntimeConfig } from '#imports'; // Ensure you have this import if y
 
 // Columns à afficher
 const headers = [
-    { key: 'id_talent', label: 'ID', sortable: true },
+    { key: 'idTalent', label: 'ID', sortable: true },
     { key: 'nom', label: 'Nom', sortable: true },
     { key: 'prenom', label: 'Prénom', sortable: true },
     { key: 'mail', label: 'Email', sortable: true }
@@ -19,7 +19,7 @@ const apiTalents = ref<Talent[]>([]);
 async function loadTalents() {
     try {
         const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
-        const response = await axios.get(`${apiUrl}/talents`);
+        const response = await axios.get(`${apiUrl}/talent`);
 
         if (response.status === 200) {
             apiTalents.value = response.data;

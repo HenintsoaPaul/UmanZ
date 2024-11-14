@@ -83,7 +83,7 @@ INSERT INTO entretien (date_creation, date_validation, note, motif, id_enfant, i
 VALUES ('2023-02-15', '2023-02-20', 85, 'Entretien positif', NULL, 1, 4, 1),
        ('2023-03-10', '2023-03-15', 90, 'Candidat qualifié', NULL, 2, 5, 2),
        ('2023-04-05', NULL, NULL, 'En attente de validation', 1, 3, 1, 3),
-       ('2023-05-01', '2023-05-05', 70, 'Compétences insuffisantes', NULL, 4, 2, 4),
+       ('2023-05-01', NULL, 70, 'Compétences insuffisantes', NULL, 4, 2, 4),
        ('2023-06-01', NULL, NULL, 'Annulation', 2, 5, 6, 5);
 
 INSERT INTO rupture (date_rupture, motif, id_type_rupture, id_contrat)
