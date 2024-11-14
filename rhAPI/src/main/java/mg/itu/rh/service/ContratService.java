@@ -36,9 +36,6 @@ public class ContratService {
 
     public Contrat save( ContratDTO contratDTO ) {
         Contrat contrat = new Contrat( contratDTO );
-        System.out.println("idTalent: " + contratDTO.getIdTalent() );
-        System.out.println("idPoste: " + contratDTO.getIdPoste() );
-
         contrat.setTalent( talentService.findById( contratDTO.getIdTalent() ) );
         contrat.setPoste( posteService.findById( contratDTO.getIdPoste() ) );
         TypeContrat tc = typeContratService.findById( contratDTO.getIdTypeContrat() );
