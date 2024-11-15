@@ -186,3 +186,25 @@ VALUES ('2024-12-01', '2024-12-01', 5, 'Congé annuel', 1),      -- Congé annue
        ('2024-11-05', 10, 'Congé sabbatique', 4), -- Congé sabbatique pour le contrat 4
        ('2024-12-10', '2024-12-10', 4, 'Congé urgent', 5),
        ('2024-08-10', '2024-08-10', 5, 'Congé annuel', 1);
+
+INSERT INTO chat (mot_cle, reponse) VALUES
+                                        ('au revoir', 'Au revoir :)'),
+                                        ('bye', 'Au revoir :)'),
+                                        ('salut', 'Bonjour, comment puis-je vous aider?'),
+                                        ('bonjour', 'Bonjour, comment puis-je vous aider?'),
+                                        ('postuler', 'Pour postuler, veuillez vous rendre sur notre page de recrutement et créer un compte.'),
+                                        ('processus', 'Le processus de recrutement comprend la soumission de votre CV, un test technique, et un entretien.'),
+                                        ('test technique', 'Le test technique se déroule en ligne. Vous recevrez un lien pour y accéder une fois votre candidature validée.'),
+                                        ('entretien', 'Après le test technique, nous organiserons un entretien avec notre équipe RH.'),
+                                        ('suivi', 'Vous pouvez suivre l’avancement de votre candidature sur votre tableau de bord personnel dans votre compte.'),
+                                        ('compétences', 'Nous recherchons des compétences spécifiques selon les postes. Veuillez consulter l’annonce pour plus de détails.'),
+                                        ('contrat', 'Le type de contrat dépend de votre profil et de notre offre actuelle.'),
+                                        ('formation', 'Nous offrons des programmes de formation pour développer les compétences nécessaires après votre embauche.'),
+                                        ('annonce', 'Les annonces pour les postes ouverts sont disponibles sur notre site de recrutement.'),
+                                        ('congé', 'Les conditions de congé sont définies dans le contrat de travail selon le poste.'),
+                                        ('candidature', 'Pour déposer votre candidature, remplissez le formulaire en ligne sur la page de l’offre.'),
+                                        ('profil', 'Pour consulter ou mettre à jour votre profil, connectez-vous à votre compte.'),
+                                        ('salaire', 'Le salaire dépend de votre expérience et du poste auquel vous postulez.'),
+                                        ('culture d’entreprise', 'Nous valorisons le respect, la collaboration et l’innovation au sein de notre entreprise.'),
+                                        ('aide', 'Je suis là pour vous aider ! Posez-moi vos questions sur le recrutement ou le processus de candidature.'),
+                                        ('contact', 'Pour toute question spécifique, vous pouvez nous contacter par email à recrutement@entreprise.com.');
