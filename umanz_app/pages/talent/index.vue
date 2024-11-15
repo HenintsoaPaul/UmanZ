@@ -1,10 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
-import axios from 'axios';
 import type { Talent } from '~/types';
-import { useRuntimeConfig } from '#imports'; // Ensure you have this import if you're using Nuxt.js
 
-// Columns à afficher
 const headers = [
     { key: 'idTalent', label: 'ID', sortable: true },
     { key: 'nom', label: 'Nom', sortable: true },
@@ -12,44 +8,10 @@ const headers = [
     { key: 'mail', label: 'Email', sortable: true }
 ];
 
-// Variable pour stocker les données de l'API
-const apiTalents = ref<Talent[]>([]);
+const apiUrl = useRuntimeConfig().public.apiUrl as string;
+const { data: talents } = useFetch<Talent[]>(`${apiUrl}/talents`);
 
-// Fonction pour charger les données des talents depuis l'API
-async function loadTalents() {
-    try {
-        const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
-        const response = await axios.get(`${apiUrl}/talents`);
-
-        if (response.status === 200) {
-            apiTalents.value = response.data;
-        } else {
-            console.error('Erreur lors de la récupération des talents');
-        }
-    } catch (error) {
-        console.error('Erreur lors de la requête API:', error);
-    }
-}
-
-// Appel de la fonction pour charger les données au chargement du composant
-onMounted(() => {
-    loadTalents();
-});
-
-// Filtre par recherche
-const q = ref('');
-
-const filteredTalents = computed(() => {
-    if (!q.value) {
-        return apiTalents.value;
-    }
-
-    return apiTalents.value.filter((talent) => {
-        return Object.values(talent).some((value) => {
-            return String(value).toLowerCase().includes(q.value.toLowerCase());
-        });
-    });
-});
+const { q, filteredRows: filteredTalents } = useFilteredRows(talents);
 </script>
 
 <template>
@@ -59,5 +21,5 @@ const filteredTalents = computed(() => {
         <UInput v-model="q" placeholder="Filtrer les talents..." />
     </div>
 
-    <UTable :columns="headers" :rows="filteredTalents" />
+    <UTable :columns="headers" :rows="filteredTalents ?? []" />
 </template>
