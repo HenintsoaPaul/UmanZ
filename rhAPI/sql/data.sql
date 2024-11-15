@@ -188,6 +188,10 @@ VALUES ('2024-12-01', '2024-12-01', 5, 'Congé annuel', 1),      -- Congé annue
        ('2024-08-10', '2024-08-10', 5, 'Congé annuel', 1);
 
 INSERT INTO chat (mot_cle, reponse) VALUES
+                                        ('au revoir', 'Au revoir :)'),
+                                        ('bye', 'Au revoir :)'),
+                                        ('salut', 'Bonjour, comment puis-je vous aider?'),
+                                        ('bonjour', 'Bonjour, comment puis-je vous aider?'),
                                         ('postuler', 'Pour postuler, veuillez vous rendre sur notre page de recrutement et créer un compte.'),
                                         ('processus', 'Le processus de recrutement comprend la soumission de votre CV, un test technique, et un entretien.'),
                                         ('test technique', 'Le test technique se déroule en ligne. Vous recevrez un lien pour y accéder une fois votre candidature validée.'),

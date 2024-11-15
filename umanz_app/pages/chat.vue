@@ -1,8 +1,13 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import axios from "axios";
 
-const messages = ref([])
+interface Message {
+  text: string;
+  type: 'user' | 'bot';
+}
+
+const messages = ref<Message[]>([])
 
 const userInput = ref('')
 
@@ -29,7 +34,7 @@ const sendMessage = () => {
 <template>
   <div class="max-w-md mx-auto p-4 bg-gray-100 rounded-lg shadow-md h-screen flex flex-col">
     <!-- Messages -->
-    <div class="flex-1 overflow-y-auto mb-4 space-y-2">
+    <div class="flex-1 overflow-y-auto mb-4 space-y-2 flex flex-col px-1.5">
       <div
           v-for="(msg, index) in messages"
           :key="index"
