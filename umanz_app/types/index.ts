@@ -1,10 +1,16 @@
 export interface Formation {
     idFormation: number,
     nomFormation: string,
-    date_debut: string,
-    date_fin: string
+    dateDebut: string,
+    dateFin: string,
+    competenceCibles: CompetenceCible[]
 }
 
+export interface CompetenceCible {
+    competence: Competence,
+    idFormation: number,
+    pointGagne: number,
+}
 
 export interface Conge {
     idConge: number,
@@ -36,7 +42,9 @@ export interface Talent {
     prenom: string,
     mail: string,
     password: string,
-    isAdmin: boolean
+    isAdmin: boolean,
+    competences: CompetenceTalent[],
+    experiences: ExperienceTalent[]
 }
 
 export interface Competence {
@@ -72,20 +80,6 @@ export interface Absence {
     idContrat: number,
 }
 
-export interface Talent {
-    id_talent: number,
-    nom: string,
-    prenom: string,
-    mail: string,
-    password: string,
-}
-
-export interface TalentCompetence {
-    id_competence: number,
-    id_talent: number,
-    point: number,
-}
-
 export interface Poste {
     idPoste: number,
     nomPoste: string,
@@ -93,15 +87,15 @@ export interface Poste {
 }
 
 export interface ExperienceTalent {
-    id_poste: number,
-    id_talent: number,
+    poste: Poste,
+    talent: Talent,
     ans: number,
 }
 
-export interface CV {
-    id_talent: number;
-    competences: TalentCompetence[],
-    experiences: ExperienceTalent[]
+export interface CompetenceTalent {
+    competence: Competence,
+    talent: Talent,
+    point: number,
 }
 
 export interface EtatEntretien {
@@ -118,4 +112,14 @@ export interface Entretien {
     talent: Talent
     annonce: Annonce,
     etatEntretien: EtatEntretien
+}
+
+export interface Rupture {
+    dateRupture: string,
+    idContrat: number
+}
+
+export interface TypeContrat {
+    idTypeContrat: number,
+    typeContrat: string,
 }

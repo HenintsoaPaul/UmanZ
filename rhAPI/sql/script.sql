@@ -9,3 +9,7 @@ WHERE c.id_contrat NOT IN (
 )
   AND t.id_talent = 5
   AND c.date_fin < CURRENT_DATE;
+
+SELECT * FROM entretien e
+        WHERE e.id_etat_entretien = 2
+        AND e.id_annonce = 4;

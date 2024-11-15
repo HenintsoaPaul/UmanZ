@@ -6,7 +6,7 @@ import { useRuntimeConfig } from '#imports'; // Ensure you have this import if y
 
 // Columns à afficher
 const headers = [
-    { key: 'id_talent', label: 'ID', sortable: true },
+    { key: 'idTalent', label: 'ID', sortable: true },
     { key: 'nom', label: 'Nom', sortable: true },
     { key: 'prenom', label: 'Prénom', sortable: true },
     { key: 'mail', label: 'Email', sortable: true }
