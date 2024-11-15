@@ -13,10 +13,14 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class IdCompetenceAnnonce implements Serializable {
     @Column(name = "id_competence")
     private Long idCompetence;
     @Column(name = "id_annonce")
     private Long idAnnonce;
+
+    public IdCompetenceAnnonce(Long idCompetence, Long idAnnonce) {
+        this.idCompetence = idCompetence;
+        this.idAnnonce = idAnnonce;
+    }
 }

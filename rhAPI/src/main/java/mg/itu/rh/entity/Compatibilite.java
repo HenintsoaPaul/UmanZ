@@ -41,19 +41,25 @@ public class Compatibilite {
     }
 
     protected void setPourcentage(){
-        double point=0;
-        point+=(calculateByDiplome()*coefDiplome);
-        point+=(calculateByCompetence()*coefCompetence);
-        point+=(calculateByExperience()*coefExperience);
-        point+=(calculateByLangue()*coefLangue);
+        double pointPour=0;
+        double point=(calculateByDiplome()*coefDiplome);
+        pointPour+=point;
+        point=(calculateByCompetence()*coefCompetence);
+        pointPour+=point;
+        point=(calculateByExperience()*coefExperience);
+        pointPour+=point;
+        point=(calculateByLangue()*coefLangue);
+        pointPour+=point;
         double coefTotal=coefCompetence+coefLangue+coefExperience+coefDiplome;
-        this.setPourcentage(point/coefTotal*100.0);
+        System.out.println(pointPour+" "+coefTotal+" pourcentage mahafinatitra");
+        this.setPourcentage(pointPour/coefTotal*100.0/20.0);
     }
 
     public Compatibilite(Annonce annonce,Talent talent){
         //this.setIdTalentAnnonce(new IdTalentAnnonce(annonce.getIdAnnonce(),talent.getIdTalent()));
         this.setAnnonce(annonce);
         this.setTalent(talent);
+        System.out.println("Tonga eto");
         this.setPourcentage();
     }
 
@@ -85,8 +91,11 @@ public class Compatibilite {
                 }
             }
             if(!matched){
-                point+=6;
+                point+=3;
             }
+        }
+        if(competenceAnnonces.size()==0){
+            return 20.0;
         }
         return point/competenceAnnonces.size();
     }
@@ -104,8 +113,11 @@ public class Compatibilite {
                 }
             }
             if(!matched){
-                point+=6;
+                point+=3;
             }
+        }
+        if(annonceLangues.size()==0){
+            return 20.0;
         }
         return point/annonceLangues.size();
     }
@@ -135,7 +147,7 @@ public class Compatibilite {
             }
             return 20;
         }
-        return 5.0;
+        return 3.0;
     }
 
     protected static double calculateByCompetence(CompetenceAnnonce competenceAnnonce,TalentCompetence competenceTalent){
@@ -168,6 +180,6 @@ public class Compatibilite {
             }
             return 20.0;
         }
-        return 6.0;
+        return 3.0;
     }
 }

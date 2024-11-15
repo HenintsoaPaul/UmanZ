@@ -23,10 +23,6 @@ public class TalentService {
         return talentRepository.findAll();
     }
 
-    public List<Talent> findAll(){
-        return talentRepository.findAll();
-    }
-
     public Talent findByEmailAndPassword( String email, String password ) {
         return talentRepository.findByEmailAndPassword( email, password ).orElse( null );
     }

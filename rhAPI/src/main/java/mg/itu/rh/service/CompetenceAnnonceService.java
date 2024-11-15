@@ -29,15 +29,11 @@ public class CompetenceAnnonceService {
     @Transactional
     public CompetenceAnnonce save( CompetenceAnnonceDTO dto, Annonce annonce ) {
         CompetenceAnnonce ca = dto.getCompetenceAnnonce( competenceService );
-        IdCompetenceAnnonce id = new IdCompetenceAnnonce( annonce.getIdAnnonce(), dto.getCompetence().getIdCompetence() );
+        IdCompetenceAnnonce id = new IdCompetenceAnnonce( dto.getCompetence().getIdCompetence(), annonce.getIdAnnonce() );
         ca.setId( id );
-        return this.save( ca, annonce );
-    }
-
-    @Transactional
-    public CompetenceAnnonce save( CompetenceAnnonce competenceAnnonce, Annonce annonce ) {
-        competenceAnnonce.setAnnonce( annonce );
-        return competenceAnnonceRepository.save( competenceAnnonce );
+        ca.setAnnonce( annonce );
+        ca.setCompetence(competenceService.findById(dto.getCompetence().getIdCompetence()));
+        return competenceAnnonceRepository.save( ca );
     }
 
     public List<CompetenceAnnonce> findAllByIdAnnonce( Long idAnnonce ) {

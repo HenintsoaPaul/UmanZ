@@ -89,7 +89,7 @@ public class AnnonceService {
             langueAnnonce.setAnnonce(annonce);
             langueAnnonce.setLangue(langueService.findById(annonceLangue.getIdLangue()));
             langueAnnonce.setNiveauLangue(niveauLangueService.findById(annonceLangue.getIdLangue()));
-            //annonce.getAnnonceLangues().add(annonceLangueService.save(langueAnnonce));
+            annonce.getAnnonceLangues().add(langueAnnonce);
         }
     }
 }

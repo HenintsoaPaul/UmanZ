@@ -50,8 +50,12 @@ public class Talent {
     )
     @JsonView({POV.Public.class})
     private Set<Diplome> diplomes;
+
     @JsonView( { POV.Public.class } )
     @OneToMany( mappedBy = "talent", cascade = CascadeType.ALL, fetch = FetchType.LAZY )
     private Set<CompetenceTalent> competenceTalents;
 
+    @JsonView({POV.Public.class})
+    @OneToMany(mappedBy="talent",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    private List<TalentLangue> talentLangues;
 }

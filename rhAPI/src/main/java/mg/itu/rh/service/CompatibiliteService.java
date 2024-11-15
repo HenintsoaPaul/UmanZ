@@ -33,6 +33,7 @@ public class CompatibiliteService {
         List<Compatibilite> compatibilites=new ArrayList<Compatibilite>();
         for(int i=0;i<talents.size();i++){
             Compatibilite compatibilite=new Compatibilite(annonce,talents.get(i));
+            System.out.println(compatibilite.getPourcentage()+" pourcentage");
             compatibilites.add(this.save(compatibilite));
         }
         return compatibilites;
