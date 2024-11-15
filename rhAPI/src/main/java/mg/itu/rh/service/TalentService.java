@@ -26,4 +26,8 @@ public class TalentService {
     public List<Talent> findAll() {
         return talentRepository.findAll();
     }
+
+    public Talent save( Talent talent ) {
+        return this.talentRepository.save( talent );
+    }
 }
