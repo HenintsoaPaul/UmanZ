@@ -32,7 +32,7 @@ const sendMessage = () => {
 </script>
 
 <template>
-  <div class="max-w-md mx-auto p-4 bg-gray-100 rounded-lg shadow-md h-screen flex flex-col">
+  <div class="max-w-md mx-auto p-4 bg-gray-600 rounded-lg shadow-md h-screen flex flex-col">
     <!-- Messages -->
     <div class="flex-1 overflow-y-auto mb-4 space-y-2 flex flex-col px-1.5">
       <div
@@ -40,7 +40,7 @@ const sendMessage = () => {
           :key="index"
           :class="[
           'p-2 rounded-lg max-w-xs',
-          msg.type === 'user' ? 'bg-blue-500 text-white self-end' : 'bg-gray-300 text-gray-900 self-start'
+          msg.type === 'user' ? 'bg-blue-500 text-white self-end' : 'bg-gray-700 text-white self-start'
         ]"
       >
         <p>{{ msg.text }}</p>
