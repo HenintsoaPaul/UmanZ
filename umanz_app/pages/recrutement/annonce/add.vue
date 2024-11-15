@@ -3,7 +3,6 @@ import { ref, onMounted } from 'vue'
 import type { Competence, CompetenceAnnonce, ExperiencePoste, Poste } from '~/types';
 
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
-
 const { data: postes, refresh: refreshPostes } = useFetch<Poste[]>(`${apiUrl}/postes`);
 const { data: competences, refresh: refreshCompetences } = useFetch<Competence[]>(`${apiUrl}/competences`);
 
@@ -114,27 +113,15 @@ onMounted(updateData);
 
             <!-- Competences et Experiences -->
             <div class="grid grid-cols-2 gap-4">
-                <!-- Competences -->
                 <div v-if="form.competences.length > 0" class="form-group">
-                    <label class="block text-sm font-medium text-gray-700">Competences:</label>
-                    <div v-for="(cop, index) in form.competences" :key="index" class="flex items-center mt-2">
-                        <label class="ml-2 block text-sm text-gray-900">{{ cop.competence.competence }}</label>
-                        <input type="number" v-model="cop.point" placeholder="Point"
-                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-                    </div>
+                    <ListInputCompetence title="Competences" :competences="form.competences" />
                 </div>
                 <div v-else>
                     Loading Competences...
                 </div>
 
-                <!-- Experiences -->
                 <div v-if="form.experiences.length > 0" class="form-group">
-                    <label class="block text-sm font-medium text-gray-700">Experiences:</label>
-                    <div v-for="(pt, index) in form.experiences" :key="index" class="mt-2">
-                        <label class="block text-sm text-gray-900">{{ pt.poste.nomPoste }}</label>
-                        <input type="number" v-model="pt.ans" placeholder="Durée (années)"
-                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-                    </div>
+                    <ListInputExperience title="Experiences" :experiences="form.experiences" />
                 </div>
                 <div v-else>
                     Loading Experiences...

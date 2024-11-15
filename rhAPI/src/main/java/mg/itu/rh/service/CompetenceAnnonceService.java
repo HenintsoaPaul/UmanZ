@@ -26,7 +26,7 @@ public class CompetenceAnnonceService {
 
     private CompetenceAnnonce save( CompetenceAnnonceDTO dto, Annonce annonce ) {
         CompetenceAnnonce ca = dto.getCompetenceAnnonce( competenceService );
-        IdCompetenceAnnonce id = new IdCompetenceAnnonce( annonce.getIdAnnonce(), dto.getCompetence().getIdCompetence() );
+        IdCompetenceAnnonce id = new IdCompetenceAnnonce( dto.getCompetence().getIdCompetence(), annonce.getIdAnnonce() );
         ca.setId( id );
         return this.save( ca, annonce );
     }
