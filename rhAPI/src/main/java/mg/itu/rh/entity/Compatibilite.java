@@ -13,14 +13,16 @@ import java.util.Set;
 @Data
 public class Compatibilite {
     @EmbeddedId
-    private IdTalentAnnonce idTalentAnnonce;
+    private IdTalentAnnonce idTalentAnnonce=new IdTalentAnnonce();
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("idAnnonce")
     @JoinColumn(name = "id_annonce",insertable = false,updatable = false)
     @JsonView({POV.Public.class})
     private Annonce annonce;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("idTalent")
     @JoinColumn(name = "id_talent",insertable = false,updatable = false)
     private Talent talent;
 

@@ -1,5 +1,6 @@
 package mg.itu.rh.service;
 
+import jakarta.transaction.Transactional;
 import mg.itu.rh.dto.CompetenceAnnonceDTO;
 import mg.itu.rh.entity.Annonce;
 import mg.itu.rh.entity.CompetenceAnnonce;
@@ -19,19 +20,22 @@ public class CompetenceAnnonceService {
         this.competenceAnnonceRepository = competenceAnnonceRepository;
     }
 
+    @Transactional
     public void saveAllFromDTO( List<CompetenceAnnonceDTO> competences, Annonce annonce ) {
         for ( CompetenceAnnonceDTO competence : competences )
-            save( competence, annonce );
+            annonce.addCompetence(save( competence, annonce ));
     }
 
-    private CompetenceAnnonce save( CompetenceAnnonceDTO dto, Annonce annonce ) {
+    @Transactional
+    public CompetenceAnnonce save( CompetenceAnnonceDTO dto, Annonce annonce ) {
         CompetenceAnnonce ca = dto.getCompetenceAnnonce( competenceService );
         IdCompetenceAnnonce id = new IdCompetenceAnnonce( annonce.getIdAnnonce(), dto.getCompetence().getIdCompetence() );
         ca.setId( id );
         return this.save( ca, annonce );
     }
 
-    private CompetenceAnnonce save( CompetenceAnnonce competenceAnnonce, Annonce annonce ) {
+    @Transactional
+    public CompetenceAnnonce save( CompetenceAnnonce competenceAnnonce, Annonce annonce ) {
         competenceAnnonce.setAnnonce( annonce );
         return competenceAnnonceRepository.save( competenceAnnonce );
     }
