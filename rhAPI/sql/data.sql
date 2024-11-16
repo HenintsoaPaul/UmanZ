@@ -275,6 +275,28 @@ VALUES ('2024-12-01', '2024-12-01', 5, 'Congé annuel', 1),      -- Congé annue
        ('2024-12-10', '2024-12-10', 4, 'Congé urgent', 5),
        ('2024-08-10', '2024-08-10', 5, 'Congé annuel', 1);
 
+INSERT INTO chat (mot_cle, reponse) VALUES
+                                        ('au revoir', 'Au revoir :)'),
+                                        ('bye', 'Au revoir :)'),
+                                        ('salut', 'Bonjour, comment puis-je vous aider?'),
+                                        ('bonjour', 'Bonjour, comment puis-je vous aider?'),
+                                        ('postuler', 'Pour postuler, veuillez vous rendre sur notre page de recrutement et créer un compte.'),
+                                        ('processus', 'Le processus de recrutement comprend la soumission de votre CV, un test technique, et un entretien.'),
+                                        ('test technique', 'Le test technique se déroule en ligne. Vous recevrez un lien pour y accéder une fois votre candidature validée.'),
+                                        ('entretien', 'Après le test technique, nous organiserons un entretien avec notre équipe RH.'),
+                                        ('suivi', 'Vous pouvez suivre l''avancement de votre candidature sur votre tableau de bord personnel dans votre compte.'),
+                                        ('compétences', 'Nous recherchons des compétences spécifiques selon les postes. Veuillez consulter l''annonce pour plus de détails.'),
+                                        ('contrat', 'Le type de contrat dépend de votre profil et de notre offre actuelle.'),
+                                        ('formation', 'Nous offrons des programmes de formation pour développer les compétences nécessaires après votre embauche.'),
+                                        ('annonce', 'Les annonces pour les postes ouverts sont disponibles sur notre site de recrutement.'),
+                                        ('congé', 'Les conditions de congé sont définies dans le contrat de travail selon le poste.'),
+                                        ('candidature', 'Pour déposer votre candidature, remplissez le formulaire en ligne sur la page de l''offre.'),
+                                        ('profil', 'Pour consulter ou mettre à jour votre profil, connectez-vous à votre compte.'),
+                                        ('salaire', 'Le salaire dépend de votre expérience et du poste auquel vous postulez.'),
+                                        ('culture d''entreprise', 'Nous valorisons le respect, la collaboration et l''innovation au sein de notre entreprise.'),
+                                        ('aide', 'Je suis là pour vous aider ! Posez-moi vos questions sur le recrutement ou le processus de candidature.'),
+                                        ('contact', 'Pour toute question spécifique, vous pouvez nous contacter par email à recrutement@entreprise.com.');
+
 insert into compatibilite(id_annonce,id_talent,pourcentage)
 values (1,1,20.23),
        (1,2,50.14),
@@ -318,3 +340,165 @@ values (1,1,4),
        (4,10,4),
        (5,8,3),
        (5,11,3);
+-- Insertion des questions de projet (subjectives)
+INSERT INTO question_projet (question) VALUES
+                                              ('Comment géreriez-vous un conflit dans une équipe de projet ?'),
+                                              ('Quelle est votre approche pour résoudre un problème de communication entre les membres d''une équipe ?'),
+                                              ('Comment motiveriez-vous une équipe face à un projet difficile ?'),
+                                              ('Quelle est votre méthode pour prioriser les tâches dans un projet complexe ?'),
+                                              ('Comment gérez-vous la pression lorsqu''un projet doit respecter des délais serrés ?');
+
+-- Insertion des domaines
+INSERT INTO domaine (domaine) VALUES
+                                     ('Gestion de projet'),
+                                     ('Communication'),
+                                     ('Résolution de conflits'),
+                                     ('Leadership'),
+                                     ('Planification stratégique');
+
+-- Insertion des questions techniques avec 3 réponses différentes
+INSERT INTO question_technique (question, id_domaine) VALUES
+                                                             ('Quelles technologies utiliseriez-vous pour gérer un projet Agile ?', 1),
+                                                             ('Quelles sont les principales méthodologies de gestion de projet ?', 1),
+                                                             ('Comment établir une charte de communication dans un projet ?', 2),
+                                                             ('Quels outils recommandez-vous pour la gestion des conflits dans une équipe ?', 3),
+                                                             ('Comment définir des indicateurs de performance pour un projet ?', 4),
+                                                             ('Quels sont les risques majeurs dans la planification d''un projet et comment les anticiper ?', 5);
+
+-- Insertion des réponses aux questions techniques (avec 3 réponses par question)
+INSERT INTO reponse (reponse, note, id_question_technique) VALUES
+-- Question 1 : Quelles technologies utiliseriez-vous pour gérer un projet Agile ?
+('Utilisation de Jira et Trello pour gérer le backlog et les sprints.', 8.5, 1),
+('Utilisation de Monday.com pour la gestion des tâches et de la planification Agile.', 7.5, 1),
+('Trello avec des tableaux Kanban pour la gestion des tâches, suivi de l''avancement et des sprints.', 8.0, 1),
+-- Question 2 : Quelles sont les principales méthodologies de gestion de projet ?
+('Scrum et Kanban sont les méthodologies les plus courantes.', 9.0, 2),
+('Waterfall et Agile sont les deux plus utilisées selon la complexité du projet.', 8.0, 2),
+('Scrum pour les projets de développement logiciel et Kanban pour la gestion des flux de travail.', 7.5, 2),
+-- Question 3 : Comment établir une charte de communication dans un projet ?
+('Création de canaux de communication clairs et utilisation de plateformes comme Slack.', 7.5, 3),
+('Réunions hebdomadaires et mise en place d''un document partagé sur Google Drive.', 8.0, 3),
+('Utilisation d''outils comme Asana pour la gestion de la communication entre les membres de l''équipe.', 8.5, 3),
+-- Question 4 : Quels outils recommandez-vous pour la gestion des conflits dans une équipe ?
+('Mise en place de réunions de médiation et utilisation de méthodes comme le feedback constructif.', 8.0, 4),
+('Utilisation d''outils de feedback 360° pour aider à identifier et résoudre les conflits.', 7.0, 4),
+('Organisation de discussions ouvertes et ateliers de team building pour améliorer la cohésion.', 8.5, 4),
+-- Question 5 : Comment définir des indicateurs de performance pour un projet ?
+('Définition d''objectifs SMART et suivis réguliers des KPI.', 8.0, 5),
+('Utilisation de critères comme les délais, le budget et la qualité des livrables.', 8.5, 5),
+('Suivi des performances à l''aide de tableaux de bord dynamiques et de KPIs mesurables.', 9.0, 5),
+-- Question 6 : Quels sont les risques majeurs dans la planification d''un projet et comment les anticiper ?
+('Analyse SWOT et mise en place de plans de contingence.', 7.0, 6),
+('Identification des risques techniques, humains et financiers et mise en place de stratégies de mitigation.', 8.0, 6),
+('Réévaluation régulière des risques et ajustement des plans selon les imprévus.', 7.5, 6);
+
+-- Insertion des évaluations
+INSERT INTO evaluation (date_evaluation,id_talent) VALUES
+                                                ('2024-11-01',1),
+                                                ('2024-11-02',2),
+                                                ('2024-11-03',3),
+                                                ('2024-11-04',4),
+                                                ('2024-11-05',5);
+
+-- Insertion des résultats techniques des talents
+INSERT INTO resultat_technique (note, date_resultat, id_domaine, id_talent) VALUES
+                                                                                   (8.0, '2024-11-01 10:00:00', 1, 1),
+                                                                                   (7.5, '2024-11-01 10:30:00', 2, 1),
+                                                                                   (9.0, '2024-11-02 11:00:00', 3, 2),
+                                                                                   (6.5, '2024-11-03 12:00:00', 4, 3),
+                                                                                   (8.0, '2024-11-04 13:00:00', 5, 4),
+                                                                                   (7.0, '2024-11-05 14:00:00', 1, 5);
+
+-- Insertion des réponses des talents aux questions de projet
+INSERT INTO question_evaluation ( id_question_projet, id_evaluation, note, reponse) VALUES
+                                                                                          (1, 1, 8.5, 'Il est essentiel d''écouter chaque partie et de trouver un compromis.'),
+                                                                                          (2, 1, 7.0, 'Mettre en place des réunions régulières et des canaux de communication adaptés.'),
+                                                                                          (3, 2, 9.0, 'Encourager les membres de l''équipe à prendre des initiatives et reconnaître leurs efforts.'),
+                                                                                          (4, 3, 6.0, 'Il est important de se concentrer sur les tâches à haute priorité et de déléguer efficacement.'),
+                                                                                          (5, 4, 8.0, 'Organiser des réunions régulières pour suivre les progrès et ajuster les priorités en conséquence.'),
+                                                                                          (1, 5, 7.5, 'Prendre une approche calme et structurée pour gérer la pression et respecter les délais.');
+
+-- Question 1
+INSERT INTO question_technique (question, id_domaine)
+VALUES
+    ('Quelle est la meilleure pratique pour la gestion de la mémoire dans une application Java ?', 1);
+
+-- Question 2
+INSERT INTO question_technique (question, id_domaine)
+VALUES
+    ('Comment optimiser les requêtes SQL dans une base de données relationnelle ?', 2);
+
+-- Question 3
+INSERT INTO question_technique (question, id_domaine)
+VALUES
+    ('Comment sécuriser une application web utilisant JWT (JSON Web Token) ?', 3);
+
+-- Question 4
+INSERT INTO question_technique (question, id_domaine)
+VALUES
+    ('Quelle approche recommanderiez-vous pour gérer les exceptions dans une application Spring Boot ?', 4);
+
+-- Question 5
+INSERT INTO question_technique (question, id_domaine)
+VALUES
+    ('Quel est l''intérêt de la méthode `Stream.forEach()` en Java ?', 5);
+
+-- Réponses pour la question 1
+INSERT INTO reponse (reponse, note, id_question_technique)
+VALUES
+    ('Utiliser des variables locales et éviter les références globales.', 3.5, 1),
+    ('S''assurer que toutes les ressources sont fermées dans un bloc "finally".', 4.0, 1),
+    ('Utiliser des structures de données dynamiques comme des ArrayLists.', 2.5, 1);
+
+-- Réponses pour la question 2
+INSERT INTO reponse (reponse, note, id_question_technique)
+VALUES
+    ('Utiliser des index sur les colonnes fréquemment utilisées dans les conditions de jointure ou de filtrage.', 4.5, 2),
+    ('Utiliser des requêtes imbriquées pour réduire le nombre de lignes retournées.', 3.0, 2),
+    ('Utiliser la pagination pour limiter le nombre de résultats renvoyés par la requête.', 3.5, 2);
+
+-- Réponses pour la question 3
+INSERT INTO reponse (reponse, note, id_question_technique)
+VALUES
+    ('Stocker le token dans le "localStorage" côté client.', 2.5, 3),
+    ('Utiliser HTTPS pour chiffrer la communication entre le client et le serveur.', 5.0, 3),
+    ('Éviter l''utilisation des tokens JWT pour l''authentification.', 1.5, 3);
+
+-- Réponses pour la question 4
+INSERT INTO reponse (reponse, note, id_question_technique)
+VALUES
+    ('Utiliser des blocs "try-catch" dans chaque méthode pour attraper les exceptions.', 3.0, 4),
+    ('Utiliser des contrôleurs globaux annotés avec "@ControllerAdvice" pour centraliser la gestion des erreurs.', 4.0, 4),
+    ('Lancer directement les exceptions sans les gérer dans les méthodes.', 2.0, 4);
+
+-- Réponses pour la question 5
+INSERT INTO reponse (reponse, note, id_question_technique)
+VALUES
+    ('Elle permet de traiter les éléments d''une collection de manière parallèle, ce qui améliore les performances.', 4.0, 5),
+    ('Elle permet de simplifier l''écriture du code en supprimant les boucles classiques.', 3.0, 5),
+    ('Elle ne permet pas d''optimiser les performances, mais rend le code plus lisible.', 2.0, 5);
+
+-- Question 1
+INSERT INTO question_projet (question)
+VALUES
+    ('Comment abordez-vous la gestion des risques dans un projet technique ?');
+
+-- Question 2
+INSERT INTO question_projet (question)
+VALUES
+    ('Quelles stratégies utilisez-vous pour motiver une équipe sur un projet long terme ?');
+
+-- Question 3
+INSERT INTO question_projet (question)
+VALUES
+    ('De quelle manière ajustez-vous un projet lorsque les attentes du client changent en cours de réalisation ?');
+
+-- Question 4
+INSERT INTO question_projet (question)
+VALUES
+    ('Comment assurez-vous que tous les membres de l''équipe comprennent bien leurs rôles et responsabilités ?');
+
+-- Question 5
+INSERT INTO question_projet (question)
+VALUES
+    ('Quelles sont vos méthodes pour faire face à des délais serrés dans un projet ?');

@@ -84,6 +84,36 @@ CREATE TABLE niveau_langue(
                               UNIQUE(niveau_langue)
 );
 
+CREATE TABLE chat(
+                     id_chat SERIAL,
+                     mot_cle VARCHAR(50)  NOT NULL,
+                     reponse TEXT NOT NULL,
+                     PRIMARY KEY(id_chat),
+                     UNIQUE(mot_cle)
+);
+
+CREATE TABLE question_projet(
+                                id_question_projet SERIAL,
+                                question TEXT NOT NULL,
+                                PRIMARY KEY(id_question_projet),
+                                UNIQUE(question)
+);
+
+CREATE TABLE evaluation(
+                           id_evaluation SERIAL,
+                           date_evaluation DATE NOT NULL,
+                           id_talent INTEGER NOT NULL,
+                           PRIMARY KEY(id_evaluation),
+                           FOREIGN KEY(id_talent) REFERENCES talent(id_talent)
+);
+
+CREATE TABLE domaine(
+                        id_domaine SERIAL,
+                        domaine VARCHAR(50)  NOT NULL,
+                        PRIMARY KEY(id_domaine),
+                        UNIQUE(domaine)
+);
+
 CREATE TABLE entretien(
                           id_entretien SERIAL,
                           date_creation DATE NOT NULL,
@@ -157,6 +187,35 @@ CREATE TABLE diplome(
                         id_niveau_diplome INTEGER NOT NULL,
                         PRIMARY KEY(id_diplome),
                         FOREIGN KEY(id_niveau_diplome) REFERENCES niveau_diplome(id_niveau_diplome)
+);
+
+CREATE TABLE question_technique(
+                                   id_question_technique SERIAL,
+                                   question TEXT NOT NULL,
+                                   id_domaine INTEGER NOT NULL,
+                                   PRIMARY KEY(id_question_technique),
+                                   UNIQUE(question),
+                                   FOREIGN KEY(id_domaine) REFERENCES domaine(id_domaine)
+);
+
+CREATE TABLE reponse(
+                        id_reponse SERIAL,
+                        reponse VARCHAR(50)  NOT NULL,
+                        note NUMERIC(15,2)   NOT NULL,
+                        id_question_technique INTEGER NOT NULL,
+                        PRIMARY KEY(id_reponse),
+                        FOREIGN KEY(id_question_technique) REFERENCES question_technique(id_question_technique)
+);
+
+CREATE TABLE resultat_technique(
+                                   id_resultat_technique SERIAL,
+                                   note NUMERIC(15,2)  ,
+                                   date_resultat TIMESTAMP,
+                                   id_domaine INTEGER NOT NULL,
+                                   id_talent INTEGER NOT NULL,
+                                   PRIMARY KEY(id_resultat_technique),
+                                   FOREIGN KEY(id_domaine) REFERENCES domaine(id_domaine),
+                                   FOREIGN KEY(id_talent) REFERENCES talent(id_talent)
 );
 
 CREATE TABLE talent_competence(
@@ -256,4 +315,14 @@ CREATE TABLE compatibilite(
                               PRIMARY KEY(id_talent, id_annonce),
                               FOREIGN KEY(id_talent) REFERENCES talent(id_talent),
                               FOREIGN KEY(id_annonce) REFERENCES annonce(id_annonce)
+);
+
+CREATE TABLE question_evaluation(
+                                    id_question_projet INTEGER,
+                                    id_evaluation INTEGER,
+                                    note NUMERIC(15,2)  ,
+                                    reponse TEXT NOT NULL,
+                                    PRIMARY KEY(id_question_projet, id_evaluation),
+                                    FOREIGN KEY(id_question_projet) REFERENCES question_projet(id_question_projet),
+                                    FOREIGN KEY(id_evaluation) REFERENCES evaluation(id_evaluation)
 );
