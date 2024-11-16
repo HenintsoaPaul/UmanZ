@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { z } from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
-import axios from 'axios';
-import type { Competence, CompetenceAnnonce, CompetenceCible, CompetenceTalent } from '~/types';
+import type { Competence, CompetenceAnnonce } from '~/types';
 
 const schema = z.object({
     nomFormation: z.string().min(5, 'Le nom de la formation est obligatoire'),
@@ -32,27 +31,36 @@ const isFormValid = computed(() => {
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const { data: competences, refresh: refreshCompetences } = useFetch<Competence[]>(`${apiUrl}/competences`);
 
-// const errorMessage = 
-
+const errorMessage = ref('');
+const successMessage = ref('');
 const loading = ref(false);
-async function onSubmit(event: FormSubmitEvent<Schema>) {
-    const isValid = schema.safeParse(event.data).success;
 
-    if (!isValid) {
+async function onSubmit(event: FormSubmitEvent<Schema>) {
+    if (!schema.safeParse(event.data).success) {
         form.error = 'Une erreur s\'est produite lors de la soumission du formulaire.';
         return;
     }
 
     loading.value = true;
     try {
-        const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
-        const response = await axios.post(`${apiUrl}/formations`, toRaw(form));
+        const formKdj = toRaw({
+            ...form,
+            competences: form.competences.filter(cp => cp.point > 0).map(cp => toRaw(cp)),
+        });
+        console.log(toRaw(formKdj));
 
-        console.log('Form submitted successfully:', response.data);
-        form.error = 'Form submitted successfully';
+        const response = await $fetch(`${apiUrl}/formations`, {
+            method: 'POST',
+            body: toRaw(formKdj)
+        });
+
+        console.log('Form submitted successfully:', response);
+        errorMessage.value = '';
+        successMessage.value = 'Le formulaire a été soumis avec succès.';
     } catch (error) {
         console.error('Error submitting form:', error);
-        form.error = 'Une erreur s\'est produite lors de la soumission du formulaire.';
+        errorMessage.value = 'Une erreur s\'est produite lors de la soumission du formulaire.';
+        successMessage.value = '';
     } finally {
         loading.value = false;
     }
@@ -95,7 +103,8 @@ onMounted(async () => {
                 {{ loading ? 'En cours...' : 'Soumettre' }}
             </UButton>
 
-            <p v-if="form.error" class="text-red-500">{{ form.error }}</p>
+            <p v-if="errorMessage" class="text-red-500">{{ errorMessage }}</p>
+            <p v-if="successMessage" class="text-green-500">{{ successMessage }}</p>
         </UForm>
     </div>
 </template>
