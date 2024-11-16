@@ -15,13 +15,13 @@ public class Talent {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "id_talent" )
-    @JsonView( { POV.Public.class } )
+    @JsonView({POV.Public.class,POV.Question.class})
     private Long idTalent;
 
-    @JsonView( { POV.Public.class } )
+    @JsonView({POV.Public.class,POV.Question.class})
     private String nom;
 
-    @JsonView( { POV.Public.class } )
+    @JsonView({POV.Public.class,POV.Question.class})
     private String prenom;
 
     @JsonView( { POV.Public.class } )

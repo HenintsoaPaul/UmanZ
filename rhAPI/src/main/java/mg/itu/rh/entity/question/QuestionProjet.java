@@ -12,9 +12,9 @@ public class QuestionProjet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_question_projet")
-    @JsonView({POV.Public.class})
+    @JsonView({POV.Public.class,POV.Question.class})
     private Long idQuestionProjet;
 
-    @JsonView({POV.Public.class})
+    @JsonView({POV.Public.class,POV.Question.class})
     private String question;
 }
