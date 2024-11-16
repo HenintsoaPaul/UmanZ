@@ -13,6 +13,7 @@ INSERT INTO type_contrat (type_contrat)
 VALUES ('Contrat d''essaie'),
        ('Contrat duree determine (CDD)'),
        ('Contrat duree indetermine (CDI)');
+
 INSERT INTO competence (competence)
 VALUES ('Cloud Computing'),
        ('Machine Learning'),
@@ -51,11 +52,11 @@ VALUES ('Développeur', 'Responsable du développement des applications'),
        ('Support technique', 'Assistance et résolution des problèmes techniques');
 
 INSERT INTO annonce (date_annonce, entreprise, date_expiration, id_poste)
-VALUES ('2024-01-01', 'Tech Corp', '2024-03-01', 1),
-       ('2024-02-15', 'Design Studio', '2024-04-15', 3),
-       ('2024-03-10', 'Data Solutions', '2024-05-10', 4),
-       ('2024-04-05', 'IT Services', '2024-06-05', 2),
-       ('2024-05-01', 'Global Consulting', '2024-07-01', 5);
+VALUES ('2024-01-01', 'Tech Corp', '2025-03-01', 1),
+       ('2024-02-15', 'Tech Corp', '2025-04-15', 3),
+       ('2024-03-10', 'Tech Corp', '2025-05-10', 4),
+       ('2024-04-05', 'Tech Corp', '2025-06-05', 2),
+       ('2024-05-01', 'Tech Corp', '2025-07-01', 5);
 
 INSERT INTO formation (nom_formation, date_debut, date_fin)
 VALUES ('Formation Java', '2023-01-10', '2023-03-10'),
@@ -79,12 +80,12 @@ VALUES ('Contrat CDI Développeur', '2023-01-01', '2024-01-01', 20.00, 5, 25, 8.
        ('Contrat d''essai Chef de Projet', '2023-06-01', NULL, 25.00, 4, 15, 7.0, 2, 4, 1),
        ('Contrat CDI Support technique', '2024-01-01', NULL, 19.50, 5, 25, 7.5, 5, 5, 3);
 
-INSERT INTO entretien (date_creation, date_validation, note, motif, id_enfant, id_annonce, id_etat_entretien, id_talent)
-VALUES ('2023-02-15', '2023-02-20', 85, 'Entretien positif', NULL, 1, 4, 1),
-       ('2023-03-10', '2023-03-15', 90, 'Candidat qualifié', NULL, 2, 5, 2),
-       ('2023-04-05', NULL, NULL, 'En attente de validation', 1, 3, 1, 3),
-       ('2023-05-01', NULL, 70, 'Compétences insuffisantes', NULL, 4, 2, 4),
-       ('2023-06-01', NULL, NULL, 'Annulation', 2, 5, 6, 5);
+-- INSERT INTO entretien (date_creation, date_validation, note, motif, id_enfant, id_annonce, id_etat_entretien, id_talent)
+-- VALUES ('2023-02-15', '2023-02-20', 85, 'Entretien positif', NULL, 1, 4, 1),
+--        ('2023-03-10', '2023-03-15', 90, 'Candidat qualifié', NULL, 2, 5, 2),
+--        ('2023-04-05', NULL, NULL, 'En attente de validation', 1, 3, 1, 3),
+--        ('2023-05-01', NULL, 70, 'Compétences insuffisantes', NULL, 4, 2, 4),
+--        ('2023-06-01', NULL, NULL, 'Annulation', 2, 5, 6, 5);
 
 INSERT INTO rupture (date_rupture, motif, id_type_rupture, id_contrat)
 VALUES ('2024-01-01', 'Fin de contrat', 1, 1),
@@ -179,10 +180,10 @@ VALUES (10, 5, 3);
 INSERT INTO experience_poste (id_poste, id_annonce, ans)
 VALUES (11, 6, 6); -- 6 ans d'expérience en architecture logicielle
 
-INSERT INTO conge (date_debut, date_validation, nb_jour, motif, id_contrat)
-VALUES ('2024-12-01', '2024-12-01', 5, 'Congé annuel', 1),      -- Congé annuel pour le contrat 1
-       ('2024-12-15', '2024-12-15', 3, 'Congé maladie', 2),     -- Congé maladie pour le contrat 2
-       ('2024-11-20', 7, 'Congé parental', 3),    -- Congé parental pour le contrat 3
-       ('2024-11-05', 10, 'Congé sabbatique', 4), -- Congé sabbatique pour le contrat 4
-       ('2024-12-10', '2024-12-10', 4, 'Congé urgent', 5),
-       ('2024-08-10', '2024-08-10', 5, 'Congé annuel', 1);
+-- INSERT INTO conge (date_debut, date_validation, nb_jour, motif, id_contrat)
+-- VALUES ('2024-12-01', '2024-12-01', 5, 'Congé annuel', 1),      -- Congé annuel pour le contrat 1
+--        ('2024-12-15', '2024-12-15', 3, 'Congé maladie', 2),     -- Congé maladie pour le contrat 2
+--        ('2024-11-20', 7, 'Congé parental', 3),    -- Congé parental pour le contrat 3
+--        ('2024-11-05', 10, 'Congé sabbatique', 4), -- Congé sabbatique pour le contrat 4
+--        ('2024-12-10', '2024-12-10', 4, 'Congé urgent', 5),
+--        ('2024-08-10', '2024-08-10', 5, 'Congé annuel', 1);
