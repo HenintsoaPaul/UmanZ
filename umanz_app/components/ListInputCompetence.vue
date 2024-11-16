@@ -14,11 +14,11 @@ const props = defineProps({
 </script>
 
 <template>
-    <label class="block text-sm font-medium text-gray-700">
+    <label class="block text-sm font-medium">
         {{ props.title }}
     </label>
     <div v-for="(elmt, index) in props.competences" :key="index" class="flex items-center mt-2">
-        <label class="ml-2 block text-sm text-gray-900">
+        <label class="ml-2 block text-sm">
             {{ elmt.competence.competence }}
         </label>
         <input type="number" v-model="elmt.point" placeholder="Point"

@@ -1,16 +1,18 @@
 package mg.itu.rh.entity;
 
 import java.util.List;
-import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import mg.itu.rh.dto.TalentDTO;
 import mg.itu.rh.other.POV;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class Talent {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
@@ -36,9 +38,17 @@ public class Talent {
 
     @JsonView( { POV.Public.class } )
     @OneToMany( mappedBy = "talent", cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-    private Set<CompetenceTalent> competenceTalents;
+    private List<CompetenceTalent> competenceTalents;
 
     @JsonView( { POV.Public.class } )
     @OneToMany( mappedBy = "talent", cascade = CascadeType.ALL, fetch = FetchType.LAZY )
     private List<ExperienceTalent> experienceTalents;
+
+    public Talent( TalentDTO talentDTO ) {
+        this.setNom( talentDTO.getNom() );
+        this.setPrenom( talentDTO.getPrenom() );
+        this.setMail( talentDTO.getMail() );
+        this.setPassword( talentDTO.getPassword() );
+        this.setAdmin( talentDTO.isAdmin() );
+    }
 }

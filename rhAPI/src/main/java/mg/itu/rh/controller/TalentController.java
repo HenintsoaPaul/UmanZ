@@ -1,6 +1,7 @@
 package mg.itu.rh.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import mg.itu.rh.dto.TalentDTO;
 import mg.itu.rh.entity.Talent;
 import mg.itu.rh.other.POV;
 import mg.itu.rh.service.TalentService;
@@ -37,7 +38,7 @@ public class TalentController {
 
     @PostMapping
     @JsonView( POV.Public.class )
-    public Talent create( @RequestBody Talent talent ) {
-        return talentService.save(talent);
+    public Talent create( @RequestBody TalentDTO talentDTO ) {
+        return talentService.save( talentDTO );
     }
 }
