@@ -41,7 +41,6 @@ public class ExperiencePosteService {
     }
 
     public List<ExperiencePoste> findAllByIdAnnonce( Long idAnnonce ) {
-        Long etatCandidature = 2L;
-        return experiencePosteRepository.findAllByIdAnnonceAndEtat( idAnnonce, etatCandidature );
+        return experiencePosteRepository.findAllByIdAnnonce( idAnnonce );
     }
 }
