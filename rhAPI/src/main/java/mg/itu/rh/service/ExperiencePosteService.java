@@ -1,5 +1,6 @@
 package mg.itu.rh.service;
 
+import jakarta.transaction.Transactional;
 import mg.itu.rh.dto.ExperiencePosteDTO;
 import mg.itu.rh.entity.Annonce;
 import mg.itu.rh.entity.ExperiencePoste;
@@ -23,11 +24,13 @@ public class ExperiencePosteService {
         return experiencePosteRepository.findAll();
     }
 
+    @Transactional
     public void saveAllFromDTO( List<ExperiencePosteDTO> experiencePostesDTO, Annonce annonce ) {
         for ( ExperiencePosteDTO dto : experiencePostesDTO )
-            save( dto, annonce );
+            annonce.addExperiencePoste(save( dto, annonce ));
     }
 
+    @Transactional
     public ExperiencePoste save( ExperiencePosteDTO dto, Annonce annonce ) {
         IdExperiencePoste id = new IdExperiencePoste(annonce.getIdAnnonce(), dto.getPoste().getIdPoste() );
         ExperiencePoste expPoste = dto.getExperiencePoste( posteService );
