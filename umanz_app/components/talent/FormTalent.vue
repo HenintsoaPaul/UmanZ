@@ -14,6 +14,14 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    errorMessage: {
+        type: String,
+        default: '',
+    },
+    successMessage: {
+        type: String,
+        default: '',
+    },
 });
 
 const { form, schema, loading } = props;
@@ -25,37 +33,57 @@ const isFormValid = computed(() => {
 });
 
 const submit = () => {
-  emit("submit");
+    emit("submit");
 };
 </script>
 
 <template>
-    <UForm :schema="schema" :state="form" class="space-y-4" @submit.prevent="submit">
-        <UFormGroup label="Nom" name="nom">
-            <UInput v-model="form.nom" required />
-        </UFormGroup>
+    <UForm :schema="schema" :state="form" class="space-y-4" @submit="submit">
+        <ClientOnly>
+            <!-- Profil -->
+            <UFormGroup label="Nom" name="nom">
+                <UInput id="nom" v-model="form.nom" required />
+            </UFormGroup>
+    
+            <UFormGroup label="Prenom" name="prenom">
+                <UInput id="prenom" v-model="form.prenom" required />
+            </UFormGroup>
+    
+            <UFormGroup label="Email" name="email">
+                <UInput id="email" v-model="form.mail" type="email" required />
+            </UFormGroup>
+    
+            <UFormGroup label="Mot de passe" name="password">
+                <UInput id="password" v-model="form.password" type="password" required />
+            </UFormGroup>
+    
+            <UFormGroup label="Admin" name="isAdmin">
+                <UCheckbox id="isAdmin" v-model="form.isAdmin" />
+            </UFormGroup>
+        </ClientOnly>
 
-        <UFormGroup label="Prenom" name="prenom">
-            <UInput v-model="form.prenom" required />
-        </UFormGroup>
+        <!-- Competences et Experiences -->
+        <div class="grid grid-cols-2 gap-4">
+            <div v-if="form.competences.length > 0" class="form-group">
+                <ListInputCompetence title="Competences" :competences="form.competences" />
+            </div>
+            <div v-else>
+                Loading Competences...
+            </div>
 
-        <UFormGroup label="Email" name="email">
-            <UInput v-model="form.mail" type="email" required />
-        </UFormGroup>
-
-        <UFormGroup label="Mot de passe" name="password">
-            <UInput v-model="form.password" type="password" required />
-        </UFormGroup>
-
-        <UFormGroup label="Admin" name="isAdmin">
-            <UCheckbox v-model="form.isAdmin" />
-        </UFormGroup>
+            <div v-if="form.experiences.length > 0" class="form-group">
+                <ListInputExperience title="Experiences" :experiences="form.experiences" />
+            </div>
+            <div v-else>
+                Loading Experiences...
+            </div>
+        </div>
 
         <UButton type="submit" :disabled="!isFormValid" :loading="loading">
             {{ loading ? 'En cours...' : 'Soumettre' }}
         </UButton>
 
-        <p v-if="form.error" class="text-red-500">{{ form.error }}</p>
-        <p v-if="form.successMessage" class="text-green-500">{{ form.successMessage }}</p>
+        <p v-if="props.errorMessage" class="text-red-500">{{ props.errorMessage }}</p>
+        <p v-if="props.successMessage" class="text-green-500">{{ props.successMessage }}</p>
     </UForm>
 </template>

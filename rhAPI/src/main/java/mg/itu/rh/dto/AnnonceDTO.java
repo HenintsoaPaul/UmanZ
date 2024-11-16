@@ -1,8 +1,6 @@
 package mg.itu.rh.dto;
 
 import lombok.Data;
-import mg.itu.rh.entity.CompetenceAnnonce;
-import mg.itu.rh.entity.ExperiencePoste;
 
 import java.time.LocalDate;
 import java.util.List;
