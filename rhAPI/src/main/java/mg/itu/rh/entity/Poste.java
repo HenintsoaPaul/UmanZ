@@ -15,7 +15,7 @@ public class Poste {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id_poste")
-    @JsonView({POV.Full.class})
+    @JsonView({POV.Public.class})
     private Long idPoste;
 
     @Column(name = "nom_poste")

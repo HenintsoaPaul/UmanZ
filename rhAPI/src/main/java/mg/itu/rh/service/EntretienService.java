@@ -56,8 +56,6 @@ public class EntretienService {
     }
 
     public Entretien valider( EntretienValidationDTO dto ) {
-        LocalDate dateValidation = LocalDate.now();
-
         Entretien entretien;
         if ( dto.getIdEntretien() == null ) {
             // Case: Validation candidature
@@ -70,13 +68,32 @@ public class EntretienService {
             String motif = dto.getMotif();
             if ( !motif.isEmpty() ) entretien.setMotif( motif );
         }
-
-        EtatEntretien etatEntretien = etatEntretienRepository.findById( entretien.getEtatEntretien().getIdEtatEntretien() + 1 )
+        EtatEntretien etatEntretienFille = etatEntretienRepository.findById( entretien.getEtatEntretien().getIdEtatEntretien() + 1 )
                 .orElseThrow( () -> new RuntimeException( "On ne peut plus le valider" ) );
 
+        LocalDate dateValidation = LocalDate.now();
         Entretien entretienFille = new Entretien();
         entretienFille.setDateCreation( dateValidation );
-        entretienFille.setEtatEntretien( etatEntretien );
+
+        return validerEntretien( entretien, entretienFille, etatEntretienFille, dateValidation );
+    }
+
+    public Entretien validerEntretienEnAttenteContrat( Long idEntretien ) {
+        Entretien entretien = entretienRepository.findById( idEntretien )
+                .orElseThrow( () -> new RuntimeException( "Entretien not found" ) );
+        EtatEntretien etatEntretienFille = etatEntretienRepository.findById( 7L )
+                .orElseThrow( () -> new RuntimeException( "On ne peut plus le valider" ) );
+
+        LocalDate dateValidation = LocalDate.now();
+        Entretien entretienFille = new Entretien();
+        entretienFille.setDateCreation( dateValidation );
+        entretienFille.setDateValidation( dateValidation );
+
+        return validerEntretien( entretien, entretienFille, etatEntretienFille, dateValidation );
+    }
+
+    private Entretien validerEntretien(  Entretien entretien,Entretien entretienFille, EtatEntretien etatEntretienFille, LocalDate dateValidation ) {
+        entretienFille.setEtatEntretien( etatEntretienFille );
         entretienFille.setTalent( entretien.getTalent() );
         entretienFille.setAnnonce( entretien.getAnnonce() );
 
