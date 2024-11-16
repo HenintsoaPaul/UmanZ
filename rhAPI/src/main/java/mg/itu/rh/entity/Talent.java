@@ -34,11 +34,28 @@ public class Talent {
     @Column( name = "is_admin" )
     private boolean isAdmin;
 
+    @JsonView({POV.Public.class})
+    @OneToMany(mappedBy="talent",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    private List<TalentCompetence> talentCompetences;
+
+    @JsonView({POV.Public.class})
+    @OneToMany(mappedBy="talent",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    private List<ExperienceTalent> experienceTalents;
+
+    @ManyToMany
+    @JoinTable(
+            name = "talent_diplome",
+            joinColumns = @JoinColumn(name = "id_talent"),
+            inverseJoinColumns = @JoinColumn(name = "id_diplome")
+    )
+    @JsonView({POV.Public.class})
+    private Set<Diplome> diplomes;
+
     @JsonView( { POV.Public.class } )
     @OneToMany( mappedBy = "talent", cascade = CascadeType.ALL, fetch = FetchType.LAZY )
     private Set<CompetenceTalent> competenceTalents;
 
-    @JsonView( { POV.Public.class } )
-    @OneToMany( mappedBy = "talent", cascade = CascadeType.ALL, fetch = FetchType.LAZY )
-    private List<ExperienceTalent> experienceTalents;
+    @JsonView({POV.Public.class})
+    @OneToMany(mappedBy="talent",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    private List<TalentLangue> talentLangues;
 }

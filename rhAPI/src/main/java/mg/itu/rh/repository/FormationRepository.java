@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface FormationRepository extends JpaRepository<Formation, Long> {
-    @Query( "SELECT f FROM Formation f WHERE f.dateDebut < current_date " )
+    @Query( "SELECT f FROM Formation f WHERE f.dateDebut >= current_date " )
     List<Formation> findAllDisponible();
 }

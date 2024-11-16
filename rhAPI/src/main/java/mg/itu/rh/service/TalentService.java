@@ -19,11 +19,11 @@ public class TalentService {
                 .orElseThrow( () -> new RuntimeException( "Talent not found" ) );
     }
 
-    public Talent findByEmailAndPassword( String email, String password ) {
-        return talentRepository.findByEmailAndPassword( email, password ).orElse( null );
+    public List<Talent> findAll(){
+        return talentRepository.findAll();
     }
 
-    public List<Talent> findAll() {
-        return talentRepository.findAll();
+    public Talent findByEmailAndPassword( String email, String password ) {
+        return talentRepository.findByEmailAndPassword( email, password ).orElse( null );
     }
 }
