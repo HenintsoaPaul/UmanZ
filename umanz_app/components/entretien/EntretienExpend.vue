@@ -6,10 +6,18 @@ const props = defineProps<{
     entretien: Entretien;
 }>();
 
-const emit = defineEmits(["valider", "refuser", "redirect"]);
+const emit = defineEmits(["valider", "refuser", "redirect", "prochain", "contrat"]);
 
 function validerFn() {
     emit("valider", props.entretien);
+}
+
+function prochainFn() {
+    emit("prochain", props.entretien);
+}
+
+function contratFn() {
+    emit("contrat", props.entretien);
 }
 
 function refuserFn() {
@@ -23,6 +31,8 @@ function redirectFn() {
 const isChangeable = computed(() => props.entretien.dateValidation === null);
 
 const isValidFirst = computed(() => props.entretien.etatEntretien.idEtatEntretien === 4);
+
+const isValidSecond = computed(() => props.entretien.etatEntretien.idEtatEntretien === 6);
 </script>
 
 <template>
@@ -58,15 +68,29 @@ const isValidFirst = computed(() => props.entretien.etatEntretien.idEtatEntretie
                     </p>
                 </div>
 
-                <UInput v-model="entretien.note" type="number" min="0" max="20" placeholder="Ajouter la note..."
-                    class="w-full max-w-md py-2 rounded-lg" />
-                <UInput v-model="entretien.motif" type="text" placeholder="Ajouter motif..."
-                    class="w-full max-w-md py-2 rounded-lg" />
+                <template v-if="isValidFirst">
+                    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2"
+                        @click="prochainFn" v-if="isChangeable">
+                        Passer au prochain Entretien
+                    </button>
+                </template>
+                <template v-else-if="isValidSecond">
+                    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2"
+                        @click="contratFn" v-if="isChangeable">
+                        Passer au contrat
+                    </button>
+                </template>
+                <template v-else>
+                    <UInput v-model="entretien.note" type="number" min="0" max="20" placeholder="Ajouter la note..."
+                        class="w-full max-w-md py-2 rounded-lg" />
+                    <UInput v-model="entretien.motif" type="text" placeholder="Ajouter motif..."
+                        class="w-full max-w-md py-2 rounded-lg" />
 
-                <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                    @click="validerFn" :disabled="entretien.note <= 0" v-if="isChangeable">
-                    Valider
-                </button>
+                    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                        @click="validerFn" :disabled="entretien.note <= 0" v-if="isChangeable">
+                        Valider
+                    </button>
+                </template>
 
                 <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2"
                     @click="refuserFn" v-if="isChangeable">
@@ -76,11 +100,6 @@ const isValidFirst = computed(() => props.entretien.etatEntretien.idEtatEntretie
                 <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded ml-2"
                     @click="redirectFn">
                     Consulter CV
-                </button>
-
-                <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2"
-                    @click="redirectFn" v-if="isValidFirst">
-                    Passer au prochain Entretien
                 </button>
             </div>
         </div>

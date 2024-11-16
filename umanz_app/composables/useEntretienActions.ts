@@ -2,7 +2,7 @@ import type { Entretien } from "~/types";
 
 export const useEntretienActions = () => {
     const validerEntretien = async (entretien: Entretien, apiUrl: string, refreshEntretiens: () => void) => {
-        if (entretien.note <= 0 || entretien.note >= 20) return;
+        if (entretien.note < 0 || entretien.note > 20) return;
 
         try {
             const response = await $fetch(`${apiUrl}/entretien/validate`, {
@@ -11,6 +11,40 @@ export const useEntretienActions = () => {
                     idEntretien: entretien.idEntretien,
                     note: entretien.note,
                     motif: entretien.motif
+                }
+            });
+            console.log('Entretien validé:', response);
+            refreshEntretiens();
+        } catch (error) {
+            console.error('Erreur lors de la validation de l\' Entretien:', error);
+        }
+    }
+
+    const prochainEntretien = async (entretien: Entretien, apiUrl: string, refreshEntretiens: () => void) => {
+        try {
+            const response = await $fetch(`${apiUrl}/entretien/validate`, {
+                method: 'POST',
+                body: {
+                    idEntretien: entretien.idEntretien,
+                    note: 0,
+                    motif: ''
+                }
+            });
+            console.log('Entretien validé:', response);
+            refreshEntretiens();
+        } catch (error) {
+            console.error('Erreur lors de la validation de l\' Entretien:', error);
+        }
+    }
+
+    const contratEntretien = async (entretien: Entretien, apiUrl: string, refreshEntretiens: () => void) => {
+        try {
+            const response = await $fetch(`${apiUrl}/entretien/validate`, {
+                method: 'POST',
+                body: {
+                    idEntretien: entretien.idEntretien,
+                    note: 0,
+                    motif: ''
                 }
             });
             console.log('Entretien validé:', response);
@@ -29,7 +63,7 @@ export const useEntretienActions = () => {
                 }
             });
             console.log('Entretien refusé:', response);
-            await refreshEntretiens()
+            refreshEntretiens()
         } catch (error) {
             console.error('Erreur lors du refus de la validation:', error);
         }
@@ -63,6 +97,8 @@ export const useEntretienActions = () => {
 
     return {
         validerEntretien,
+        prochainEntretien,
+        contratEntretien,
         refuserEntretien,
         headers
     }
