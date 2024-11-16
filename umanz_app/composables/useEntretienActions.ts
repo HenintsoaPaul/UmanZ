@@ -37,23 +37,6 @@ export const useEntretienActions = () => {
         }
     }
 
-    const contratEntretien = async (entretien: Entretien, apiUrl: string, refreshEntretiens: () => void) => {
-        try {
-            const response = await $fetch(`${apiUrl}/entretien/validate`, {
-                method: 'POST',
-                body: {
-                    idEntretien: entretien.idEntretien,
-                    note: 0,
-                    motif: ''
-                }
-            });
-            console.log('Entretien validé:', response);
-            refreshEntretiens();
-        } catch (error) {
-            console.error('Erreur lors de la validation de l\' Entretien:', error);
-        }
-    }
-
     const refuserEntretien = async (idEntretien: number, apiUrl: string, refreshEntretiens: () => void) => {
         try {
             const response = await $fetch(`${apiUrl}/entretien/deny`, {
@@ -98,7 +81,6 @@ export const useEntretienActions = () => {
     return {
         validerEntretien,
         prochainEntretien,
-        contratEntretien,
         refuserEntretien,
         headers
     }
