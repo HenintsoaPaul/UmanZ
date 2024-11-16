@@ -2,6 +2,7 @@
 import type { Contrat } from '~/types';
 
 const { expulsionFn, demissionFn } = useContratActions();
+const currency = useRuntimeConfig().public.currency as string;
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const { data: contrats } = useFetch<Contrat[]>(`${apiUrl}/contrat`);
 
@@ -27,16 +28,7 @@ const headers = [
     }
 ];
 
-const q = ref('');
-const filteredLignes = computed(() => {
-    return q.value ?
-        contrats.value?.filter((e: Contrat) =>
-            Object.values(e).some((value) =>
-                String(value).toLowerCase().includes(q.value.toLowerCase())
-            )
-        ) : contrats.value;
-});
-
+const { q, filteredRows: filteredContrats } = useFilteredRows(contrats);
 const expand = ref({
     openedRows: [],
     row: {}
@@ -48,17 +40,23 @@ const expand = ref({
         <h1 class="text-3xl font-bold mb-6 text-center">Liste des Contrats</h1>
 
         <div class="flex justify-center mb-4">
-            <UInput v-model="q" placeholder="Filtrer les annonces..."
+            <UInput v-model="q" placeholder="Filtrer les contrats..."
                 class="w-full max-w-md px-4 py-2  rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
 
         <div v-if="contrats">
-            <UTable :columns="headers" :rows="filteredLignes" v-model:expand="expand"
-                class="w-full shadow-md rounded-lg overflow-hidden">
-                <template #expand="{ row }">
-                    <ContratDetails :contrat="row" :explusion-fn="expulsionFn" :demission-fn="demissionFn" :api-url="apiUrl" />
-                </template>
-            </UTable>
+            <div v-if="contrats.length > 0">
+                <UTable :columns="headers" :rows="filteredContrats ?? []" v-model:expand="expand"
+                    class="w-full shadow-md rounded-lg overflow-hidden">
+                    <template #expand="{ row }">
+                        <ContratDetails :contrat="row" :currency="currency" :explusion-fn="expulsionFn" :demission-fn="demissionFn"
+                            :api-url="apiUrl" />
+                    </template>
+                </UTable>
+            </div>
+            <div v-else>
+                Aucun contrats pour le moment ... 😅
+            </div>
         </div>
         <div v-else>
             Loading Contrats...

@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { ref, reactive, toRaw } from 'vue';
-import type { Entretien, Poste, TypeContrat } from '~/types';
+import type { Entretien, TypeContrat } from '~/types';
 
 const router = useRoute();
 const idEntretien: number = Number(router.params.entretien);
 
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
-const { data: postes } = useFetch<Poste[]>(`${apiUrl}/postes`);
 const { data: entretienAttenteContrat } = useFetch<Entretien[]>(`${apiUrl}/entretien/etat/${6}`);
 const { data: typeContrats } = useFetch<TypeContrat[]>(`${apiUrl}/type_contrat`);
 
