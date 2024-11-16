@@ -476,3 +476,28 @@ VALUES
     ('Elle permet de traiter les éléments d''une collection de manière parallèle, ce qui améliore les performances.', 4.0, 5),
     ('Elle permet de simplifier l''écriture du code en supprimant les boucles classiques.', 3.0, 5),
     ('Elle ne permet pas d''optimiser les performances, mais rend le code plus lisible.', 2.0, 5);
+
+-- Question 1
+INSERT INTO question_projet (question)
+VALUES
+    ('Comment abordez-vous la gestion des risques dans un projet technique ?');
+
+-- Question 2
+INSERT INTO question_projet (question)
+VALUES
+    ('Quelles stratégies utilisez-vous pour motiver une équipe sur un projet long terme ?');
+
+-- Question 3
+INSERT INTO question_projet (question)
+VALUES
+    ('De quelle manière ajustez-vous un projet lorsque les attentes du client changent en cours de réalisation ?');
+
+-- Question 4
+INSERT INTO question_projet (question)
+VALUES
+    ('Comment assurez-vous que tous les membres de l''équipe comprennent bien leurs rôles et responsabilités ?');
+
+-- Question 5
+INSERT INTO question_projet (question)
+VALUES
+    ('Quelles sont vos méthodes pour faire face à des délais serrés dans un projet ?');
