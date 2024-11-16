@@ -9,28 +9,32 @@ const props = defineProps<{
 
 <template>
     <div class="cv">
-        <div v-if="competences">
-            <h3 class="text-xl font-semibold mt-4">Compétences requises:</h3>
-            <ul>
-                <li v-for="comp in competences" :key="comp.competence.idCompetence">
-                    {{ comp.competence.competence }} - {{ comp.point }} points
-                </li>
-            </ul>
-        </div>
-        <div v-else>
-            No Competences
+        <div>
+            <h3 class="text-2xl font-semibold mt-4">Compétences:</h3>
+            <div v-if="competences.length > 0">
+                <ul>
+                    <li v-for="comp in competences" :key="comp.competence.idCompetence">
+                        {{ comp.competence.competence }} - {{ comp.point }} points
+                    </li>
+                </ul>
+            </div>
+            <div v-else>
+                No Competences
+            </div>
         </div>
 
-        <div v-if="experiences">
-            <h3 class="text-xl font-semibold mt-4">Expériences requises:</h3>
-            <ul>
-                <li v-for="exp in experiences" :key="exp.poste.idPoste">
-                    {{ exp.poste.nomPoste }} - {{ exp.ans }} ans
-                </li>
-            </ul>
-        </div>
-        <div v-else>
-            No Experiences
+        <div>
+            <h3 class="text-2xl font-semibold mt-4">Expériences:</h3>
+            <div v-if="experiences.length > 0">
+                <ul>
+                    <li v-for="exp in experiences" :key="exp.poste.idPoste">
+                        {{ exp.poste.nomPoste }} - {{ exp.ans }} ans
+                    </li>
+                </ul>
+            </div>
+            <div v-else>
+                No Experiences
+            </div>
         </div>
     </div>
 </template>

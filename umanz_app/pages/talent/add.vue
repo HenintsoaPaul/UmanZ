@@ -100,7 +100,7 @@ async function onSubmit() {
         <h1 class="text-2xl font-bold mb-6">Profil Talent</h1>
 
         <FormTalent :form="form" :schema="schema" :loading="loading" :error-message="errorMessage"
-            :success-message="errorMessage" @submit="onSubmit" />
+            :success-message="successMessage" @submit="onSubmit" />
     </div>
 </template>
 
