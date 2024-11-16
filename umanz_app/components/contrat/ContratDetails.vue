@@ -6,6 +6,7 @@ const props = defineProps<{
     apiUrl: string;
     currency: string;
     contrat: Contrat;
+    promotionFn: (idContrat: number, apiUrl: string) => Promise<void>;
     explusionFn: (idContrat: number, apiUrl: string) => Promise<void>;
     demissionFn: (idContrat: number, apiUrl: string) => Promise<void>;
 }>();
@@ -43,6 +44,10 @@ const props = defineProps<{
             </div>
         </div>
 
+        <!-- <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-4"
+            @click="props.promotionFn(contrat.idContrat, props.apiUrl)">
+            Promotion
+        </button> -->
         <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-4"
             @click="props.explusionFn(contrat.idContrat, props.apiUrl)">
             Licenciement
