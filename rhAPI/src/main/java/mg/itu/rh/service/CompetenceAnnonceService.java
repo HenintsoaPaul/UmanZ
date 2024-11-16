@@ -37,7 +37,6 @@ public class CompetenceAnnonceService {
     }
 
     public List<CompetenceAnnonce> findAllByIdAnnonce( Long idAnnonce ) {
-        Long etatCandidature = 2L;
-        return competenceAnnonceRepository.findAllByIdAnnonceAndEtat( idAnnonce, etatCandidature );
+        return competenceAnnonceRepository.findAllByIdAnnonce( idAnnonce );
     }
 }

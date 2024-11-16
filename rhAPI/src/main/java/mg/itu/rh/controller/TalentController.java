@@ -1,14 +1,12 @@
 package mg.itu.rh.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import mg.itu.rh.dto.TalentDTO;
 import mg.itu.rh.entity.Talent;
 import mg.itu.rh.other.POV;
 import mg.itu.rh.service.TalentService;
 import org.springframework.data.repository.query.Param;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,5 +34,11 @@ public class TalentController {
     @GetMapping( "/users" )
     public Talent login( @Param( "email" ) String email, @Param( "password" ) String password ) {
         return talentService.findByEmailAndPassword( email, password );
+    }
+
+    @PostMapping
+    @JsonView( POV.Public.class )
+    public Talent create( @RequestBody TalentDTO talentDTO ) {
+        return talentService.save( talentDTO );
     }
 }

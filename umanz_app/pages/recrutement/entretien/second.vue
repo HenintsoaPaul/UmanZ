@@ -3,7 +3,7 @@ import type { Entretien } from '~/types';
 
 const router = useRouter();
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
-const { data: entretiens, refresh: refreshEntretiens } = useFetch<Entretien[]>(`${apiUrl}/entretien/etat/${3}`);
+const { data: entretiens, refresh: refreshEntretiens } = useFetch<Entretien[]>(`${apiUrl}/entretien/etat/${5}`);
 
 const { q, filteredRows: filteredEntretiens } = useFilteredRows(entretiens);
 const expand = ref({
@@ -25,7 +25,7 @@ const redirectFn = (idTalent: number) => {
 
 <template>
     <div class="container mx-auto">
-        <h1 class="text-3xl font-bold mb-4 text-center">Liste des Premiers Entretiens</h1>
+        <h1 class="text-3xl font-bold mb-4 text-center">Liste des Deuxiemes Entretiens</h1>
 
         <div class="flex justify-center mb-4">
             <UInput v-model="q" placeholder="Filtrer les entretiens..." class="w-full max-w-md px-4 py-2 rounded-lg" />
