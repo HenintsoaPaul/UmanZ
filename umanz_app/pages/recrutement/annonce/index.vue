@@ -42,7 +42,7 @@ const handleCandidater = async (idAnnonce: number) => {
                                 <p class="text-gray-700">{{ row.poste.description }}</p>
                             </div>
 
-                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4"
                                 @click="handleCandidater(row.idAnnonce)">
                                 Candidater
                             </button>
