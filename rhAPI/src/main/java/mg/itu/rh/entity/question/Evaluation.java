@@ -3,6 +3,7 @@ package mg.itu.rh.entity.question;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Data;
+import mg.itu.rh.entity.Talent;
 import mg.itu.rh.other.POV;
 
 import java.time.LocalDate;
@@ -23,7 +24,11 @@ public class Evaluation {
 
     @JsonView({POV.Public.class,POV.Question.class})
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "evaluation",cascade = CascadeType.ALL)
-    private List<QuestionTalent> questionTalents;
+    private List<QuestionEvaluation> questionEvaluations;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_talent")
+    private Talent talent;
 
     @Transient
     @JsonView({POV.Public.class,POV.Question.class})
@@ -31,9 +36,9 @@ public class Evaluation {
 
     public void setMoyenne(){
         double moyenne=0;
-        for (QuestionTalent questionTalent:questionTalents) {
-            moyenne+=questionTalent.getNote();
+        for (QuestionEvaluation questionEvaluation:questionEvaluations) {
+            moyenne+=questionEvaluation.getNote();
         }
-        this.moyenne=moyenne/questionTalents.size();
+        this.moyenne=moyenne/questionEvaluations.size();
     }
 }

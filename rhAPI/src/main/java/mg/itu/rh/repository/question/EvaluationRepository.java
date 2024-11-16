@@ -8,9 +8,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface EvaluationRepository extends JpaRepository<Evaluation,Long> {
-    @Query("select e from QuestionTalent q join q.evaluation e where q.note is null")
+    @Query("select e from QuestionEvaluation q join q.evaluation e where q.note is null")
     public List<Evaluation> findEvaluationNotNoted();
 
-    @Query("select e from QuestionTalent q join q.evaluation e where q.note is not null and q.talent.idTalent=:idTalent")
+    @Query("select e from QuestionEvaluation q join q.evaluation e where q.note is not null and e.talent.idTalent=:idTalent")
     public List<Evaluation> findEvaluationNoted(@Param("idTalent")Long idTalent);
 }

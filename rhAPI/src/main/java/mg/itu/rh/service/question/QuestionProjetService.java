@@ -19,4 +19,8 @@ public class QuestionProjetService {
     public List<QuestionProjet> findAllRandomly(){
         return questionProjetRepository.findAllRandomly(PageRequest.of(0, 5)).getContent();
     }
+
+    public QuestionProjet findById(Long idQuestionProjet){
+        return questionProjetRepository.findById(idQuestionProjet).orElseThrow(()->new RuntimeException("Question non reconnue"));
+    }
 }

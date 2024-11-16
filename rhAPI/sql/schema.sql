@@ -93,16 +93,18 @@ CREATE TABLE chat(
 );
 
 CREATE TABLE question_projet(
-                                id_question SERIAL,
+                                id_question_projet SERIAL,
                                 question TEXT NOT NULL,
-                                PRIMARY KEY(id_question),
+                                PRIMARY KEY(id_question_projet),
                                 UNIQUE(question)
 );
 
 CREATE TABLE evaluation(
                            id_evaluation SERIAL,
                            date_evaluation DATE NOT NULL,
-                           PRIMARY KEY(id_evaluation)
+                           id_talent INTEGER NOT NULL,
+                           PRIMARY KEY(id_evaluation),
+                           FOREIGN KEY(id_talent) REFERENCES talent(id_talent)
 );
 
 CREATE TABLE domaine(
@@ -315,14 +317,12 @@ CREATE TABLE compatibilite(
                               FOREIGN KEY(id_annonce) REFERENCES annonce(id_annonce)
 );
 
-CREATE TABLE question_talent(
-                                id_talent INTEGER,
-                                id_question INTEGER,
-                                id_evaluation INTEGER,
-                                note NUMERIC(15,2)  ,
-                                reponse TEXT NOT NULL,
-                                PRIMARY KEY(id_talent, id_question, id_evaluation),
-                                FOREIGN KEY(id_talent) REFERENCES talent(id_talent),
-                                FOREIGN KEY(id_question) REFERENCES question_projet(id_question),
-                                FOREIGN KEY(id_evaluation) REFERENCES evaluation(id_evaluation)
+CREATE TABLE question_evaluation(
+                                    id_question_projet INTEGER,
+                                    id_evaluation INTEGER,
+                                    note NUMERIC(15,2)  ,
+                                    reponse TEXT NOT NULL,
+                                    PRIMARY KEY(id_question_projet, id_evaluation),
+                                    FOREIGN KEY(id_question_projet) REFERENCES question_projet(id_question_projet),
+                                    FOREIGN KEY(id_evaluation) REFERENCES evaluation(id_evaluation)
 );

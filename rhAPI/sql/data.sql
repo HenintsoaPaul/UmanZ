@@ -284,18 +284,19 @@ INSERT INTO chat (mot_cle, reponse) VALUES
                                         ('processus', 'Le processus de recrutement comprend la soumission de votre CV, un test technique, et un entretien.'),
                                         ('test technique', 'Le test technique se déroule en ligne. Vous recevrez un lien pour y accéder une fois votre candidature validée.'),
                                         ('entretien', 'Après le test technique, nous organiserons un entretien avec notre équipe RH.'),
-                                        ('suivi', 'Vous pouvez suivre l’avancement de votre candidature sur votre tableau de bord personnel dans votre compte.'),
-                                        ('compétences', 'Nous recherchons des compétences spécifiques selon les postes. Veuillez consulter l’annonce pour plus de détails.'),
+                                        ('suivi', 'Vous pouvez suivre l''avancement de votre candidature sur votre tableau de bord personnel dans votre compte.'),
+                                        ('compétences', 'Nous recherchons des compétences spécifiques selon les postes. Veuillez consulter l''annonce pour plus de détails.'),
                                         ('contrat', 'Le type de contrat dépend de votre profil et de notre offre actuelle.'),
                                         ('formation', 'Nous offrons des programmes de formation pour développer les compétences nécessaires après votre embauche.'),
                                         ('annonce', 'Les annonces pour les postes ouverts sont disponibles sur notre site de recrutement.'),
                                         ('congé', 'Les conditions de congé sont définies dans le contrat de travail selon le poste.'),
-                                        ('candidature', 'Pour déposer votre candidature, remplissez le formulaire en ligne sur la page de l’offre.'),
+                                        ('candidature', 'Pour déposer votre candidature, remplissez le formulaire en ligne sur la page de l''offre.'),
                                         ('profil', 'Pour consulter ou mettre à jour votre profil, connectez-vous à votre compte.'),
                                         ('salaire', 'Le salaire dépend de votre expérience et du poste auquel vous postulez.'),
-                                        ('culture d’entreprise', 'Nous valorisons le respect, la collaboration et l’innovation au sein de notre entreprise.'),
+                                        ('culture d''entreprise', 'Nous valorisons le respect, la collaboration et l''innovation au sein de notre entreprise.'),
                                         ('aide', 'Je suis là pour vous aider ! Posez-moi vos questions sur le recrutement ou le processus de candidature.'),
                                         ('contact', 'Pour toute question spécifique, vous pouvez nous contacter par email à recrutement@entreprise.com.');
+
 insert into compatibilite(id_annonce,id_talent,pourcentage)
 values (1,1,20.23),
        (1,2,50.14),
@@ -392,12 +393,12 @@ INSERT INTO reponse (reponse, note, id_question_technique) VALUES
 ('Réévaluation régulière des risques et ajustement des plans selon les imprévus.', 7.5, 6);
 
 -- Insertion des évaluations
-INSERT INTO evaluation (date_evaluation) VALUES
-                                                ('2024-11-01'),
-                                                ('2024-11-02'),
-                                                ('2024-11-03'),
-                                                ('2024-11-04'),
-                                                ('2024-11-05');
+INSERT INTO evaluation (date_evaluation,id_talent) VALUES
+                                                ('2024-11-01',1),
+                                                ('2024-11-02',2),
+                                                ('2024-11-03',3),
+                                                ('2024-11-04',4),
+                                                ('2024-11-05',5);
 
 -- Insertion des résultats techniques des talents
 INSERT INTO resultat_technique (note, date_resultat, id_domaine, id_talent) VALUES
@@ -409,13 +410,13 @@ INSERT INTO resultat_technique (note, date_resultat, id_domaine, id_talent) VALU
                                                                                    (7.0, '2024-11-05 14:00:00', 1, 5);
 
 -- Insertion des réponses des talents aux questions de projet
-INSERT INTO question_talent (id_talent, id_question, id_evaluation, note, reponse) VALUES
-                                                                                          (1, 1, 1, 8.5, 'Il est essentiel d''écouter chaque partie et de trouver un compromis.'),
-                                                                                          (1, 2, 1, 7.0, 'Mettre en place des réunions régulières et des canaux de communication adaptés.'),
-                                                                                          (2, 3, 2, 9.0, 'Encourager les membres de l''équipe à prendre des initiatives et reconnaître leurs efforts.'),
-                                                                                          (3, 4, 3, 6.0, 'Il est important de se concentrer sur les tâches à haute priorité et de déléguer efficacement.'),
-                                                                                          (4, 5, 4, 8.0, 'Organiser des réunions régulières pour suivre les progrès et ajuster les priorités en conséquence.'),
-                                                                                          (5, 1, 5, 7.5, 'Prendre une approche calme et structurée pour gérer la pression et respecter les délais.');
+INSERT INTO question_evaluation ( id_question_projet, id_evaluation, note, reponse) VALUES
+                                                                                          (1, 1, 8.5, 'Il est essentiel d''écouter chaque partie et de trouver un compromis.'),
+                                                                                          (2, 1, 7.0, 'Mettre en place des réunions régulières et des canaux de communication adaptés.'),
+                                                                                          (3, 2, 9.0, 'Encourager les membres de l''équipe à prendre des initiatives et reconnaître leurs efforts.'),
+                                                                                          (4, 3, 6.0, 'Il est important de se concentrer sur les tâches à haute priorité et de déléguer efficacement.'),
+                                                                                          (5, 4, 8.0, 'Organiser des réunions régulières pour suivre les progrès et ajuster les priorités en conséquence.'),
+                                                                                          (1, 5, 7.5, 'Prendre une approche calme et structurée pour gérer la pression et respecter les délais.');
 
 -- Question 1
 INSERT INTO question_technique (question, id_domaine)
