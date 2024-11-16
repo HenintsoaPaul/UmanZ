@@ -43,8 +43,8 @@ export interface Talent {
     mail: string,
     password: string,
     isAdmin: boolean,
-    competences: CompetenceTalent[],
-    experiences: ExperienceTalent[]
+    competenceTalents: CompetenceTalent[],
+    experienceTalents: ExperienceTalent[]
 }
 
 export interface Competence {
