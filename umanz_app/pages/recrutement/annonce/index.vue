@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { Annonce } from '~/types';
+import { ref, computed } from 'vue';
 
 const { canditerFn, headers } = useAnnonceActions();
-const idTalent = localStorage.getItem('idUser') ?? "0";
+const idTalent = computed(() => localStorage.getItem('idUser') ?? "0");
 
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const { data: annonces } = useFetch<Annonce[]>(`${apiUrl}/annonce/disponible`);
@@ -12,6 +13,13 @@ const expand = ref({
     openedRows: [],
     row: {}
 });
+
+const message = ref('');
+
+const handleCandidater = async (idAnnonce: number) => {
+    const msg = await canditerFn(idAnnonce, idTalent.value, apiUrl);
+    message.value = msg;
+}
 </script>
 
 <template>
@@ -24,30 +32,39 @@ const expand = ref({
         </div>
 
         <div v-if="annonces">
-            <UTable :columns="headers" :rows="filteredAnnonces ?? []" v-model:expand="expand"
-                class="w-full shadow-md rounded-lg overflow-hidden">
-                <template #expand="{ row }">
-                    <div class="p-4">
-                        <div class="mb-4">
-                            <h3 class="text-xl font-semibold mb-2">Description:</h3>
-                            <p class="text-gray-700">{{ row.poste.description }}</p>
+            <div v-if="annonces.length > 0">
+                <UTable :columns="headers" :rows="filteredAnnonces ?? []" v-model:expand="expand"
+                    class="w-full shadow-md rounded-lg overflow-hidden">
+                    <template #expand="{ row }">
+                        <div class="p-4">
+                            <div class="mb-4">
+                                <h3 class="text-xl font-semibold mb-2">Description:</h3>
+                                <p class="text-gray-700">{{ row.poste.description }}</p>
+                            </div>
+
+                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                @click="handleCandidater(row.idAnnonce)">
+                                Candidater
+                            </button>
+
+                            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2"
+                                @click="$router.push(`/recrutement/annonce/${row.idAnnonce}`)">
+                                Voir Détails
+                            </button>
                         </div>
-    
-                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                            @click="canditerFn(row.idAnnonce, idTalent, apiUrl)">
-                            Candidater
-                        </button>
-    
-                        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2"
-                            @click="$router.push(`/recrutement/annonce/${row.idAnnonce}`)">
-                            Voir Détails
-                        </button>
-                    </div>
-                </template>
-            </UTable>
+                    </template>
+                </UTable>
+            </div>
+            <div v-else>
+                No Annonce
+            </div>
         </div>
         <div v-else>
             Loading Annonces...
+        </div>
+
+        <div v-if="message" class="mt-4 p-4 bg-blue-100 text-blue-700 rounded">
+            {{ message }}
         </div>
     </div>
 </template>

@@ -1,5 +1,5 @@
 export const useAnnonceActions = () => {
-    const canditerFn = async (idAnnonce: number, idTalent: string, apiUrl: string) => {
+    const canditerFn = async (idAnnonce: number, idTalent: string, apiUrl: string): Promise<string> => {
         if (idTalent) {
             try {
                 const response = await $fetch(`${apiUrl}/entretien/candiat`, {
@@ -10,11 +10,14 @@ export const useAnnonceActions = () => {
                     }
                 });
                 console.log('Candidature data sent successfully', response);
+                return 'Candidature data sent successfully';
             } catch (error) {
                 console.error('Failed to send candidature data', error);
+                return 'Failed to send candidature data';
             }
         } else {
             console.error('Utilisateur non connecté');
+            return 'Utilisateur non connecté';
         }
     }
 
