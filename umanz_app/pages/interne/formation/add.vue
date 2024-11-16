@@ -2,6 +2,7 @@
 import { z } from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
 import axios from 'axios';
+import type { Competence, CompetenceAnnonce, CompetenceCible, CompetenceTalent } from '~/types';
 
 const schema = z.object({
     nomFormation: z.string().min(5, 'Le nom de la formation est obligatoire'),
@@ -20,6 +21,7 @@ const form = reactive({
     nomFormation: '',
     dateDebut: '',
     dateFin: '',
+    competences: [] as CompetenceAnnonce[],
     error: ''
 });
 
@@ -27,8 +29,12 @@ const isFormValid = computed(() => {
     return schema.safeParse({ ...form }).success && validateDates();
 });
 
-const loading = ref(false);
+const apiUrl = useRuntimeConfig().public.apiUrl as string;
+const { data: competences, refresh: refreshCompetences } = useFetch<Competence[]>(`${apiUrl}/competences`);
 
+// const errorMessage = 
+
+const loading = ref(false);
 async function onSubmit(event: FormSubmitEvent<Schema>) {
     const isValid = schema.safeParse(event.data).success;
 
@@ -43,7 +49,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         const response = await axios.post(`${apiUrl}/formations`, toRaw(form));
 
         console.log('Form submitted successfully:', response.data);
-        form.error = '';
+        form.error = 'Form submitted successfully';
     } catch (error) {
         console.error('Error submitting form:', error);
         form.error = 'Une erreur s\'est produite lors de la soumission du formulaire.';
@@ -51,26 +57,45 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         loading.value = false;
     }
 }
+
+onMounted(async () => {
+    await refreshCompetences();
+    if (competences.value) {
+        form.competences = competences.value.map(cp => ({
+            point: 0,
+            competence: toRaw(cp)
+        }));
+    }
+});
 </script>
 
 <template>
-    <UForm :schema="schema" :state="form" class="space-y-4" @submit="onSubmit">
-        <UFormGroup label="Titre" name="titre">
-            <UInput v-model="form.nomFormation" required />
-        </UFormGroup>
+    <div class="max-w-3xl mx-auto p-6 border border-white rounded-lg shadow-md">
+        <h1 class="text-3xl font-bold mb-6">Ajouter Formation</h1>
 
-        <UFormGroup label="Date Debut" name="dateDebut">
-            <UInput v-model="form.dateDebut" type="date" required />
-        </UFormGroup>
+        <UForm :schema="schema" :state="form" class="space-y-4" @submit="onSubmit">
+            <UFormGroup label="Titre" name="titre">
+                <UInput v-model="form.nomFormation" required />
+            </UFormGroup>
 
-        <UFormGroup label="Date Fin" name="dateFin">
-            <UInput v-model="form.dateFin" type="date" />
-        </UFormGroup>
+            <UFormGroup label="Date Debut" name="dateDebut">
+                <UInput v-model="form.dateDebut" type="date" required />
+            </UFormGroup>
 
-        <UButton type="submit" :disabled="!isFormValid" :loading="loading">
-            {{ loading ? 'En cours...' : 'Soumettre' }}
-        </UButton>
+            <UFormGroup label="Date Fin" name="dateFin">
+                <UInput v-model="form.dateFin" type="date" />
+            </UFormGroup>
 
-        <p v-if="form.error" class="text-red-500">{{ form.error }}</p>
-    </UForm>
+            <hr>
+
+            <h1 class="text-xl font-bold mb-6">Competences</h1>
+            <ListInputCompetence :competences="form.competences" />
+
+            <UButton type="submit" :disabled="!isFormValid" :loading="loading">
+                {{ loading ? 'En cours...' : 'Soumettre' }}
+            </UButton>
+
+            <p v-if="form.error" class="text-red-500">{{ form.error }}</p>
+        </UForm>
+    </div>
 </template>

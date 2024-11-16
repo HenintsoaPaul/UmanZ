@@ -8,7 +8,7 @@ export interface Formation {
 
 export interface CompetenceCible {
     competence: Competence,
-    idFormation: number,
+    formation: Formation,
     pointGagne: number,
 }
 

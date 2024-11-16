@@ -18,7 +18,7 @@ const props = defineProps({
         {{ props.title }}
     </label>
     <div v-for="(elmt, index) in props.experiences" :key="index" class="flex items-center mt-2">
-        <label class="ml-2 block text-sm">
+        <label class="w-1/2 ml-2 block text-sm">
             {{ elmt.poste.nomPoste }}
         </label>
         <input type="number" v-model="elmt.ans" placeholder="Annee d'exp"
