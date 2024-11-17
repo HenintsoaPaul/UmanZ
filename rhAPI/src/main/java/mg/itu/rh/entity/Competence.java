@@ -1,12 +1,7 @@
 package mg.itu.rh.entity;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+
 import lombok.Data;
 import jakarta.persistence.*;
 import mg.itu.rh.other.POV;
@@ -26,8 +21,7 @@ public class Competence {
     @JsonView({POV.Public.class})
     private String nomCompetence;
 
-    @OneToMany(mappedBy = "competence", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonView({POV.Public.class})
+    @OneToMany(mappedBy = "competence")
     private List<TalentCompetence> talentCompetences;
 
     public Competence() {}

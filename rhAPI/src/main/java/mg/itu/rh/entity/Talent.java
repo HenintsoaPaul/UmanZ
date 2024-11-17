@@ -39,9 +39,8 @@ public class Talent {
     @Column(name = "is_admin")
     private boolean isAdmin;
 
-    @OneToMany(mappedBy = "talent", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonView({POV.Public.class})
-    private List<TalentCompetence> talentsCompetences = new ArrayList<>();
+    @OneToMany(mappedBy = "talent")
+    private List<TalentCompetence> talentCompetences;
 
     @OneToMany(mappedBy = "talent")
     @JsonView({POV.Public.class})
