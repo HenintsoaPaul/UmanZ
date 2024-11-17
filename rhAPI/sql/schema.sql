@@ -182,3 +182,12 @@ CREATE TABLE participation(
                               FOREIGN KEY(id_contrat) REFERENCES contrat(id_contrat),
                               FOREIGN KEY(id_formation) REFERENCES formation(id_formation)
 );
+
+CREATE TABLE candidat_historique (
+    id_candidat_histo SERIAL PRIMARY KEY,
+    id_talent INTEGER,
+    action VARCHAR(255),
+    description VARCHAR(255),
+    date_action TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_talent FOREIGN KEY (id_talent) REFERENCES Talent(id_talent) ON DELETE CASCADE
+);

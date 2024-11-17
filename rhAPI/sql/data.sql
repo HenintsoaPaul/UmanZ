@@ -42,6 +42,7 @@ VALUES ('Dupont', 'Jean', 'jean.dupont@example.com', 'password1', true),
        ('Petit', 'Louis', 'louis.petit@example.com', 'password3', false),
        ('Durand', 'Emma', 'emma.durand@example.com', 'password4', false),
        ('Leroy', 'Paul', 'paul.leroy@example.com', 'password5', false);
+       ('Dupont', 'Jean', 'recipientgestion@gmail.com', 'recepgestion', true);
 
 INSERT INTO poste (nom_poste, description_poste)
 VALUES ('Développeur', 'Responsable du développement des applications'),
@@ -185,3 +186,7 @@ VALUES ('2024-12-01', 5, 'Congé annuel', 1),      -- Congé annuel pour le cont
        ('2024-11-20', 7, 'Congé parental', 3),    -- Congé parental pour le contrat 3
        ('2024-11-05', 10, 'Congé sabbatique', 4), -- Congé sabbatique pour le contrat 4
        ('2024-12-10', 4, 'Congé urgent', 5);
+
+INSERT INTO candidat_historique (id_talent, action, description, date_action)
+VALUES
+(1, 'Entretien', 'Entretien pour le poste de développeur', '2024-11-17 10:30:00');
