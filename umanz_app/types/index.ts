@@ -152,6 +152,11 @@ export interface LangueAvecNiveau {
     niveauLangue: NiveauLangue | null
 }
 
+export interface DiplomeAvecNiveau {
+    diplome: Diplome;
+    niveauDiplome: NiveauDiplome | null
+}
+
 export interface AnnonceLangue {
     annonce: Annonce;
     langue: Langue;
@@ -166,13 +171,13 @@ export interface TalentLangue {
 
 export interface Diplome {
     idDiplome: number;
-    nomDiplome: string;
+    diplome: string;
     niveauDiplome: NiveauDiplome
 }
 
 export interface NiveauDiplome {
     idNiveauDiplome: number;
-    nomNiveauDiplome: string;
+    niveau: string;
     niveauDiplome: number;
 }
 

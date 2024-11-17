@@ -1,6 +1,8 @@
 package mg.itu.rh.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import mg.itu.rh.entity.Diplome;
+import mg.itu.rh.other.POV;
 import mg.itu.rh.service.DiplomeService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,7 @@ public class DiplomeController {
     }
 
     @GetMapping
+    @JsonView({ POV.Public.class})
     public List<Diplome> getAll() {
         return diplomeService.findAll();
     }
