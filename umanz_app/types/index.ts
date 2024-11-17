@@ -143,8 +143,8 @@ export interface Langue {
 
 export interface NiveauLangue {
     idNiveauLangue: number;
-    nomNiveauLangue: string;
-    niveauLangue: number;
+    niveauLangue: string;
+    niveau: number;
 }
 
 export interface AnnonceLangue {

@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import type { Competence, CompetenceAnnonce, ExperiencePoste, Poste } from '~/types';
+import type { AnnonceDiplome, AnnonceLangue, Competence, CompetenceAnnonce, Diplome, ExperiencePoste, Langue, NiveauLangue, Poste } from '~/types';
 
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const { data: postes, refresh: refreshPostes } = useFetch<Poste[]>(`${apiUrl}/postes`);
 const { data: competences, refresh: refreshCompetences } = useFetch<Competence[]>(`${apiUrl}/competences`);
+// const { data: diplomes, refresh: refreshDiplomes } = useFetch<Diplome[]>(`${apiUrl}/diplomes`);
+const { data: langues, refresh: refreshLangues } = useFetch<Langue[]>(`${apiUrl}/langues`);
+const { data: niveaulangues, refresh: refreshNiveauLangues } = useFetch<NiveauLangue[]>(`${apiUrl}/niveau_langues`);
 
 interface Form {
     dateAnnonce: string;
@@ -12,13 +15,17 @@ interface Form {
     idPoste: string;
     competences: CompetenceAnnonce[];
     experiences: ExperiencePoste[];
+    // langues: AnnonceLangue[];
+    // diplomes: Diplome[];
 }
 const form = reactive<Form>({
     dateAnnonce: '',
     dateExpiration: '',
     idPoste: '',
     competences: [],
-    experiences: []
+    experiences: [],
+    // langues: [],
+    // diplomes: [],
 });
 
 const errorMessage = ref('');
@@ -56,7 +63,10 @@ async function onSubmit() {
 onMounted(async () => {
     await refreshPostes();
     await refreshCompetences();
-    if (postes.value && competences.value) {
+    // await refreshDiplomes();
+    await refreshLangues();
+    await refreshNiveauLangues();
+    if (postes.value && competences.value && langues.value) {
         form.experiences = postes.value.map(pt => ({
             ans: 0,
             poste: toRaw(pt)
@@ -65,6 +75,15 @@ onMounted(async () => {
             point: 0,
             competence: toRaw(cp)
         }));
+        // form.langues = langues.value.map(pt => ({
+        //     ans: 0,
+        //     poste: toRaw(pt)
+        // }));
+        // form.diplomes = diplomes.value.map(cp => ({
+        //     idDiplome: cp.idDiplome,
+        //     nomDiplome: cp.nomDiplome,
+        //     niveauDiplome: cp.niveauDiplome
+        // }));
     }
 });
 </script>
@@ -97,6 +116,14 @@ onMounted(async () => {
                     </select>
                 </div>
             </div>
+
+            <hr>
+
+            <div v-if="niveaulangues && langues">
+                <ListInputLangue title="Langues" :niveau-langues="niveaulangues" :langues="langues" />
+            </div>
+
+            <hr>
 
             <!-- Competences et Experiences -->
             <div class="grid grid-cols-2 gap-4">

@@ -5,6 +5,8 @@ import mg.itu.rh.repository.LangueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class LangueService {
     private final LangueRepository langueRepository;
@@ -15,5 +17,9 @@ public class LangueService {
 
     public Langue findById(Long id){
         return langueRepository.findById(id).orElseThrow(()->new RuntimeException("Langue non reconnue"));
+    }
+
+    public List<Langue> findAll(){
+        return langueRepository.findAll();
     }
 }
