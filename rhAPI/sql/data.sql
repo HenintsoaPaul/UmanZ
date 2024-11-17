@@ -8,6 +8,12 @@ VALUES ('Refuse', 1),
        ('En attente de contrat', 6),
        ('Contrat valide', 7);
 
+INSERT INTO niveau_diplome (niveau_diplome, nom_niveau_diplome)
+VALUES 
+    (6, 'MBA'),
+    (7, 'PhD'),
+    (8, 'Certification Professionnelle');
+
 -- Insérer des données dans la table type_contrat (corrigé)
 INSERT INTO type_contrat (type_contrat)
 VALUES ('Contrat d''essaie'),
@@ -42,7 +48,6 @@ VALUES ('Dupont', 'Jean', 'jean.dupont@example.com', 'password1', true),
        ('Petit', 'Louis', 'louis.petit@example.com', 'password3', false),
        ('Durand', 'Emma', 'emma.durand@example.com', 'password4', false),
        ('Leroy', 'Paul', 'paul.leroy@example.com', 'password5', false);
-       ('Dupont', 'Jean', 'recipientgestion@gmail.com', 'recepgestion', true);
 
 INSERT INTO poste (nom_poste, description_poste)
 VALUES ('Développeur', 'Responsable du développement des applications'),
@@ -51,12 +56,10 @@ VALUES ('Développeur', 'Responsable du développement des applications'),
        ('Analyste', 'Analyse des besoins fonctionnels et techniques'),
        ('Support technique', 'Assistance et résolution des problèmes techniques');
 
-INSERT INTO annonce (date_annonce, entreprise, date_expiration, id_poste)
-VALUES ('2024-01-01', 'Tech Corp', '2024-03-01', 1),
-       ('2024-02-15', 'Design Studio', '2024-04-15', 3),
-       ('2024-03-10', 'Data Solutions', '2024-05-10', 4),
-       ('2024-04-05', 'IT Services', '2024-06-05', 2),
-       ('2024-05-01', 'Global Consulting', '2024-07-01', 5);
+INSERT INTO annonce (date_annonce, entreprise, date_expiration, id_niveau_diplome, id_poste)
+VALUES ('2024-01-01', 'Tech Corp', '2024-03-01', 1, 1),
+       ('2024-02-15', 'Design Studio', '2024-04-15', 2, 3),
+       ('2024-03-10', 'Data Solutions', '2024-05-10', 3, 4);
 
 INSERT INTO formation (nom_formation, date_debut, date_fin)
 VALUES ('Formation Java', '2023-01-10', '2023-03-10'),
@@ -84,7 +87,8 @@ INSERT INTO entretien (date_creation, date_validation, note, motif, id_enfant, i
 VALUES ('2023-02-15', '2023-02-20', 85, 'Entretien positif', NULL, 1, 4, 1),
        ('2023-03-10', '2023-03-15', 90, 'Candidat qualifié', NULL, 2, 5, 2),
        ('2023-04-05', NULL, NULL, 'En attente de validation', 1, 3, 1, 3),
-       ('2023-05-01', '2023-05-05', 70, 'Compétences insuffisantes', NULL, 4, 2, 4),
+       ('2023-05-01', '2023-05-05', 7       ('2024-04-05', 'IT Services', '2024-06-05', 2),
+0, 'Compétences insuffisantes', NULL, 4, 2, 4),
        ('2023-06-01', NULL, NULL, 'Annulation', 2, 5, 6, 5);
 
 INSERT INTO rupture (date_rupture, motif, id_type_rupture, id_contrat)
@@ -186,7 +190,3 @@ VALUES ('2024-12-01', 5, 'Congé annuel', 1),      -- Congé annuel pour le cont
        ('2024-11-20', 7, 'Congé parental', 3),    -- Congé parental pour le contrat 3
        ('2024-11-05', 10, 'Congé sabbatique', 4), -- Congé sabbatique pour le contrat 4
        ('2024-12-10', 4, 'Congé urgent', 5);
-
-INSERT INTO candidat_historique (id_talent, action, description, date_action)
-VALUES
-(1, 'Entretien', 'Entretien pour le poste de développeur', '2024-11-17 10:30:00');

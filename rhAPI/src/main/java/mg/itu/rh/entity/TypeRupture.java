@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Data;
 import mg.itu.rh.other.POV;
-import org.springframework.web.bind.annotation.RestController;
 
 @Entity
 @Data

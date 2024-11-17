@@ -75,6 +75,9 @@ public class Contrat {
         this.setNbJourCongeAn(contratDTO.getNbJourCongeAn());
     }
 
+    public int getDuree(){
+        return this.nbJourSemaine;
+    }
     public Contrat(){
 
     }

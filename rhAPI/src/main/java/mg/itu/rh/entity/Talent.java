@@ -1,7 +1,7 @@
 package mg.itu.rh.entity;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -39,14 +39,33 @@ public class Talent {
     @Column(name = "is_admin")
     private boolean isAdmin;
 
-    // @ManyToMany
-    // @JoinTable(
-    //     name = "talent_competence",
-    //     joinColumns = @JoinColumn(name = "id_talent"),
-    //     inverseJoinColumns = @JoinColumn(name = "id_competence")
-    // )
+    @OneToMany(mappedBy = "talent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonView({POV.Public.class})
+    private List<TalentCompetence> talentsCompetences = new ArrayList<>();
+
+    @OneToMany(mappedBy = "talent")
+    @JsonView({POV.Public.class})
+    private List<TalentDiplome> talentsDiplomes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "talent")
+    @JsonView({POV.Public.class})
+    private List<Contrat> contrats = new ArrayList<>();
+
+    private int scoreTotal;
     
     public String getEmail(){
         return this.mail;
+    }
+
+    public Long getId(){
+        return this.idTalent;
+    }
+
+    public int getScoreTotal() {
+        return scoreTotal;
+    }
+
+    public void setScoreTotal(int scoreTotal) {
+        this.scoreTotal = scoreTotal;
     }
 }

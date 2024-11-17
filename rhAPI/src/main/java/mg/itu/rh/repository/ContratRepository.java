@@ -18,4 +18,6 @@ public interface ContratRepository extends JpaRepository<Contrat,Long> {
 
     @Query("SELECT c FROM Contrat c")
     public List<Contrat> findAllContrat();
+
+    List<Contrat> findByTalentId(Long idTalent);
 }

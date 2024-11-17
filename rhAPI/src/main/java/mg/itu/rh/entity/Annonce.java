@@ -44,6 +44,11 @@ public class Annonce {
     @Column(name = "date_rupture")
     private LocalDate dateRupture;
 
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="id_niveau_diplome")
+    @JsonView({POV.Full.class})
+    private Diplome diplomesAnnonce;
+
     @OneToMany(mappedBy = "annonce",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonView({POV.Full.class})
     private List<CompetenceAnnonce> competenceAnnonces;
@@ -51,4 +56,22 @@ public class Annonce {
     @OneToMany(mappedBy="annonce",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     @JsonView({POV.Full.class})
     private List<ExperiencePoste> experiencePostes;
+
+    public List<Competence> competences;
+
+    public List<CompetenceAnnonce> getCompetencesRequises(){
+        return this.competenceAnnonces;
+    }
+
+    public List<Competence> getCompetences() {
+        return competences;
+    }
+
+    public Diplome getDiplomesRequis(){
+        return this.diplomesAnnonce;
+    }
+
+    public Poste getPostesRequis(){
+        return this.poste;
+    }
 }

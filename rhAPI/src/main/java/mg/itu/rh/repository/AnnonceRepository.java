@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AnnonceRepository extends JpaRepository<Annonce, Long> {
@@ -14,4 +15,6 @@ public interface AnnonceRepository extends JpaRepository<Annonce, Long> {
             "join a.experiencePostes " +
             "where a.dateRupture is null and a.dateExpiration > CURRENT_DATE " )
     List<Annonce> findAnnonceAvailable();
+
+    Optional<Annonce> findById(Long idAnnonce);
 }
