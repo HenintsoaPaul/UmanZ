@@ -123,3 +123,70 @@ export interface TypeContrat {
     idTypeContrat: number,
     typeContrat: string,
 }
+
+export interface Chat {
+    idChat: number;
+    motCle: string;
+    reponse: string;
+}
+
+export interface Compatibilite {
+    talent: Talent;
+    annonce: Annonce;
+    pourcentage: number;
+}
+
+export interface Langue {
+    idLangue: number;
+    langue: string;
+}
+
+export interface NiveauLangue {
+    idNiveauLangue: number;
+    niveauLangue: string;
+    niveau: number;
+}
+
+export interface LangueAvecNiveau {
+    langue: Langue;
+    niveauLangue: NiveauLangue | null
+}
+
+export interface DiplomeAvecNiveau {
+    diplome: Diplome;
+    niveauDiplome: NiveauDiplome | null
+}
+
+export interface AnnonceLangue {
+    annonce: Annonce;
+    langue: Langue;
+    niveauLangue: NiveauLangue;
+}
+
+export interface TalentLangue {
+    talent: Talent;
+    langue: Langue;
+    niveauLangue: NiveauLangue;
+}
+
+export interface Diplome {
+    idDiplome: number;
+    diplome: string;
+    niveauDiplome: NiveauDiplome
+}
+
+export interface NiveauDiplome {
+    idNiveauDiplome: number;
+    niveau: string;
+    niveauDiplome: number;
+}
+
+export interface AnnonceDiplome {
+    annonce: Annonce;
+    diplome: Diplome;
+}
+
+export interface TalentDiplome {
+    talent: Talent;
+    diplome: Diplome;
+}

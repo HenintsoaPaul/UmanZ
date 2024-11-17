@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import type { Competence, CompetenceAnnonce, ExperiencePoste, Poste } from '~/types';
+import type { Competence, CompetenceAnnonce, Diplome, DiplomeAvecNiveau, ExperiencePoste, Langue, LangueAvecNiveau, NiveauDiplome, NiveauLangue, Poste } from '~/types';
 
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const { data: postes, refresh: refreshPostes } = useFetch<Poste[]>(`${apiUrl}/postes`);
 const { data: competences, refresh: refreshCompetences } = useFetch<Competence[]>(`${apiUrl}/competences`);
+const { data: diplomes, refresh: refreshDiplomes } = useFetch<Diplome[]>(`${apiUrl}/diplomes`);
+const { data: niveauDiplomes, refresh: refreshniveauDiplomes } = useFetch<NiveauDiplome[]>(`${apiUrl}/niveau_diplomes`);
+const { data: langues, refresh: refreshLangues } = useFetch<Langue[]>(`${apiUrl}/langues`);
+const { data: niveaulangues, refresh: refreshNiveauLangues } = useFetch<NiveauLangue[]>(`${apiUrl}/niveau_langues`);
 
 interface Form {
     dateAnnonce: string;
@@ -12,13 +16,17 @@ interface Form {
     idPoste: string;
     competences: CompetenceAnnonce[];
     experiences: ExperiencePoste[];
+    languesAvecNiveaux: LangueAvecNiveau[];
+    diplomesAvecNiveaux: DiplomeAvecNiveau[];
 }
 const form = reactive<Form>({
     dateAnnonce: '',
     dateExpiration: '',
     idPoste: '',
     competences: [],
-    experiences: []
+    experiences: [],
+    languesAvecNiveaux: [],
+    diplomesAvecNiveaux: [],
 });
 
 const errorMessage = ref('');
@@ -28,13 +36,16 @@ const loading = ref(false);
 async function onSubmit() {
     loading.value = true;
     try {
+        const { languesAvecNiveaux, diplomesAvecNiveaux, ...f } = form;
         const formKdj = toRaw({
-            ...form,
-            competences: form.competences.filter(cp => cp.point > 0),
-            experiences: form.experiences.filter(exp => exp.ans > 0)
+            ...f,
+            competences: f.competences.filter(cp => cp.point > 0).map(e => toRaw(e)),
+            experiences: f.experiences.filter(exp => exp.ans > 0).map(e => toRaw(e)),
+            langues: languesAvecNiveaux.filter(lg => lg.niveauLangue != null).map(e => toRaw(e)),
+            diplomes: diplomesAvecNiveaux.filter(dp => dp.niveauDiplome != null).map(e => toRaw(e)),
         });
-        console.log(toRaw(formKdj));
 
+        console.log(toRaw(formKdj));
         const response = await $fetch(`${apiUrl}/annonce`, {
             method: 'POST',
             body: toRaw(formKdj)
@@ -56,7 +67,11 @@ async function onSubmit() {
 onMounted(async () => {
     await refreshPostes();
     await refreshCompetences();
-    if (postes.value && competences.value) {
+    await refreshDiplomes();
+    await refreshLangues();
+    await refreshniveauDiplomes();
+    await refreshNiveauLangues();
+    if (postes.value && competences.value && langues.value && diplomes.value) {
         form.experiences = postes.value.map(pt => ({
             ans: 0,
             poste: toRaw(pt)
@@ -64,6 +79,14 @@ onMounted(async () => {
         form.competences = competences.value.map(cp => ({
             point: 0,
             competence: toRaw(cp)
+        }));
+        form.languesAvecNiveaux = langues.value.map(lg => ({
+            langue: toRaw(lg),
+            niveauLangue: null
+        }));
+        form.diplomesAvecNiveaux = diplomes.value.map(dp => ({
+            diplome: toRaw(dp),
+            niveauDiplome: null
         }));
     }
 });
@@ -97,6 +120,19 @@ onMounted(async () => {
                     </select>
                 </div>
             </div>
+
+            <hr>
+            <div class="flex gap-4 w-full">
+                <div class="w-1/2" v-if="niveaulangues && langues">
+                    <ListInputLangue title="Langues" :niveau-langues="niveaulangues"
+                        :list-langue-avec-niveau="form.languesAvecNiveaux" />
+                </div>
+                <div class="w-1/2" v-if="niveauDiplomes && diplomes">
+                    <ListInputDiplome title="Diplomes" :niveau-diplomes="niveauDiplomes"
+                        :list-diplome-avec-niveau="form.diplomesAvecNiveaux" />
+                </div>
+            </div>
+            <hr>
 
             <!-- Competences et Experiences -->
             <div class="grid grid-cols-2 gap-4">
