@@ -20,6 +20,8 @@ const handleCandidater = async (idAnnonce: number) => {
     const msg = await canditerFn(idAnnonce, idTalent.value, apiUrl);
     message.value = msg;
 }
+
+const isAdmin = computed(() => localStorage.getItem("isAdmin") === 'true');
 </script>
 
 <template>
@@ -42,15 +44,20 @@ const handleCandidater = async (idAnnonce: number) => {
                                 <p class="text-gray-700">{{ row.poste.description }}</p>
                             </div>
 
-                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4"
-                                @click="handleCandidater(row.idAnnonce)">
-                                Candidater
-                            </button>
-
-                            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2"
-                                @click="$router.push(`/recrutement/annonce/${row.idAnnonce}`)">
-                                Voir Détails
-                            </button>
+                            <template v-if="isAdmin">
+                                <button
+                                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2"
+                                    @click="$router.push(`/recrutement/annonce/${row.idAnnonce}`)">
+                                    Voir Détails
+                                </button>
+                            </template>
+                            <template v-else>
+                                <button
+                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4"
+                                    @click="handleCandidater(row.idAnnonce)">
+                                    Candidater
+                                </button>
+                            </template>
                         </div>
                     </template>
                 </UTable>
