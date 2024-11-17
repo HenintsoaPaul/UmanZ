@@ -69,10 +69,12 @@ const refuserFn = async (talentId: number) => {
         console.error('Erreur lors du refus du candidat:', error);
     }
 }
+
+const isAdmin = computed(() => localStorage.getItem("isAdmin") === 'true');
 </script>
 
 <template>
-    <div class="container mx-auto">
+    <div class="container mx-auto text-sm">
         <div v-if="annonce && competences && experiences">
             <AnnonceDetails :annonce="annonce" :competences="competences" :experiences="experiences" />
         </div>
@@ -98,14 +100,23 @@ const refuserFn = async (talentId: number) => {
                 <UTable :columns="columnsCandidats" :rows="candidats" v-model:expand="expand"
                     class="w-full shadow-md rounded-lg overflow-hidden">
                     <template #expand="{ row }">
+                        <template v-if="isAdmin">
+                            <div class="p-4">
+                                <button
+                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4"
+                                    @click="validerFn(row.idTalent)">
+                                    Valider
+                                </button>
+                                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                                    @click="refuserFn(row.idTalent)">
+                                    Refuser
+                                </button>
+                            </div>
+                        </template>
                         <div class="p-4">
-                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4"
-                                @click="validerFn(row.idTalent)">
-                                Valider
-                            </button>
-                            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                                @click="refuserFn(row.idTalent)">
-                                Refuser
+                            <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
+                                @click="$router.push(`/talent/${row.idTalent}`)">
+                                Consulter CV
                             </button>
                         </div>
                     </template>

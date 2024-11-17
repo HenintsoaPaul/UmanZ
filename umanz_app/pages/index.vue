@@ -1,6 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
-    layout: 'blank'
+    layout: 'blank',
+    middleware: 'logout'
 });
 
 import { useRouter } from 'vue-router'

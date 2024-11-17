@@ -2,6 +2,10 @@
 import { ref, onMounted } from 'vue'
 import type { Competence, CompetenceAnnonce, Diplome, DiplomeAvecNiveau, ExperiencePoste, Langue, LangueAvecNiveau, NiveauDiplome, NiveauLangue, Poste } from '~/types';
 
+definePageMeta({
+    middleware: ['auth']
+})
+
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const { data: postes, refresh: refreshPostes } = useFetch<Poste[]>(`${apiUrl}/postes`);
 const { data: competences, refresh: refreshCompetences } = useFetch<Competence[]>(`${apiUrl}/competences`);
