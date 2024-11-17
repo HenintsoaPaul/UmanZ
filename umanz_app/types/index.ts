@@ -44,7 +44,9 @@ export interface Talent {
     password: string,
     isAdmin: boolean,
     competenceTalents: CompetenceTalent[],
-    experienceTalents: ExperienceTalent[]
+    experienceTalents: ExperienceTalent[],
+    diplomes: DiplomeAvecNiveau[],
+    talentLangues: LangueAvecNiveau[]
 }
 
 export interface Competence {
