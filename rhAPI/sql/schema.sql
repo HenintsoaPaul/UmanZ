@@ -200,7 +200,7 @@ CREATE TABLE question_technique(
 
 CREATE TABLE reponse(
                         id_reponse SERIAL,
-                        reponse VARCHAR(50)  NOT NULL,
+                        reponse VARCHAR(255)  NOT NULL,
                         note NUMERIC(15,2)   NOT NULL,
                         id_question_technique INTEGER NOT NULL,
                         PRIMARY KEY(id_reponse),
