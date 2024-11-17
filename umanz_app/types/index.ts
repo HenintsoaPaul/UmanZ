@@ -147,6 +147,11 @@ export interface NiveauLangue {
     niveau: number;
 }
 
+export interface LangueAvecNiveau {
+    langue: Langue;
+    niveauLangue: NiveauLangue | null
+}
+
 export interface AnnonceLangue {
     annonce: Annonce;
     langue: Langue;

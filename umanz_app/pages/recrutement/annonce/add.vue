@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import type { AnnonceDiplome, AnnonceLangue, Competence, CompetenceAnnonce, Diplome, ExperiencePoste, Langue, NiveauLangue, Poste } from '~/types';
+import type { Competence, CompetenceAnnonce, ExperiencePoste, Langue, LangueAvecNiveau, NiveauLangue, Poste } from '~/types';
 
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const { data: postes, refresh: refreshPostes } = useFetch<Poste[]>(`${apiUrl}/postes`);
@@ -15,7 +15,7 @@ interface Form {
     idPoste: string;
     competences: CompetenceAnnonce[];
     experiences: ExperiencePoste[];
-    // langues: AnnonceLangue[];
+    languesAvecNiveaux: LangueAvecNiveau[];
     // diplomes: Diplome[];
 }
 const form = reactive<Form>({
@@ -24,7 +24,7 @@ const form = reactive<Form>({
     idPoste: '',
     competences: [],
     experiences: [],
-    // langues: [],
+    languesAvecNiveaux: [],
     // diplomes: [],
 });
 
@@ -35,13 +35,15 @@ const loading = ref(false);
 async function onSubmit() {
     loading.value = true;
     try {
+        const { languesAvecNiveaux, ...f } = form;
         const formKdj = toRaw({
-            ...form,
-            competences: form.competences.filter(cp => cp.point > 0),
-            experiences: form.experiences.filter(exp => exp.ans > 0)
+            ...f,
+            competences: f.competences.filter(cp => cp.point > 0).map(e => toRaw(e)),
+            experiences: f.experiences.filter(exp => exp.ans > 0).map(e => toRaw(e)),
+            langues: languesAvecNiveaux.filter(lg => lg.niveauLangue != null).map(e => toRaw(e))
         });
-        console.log(toRaw(formKdj));
 
+        console.log(toRaw(formKdj));
         const response = await $fetch(`${apiUrl}/annonce`, {
             method: 'POST',
             body: toRaw(formKdj)
@@ -75,10 +77,10 @@ onMounted(async () => {
             point: 0,
             competence: toRaw(cp)
         }));
-        // form.langues = langues.value.map(pt => ({
-        //     ans: 0,
-        //     poste: toRaw(pt)
-        // }));
+        form.languesAvecNiveaux = langues.value.map(lg => ({
+            langue: toRaw(lg),
+            niveauLangue: null
+        }))
         // form.diplomes = diplomes.value.map(cp => ({
         //     idDiplome: cp.idDiplome,
         //     nomDiplome: cp.nomDiplome,
@@ -120,7 +122,8 @@ onMounted(async () => {
             <hr>
 
             <div v-if="niveaulangues && langues">
-                <ListInputLangue title="Langues" :niveau-langues="niveaulangues" :langues="langues" />
+                <ListInputLangue title="Langues" :niveau-langues="niveaulangues"
+                    :list-langue-avec-niveau="form.languesAvecNiveaux" />
             </div>
 
             <hr>
