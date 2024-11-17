@@ -1,5 +1,6 @@
 package mg.itu.rh.controller;
 
+import mg.itu.rh.dto.FormationDTO;
 import mg.itu.rh.entity.Formation;
 import mg.itu.rh.repository.FormationRepository;
 import mg.itu.rh.service.FormationService;
@@ -19,8 +20,8 @@ public class FormationController {
     }
 
     @PostMapping
-    public Formation create( @RequestBody Formation formation ) {
-        return formationRepository.save( formation );
+    public Formation create( @RequestBody FormationDTO formationDTO ) {
+        return formationService.save( formationDTO );
     }
 
     @GetMapping

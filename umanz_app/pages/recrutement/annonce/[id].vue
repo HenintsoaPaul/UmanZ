@@ -90,24 +90,30 @@ const refuserFn = async (talentId: number) => {
             Erreur lors du chargement des expériences: {{ experiencesError.message }}
         </div>
 
-        <h1 class="text-3xl font-bold mb-6 text-center">Candidats En Attente de Validation</h1>
+        <br>
 
-        <div v-if="candidats?.length">
-            <UTable :columns="columnsCandidats" :rows="candidats" v-model:expand="expand"
-                class="w-full shadow-md rounded-lg overflow-hidden">
-                <template #expand="{ row }">
-                    <div class="p-4">
-                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                            @click="validerFn(row.idTalent)">
-                            Valider
-                        </button>
-                        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                            @click="refuserFn(row.idTalent)">
-                            Refuser
-                        </button>
-                    </div>
-                </template>
-            </UTable>
+        <h1 class="text-3xl font-bold mb-6 text-center">Candidats En Attente de Validation</h1>
+        <div v-if="candidats">
+            <div v-if="candidats.length > 0">
+                <UTable :columns="columnsCandidats" :rows="candidats" v-model:expand="expand"
+                    class="w-full shadow-md rounded-lg overflow-hidden">
+                    <template #expand="{ row }">
+                        <div class="p-4">
+                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4"
+                                @click="validerFn(row.idTalent)">
+                                Valider
+                            </button>
+                            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                                @click="refuserFn(row.idTalent)">
+                                Refuser
+                            </button>
+                        </div>
+                    </template>
+                </UTable>
+            </div>
+            <div v-else>
+                No Candidats
+            </div>
         </div>
         <div v-else>
             Loading Candidats...
@@ -116,11 +122,9 @@ const refuserFn = async (talentId: number) => {
         <div v-if="candidatsError" class="text-red-500">
             Erreur lors du chargement des candidats: {{ candidatsError.message }}
         </div>
-
         <div v-if="successMessage" class="text-green-500">
             {{ successMessage }}
         </div>
-
         <div v-if="errorMessage" class="text-red-500">
             {{ errorMessage }}
         </div>

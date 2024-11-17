@@ -7,9 +7,7 @@ import mg.itu.rh.entity.Annonce;
 import mg.itu.rh.entity.AnnonceLangue;
 import mg.itu.rh.entity.Compatibilite;
 import mg.itu.rh.entity.Diplome;
-import mg.itu.rh.entity.id.IdAnnonceLangue;
 import mg.itu.rh.repository.AnnonceRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -83,7 +81,7 @@ public class AnnonceService {
 
     @Transactional
     public void addLangue(Annonce annonce, List<AnnonceLangueDTO> annonceLangues){
-        annonce.setAnnonceLangues(new ArrayList<AnnonceLangue>());
+        annonce.setAnnonceLangues(new ArrayList<>());
         for (AnnonceLangueDTO annonceLangue: annonceLangues) {
             AnnonceLangue langueAnnonce=new AnnonceLangue();
             langueAnnonce.setAnnonce(annonce);
@@ -91,5 +89,9 @@ public class AnnonceService {
             langueAnnonce.setNiveauLangue(niveauLangueService.findById(annonceLangue.getIdLangue()));
             annonce.getAnnonceLangues().add(langueAnnonce);
         }
+    }
+
+    public List<Annonce> findAllDisponible() {
+        return annonceRepository.findAnnonceAvailable();
     }
 }

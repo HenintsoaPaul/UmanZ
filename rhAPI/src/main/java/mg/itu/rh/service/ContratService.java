@@ -14,12 +14,14 @@ public class ContratService {
     private final TalentService talentService;
     private final TypeContratService typeContratService;
     private final PosteService posteService;
+    private final EntretienService entretienService;
 
-    public ContratService( ContratRepository contratRepository, TalentService talentService, TypeContratService typeContratService, PosteService posteService ) {
+    public ContratService( ContratRepository contratRepository, TalentService talentService, TypeContratService typeContratService, PosteService posteService, EntretienService entretienService ) {
         this.contratRepository = contratRepository;
         this.talentService = talentService;
         this.typeContratService = typeContratService;
         this.posteService = posteService;
+        this.entretienService = entretienService;
     }
 
     public Contrat findActualContratByIdTalent( Long idTalent ) {
@@ -35,12 +37,15 @@ public class ContratService {
     }
 
     public Contrat save( ContratDTO contratDTO ) {
+        // set etat entretient en attent contrat
+        entretienService.validerEntretienEnAttenteContrat( contratDTO.getIdEntretien() );
+
         Contrat contrat = new Contrat( contratDTO );
         contrat.setTalent( talentService.findById( contratDTO.getIdTalent() ) );
         contrat.setPoste( posteService.findById( contratDTO.getIdPoste() ) );
         TypeContrat tc = typeContratService.findById( contratDTO.getIdTypeContrat() );
         contrat.setTypeContrat( tc );
-        contrat.setContrat( tc.getTypeContrat() );
+        contrat.setContrat( tc.getTypeContrat() ); // nom_contrat io ;>
         return this.save( contrat );
     }
 
