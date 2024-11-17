@@ -1,5 +1,10 @@
 export const useContratActions = () => {
     const promotionFn = async (idContrat: number) => {
+        // fin contrat
+        // recuperer idContrat venant de l'API
+
+        // Asina dropDown eo akaikin'ilay boutton pour choisir le nouveau poste
+
         // TODO: Implement
         console.log("Promotion function not defined");
     }

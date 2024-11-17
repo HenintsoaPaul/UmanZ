@@ -1,90 +1,27 @@
 <script setup lang="ts">
-import axios from 'axios';
 import type { Annonce } from '~/types';
+import { ref, computed } from 'vue';
 
-const headers = [
-    {
-        key: 'idAnnonce',
-        label: 'ID',
-    },
-    {
-        key: 'poste.nomPoste',
-        label: 'Poste',
-    },
-    {
-        key: 'dateAnnonce',
-        label: 'Date Annonce',
-        sortable: true
-    },
-    {
-        key: 'dateExpiration',
-        label: 'Date Expiration',
-        sortable: true
-    }
-];
+const { canditerFn, headers } = useAnnonceActions();
+const idTalent = computed(() => localStorage.getItem('idUser') ?? "0");
 
-// Variable pour stocker les données de l'API
-const lignes = ref<Annonce[]>([]);
-const q = ref('');
+const apiUrl = useRuntimeConfig().public.apiUrl as string;
+const { data: annonces } = useFetch<Annonce[]>(`${apiUrl}/annonce/disponible`);
 
-const filteredLignes = computed(() => {
-    return q.value ?
-        lignes.value.filter((e: Annonce) =>
-            Object.values(e).some((value) =>
-                String(value).toLowerCase().includes(q.value.toLowerCase())
-            )
-        ) : lignes.value;
-});
-
-async function loadAnnonces() {
-    try {
-        const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
-        const response = await axios.get(`${apiUrl}/annonce/disponible`);
-
-        if (response.status === 200 && Array.isArray(response.data)) {
-            console.log(toRaw(response.data));
-
-            lignes.value = response.data;
-        } else {
-            console.error('Erreur lors de la récupération des annonces', response.data);
-        }
-    } catch (error) {
-        console.error('Erreur lors de la requête API:', error);
-    }
-}
-
-onMounted(() => {
-    loadAnnonces();
-})
-
+const { q, filteredRows: filteredAnnonces } = useFilteredRows(annonces);
 const expand = ref({
     openedRows: [],
     row: {}
-})
+});
 
-const canditerFn = async (idAnnonce: number) => {
-    const idTalent = localStorage.getItem('idUser');
-    if (idTalent) {
-        const apiUrl = useRuntimeConfig().public.apiUrl;
-        try {
-            const candidature = {
-                idTalent: Number(idTalent),
-                idAnnonce: Number(idAnnonce),
-            }
-            const response = await axios.post(`${apiUrl}/entretien/candiat`, candidature);
+const message = ref('');
 
-            if (response.status === 200) {
-                console.log('Candidature envoyée avec succès', candidature);
-            } else {
-                console.error('Erreur lors de l\'envoi de la candidature', response.data);
-            }
-        } catch (error) {
-            console.error('Erreur lors de la requête API:', error);
-        }
-    } else {
-        console.error('Utilisateur non connecté');
-    }
+const handleCandidater = async (idAnnonce: number) => {
+    const msg = await canditerFn(idAnnonce, idTalent.value, apiUrl);
+    message.value = msg;
 }
+
+const isAdmin = computed(() => localStorage.getItem("isAdmin") === 'true');
 </script>
 
 <template>
@@ -96,26 +33,45 @@ const canditerFn = async (idAnnonce: number) => {
                 class="w-full max-w-md px-4 py-2  rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
 
-        <UTable :columns="headers" :rows="filteredLignes" v-model:expand="expand"
-            class="w-full shadow-md rounded-lg overflow-hidden">
-            <template #expand="{ row }">
-                <div class="p-4">
-                    <div class="mb-4">
-                        <h3 class="text-xl font-semibold mb-2">Description:</h3>
-                        <p class="text-gray-700">{{ row.poste.description }}</p>
-                    </div>
+        <div v-if="annonces">
+            <div v-if="annonces.length > 0">
+                <UTable :columns="headers" :rows="filteredAnnonces ?? []" v-model:expand="expand"
+                    class="w-full shadow-md rounded-lg overflow-hidden">
+                    <template #expand="{ row }">
+                        <div class="p-4">
+                            <div class="mb-4">
+                                <h3 class="text-xl font-semibold mb-2">Description:</h3>
+                                <p class="text-gray-700">{{ row.poste.description }}</p>
+                            </div>
 
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                        @click="canditerFn(row.idAnnonce)">
-                        Candidater
-                    </button>
+                            <template v-if="isAdmin">
+                                <button
+                                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2"
+                                    @click="$router.push(`/recrutement/annonce/${row.idAnnonce}`)">
+                                    Voir Détails
+                                </button>
+                            </template>
+                            <template v-else>
+                                <button
+                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4"
+                                    @click="handleCandidater(row.idAnnonce)">
+                                    Candidater
+                                </button>
+                            </template>
+                        </div>
+                    </template>
+                </UTable>
+            </div>
+            <div v-else>
+                No Annonce
+            </div>
+        </div>
+        <div v-else>
+            Loading Annonces...
+        </div>
 
-                    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2"
-                        @click="$router.push(`/recrutement/annonce/${row.idAnnonce}`)">
-                        Voir Détails
-                    </button>
-                </div>
-            </template>
-        </UTable>
+        <div v-if="message" class="mt-4 p-4 bg-blue-100 text-blue-700 rounded">
+            {{ message }}
+        </div>
     </div>
 </template>
