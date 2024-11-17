@@ -18,23 +18,15 @@ const props = defineProps({
 </script>
 
 <template>
-    <label class="block text-sm font-medium" v-if="props.title">
+    <label class="block text-xl font-medium" v-if="props.title">
         {{ props.title }}
     </label>
 
     <div v-for="(elmt, index) in props.listDiplomeAvecNiveau" :key="index" class="flex items-center mt-2">
-        <label class="w-1/2 ml-2 block text-sm">
-            {{ elmt.diplome.diplome }}
-        </label>
+        <input type="checkbox" v-model="elmt.selected" class="form-checkbox h-5 w-5 text-indigo-600">
 
-        <select v-model="elmt.niveauDiplome"
-            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-            <option :value="null">
-                Non requis
-            </option>
-            <option v-for="(nl, i) in props.niveauDiplomes" :key="i" :value="nl">
-                {{ nl.niveauDiplome }}
-            </option>
-        </select>
+        <label class="w-1/2 ml-2 block text-sm">
+            {{ elmt.diplome.diplome }} ({{ elmt.diplome.niveauDiplome.niveauDiplome }})
+        </label>
     </div>
 </template>

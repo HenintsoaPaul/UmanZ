@@ -14,7 +14,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <label class="block text-sm font-medium" v-if="props.title">
+    <label class="block font-medium text-xl" v-if="props.title">
         {{ props.title }}
     </label>
     <div v-for="(elmt, index) in props.competences" :key="index" class="flex items-center mt-2">

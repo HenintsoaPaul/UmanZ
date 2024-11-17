@@ -42,7 +42,7 @@ async function onSubmit() {
             competences: f.competences.filter(cp => cp.point > 0).map(e => toRaw(e)),
             experiences: f.experiences.filter(exp => exp.ans > 0).map(e => toRaw(e)),
             langues: languesAvecNiveaux.filter(lg => lg.niveauLangue != null).map(e => toRaw(e)),
-            diplomes: diplomesAvecNiveaux.filter(dp => dp.niveauDiplome != null).map(e => toRaw(e)),
+            diplomes: diplomesAvecNiveaux.filter(dp => dp.selected === true).map(e => toRaw(e)),
         });
 
         console.log(toRaw(formKdj));
@@ -86,6 +86,7 @@ onMounted(async () => {
         }));
         form.diplomesAvecNiveaux = diplomes.value.map(dp => ({
             diplome: toRaw(dp),
+            selected: false,
             niveauDiplome: null
         }));
     }
@@ -123,13 +124,19 @@ onMounted(async () => {
 
             <hr>
             <div class="flex gap-4 w-full">
-                <div class="w-1/2" v-if="niveaulangues && langues">
+                <div class="w-1/2" v-if="niveaulangues">
                     <ListInputLangue title="Langues" :niveau-langues="niveaulangues"
                         :list-langue-avec-niveau="form.languesAvecNiveaux" />
                 </div>
-                <div class="w-1/2" v-if="niveauDiplomes && diplomes">
+                <div v-else>
+                    Loading Langues...
+                </div>
+                <div class="w-1/2" v-if="niveauDiplomes">
                     <ListInputDiplome title="Diplomes" :niveau-diplomes="niveauDiplomes"
                         :list-diplome-avec-niveau="form.diplomesAvecNiveaux" />
+                </div>
+                <div v-else>
+                    Loading Diplomes...
                 </div>
             </div>
             <hr>
