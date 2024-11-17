@@ -32,6 +32,7 @@ public class TalentController {
     }
 
     @GetMapping( "/users" )
+    @JsonView( POV.Public.class )
     public Talent login( @Param( "email" ) String email, @Param( "password" ) String password ) {
         return talentService.findByEmailAndPassword( email, password );
     }

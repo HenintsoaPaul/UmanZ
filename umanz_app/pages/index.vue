@@ -32,10 +32,15 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         const apiUrl = useRuntimeConfig().public.apiUrl;
         const user = await authenticate(userEmail, userPassword, `${apiUrl}/talents/users`);
 
-        if (typeof (user) != "string" && user != null) {
-            localStorage.setItem('idUser', user.idTalent.toString());
-            localStorage.setItem('isAdmin', user.isAdmin.toString());
-            router.push('/Home');
+
+        if (user) {
+            if (user.mail === userEmail || user.password === userPassword) {
+                localStorage.setItem('idUser', user.idTalent.toString());
+                localStorage.setItem('isAdmin', user.isAdmin.toString());
+                router.push('/Home');
+            } else {
+                formState.error = 'Email ou Mot de Passe incorrecte'
+            }
         } else {
             formState.error = 'Utilisateur inconnu'
         }
@@ -49,15 +54,18 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
             <UForm :schema="schema" :state="formState" class="space-y-4" @submit="onSubmit">
                 <UFormGroup label="Email" name="email">
-                    <UInput v-model="formState.email" class="w-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <UInput v-model="formState.email"
+                        class="w-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </UFormGroup>
 
                 <UFormGroup label="Mot de passe" name="password">
-                    <UInput v-model="formState.password" type="password" class="w-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <UInput v-model="formState.password" type="password"
+                        class="w-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </UFormGroup>
 
                 <div class="w-full flex justify-center">
-                    <UButton type="submit" class="w-1/2 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300 flex justify-center">
+                    <UButton type="submit"
+                        class="w-1/2 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300 flex justify-center">
                         Soumettre
                     </UButton>
                 </div>
@@ -67,9 +75,3 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         </div>
     </div>
 </template>
-
-<style scoped>
-body {
-    font-family: 'Inter', sans-serif;
-}
-</style>
