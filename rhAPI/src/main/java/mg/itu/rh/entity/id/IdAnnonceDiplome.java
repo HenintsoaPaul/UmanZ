@@ -1,7 +1,10 @@
 package mg.itu.rh.entity.id;
 
 import jakarta.persistence.Embeddable;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -10,7 +13,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class IdAnnonceLangue implements Serializable {
+public class IdAnnonceDiplome implements Serializable {
     private Long idAnnonce;
-    private Long idLangue;
+    private Long idDiplome;
 }

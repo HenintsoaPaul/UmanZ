@@ -20,7 +20,7 @@ public class DiplomeController {
     }
 
     @GetMapping
-    @JsonView({ POV.Public.class})
+    @JsonView( { POV.Public.class } )
     public List<Diplome> getAll() {
         return diplomeService.findAll();
     }

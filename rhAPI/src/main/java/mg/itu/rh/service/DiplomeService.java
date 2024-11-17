@@ -22,4 +22,8 @@ public class DiplomeService {
     public List<Diplome> findAll() {
         return diplomeRepository.findAll();
     }
+
+    public void saveAll( List<Diplome> diplomes ) {
+        diplomeRepository.saveAll( diplomes );
+    }
 }
