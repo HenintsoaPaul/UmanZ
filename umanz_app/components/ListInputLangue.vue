@@ -29,7 +29,7 @@ const props = defineProps({
 
         <select v-model="elmt.niveauLangue"
             class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-            <option value="">
+            <option :value="null">
                 Non requis
             </option>
             <option v-for="(nl, i) in props.niveauLangues" :key="i" :value="nl">

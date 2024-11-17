@@ -5,6 +5,7 @@ import mg.itu.rh.dto.AnnonceLangueDTO;
 import mg.itu.rh.entity.Annonce;
 import mg.itu.rh.entity.AnnonceLangue;
 import mg.itu.rh.entity.Langue;
+import mg.itu.rh.entity.NiveauLangue;
 import mg.itu.rh.entity.id.IdAnnonceLangue;
 import mg.itu.rh.repository.AnnonceLangueRepository;
 import org.springframework.stereotype.Service;
@@ -31,8 +32,9 @@ public class AnnonceLangueService {
             Langue l = dto.getLangue();
             annonceLangue.setAnnonce( annonce );
             annonceLangue.setLangue( l );
-            annonceLangue.setNiveauLangue( dto.getNiveauLangue() );
-            annonceLangue.setId( new IdAnnonceLangue( annonce.getIdAnnonce(), l.getIdLangue() ) );
+            NiveauLangue nl = dto.getNiveauLangue();
+            annonceLangue.setNiveauLangue( nl );
+            annonceLangue.setId( new IdAnnonceLangue( annonce.getIdAnnonce(), l.getIdLangue(), nl.getIdNiveauLangue() ) );
             this.save( annonceLangue );
         }
     }

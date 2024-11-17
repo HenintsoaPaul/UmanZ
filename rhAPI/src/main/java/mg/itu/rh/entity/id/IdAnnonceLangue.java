@@ -13,4 +13,5 @@ import java.io.Serializable;
 public class IdAnnonceLangue implements Serializable {
     private Long idAnnonce;
     private Long idLangue;
+    private Long idNiveauLangue;
 }
