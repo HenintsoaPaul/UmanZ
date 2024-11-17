@@ -34,7 +34,7 @@ public class TalentLangueService {
             talentLangue.setLangue( l );
             NiveauLangue nl = dto.getNiveauLangue();
             talentLangue.setNiveauLangue( nl );
-            talentLangue.setId( new IdTalentLangue( talent.getIdTalent(), l.getIdLangue(), nl.getIdNiveauLangue() ) );
+            talentLangue.setId( new IdTalentLangue( l.getIdLangue(), nl.getIdNiveauLangue(), talent.getIdTalent() ) );
             this.save( talentLangue );
         }
     }

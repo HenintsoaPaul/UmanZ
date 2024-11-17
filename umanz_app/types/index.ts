@@ -154,6 +154,7 @@ export interface LangueAvecNiveau {
 
 export interface DiplomeAvecNiveau {
     diplome: Diplome;
+    selected: boolean;
     niveauDiplome: NiveauDiplome | null
 }
 
