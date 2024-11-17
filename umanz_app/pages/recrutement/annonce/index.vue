@@ -48,10 +48,13 @@ const isAdmin = computed(() => localStorage.getItem("isAdmin") === 'true');
                                 @click="$router.push(`/recrutement/annonce/${row.idAnnonce}`)">
                                 Voir Détails
                             </button>
-                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4"
-                                @click="handleCandidater(row.idAnnonce)">
-                                Candidater
-                            </button>
+
+                            <template v-if="!isAdmin">
+                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4"
+                                    @click="handleCandidater(row.idAnnonce)">
+                                    Candidater
+                                </button>
+                            </template>
                         </div>
                     </template>
                 </UTable>

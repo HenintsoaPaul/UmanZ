@@ -1,5 +1,5 @@
 <template>
-    <div class="not-allowed flex justify-center align-center">
+    <div class="not-allowed w-full flex justify-center align-center">
         <div id="ct" class="text-center mt-12">
             <h1 class="text-4xl font-bold mb-4">Vous n'êtes pas autorisé à voir ce contenu</h1>
             <router-link to="/Home">
@@ -16,10 +16,10 @@
     </div>
 </template>
 
-<script>
-export default {
-    name: 'NotAllowed'
-}
+<script setup lang="ts">
+definePageMeta({
+    layout: 'default'
+});
 </script>
 
 <style scoped>

@@ -101,24 +101,20 @@ const isAdmin = computed(() => localStorage.getItem("isAdmin") === 'true');
                     class="w-full shadow-md rounded-lg overflow-hidden">
                     <template #expand="{ row }">
                         <template v-if="isAdmin">
-                            <div class="p-4">
-                                <button
-                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4"
-                                    @click="validerFn(row.idTalent)">
-                                    Valider
-                                </button>
-                                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                                    @click="refuserFn(row.idTalent)">
-                                    Refuser
-                                </button>
-                            </div>
-                        </template>
-                        <div class="p-4">
-                            <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
-                                @click="$router.push(`/talent/${row.idTalent}`)">
-                                Consulter CV
+                            <button
+                                class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mt-2 rounded mr-2"
+                                @click="validerFn(row.idTalent)">
+                                Valider
                             </button>
-                        </div>
+                            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 mt-2 rounded mr-2"
+                                @click="refuserFn(row.idTalent)">
+                                Refuser
+                            </button>
+                        </template>
+                        <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 mt-2 rounded"
+                            @click="$router.push(`/talent/${row.idTalent}`)">
+                            Consulter CV
+                        </button>
                     </template>
                 </UTable>
             </div>
