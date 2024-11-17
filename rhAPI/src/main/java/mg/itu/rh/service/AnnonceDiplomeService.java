@@ -1,7 +1,7 @@
 package mg.itu.rh.service;
 
 import jakarta.transaction.Transactional;
-import mg.itu.rh.dto.AnnonceDiplomeDTO;
+import mg.itu.rh.dto.DiplomeDTO;
 import mg.itu.rh.entity.Annonce;
 import mg.itu.rh.entity.AnnonceDiplome;
 import mg.itu.rh.entity.Diplome;
@@ -25,8 +25,8 @@ public class AnnonceDiplomeService {
     }
 
     @Transactional
-    public void saveAll( List<AnnonceDiplomeDTO> diplomes, Annonce annonce ) {
-        for ( AnnonceDiplomeDTO dto : diplomes ) {
+    public void saveAll( List<DiplomeDTO> diplomes, Annonce annonce ) {
+        for ( DiplomeDTO dto : diplomes ) {
             AnnonceDiplome annonceDiplome = new AnnonceDiplome();
             annonceDiplome.setAnnonce( annonce );
             Diplome d = dto.getDiplome();

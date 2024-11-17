@@ -1,7 +1,7 @@
 package mg.itu.rh.service;
 
 import jakarta.transaction.Transactional;
-import mg.itu.rh.dto.AnnonceLangueDTO;
+import mg.itu.rh.dto.LangueDTO;
 import mg.itu.rh.entity.Annonce;
 import mg.itu.rh.entity.AnnonceLangue;
 import mg.itu.rh.entity.Langue;
@@ -26,8 +26,8 @@ public class AnnonceLangueService {
     }
 
     @Transactional
-    public void saveAll( List<AnnonceLangueDTO> langues, Annonce annonce ) {
-        for ( AnnonceLangueDTO dto : langues ) {
+    public void saveAll( List<LangueDTO> langues, Annonce annonce ) {
+        for ( LangueDTO dto : langues ) {
             AnnonceLangue annonceLangue = new AnnonceLangue();
             Langue l = dto.getLangue();
             annonceLangue.setAnnonce( annonce );

@@ -2,14 +2,14 @@ package mg.itu.rh.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
-import mg.itu.rh.entity.Diplome;
-import mg.itu.rh.entity.NiveauDiplome;
+import mg.itu.rh.entity.Langue;
+import mg.itu.rh.entity.NiveauLangue;
 import mg.itu.rh.other.POV;
 
 @Data
-public class AnnonceDiplomeDTO {
+public class LangueDTO {
     @JsonView( { POV.Public.class } )
-    private Diplome diplome;
+    private Langue langue;
     @JsonView( { POV.Public.class } )
-    private NiveauDiplome niveauDiplome;
+    private NiveauLangue niveauLangue;
 }
