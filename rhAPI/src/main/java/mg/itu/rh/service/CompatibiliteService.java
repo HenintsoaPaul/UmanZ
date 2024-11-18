@@ -39,7 +39,13 @@ public class CompatibiliteService {
         return compatibilites;
     }
 
-    public List<Compatibilite> findAllDispoByIdTalent(Long idTalent){
-        return compatibiliteRepository.findAllByIdTalentAnnonce(idTalent);
+    public List<Annonce> findAllDispoByIdTalent(Long idTalent){
+        List<Compatibilite> compatibilites=compatibiliteRepository.findAllByIdTalentAnnonce(idTalent);
+        List<Annonce> annonces=new ArrayList<Annonce>();
+        for (Compatibilite compatibilite:compatibilites) {
+            compatibilite.setPourcentageAnnonce();
+            annonces.add(compatibilite.getAnnonce());
+        }
+        return annonces;
     }
 }

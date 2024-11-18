@@ -47,7 +47,7 @@ public class AnnonceService {
         this.annonceLangueService = annonceLangueService;
     }
 
-    public List<Compatibilite> findAnnonceAvailable(Long idTalent) {
+    public List<Annonce> findAnnonceAvailable(Long idTalent) {
         return compatibiliteService.findAllDispoByIdTalent(idTalent);
     }
 
