@@ -1,25 +1,29 @@
 package mg.itu.rh.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.Data;
+import mg.itu.rh.id.TalentDiplomeId;
+import mg.itu.rh.other.POV;
+
+import com.fasterxml.jackson.annotation.JsonView;
+
 import jakarta.persistence.*;
 
 @Entity
 @Data
 public class TalentDiplome {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @EmbeddedId
+    private TalentDiplomeId talentCompetenceId;
 
     @ManyToOne
-    @JoinColumn(name = "id_talent")
+    @MapsId("idTalent")
+    @JoinColumn(name = "id_talent", insertable = false,updatable = false)
+    // @JsonView( POV.Public.class )
     private Talent talent;
 
-    @ManyToOne
-    @JoinColumn(name = "id_diplome")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("idDiplome")
+    @JoinColumn(name = "id_diplome", insertable = false,updatable = false)
+    // @JsonView( POV.Public.class )
     private Diplome diplome;
 
 }

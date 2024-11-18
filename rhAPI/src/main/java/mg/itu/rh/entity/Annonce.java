@@ -57,14 +57,8 @@ public class Annonce {
     @JsonView({POV.Full.class})
     private List<ExperiencePoste> experiencePostes;
 
-    public List<Competence> competences;
-
     public List<CompetenceAnnonce> getCompetencesRequises(){
         return this.competenceAnnonces;
-    }
-
-    public List<Competence> getCompetences() {
-        return competences;
     }
 
     public Diplome getDiplomesRequis(){

@@ -1,6 +1,7 @@
 package mg.itu.rh.controller;
 
 import mg.itu.rh.entity.*;
+import mg.itu.rh.other.POV;
 import mg.itu.rh.repository.*;
 import mg.itu.rh.service.TalentCompetenceService;
 
@@ -10,12 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Comparator;
 
 @RestController
-@RequestMapping("/api/tri-candidats")
+@RequestMapping("/tricandidats")
 public class TriCandidatsController {
 
     @Autowired
@@ -34,8 +37,9 @@ public class TriCandidatsController {
     private ContratRepository contratRepository;
 
     @GetMapping("/trier")
-    public List<Talent> trierCandidats(@RequestParam Long annonceId) {
-        Optional<Annonce> annonceOptional = annonceRepository.findById(annonceId);
+    @JsonView( POV.Public.class )
+    public List<Talent> trierCandidats(@RequestParam Long idAnnonce) {
+        Optional<Annonce> annonceOptional = annonceRepository.findById(idAnnonce);
 
         if (!annonceOptional.isPresent()) {
             throw new RuntimeException("Annonce non trouvée");

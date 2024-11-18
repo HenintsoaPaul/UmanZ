@@ -2,7 +2,7 @@ CREATE TABLE competence(
                            id_competence SERIAL,
                            nom_competence VARCHAR(50)  NOT NULL,
                            PRIMARY KEY(id_competence),
-                           UNIQUE(competence)
+                           UNIQUE(nom_competence)
 );
 
 CREATE TABLE talent(
@@ -12,6 +12,7 @@ CREATE TABLE talent(
                        mail VARCHAR(50)  NOT NULL,
                        password VARCHAR(255) ,
                        is_admin BOOLEAN NOT NULL,
+                       score_total INT,
                        PRIMARY KEY(id_talent)
 );
 

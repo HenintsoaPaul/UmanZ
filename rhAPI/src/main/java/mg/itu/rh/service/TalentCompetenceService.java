@@ -18,7 +18,7 @@ public class TalentCompetenceService {
         return talentCompetenceRepository.findByTalentId(talentId);
     }
 
-    public Optional<TalentCompetence> getCompetenceByIdTalent(Long talentId, Long competenceId) {
-        return talentCompetenceRepository.findByTalentIdAndCompetenceId(talentId, competenceId);
-    }
+    // public Optional<TalentCompetence> getCompetenceByIdTalent(Long talentId, Long competenceId) {
+    //     return talentCompetenceRepository.findByTalentIdAndCompetenceId(talentId, competenceId);
+    // }
 }

@@ -1,31 +1,34 @@
 package mg.itu.rh.entity;
 
 import mg.itu.rh.id.*;
+import mg.itu.rh.other.POV;
+
+
+import com.fasterxml.jackson.annotation.JsonView;
 
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Data
-@IdClass(TalentCompetenceId.class)
 public class TalentCompetence {
-    @Id
-    @Column(name = "id_talent", insertable = false, updatable = false)
-    private Long idTalent;
-
-    @Id
-    @Column(name = "id_competence", insertable = false, updatable = false)
-    private Long idCompetence;
+    @EmbeddedId
+    private TalentCompetenceId talentCompetenceId;
 
     @ManyToOne
-    @JoinColumn(name = "id_talent", referencedColumnName = "id_talent")
+    @MapsId("idTalent")
+    @JoinColumn(name = "id_talent", insertable = false,updatable = false)
+    // @JsonView( POV.Public.class )
     private Talent talent;
 
-    @ManyToOne
-    @JoinColumn(name = "id_competence", referencedColumnName = "id_competence")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("idCompetence")
+    @JoinColumn(name = "id_competence", insertable = false,updatable = false)
+    // @JsonView( POV.Public.class )
     private Competence competence;
 
     @Column(name = "point", nullable = false)
+    // @JsonView( POV.Public.class )
     private int point;
 
     public int getNiveau() {
@@ -33,9 +36,9 @@ public class TalentCompetence {
     }
 
     public void setPoint(int point) {
-        if (point < 0) {
-            throw new IllegalArgumentException("Le point ne peut pas être négatif.");
-        }
+        // if (point < 0) {
+        //     throw new IllegalArgumentException("Le point ne peut pas être négatif.");
+        // }
         this.point = point;
     }
 }

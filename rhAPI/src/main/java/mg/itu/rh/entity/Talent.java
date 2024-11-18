@@ -35,22 +35,25 @@ public class Talent {
     @JsonView({POV.Public.class})
     private String password;
 
-    @JsonView({POV.Public.class})
     @Column(name = "is_admin")
+    @JsonView({POV.Public.class})
     private boolean isAdmin;
 
-    @OneToMany(mappedBy = "talent")
+    @Column(name = "score_total")
+    @JsonView({POV.Public.class})
+    private int scoreTotal;
+
+    @OneToMany(mappedBy = "talent", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JsonView({POV.Public.class})
     private List<TalentCompetence> talentCompetences;
 
-    @OneToMany(mappedBy = "talent")
+    @OneToMany(mappedBy = "talent", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JsonView({POV.Public.class})
     private List<TalentDiplome> talentsDiplomes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "talent")
-    @JsonView({POV.Public.class})
+    @OneToMany(mappedBy = "talent", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    // @JsonView({POV.Public.class})
     private List<Contrat> contrats = new ArrayList<>();
-
-    private int scoreTotal;
     
     public String getEmail(){
         return this.mail;

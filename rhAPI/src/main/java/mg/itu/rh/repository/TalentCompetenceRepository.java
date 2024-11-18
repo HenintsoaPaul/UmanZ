@@ -9,6 +9,6 @@ import java.util.*;
 @Repository
 public interface TalentCompetenceRepository extends JpaRepository<TalentCompetence, Long> {
     List<TalentCompetence> findByTalentId(Long idTalent);
-    Optional<TalentCompetence> findByTalentIdAndCompetenceId(Long talentId, Long competenceId);
+    // Optional<TalentCompetence> findByTalentIdAndCompetenceId(Long idTalent, Long idCompetence);
 }
 

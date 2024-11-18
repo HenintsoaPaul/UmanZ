@@ -19,7 +19,7 @@ INSERT INTO type_contrat (type_contrat)
 VALUES ('Contrat d''essaie'),
        ('Contrat duree determine (CDD)'),
        ('Contrat duree indetermine (CDI)');
-INSERT INTO competence (competence)
+INSERT INTO competence (nom_competence)
 VALUES ('Cloud Computing'),
        ('Machine Learning'),
        ('Big Data Analysis'),
@@ -35,19 +35,19 @@ VALUES ('Cloud Computing'),
        ('Kubernetes');
 
 
-INSERT INTO competence (competence)
+INSERT INTO competence (nom_competence)
 VALUES ('Communication'),
        ('Leadership'),
        ('Programmation'),
        ('Gestion de projet'),
        ('Design');
 
-INSERT INTO talent (nom, prenom, mail, password, is_admin)
-VALUES ('Dupont', 'Jean', 'jean.dupont@example.com', 'password1', true),
-       ('Martin', 'Alice', 'alice.martin@example.com', 'password2', false),
-       ('Petit', 'Louis', 'louis.petit@example.com', 'password3', false),
-       ('Durand', 'Emma', 'emma.durand@example.com', 'password4', false),
-       ('Leroy', 'Paul', 'paul.leroy@example.com', 'password5', false);
+INSERT INTO talent (nom, prenom, mail, password, is_admin, scoreTotal)
+VALUES ('Dupont', 'Jean', 'jean.dupont@example.com', 'password1', true, 0),
+       ('Martin', 'Alice', 'alice.martin@example.com', 'password2', false, 0),
+       ('Petit', 'Louis', 'louis.petit@example.com', 'password3', false, 0),
+       ('Durand', 'Emma', 'emma.durand@example.com', 'password4', false, 0),
+       ('Leroy', 'Paul', 'paul.leroy@example.com', 'password5', false, 0);
 
 INSERT INTO poste (nom_poste, description_poste)
 VALUES ('Développeur', 'Responsable du développement des applications'),
@@ -86,13 +86,10 @@ VALUES ('Contrat CDI Développeur', '2023-01-01', '2024-01-01', 20.00, 5, 25, 8.
 INSERT INTO entretien (date_creation, date_validation, note, motif, id_enfant, id_annonce, id_etat_entretien, id_talent)
 VALUES ('2023-02-15', '2023-02-20', 85, 'Entretien positif', NULL, 1, 4, 1),
        ('2023-03-10', '2023-03-15', 90, 'Candidat qualifié', NULL, 2, 5, 2),
-       ('2023-04-05', NULL, NULL, 'En attente de validation', 1, 3, 1, 3),
-       ('2023-05-01', '2023-05-05', 7       ('2024-04-05', 'IT Services', '2024-06-05', 2),
-0, 'Compétences insuffisantes', NULL, 4, 2, 4),
-       ('2023-06-01', NULL, NULL, 'Annulation', 2, 5, 6, 5);
+       ('2023-04-05', NULL, NULL, 'En attente de validation', 1, 3, 1, 3);
 
 INSERT INTO rupture (date_rupture, motif, id_type_rupture, id_contrat)
-VALUES ('2024-01-01', 'Fin de contrat', 1, 1),
+VALUES ('2024-01-01', 'Fin de contrat', 1, 4),
        ('2023-08-01', 'Fin de CDD', 1, 2),
        ('2023-10-01', 'Licenciement', 3, 3);
 
@@ -104,13 +101,13 @@ VALUES ('Ingénieur DevOps', 'Assurer le déploiement et l''intégration continu
        ('Développeur Frontend', 'Développement de l''interface utilisateur des applications web'),
        ('Architecte Logiciel', 'Conception et gestion de l''architecture des systèmes informatiques');
 
-INSERT INTO annonce (date_annonce, entreprise, date_expiration, id_poste)
-VALUES ('2024-10-15', 'Innovative Solutions', '2025-01-15', 6),
-       ('2024-11-01', 'DataXplore', '2025-02-01', 7),
-       ('2024-11-05', 'GreenTech', '2025-03-01', 8),
-       ('2024-11-07', 'Consultancy Hub', '2025-04-10', 9),
-       ('2024-11-09', 'WebGenius', '2025-05-15', 10),
-       ('2024-11-10', 'CodeCrafters', '2025-06-20', 11);
+INSERT INTO annonce (date_annonce, entreprise, date_expiration,id_niveau_diplome, id_poste)
+VALUES ('2024-10-15', 'Innovative Solutions', '2025-01-15', 1, 6),
+       ('2024-11-01', 'DataXplore', '2025-02-01', 3, 7),
+       ('2024-11-05', 'GreenTech', '2025-03-01', 3, 8),
+       ('2024-11-07', 'Consultancy Hub', '2025-04-10', 2, 9),
+       ('2024-11-09', 'WebGenius', '2025-05-15', 2, 10),
+       ('2024-11-10', 'CodeCrafters', '2025-06-20', 3, 11);
 
 -- Ingénieur DevOps (poste 6)
 INSERT INTO competence_annonce (id_competence, id_annonce, point)
@@ -136,23 +133,23 @@ VALUES (12, 3, 5), -- Leadership
 
 -- Consultant (poste 9)
 INSERT INTO competence_annonce (id_competence, id_annonce, point)
-VALUES (4, 4, 5),  -- Gestion de projet agile
-       (12, 4, 4), -- Leadership
-       (10, 4, 3);
+VALUES (4, 5, 5),  -- Gestion de projet agile
+       (12, 5, 4), -- Leadership
+       (10, 5, 3);
 -- Communication
 
 -- Développeur Frontend (poste 10)
 INSERT INTO competence_annonce (id_competence, id_annonce, point)
-VALUES (9, 5, 5), -- JavaScript
-       (5, 5, 4), -- UX/UI Design
-       (13, 5, 4);
+VALUES (9, 6, 5), -- JavaScript
+       (5, 6, 4), -- UX/UI Design
+       (13, 6, 4);
 -- Développement frontend
 
 -- Architecte Logiciel (poste 11)
 INSERT INTO competence_annonce (id_competence, id_annonce, point)
-VALUES (13, 6, 5), -- Développement backend
-       (14, 6, 4), -- Docker
-       (1, 6, 4);
+VALUES (13, 7, 5), -- Développement backend
+       (14, 7, 4), -- Docker
+       (1, 7, 4);
 -- Cloud Computing
 
 -- Ingénieur DevOps (poste 6)
@@ -172,17 +169,17 @@ VALUES (8, 3, 5);
 
 -- Consultant (poste 9)
 INSERT INTO experience_poste (id_poste, id_annonce, ans)
-VALUES (9, 4, 4);
+VALUES (9, 5, 4);
 -- 4 ans d'expérience en consultation
 
 -- Développeur Frontend (poste 10)
 INSERT INTO experience_poste (id_poste, id_annonce, ans)
-VALUES (10, 5, 3);
+VALUES (10, 6, 3);
 -- 3 ans d'expérience en développement frontend
 
 -- Architecte Logiciel (poste 11)
 INSERT INTO experience_poste (id_poste, id_annonce, ans)
-VALUES (11, 6, 6); -- 6 ans d'expérience en architecture logicielle
+VALUES (11, 7, 6); -- 6 ans d'expérience en architecture logicielle
 
 INSERT INTO conge (date_debut, nb_jour, motif, id_contrat)
 VALUES ('2024-12-01', 5, 'Congé annuel', 1),      -- Congé annuel pour le contrat 1

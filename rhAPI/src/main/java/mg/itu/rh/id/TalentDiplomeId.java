@@ -1,25 +1,23 @@
 package mg.itu.rh.id;
 
 import java.io.Serializable;
-import java.util.Objects;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.EqualsAndHashCode;
 
 @Embeddable
 @EqualsAndHashCode
-public class TalentCompetenceId implements Serializable {
+public class TalentDiplomeId implements Serializable {
     @Column(name = "id_talent")
     private Long idTalent;
 
-    @Column(name = "id_competence")
-    private Long idCompetence;
+    @Column(name = "id_diplome")
+    private Long idDiplome;
 
-    public TalentCompetenceId() {}
+    public TalentDiplomeId() {}
 
-    public TalentCompetenceId(Long idTalent, Long idCompetence) {
+    public TalentDiplomeId(Long idTalent, Long idDiplome) {
         this.idTalent = idTalent;
-        this.idCompetence = idCompetence;
+        this.idDiplome = idDiplome;
     }
 }
