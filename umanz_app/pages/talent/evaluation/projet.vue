@@ -64,7 +64,7 @@ async function handleSubmit() {
 
 <template>
   <div class="min-h-screen flex items-center justify-center font-mono">
-    <div class="border border-slate-50 p-8 rounded-lg shadow-md w-full max-w-md text-slate-500">
+    <div class="border border-slate-50 p-8 rounded-lg shadow-md w-full max-w-md">
       <UForm :state="formState" @submit.prevent="handleSubmit">
         <h1>Evaluation de projet</h1>
         <div v-for="question in questions" :key="question.idQuestionProjet">

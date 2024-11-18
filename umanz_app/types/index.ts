@@ -124,9 +124,33 @@ export interface TypeContrat {
     typeContrat: string,
 }
 
+export interface QuestionProjet {
+    idQuestionProjet: number,
+    question: string
+}
+
+export interface QuestionEvaluation {
+    questionProjet: QuestionProjet,
+    note: number,
+    reponse: string
+}
+
 export interface Evaluation {
     idEvaluation: number,
     dateEvaluation: string,
     talent: Talent,
-    moyenne: number
+    moyenne: number,
+    questionEvaluations: QuestionEvaluation[]
+}
+
+export interface QuestionEvaluationNote {
+    idQuestionEvaluation: number,
+    note: number
+}
+
+export interface EvaluationNote {
+    idEvaluation?: number,
+    idTalent?: number,
+    dateEvaluation?: string,
+    evaluations?: QuestionEvaluationNote[]
 }

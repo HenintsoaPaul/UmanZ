@@ -38,8 +38,6 @@ async function loadUnratedEvaluations() {
     const response = await axios.get(`${apiUrl}/evaluation/non_note`);
 
     if (response.status === 200 && Array.isArray(response.data)) {
-      console.log(toRaw(response.data));
-
       lignes.value = response.data;
     } else {
       console.error('Erreur lors de la récupération des évaluations non notées', response.data);
