@@ -47,16 +47,16 @@ public class EvaluationController {
     /*
     {
         "idEvaluation":8,
-            "evaluations":[
-        {
-            "note":3,
-                "idQuestionEvaluation":8
-        },
-        {
-            "note":7,
-                "idQuestionEvaluation":8
-        }
-    ]
+        "evaluations":[
+            {
+                "note":3,
+                "idQuestionProjet":1
+            },
+            {
+                "note":7,
+                "idQuestionProjet":2
+            }
+        ]
     }*/
     @PostMapping("/evaluate")
     @JsonView(POV.Question.class)

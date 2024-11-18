@@ -62,8 +62,8 @@ public class EvaluationService {
         System.out.println(evaluationDTO.getEvaluations().size()+" "+evaluation.getQuestionEvaluations().size());
         for (int i = 0; i < evaluationDTO.getEvaluations().size(); i++) {
             for (int j = 0; j < evaluation.getQuestionEvaluations().size(); j++) {
-                System.out.println(evaluationDTO.getEvaluations().get(i).getIdQuestionEvaluation()+" == "+evaluation.getQuestionEvaluations().get(j).getEvaluation().getIdEvaluation());
-                if(evaluationDTO.getEvaluations().get(i).getIdQuestionEvaluation()==evaluation.getQuestionEvaluations().get(j).getEvaluation().getIdEvaluation()){
+                System.out.println(evaluationDTO.getEvaluations().get(i).getIdQuestionProjet()+" == "+evaluation.getQuestionEvaluations().get(j).getQuestionProjet().getIdQuestionProjet());
+                if(evaluationDTO.getEvaluations().get(i).getIdQuestionProjet()==evaluation.getQuestionEvaluations().get(j).getQuestionProjet().getIdQuestionProjet()){
                     evaluation.getQuestionEvaluations().get(j).setNote(evaluationDTO.getEvaluations().get(i).getNote());
                     break;
                 }
