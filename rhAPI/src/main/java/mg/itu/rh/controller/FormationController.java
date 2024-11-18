@@ -30,7 +30,7 @@ public class FormationController {
     @GetMapping
     @JsonView( POV.Public.class )
     public List<Formation> getAll() {
-        return formationRepository.findAll();
+        return formationService.findAll();
     }
 
     @GetMapping( "/disponible" )
