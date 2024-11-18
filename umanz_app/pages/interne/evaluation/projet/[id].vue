@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import type {Annonce, Evaluation, EvaluationNote} from "~/types";
+import type {Evaluation, EvaluationNote} from "~/types";
 import {useRoute} from "#vue-router";
-import {ref, toRaw} from "vue";
 import axios from "axios";
 
 const route = useRoute();
