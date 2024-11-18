@@ -36,4 +36,8 @@ public class ParticipationService {
         Participation participation = participationDTO.getParticipation( contratService, formationService );
         return this.save( participation );
     }
+
+    public List<Participation> findAllByFormation( Long id ) {
+        return this.participationRepository.findAllByFormation(id);
+    }
 }

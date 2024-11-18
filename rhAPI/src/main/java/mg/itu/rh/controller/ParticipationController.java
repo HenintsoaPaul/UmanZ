@@ -24,6 +24,12 @@ public class ParticipationController {
         return participationService.findAll();
     }
 
+    @GetMapping( "/{id}" )
+    @JsonView( POV.Public.class )
+    public List<Participation> findAllByFormation( @PathVariable( "id" ) Long id ) {
+        return participationService.findAllByFormation( id );
+    }
+
     @PostMapping
     @JsonView( POV.Public.class )
     public Participation save( @RequestBody ParticipationDTO participationDTO )
