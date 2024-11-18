@@ -1,10 +1,22 @@
 export interface Formation {
     idFormation: number,
     nomFormation: string,
-    date_debut: string,
-    date_fin: string
+    dateDebut: string,
+    dateFin: string,
+    estFini: boolean,
+    competenceCibles: CompetenceCible[]
 }
 
+export interface Participation {
+    contrat: Contrat,
+    dateInscription: string
+}
+
+export interface CompetenceCible {
+    competence: Competence,
+    formation: Formation,
+    pointGagne: number,
+}
 
 export interface Conge {
     idConge: number,
@@ -36,7 +48,11 @@ export interface Talent {
     prenom: string,
     mail: string,
     password: string,
-    isAdmin: boolean
+    isAdmin: boolean,
+    competenceTalents: CompetenceTalent[],
+    experienceTalents: ExperienceTalent[],
+    diplomes: DiplomeAvecNiveau[],
+    talentLangues: LangueAvecNiveau[]
 }
 
 export interface Competence {
@@ -72,20 +88,6 @@ export interface Absence {
     idContrat: number,
 }
 
-export interface Talent {
-    id_talent: number,
-    nom: string,
-    prenom: string,
-    mail: string,
-    password: string,
-}
-
-export interface TalentCompetence {
-    id_competence: number,
-    id_talent: number,
-    point: number,
-}
-
 export interface Poste {
     idPoste: number,
     nomPoste: string,
@@ -93,25 +95,107 @@ export interface Poste {
 }
 
 export interface ExperienceTalent {
-    id_poste: number,
-    id_talent: number,
+    poste: Poste,
+    talent: Talent,
     ans: number,
 }
 
-export interface CV {
-    id_talent: number;
-    competences: TalentCompetence[],
-    experiences: ExperienceTalent[]
+export interface CompetenceTalent {
+    competence: Competence,
+    talent: Talent,
+    point: number,
+}
+
+export interface EtatEntretien {
+    idEtatEntretien: number,
+    etatEntretien: string
 }
 
 export interface Entretien {
-    id_entretien: number,
-    date_creation: Date,
-    date_validation: Date,
-    note?: number,
+    idEntretien: number,
+    dateCreation: Date,
+    dateValidation: Date,
+    note: number,
     motif: string,
-    id_enfant?: number,
-    id_annonce: number,
-    id_etat_entretien: number,
-    id_talent: number,
+    talent: Talent
+    annonce: Annonce,
+    etatEntretien: EtatEntretien
+}
+
+export interface Rupture {
+    dateRupture: string,
+    idContrat: number
+}
+
+export interface TypeContrat {
+    idTypeContrat: number,
+    typeContrat: string,
+}
+
+export interface Chat {
+    idChat: number;
+    motCle: string;
+    reponse: string;
+}
+
+export interface Compatibilite {
+    talent: Talent;
+    annonce: Annonce;
+    pourcentage: number;
+}
+
+export interface Langue {
+    idLangue: number;
+    langue: string;
+}
+
+export interface NiveauLangue {
+    idNiveauLangue: number;
+    niveauLangue: string;
+    niveau: number;
+}
+
+export interface LangueAvecNiveau {
+    langue: Langue;
+    niveauLangue: NiveauLangue | null
+}
+
+export interface DiplomeAvecNiveau {
+    diplome: Diplome;
+    selected: boolean;
+    niveauDiplome: NiveauDiplome | null
+}
+
+export interface AnnonceLangue {
+    annonce: Annonce;
+    langue: Langue;
+    niveauLangue: NiveauLangue;
+}
+
+export interface TalentLangue {
+    talent: Talent;
+    langue: Langue;
+    niveauLangue: NiveauLangue;
+}
+
+export interface Diplome {
+    idDiplome: number;
+    diplome: string;
+    niveauDiplome: NiveauDiplome
+}
+
+export interface NiveauDiplome {
+    idNiveauDiplome: number;
+    niveau: string;
+    niveauDiplome: number;
+}
+
+export interface AnnonceDiplome {
+    annonce: Annonce;
+    diplome: Diplome;
+}
+
+export interface TalentDiplome {
+    talent: Talent;
+    diplome: Diplome;
 }

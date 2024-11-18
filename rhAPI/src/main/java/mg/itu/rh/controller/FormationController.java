@@ -1,31 +1,49 @@
 package mg.itu.rh.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import mg.itu.rh.dto.FormationDTO;
 import mg.itu.rh.entity.Formation;
-import mg.itu.rh.repository.FormationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import mg.itu.rh.other.POV;
+import mg.itu.rh.service.FormationService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/formations")
+@RequestMapping( "/formations" )
 public class FormationController {
+    private final FormationService formationService;
 
-    @Autowired
-    private FormationRepository formationRepository;
-
-    /**
-     *
-     * @param formation {
-     *      "nomFormation": "Power up",
-     *      "dateDebut": "2024-11-11",
-     *      "dateFin": "2024-11-13"
-     * }
-     * @return la formation créée
-     */
-    @PostMapping
-    public Formation create(Formation formation) {
-        return formationRepository.save(formation);
+    public FormationController( FormationService formationService ) {
+        this.formationService = formationService;
     }
 
+    @PostMapping
+    public Formation create( @RequestBody FormationDTO formationDTO ) {
+        return formationService.save( formationDTO );
+    }
+
+    @GetMapping
+    @JsonView( POV.Public.class )
+    public List<Formation> getAll() {
+        return formationService.findAll();
+    }
+
+    @GetMapping( "/disponible" )
+    @JsonView( POV.Public.class )
+    public List<Formation> getAllDisponible() {
+        return formationService.findAllDisponible();
+    }
+
+    @GetMapping( "/{id}" )
+    @JsonView( POV.Public.class )
+    public Formation findById( @PathVariable( "id" ) Long id ) {
+        return formationService.findById( id );
+    }
+
+    @GetMapping( "/{id}/finir" )
+    @JsonView( POV.Public.class )
+    public Formation terminate( @PathVariable( "id" ) Long id ) {
+        return formationService.finir( id );
+    }
 }
