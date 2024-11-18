@@ -123,3 +123,10 @@ export interface TypeContrat {
     idTypeContrat: number,
     typeContrat: string,
 }
+
+export interface Evaluation {
+    idEvaluation: number,
+    dateEvaluation: string,
+    talent: Talent,
+    moyenne: number
+}
