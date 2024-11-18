@@ -326,4 +326,12 @@ CREATE TABLE question_evaluation(
                                     PRIMARY KEY(id_question_projet, id_evaluation),
                                     FOREIGN KEY(id_question_projet) REFERENCES question_projet(id_question_projet),
                                     FOREIGN KEY(id_evaluation) REFERENCES evaluation(id_evaluation)
+
+CREATE TABLE candidat_historique (
+    id_candidat_histo SERIAL PRIMARY KEY,
+    id_talent INTEGER,
+    action VARCHAR(255),
+    description VARCHAR(255),
+    date_action TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_talent FOREIGN KEY (id_talent) REFERENCES Talent(id_talent) ON DELETE CASCADE
 );

@@ -23,5 +23,5 @@ export default defineNuxtConfig({
       apiUrl: "http://localhost:911",
       currency: "Ariary",
     }
-  }
+  },
 })

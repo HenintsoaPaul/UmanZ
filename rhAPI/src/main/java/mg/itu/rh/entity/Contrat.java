@@ -22,6 +22,9 @@ public class Contrat {
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "id_contrat" )
     @JsonView( POV.Public.class )
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name="id_contrat")
+    @JsonView({POV.Public.class})
     private Long idContrat;
 
     @JsonView( POV.Public.class )
@@ -64,6 +67,43 @@ public class Contrat {
     @ManyToOne( fetch = FetchType.LAZY )
     @JoinColumn( name = "id_poste" )
     @JsonView( POV.Public.class )
+    @Column(name="date_debut")
+    @JsonView({POV.Public.class})
+    private LocalDate dateDebut;
+    
+    @Column(name="date_fin")
+    @JsonView({POV.Public.class})
+    private LocalDate dateFin;
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="id_talent")
+    @JsonView({POV.Public.class})
+    private Talent talent;
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="id_type_contrat")
+    @JsonView({POV.Public.class})
+    private TypeContrat typeContrat;
+
+    @Column(name = "nb_jour_conge_an")
+    @JsonView({POV.Public.class})
+    private int nbJourCongeAn;
+
+    @Column(name = "salaire_horaire")
+    @JsonView({POV.Public.class})
+    private double salaireHoraire;
+
+    @Column(name = "nb_jour_semaine")
+    @JsonView({POV.Public.class})
+    private int nbJourSemaine;
+
+    @Column(name = "nb_heure_jour")
+    @JsonView({POV.Public.class})
+    private double nbHeureJour;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_poste")
+    @JsonView({POV.Public.class})
     private Poste poste;
 
     public Contrat( ContratDTO contratDTO ) {

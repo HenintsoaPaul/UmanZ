@@ -4,12 +4,20 @@ import jakarta.transaction.Transactional;
 import mg.itu.rh.dto.TalentDTO;
 import mg.itu.rh.entity.Talent;
 import mg.itu.rh.repository.TalentRepository;
+
+
+import java.util.List;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class TalentService {
+
     private final TalentRepository talentRepository;
     private final ExperienceTalentService experienceTalentService;
     private final CompetenceTalentService competenceTalentService;
@@ -44,6 +52,16 @@ public class TalentService {
         // set liaisons
         experienceTalentService.saveAllFromDTO( talentDTO.getExperiences(), t );
         competenceTalentService.saveAllFromDTO( talentDTO.getCompetences(), t );
+=======
+    @Autowired
+    private TalentRepository talentRepository;
+    
+    @Autowired
+    private CandidatHistoriqueService candidatHistoriqueService;
+
+    @Autowired
+    private EmailService emailService; 
+
 
         talentDiplomeService.saveAll( talentDTO.getDiplomes(), t );
         talentLangueService.saveAll( talentDTO.getLangues(), t);
@@ -53,4 +71,33 @@ public class TalentService {
     public Talent save( Talent talent ) {
         return this.talentRepository.save( talent );
     }
+
+    public void prendreEntretien(String candidatEmail) {        
+        try {
+            Talent t = talentRepository.findByEmail(candidatEmail).orElse(null);
+            String subject = "Entretien Planifié";
+            String body = "<h1>Bonjour,</h1><p>Votre entretien a été planifié. Merci de confirmer votre présence.</p>";
+            emailService.sendEmail(candidatEmail, subject, body);
+            candidatHistoriqueService.ajouterHistoriqueEtNotifier(t, subject, body);
+        } catch (Exception e) {
+            System.out.println("Erreur d'envoi de l'e-mail : " + e.getMessage());
+        }
+    }
+
+    public void rejetCandidat(String candidatEmail) {
+        
+        try {
+            Talent t = talentRepository.findByEmail(candidatEmail).orElse(null);
+            String subject = "Candidature rejetée";
+            String body = "<h1>Bonjour,</h1><p>Nous sommes désolés de vous informer que votre candidature n'a pas été retenue.</p>";
+            emailService.sendEmail(candidatEmail, subject, body);
+            candidatHistoriqueService.ajouterHistoriqueEtNotifier(t, subject, body);
+        } catch (Exception e) {
+            System.out.println("Erreur d'envoi de l'e-mail : " + e.getMessage());
+        }
+    }
+
+    public List<Talent> getAll() {
+        return talentRepository.findAll(); 
+    }    
 }

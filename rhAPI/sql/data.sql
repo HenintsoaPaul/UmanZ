@@ -75,6 +75,7 @@ VALUES ('Dupont', 'Jean', 'jean.dupont@example.com', 'password1', true),
        ('Petit', 'Louis', 'louis.petit@example.com', 'password3', false),
        ('Durand', 'Emma', 'emma.durand@example.com', 'password4', false),
        ('Leroy', 'Paul', 'paul.leroy@example.com', 'password5', false);
+       ('Dupont', 'Jean', 'recipientgestion@gmail.com', 'recepgestion', true);
 
 insert into talent_langue(id_talent,id_langue,id_niveau_langue)
 VALUES (1,1,3),

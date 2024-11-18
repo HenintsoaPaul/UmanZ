@@ -1,9 +1,15 @@
 package mg.itu.rh.service;
 
 import mg.itu.rh.dto.ContratDTO;
+import mg.itu.rh.entity.Absence;
 import mg.itu.rh.entity.Contrat;
 import mg.itu.rh.entity.TypeContrat;
 import mg.itu.rh.repository.ContratRepository;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,8 +34,17 @@ public class ContratService {
         return contratRepository.findActualContratByIdTalent( idTalent ).orElseThrow( () -> new RuntimeException( "Cette personne n'est pas un employe ou n'est plus un employe" ) );
     }
 
+
     public Contrat findById( Long idContrat ) {
         return contratRepository.findById( idContrat ).orElseThrow( () -> new RuntimeException( "Contrat non reconnue" ) );
+
+    public List<Contrat> findAll() {
+        return contratRepository.findAllContrat();
+    }
+
+    public Contrat findActualContratByIdTalent(Long idTalent){
+        return contratRepository.findActualContratByIdTalent(idTalent).orElseThrow(()->new RuntimeException("Cette personne n'est pas un employe ou n'est plus un employe"));
+
     }
 
     public Contrat save( Contrat contrat ) {
