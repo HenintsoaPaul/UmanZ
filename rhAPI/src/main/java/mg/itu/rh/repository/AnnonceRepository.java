@@ -1,5 +1,6 @@
 package mg.itu.rh.repository;
 
+import mg.itu.rh.entity.Absence;
 import mg.itu.rh.entity.Annonce;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,4 +18,7 @@ public interface AnnonceRepository extends JpaRepository<Annonce, Long> {
     List<Annonce> findAnnonceAvailable();
 
     Optional<Annonce> findById(Long idAnnonce);
+
+    @Query("select a from Annonce a")
+    public List<Annonce> findAllAnnonce();
 }

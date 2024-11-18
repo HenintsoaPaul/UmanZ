@@ -25,6 +25,12 @@ public class AnnonceController {
         this.experiencePosteService = experiencePosteService;
     }
 
+    @GetMapping( "/all" )
+    @JsonView( POV.Public.class )
+    public List<Annonce> getAllAbsences() {
+        return annonceService.findAll();
+    }
+
     @GetMapping( "/{id}" )
     @JsonView( POV.Public.class )
     public Annonce getAnnonce( @PathVariable( "id" ) Long id ) {

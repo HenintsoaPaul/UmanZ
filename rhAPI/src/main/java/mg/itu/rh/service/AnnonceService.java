@@ -1,6 +1,7 @@
 package mg.itu.rh.service;
 
 import mg.itu.rh.dto.AnnonceDTO;
+import mg.itu.rh.entity.Absence;
 import mg.itu.rh.entity.Annonce;
 import mg.itu.rh.repository.AnnonceRepository;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,10 @@ public class AnnonceService {
         this.posteService = posteService;
         this.competenceAnnonceService = competenceAnnonceService;
         this.experiencePosteService = experiencePosteService;
+    }
+
+    public List<Annonce> findAll() {
+        return annonceRepository.findAllAnnonce();
     }
 
     public List<Annonce> findAnnonceAvailable() {
