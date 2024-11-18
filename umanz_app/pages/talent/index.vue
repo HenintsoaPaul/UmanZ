@@ -2,50 +2,16 @@
 import type { Talent } from '~/types';
 
 const headers = [
-    { key: 'idTalent', label: 'ID', sortable: true },
-    { key: 'nom', label: 'Nom', sortable: true },
-    { key: 'prenom', label: 'Prénom', sortable: true },
-    { key: 'mail', label: 'Email', sortable: true }
+  { key: 'idTalent', label: 'ID', sortable: true },
+  { key: 'nom', label: 'Nom', sortable: true },
+  { key: 'prenom', label: 'Prénom', sortable: true },
+  { key: 'mail', label: 'Email', sortable: true }
 ];
 
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const { data: talents } = useFetch<Talent[]>(`${apiUrl}/talents`);
 
-// Fonction pour charger les données des talents depuis l'API
-async function loadTalents() {
-    try {
-        const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
-        const response = await axios.get(`${apiUrl}/talents`);
-
-        if (response.status === 200) {
-            apiTalents.value = response.data;
-        } else {
-            console.error('Erreur lors de la récupération des talents');
-        }
-    } catch (error) {
-        console.error('Erreur lors de la requête API:', error);
-    }
-}
-
-// Appel de la fonction pour charger les données au chargement du composant
-onMounted(() => {
-    loadTalents();
-});
-
-// Filtre par recherche
-const q = ref('');
-
-const filteredTalents = computed(() => {
-    if (!q.value) {
-        return apiTalents.value;
-    }
-
-    return apiTalents.value.filter((talent) => {
-        return Object.values(talent).some((value) => {
-            return String(value).toLowerCase().includes(q.value.toLowerCase());
-        });
-    });
-});
+const { q, filteredRows: filteredTalents } = useFilteredRows(talents);
 
 const expand = ref({
   openedRows: [],

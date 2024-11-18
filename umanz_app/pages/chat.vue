@@ -32,7 +32,7 @@ const sendMessage = () => {
 </script>
 
 <template>
-  <div class="max-w-md mx-auto p-4 bg-gray-600 rounded-lg shadow-md h-screen flex flex-col">
+  <div class="max-w-md mx-auto p-4 bg-gray-600 rounded-lg shadow-md flex flex-col h-600px">
     <!-- Messages -->
     <div class="flex-1 overflow-y-auto mb-4 space-y-2 flex flex-col px-1.5">
       <div
@@ -66,4 +66,9 @@ const sendMessage = () => {
 </template>
 
 <style scoped>
+
+.h-600px {
+  height: 600px;
+}
+
 </style>

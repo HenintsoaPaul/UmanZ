@@ -58,6 +58,19 @@ const navLinks = [
       { label: "Ajouter", link: "/interne/absence/add" },
     ]
   },
+  {
+    label: "Evaluation",
+    children: [
+      { label: "Voir Liste Projet", link: "/interne/evaluation/projet" },
+      { label: "Faire une évaluation", link: "/talent/evaluation/projet" }
+    ]
+  },
+  {
+    label: "Chat",
+    children: [
+      { label: "Chat Guide", link: "/chat" }
+    ]
+  }
 ];
 
 const logout = () => {
