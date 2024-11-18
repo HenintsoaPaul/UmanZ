@@ -1,7 +1,9 @@
 package mg.itu.rh.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import mg.itu.rh.dto.FormationDTO;
 import mg.itu.rh.entity.Formation;
+import mg.itu.rh.other.POV;
 import mg.itu.rh.repository.FormationRepository;
 import mg.itu.rh.service.FormationService;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,7 @@ public class FormationController {
     }
 
     @GetMapping
+    @JsonView( POV.Public.class )
     public List<Formation> getAll() {
         return formationRepository.findAll();
     }
