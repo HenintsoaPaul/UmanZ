@@ -35,7 +35,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         if (typeof (user) != "string" && user != null) {
             localStorage.setItem('idUser', user.idTalent.toString());
             localStorage.setItem('isAdmin', user.isAdmin.toString());
-            router.push('/'); 
+            await router.push('/recrutement/annonce');
         } else {
             formState.error = 'Utilisateur inconnu'
         }

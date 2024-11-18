@@ -50,6 +50,12 @@ const filteredTalents = computed(() => {
         });
     });
 });
+
+const expand = ref({
+  openedRows: [],
+  row: {}
+})
+
 </script>
 
 <template>
@@ -59,5 +65,11 @@ const filteredTalents = computed(() => {
         <UInput v-model="q" placeholder="Filtrer les talents..." />
     </div>
 
-    <UTable :columns="headers" :rows="filteredTalents" />
+    <UTable :columns="headers" :rows="filteredTalents" v-model:expand="expand">
+        <template #expand="{ row }">
+            <UButton @click="$router.push(`/interne/evaluation/projet/note/${row.idTalent}`)">
+              Note d'évaluations de projet
+            </UButton>
+        </template>
+    </UTable>
 </template>
