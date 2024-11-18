@@ -37,6 +37,10 @@ public class EvaluationService {
         return evaluationRepository.findEvaluationNotNoted();
     }
 
+    public Evaluation findEvaluationNotNoted(Long idEvaluation){
+        return evaluationRepository.findEvaluationNotNoted(idEvaluation).orElseThrow(()->new RuntimeException("Evaluation non  ou dejà note"));
+    }
+
     public List<Evaluation> findEvaluationNoted(Long idTalent){
         List<Evaluation> evaluations=evaluationRepository.findEvaluationNoted(idTalent);
         for (Evaluation evaluation:evaluations) {
