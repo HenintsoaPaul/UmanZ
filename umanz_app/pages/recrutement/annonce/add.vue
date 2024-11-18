@@ -1,11 +1,18 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import type { Competence, CompetenceAnnonce, ExperiencePoste, Poste } from '~/types';
+import type { Competence, CompetenceAnnonce, Diplome, DiplomeAvecNiveau, ExperiencePoste, Langue, LangueAvecNiveau, NiveauDiplome, NiveauLangue, Poste } from '~/types';
+
+definePageMeta({
+    middleware: ['auth']
+})
 
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
-
 const { data: postes, refresh: refreshPostes } = useFetch<Poste[]>(`${apiUrl}/postes`);
 const { data: competences, refresh: refreshCompetences } = useFetch<Competence[]>(`${apiUrl}/competences`);
+const { data: diplomes, refresh: refreshDiplomes } = useFetch<Diplome[]>(`${apiUrl}/diplomes`);
+const { data: niveauDiplomes, refresh: refreshniveauDiplomes } = useFetch<NiveauDiplome[]>(`${apiUrl}/niveau_diplomes`);
+const { data: langues, refresh: refreshLangues } = useFetch<Langue[]>(`${apiUrl}/langues`);
+const { data: niveaulangues, refresh: refreshNiveauLangues } = useFetch<NiveauLangue[]>(`${apiUrl}/niveau_langues`);
 
 interface Form {
     dateAnnonce: string;
@@ -13,62 +20,62 @@ interface Form {
     idPoste: string;
     competences: CompetenceAnnonce[];
     experiences: ExperiencePoste[];
+    languesAvecNiveaux: LangueAvecNiveau[];
+    diplomesAvecNiveaux: DiplomeAvecNiveau[];
 }
 const form = reactive<Form>({
     dateAnnonce: '',
     dateExpiration: '',
     idPoste: '',
     competences: [],
-    experiences: []
-});
-const formKdj = reactive<Form>({
-    dateAnnonce: '',
-    dateExpiration: '',
-    idPoste: '',
-    competences: [],
-    experiences: []
+    experiences: [],
+    languesAvecNiveaux: [],
+    diplomesAvecNiveaux: [],
 });
 
+const errorMessage = ref('');
+const successMessage = ref('');
 const loading = ref(false);
 
-const onSubmit = async () => {
+async function onSubmit() {
     loading.value = true;
     try {
-        formKdj.dateAnnonce = form.dateAnnonce;
-        formKdj.dateExpiration = form.dateExpiration;
-        formKdj.idPoste = form.idPoste;
-        formKdj.competences = form.competences.filter(cp => cp.point > 0).map(cp => toRaw(cp));
-        formKdj.experiences = form.experiences.filter(exp => exp.ans > 0).map(exp => toRaw(exp));
+        const { languesAvecNiveaux, diplomesAvecNiveaux, ...f } = form;
+        const formKdj = toRaw({
+            ...f,
+            competences: f.competences.filter(cp => cp.point > 0).map(e => toRaw(e)),
+            experiences: f.experiences.filter(exp => exp.ans > 0).map(e => toRaw(e)),
+            langues: languesAvecNiveaux.filter(lg => lg.niveauLangue != null).map(e => toRaw(e)),
+            diplomes: diplomesAvecNiveaux.filter(dp => dp.selected === true).map(e => toRaw(e)),
+        });
 
         console.log(toRaw(formKdj));
-
         const response = await $fetch(`${apiUrl}/annonce`, {
             method: 'POST',
             body: toRaw(formKdj)
         });
+
         console.log('Form submitted successfully:', response);
+        errorMessage.value = '';
+        successMessage.value = 'Le formulaire a été soumis avec succès.';
     } catch (error) {
         console.error('Error submitting form:', error);
-        // Afficher une notification à l'utilisateur
-        // useToast().add({
-        //     title: 'Erreur lors de la soumission',
-        //     description: "Une erreur s'est produite lors de la soumission du formulaire.",
-        //     // status: 'error'
-        // });
+        errorMessage.value = 'Une erreur s\'est produite lors de la soumission du formulaire.';
+        successMessage.value = '';
     }
     finally {
         loading.value = false;
     }
 };
 
-const updateData = async () => {
+onMounted(async () => {
     await refreshPostes();
     await refreshCompetences();
-    updateForm();
-};
-
-const updateForm = () => {
-    if (postes.value && competences.value) {
+    await refreshDiplomes();
+    await refreshLangues();
+    await refreshniveauDiplomes();
+    await refreshNiveauLangues();
+    if (postes.value && competences.value && langues.value && diplomes.value) {
         form.experiences = postes.value.map(pt => ({
             ans: 0,
             poste: toRaw(pt)
@@ -77,25 +84,32 @@ const updateForm = () => {
             point: 0,
             competence: toRaw(cp)
         }));
+        form.languesAvecNiveaux = langues.value.map(lg => ({
+            langue: toRaw(lg),
+            niveauLangue: null
+        }));
+        form.diplomesAvecNiveaux = diplomes.value.map(dp => ({
+            diplome: toRaw(dp),
+            selected: false,
+            niveauDiplome: null
+        }));
     }
-};
-
-onMounted(updateData);
+});
 </script>
 
 <template>
-    <div class="absence-form max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <div class="absence-form max-w-3xl mx-auto p-6 border border-white rounded-lg shadow-md">
         <h1 class="text-2xl font-bold mb-6">Ajouter Annonce</h1>
 
         <form @submit.prevent="onSubmit" class="space-y-6">
             <!-- Daty -->
             <div class="form-group">
-                <label for="dateAnnonce" class="block text-sm font-medium text-gray-700">Date d'Annonce:</label>
+                <label for="dateAnnonce" class="block text-sm font-medium">Date d'Annonce:</label>
                 <input type="date" id="dateAnnonce" v-model="form.dateAnnonce" required
                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
             </div>
             <div class="form-group">
-                <label for="dateExpiration" class="block text-sm font-medium text-gray-700">Date d'Expiration:</label>
+                <label for="dateExpiration" class="block text-sm font-medium">Date d'Expiration:</label>
                 <input type="date" id="dateExpiration" v-model="form.dateExpiration" required
                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
             </div>
@@ -103,7 +117,7 @@ onMounted(updateData);
             <!-- Poste -->
             <div v-if="postes">
                 <div class="form-group">
-                    <label for="poste" class="block text-sm font-medium text-gray-700">Poste:</label>
+                    <label for="poste" class="block text-sm font-medium">Poste:</label>
                     <select id="poste" v-model="form.idPoste" required
                         class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                         <option v-for="poste in postes" :key="poste.idPoste" :value="poste.idPoste">{{ poste.nomPoste }}
@@ -112,29 +126,36 @@ onMounted(updateData);
                 </div>
             </div>
 
+            <hr>
+            <div class="flex gap-4 w-full">
+                <div class="w-1/2" v-if="niveaulangues">
+                    <ListInputLangue title="Langues" :niveau-langues="niveaulangues"
+                        :list-langue-avec-niveau="form.languesAvecNiveaux" />
+                </div>
+                <div v-else>
+                    Loading Langues...
+                </div>
+                <div class="w-1/2" v-if="niveauDiplomes">
+                    <ListInputDiplome title="Diplomes" :niveau-diplomes="niveauDiplomes"
+                        :list-diplome-avec-niveau="form.diplomesAvecNiveaux" />
+                </div>
+                <div v-else>
+                    Loading Diplomes...
+                </div>
+            </div>
+            <hr>
+
             <!-- Competences et Experiences -->
             <div class="grid grid-cols-2 gap-4">
-                <!-- Competences -->
                 <div v-if="form.competences.length > 0" class="form-group">
-                    <label class="block text-sm font-medium text-gray-700">Competences:</label>
-                    <div v-for="(cop, index) in form.competences" :key="index" class="flex items-center mt-2">
-                        <label class="ml-2 block text-sm text-gray-900">{{ cop.competence.competence }}</label>
-                        <input type="number" v-model="cop.point" placeholder="Point"
-                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-                    </div>
+                    <ListInputCompetence title="Competences" :competences="form.competences" />
                 </div>
                 <div v-else>
                     Loading Competences...
                 </div>
 
-                <!-- Experiences -->
                 <div v-if="form.experiences.length > 0" class="form-group">
-                    <label class="block text-sm font-medium text-gray-700">Experiences:</label>
-                    <div v-for="(pt, index) in form.experiences" :key="index" class="mt-2">
-                        <label class="block text-sm text-gray-900">{{ pt.poste.nomPoste }}</label>
-                        <input type="number" v-model="pt.ans" placeholder="Durée (années)"
-                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-                    </div>
+                    <ListInputExperience title="Experiences" :experiences="form.experiences" />
                 </div>
                 <div v-else>
                     Loading Experiences...
@@ -146,5 +167,12 @@ onMounted(updateData);
                 {{ loading ? 'Chargement...' : 'Soumettre' }}
             </button>
         </form>
+
+        <div v-if="errorMessage" class="mt-4 text-red-500">
+            {{ errorMessage }}
+        </div>
+        <div v-if="successMessage" class="mt-4 text-green-500">
+            {{ successMessage }}
+        </div>
     </div>
 </template>

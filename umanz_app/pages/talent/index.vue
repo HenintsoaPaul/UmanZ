@@ -1,10 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
-import axios from 'axios';
 import type { Talent } from '~/types';
-import { useRuntimeConfig } from '#imports'; // Ensure you have this import if you're using Nuxt.js
 
-// Columns à afficher
 const headers = [
     { key: 'idTalent', label: 'ID', sortable: true },
     { key: 'nom', label: 'Nom', sortable: true },
@@ -12,15 +8,10 @@ const headers = [
     { key: 'mail', label: 'Email', sortable: true }
 ];
 
-// Variable pour stocker les données de l'API
-const apiTalents = ref<Talent[]>([]);
+const apiUrl = useRuntimeConfig().public.apiUrl as string;
+const { data: talents } = useFetch<Talent[]>(`${apiUrl}/talents`);
 
-// Fonction pour charger les données des talents depuis l'API
-async function loadTalents() {
-    try {
-        const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
-        const response = await axios.get(`${apiUrl}/talents`);
-
+const { q, filteredRows: filteredTalents } = useFilteredRows(talents);
         if (response.status === 200) {
             apiTalents.value = response.data;
         } else {
@@ -65,7 +56,7 @@ const expand = ref({
         <UInput v-model="q" placeholder="Filtrer les talents..." />
     </div>
 
-    <UTable :columns="headers" :rows="filteredTalents" v-model:expand="expand">
+    <UTable :columns="headers" :rows="filteredTalents ?? []" v-model:expand="expand">
         <template #expand="{ row }">
             <UButton @click="$router.push(`/interne/evaluation/projet/note/${row.idTalent}`)">
               Note d'évaluations de projet

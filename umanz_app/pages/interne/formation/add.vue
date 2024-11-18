@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { z } from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
-import axios from 'axios';
+import type { Competence, CompetenceAnnonce } from '~/types';
 
 const schema = z.object({
     nomFormation: z.string().min(5, 'Le nom de la formation est obligatoire'),
@@ -20,6 +20,7 @@ const form = reactive({
     nomFormation: '',
     dateDebut: '',
     dateFin: '',
+    competences: [] as CompetenceAnnonce[],
     error: ''
 });
 
@@ -27,50 +28,83 @@ const isFormValid = computed(() => {
     return schema.safeParse({ ...form }).success && validateDates();
 });
 
+const apiUrl = useRuntimeConfig().public.apiUrl as string;
+const { data: competences, refresh: refreshCompetences } = useFetch<Competence[]>(`${apiUrl}/competences`);
+
+const errorMessage = ref('');
+const successMessage = ref('');
 const loading = ref(false);
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
-    const isValid = schema.safeParse(event.data).success;
-
-    if (!isValid) {
+    if (!schema.safeParse(event.data).success) {
         form.error = 'Une erreur s\'est produite lors de la soumission du formulaire.';
         return;
     }
 
     loading.value = true;
     try {
-        const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
-        const response = await axios.post(`${apiUrl}/formations`, toRaw(form));
+        const formKdj = toRaw({
+            ...form,
+            competences: form.competences.filter(cp => cp.point > 0).map(cp => toRaw(cp)),
+        });
+        console.log(toRaw(formKdj));
 
-        console.log('Form submitted successfully:', response.data);
-        form.error = '';
+        const response = await $fetch(`${apiUrl}/formations`, {
+            method: 'POST',
+            body: toRaw(formKdj)
+        });
+
+        console.log('Form submitted successfully:', response);
+        errorMessage.value = '';
+        successMessage.value = 'Le formulaire a été soumis avec succès.';
     } catch (error) {
         console.error('Error submitting form:', error);
-        form.error = 'Une erreur s\'est produite lors de la soumission du formulaire.';
+        errorMessage.value = 'Une erreur s\'est produite lors de la soumission du formulaire.';
+        successMessage.value = '';
     } finally {
         loading.value = false;
     }
 }
+
+onMounted(async () => {
+    await refreshCompetences();
+    if (competences.value) {
+        form.competences = competences.value.map(cp => ({
+            point: 0,
+            competence: toRaw(cp)
+        }));
+    }
+});
 </script>
 
 <template>
-    <UForm :schema="schema" :state="form" class="space-y-4" @submit="onSubmit">
-        <UFormGroup label="Titre" name="titre">
-            <UInput v-model="form.nomFormation" required />
-        </UFormGroup>
+    <div class="max-w-3xl mx-auto p-6 border border-white rounded-lg shadow-md">
+        <h1 class="text-3xl font-bold mb-6">Ajouter Formation</h1>
 
-        <UFormGroup label="Date Debut" name="dateDebut">
-            <UInput v-model="form.dateDebut" type="date" required />
-        </UFormGroup>
+        <UForm :schema="schema" :state="form" class="space-y-4" @submit="onSubmit">
+            <UFormGroup label="Titre" name="titre">
+                <UInput v-model="form.nomFormation" required />
+            </UFormGroup>
 
-        <UFormGroup label="Date Fin" name="dateFin">
-            <UInput v-model="form.dateFin" type="date" />
-        </UFormGroup>
+            <UFormGroup label="Date Debut" name="dateDebut">
+                <UInput v-model="form.dateDebut" type="date" required />
+            </UFormGroup>
 
-        <UButton type="submit" :disabled="!isFormValid" :loading="loading">
-            {{ loading ? 'En cours...' : 'Soumettre' }}
-        </UButton>
+            <UFormGroup label="Date Fin" name="dateFin">
+                <UInput v-model="form.dateFin" type="date" />
+            </UFormGroup>
 
-        <p v-if="form.error" class="text-red-500">{{ form.error }}</p>
-    </UForm>
+            <hr>
+
+            <h1 class="text-xl font-bold mb-6">Competences</h1>
+            <ListInputCompetence :competences="form.competences" />
+
+            <UButton type="submit" :disabled="!isFormValid" :loading="loading">
+                {{ loading ? 'En cours...' : 'Soumettre' }}
+            </UButton>
+
+            <p v-if="errorMessage" class="text-red-500">{{ errorMessage }}</p>
+            <p v-if="successMessage" class="text-green-500">{{ successMessage }}</p>
+        </UForm>
+    </div>
 </template>

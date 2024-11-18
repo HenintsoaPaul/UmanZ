@@ -8,6 +8,8 @@ const props = defineProps<{
     formation: Formation;
     participerFn: (idContrat: number, idFormation: number, apiUrl: string) => Promise<void>;
 }>();
+
+const isAdmin = computed(() => localStorage.getItem("isAdmin") === 'true');
 </script>
 
 <template>
@@ -25,8 +27,14 @@ const props = defineProps<{
         </ul>
     </div>
 
-    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-        @click="participerFn(props.idContrat, formation.idFormation, props.apiUrl)">
-        Participer
+    <template v-if="!isAdmin">
+        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-4"
+            @click="participerFn(props.idContrat, formation.idFormation, props.apiUrl)">
+            Participer
+        </button>
+    </template>
+    <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
+        @click="$router.push(`/interne/formation/${formation.idFormation}`)">
+        Voir details
     </button>
 </template>

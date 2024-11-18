@@ -13,8 +13,7 @@ public interface CompetenceAnnonceRepository extends JpaRepository<CompetenceAnn
     List<CompetenceAnnonce> findByIdIn( List<Long> ids );
 
     @Query( "SELECT ca FROM CompetenceAnnonce ca " +
-            "JOIN Entretien e ON e.annonce.idAnnonce = ca.annonce.idAnnonce " +
-            "WHERE e.etatEntretien.idEtatEntretien = :etat " +
-            "AND ca.annonce.idAnnonce = :idAnnonce" )
-    List<CompetenceAnnonce> findAllByIdAnnonceAndEtat( @Param( "idAnnonce" ) Long idAnnonce, @Param( "etat" ) Long etat );
+            "JOIN Annonce a ON a.idAnnonce = ca.annonce.idAnnonce " +
+            "WHERE ca.annonce.idAnnonce = :idAnnonce" )
+    List<CompetenceAnnonce> findAllByIdAnnonce( @Param( "idAnnonce" ) Long idAnnonce );
 }

@@ -113,18 +113,18 @@ VALUES ('Développeur', 'Responsable du développement des applications'),
        ('Support technique', 'Assistance et résolution des problèmes techniques');
 
 INSERT INTO annonce (date_annonce, entreprise, date_expiration, id_poste)
-VALUES ('2024-01-01', 'Tech Corp', '2024-03-01', 1),
-       ('2024-02-15', 'Design Studio', '2024-04-15', 3),
-       ('2024-03-10', 'Data Solutions', '2024-05-10', 4),
-       ('2024-04-05', 'IT Services', '2024-06-05', 2),
-       ('2024-05-01', 'Global Consulting', '2024-07-01', 5);
+VALUES ('2024-01-01', 'Tech Corp', '2025-03-01', 1),
+       ('2024-02-15', 'Tech Corp', '2025-04-15', 3),
+       ('2024-03-10', 'Tech Corp', '2025-05-10', 4),
+       ('2024-04-05', 'Tech Corp', '2025-06-05', 2),
+       ('2024-05-01', 'Tech Corp', '2025-07-01', 5);
 
-INSERT INTO formation (nom_formation, date_debut, date_fin)
-VALUES ('Formation Java', '2023-01-10', '2023-03-10'),
-       ('Gestion de projet', '2023-02-01', '2023-04-01'),
-       ('Design UX/UI', '2023-05-15', '2023-07-15'),
-       ('Sécurité informatique', '2023-06-20', '2023-08-20'),
-       ('Big Data', '2023-09-10', '2023-11-10');
+INSERT INTO formation (nom_formation, date_debut, date_fin, est_fini)
+VALUES ('Formation Java', '2023-01-10', '2023-03-10', false),
+       ('Gestion de projet', '2023-02-01', '2023-04-01', false),
+       ('Design UX/UI', '2023-05-15', '2023-07-15', false),
+       ('Sécurité informatique', '2023-06-20', '2023-08-20', false),
+       ('Big Data', '2023-09-10', '2023-11-10', false);
 
 INSERT INTO type_rupture (nom_type_rupture)
 VALUES ('Fin de contrat'),
@@ -141,12 +141,12 @@ VALUES ('Contrat CDI Développeur', '2023-01-01', '2024-01-01', 20.00, 5, 25, 8.
        ('Contrat d''essai Chef de Projet', '2023-06-01', NULL, 25.00, 4, 15, 7.0, 2, 4, 1),
        ('Contrat CDI Support technique', '2024-01-01', NULL, 19.50, 5, 25, 7.5, 5, 5, 3);
 
-INSERT INTO entretien (date_creation, date_validation, note, motif, id_enfant, id_annonce, id_etat_entretien, id_talent)
-VALUES ('2023-02-15', '2023-02-20', 85, 'Entretien positif', NULL, 1, 4, 1),
-       ('2023-03-10', '2023-03-15', 90, 'Candidat qualifié', NULL, 2, 5, 2),
-       ('2023-04-05', NULL, NULL, 'En attente de validation', 1, 3, 1, 3),
-       ('2023-05-01', NULL, 70, 'Compétences insuffisantes', NULL, 4, 2, 4),
-       ('2023-06-01', NULL, NULL, 'Annulation', 2, 5, 6, 5);
+-- INSERT INTO entretien (date_creation, date_validation, note, motif, id_enfant, id_annonce, id_etat_entretien, id_talent)
+-- VALUES ('2023-02-15', '2023-02-20', 85, 'Entretien positif', NULL, 1, 4, 1),
+--        ('2023-03-10', '2023-03-15', 90, 'Candidat qualifié', NULL, 2, 5, 2),
+--        ('2023-04-05', NULL, NULL, 'En attente de validation', 1, 3, 1, 3),
+--        ('2023-05-01', NULL, 70, 'Compétences insuffisantes', NULL, 4, 2, 4),
+--        ('2023-06-01', NULL, NULL, 'Annulation', 2, 5, 6, 5);
 
 INSERT INTO rupture (date_rupture, motif, id_type_rupture, id_contrat)
 VALUES ('2024-01-01', 'Fin de contrat', 1, 1),

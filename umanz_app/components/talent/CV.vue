@@ -1,36 +1,73 @@
 <script setup lang="ts">
-import type { CompetenceTalent, ExperienceTalent } from '~/types';
+import type { CompetenceTalent, DiplomeAvecNiveau, ExperienceTalent, LangueAvecNiveau } from '~/types';
 
-const props = defineProps<{
+defineProps<{
     competences: CompetenceTalent[];
     experiences: ExperienceTalent[];
+    langues: LangueAvecNiveau[];
+    diplomes: DiplomeAvecNiveau[];
 }>();
 </script>
 
 <template>
     <div class="cv">
-        <div v-if="competences">
-            <h3 class="text-xl font-semibold mt-4">Compétences requises:</h3>
-            <ul>
-                <li v-for="comp in competences" :key="comp.competence.idCompetence">
-                    {{ comp.competence.competence }} - {{ comp.point }} points
-                </li>
-            </ul>
+        <div>
+            <div v-if="competences">
+                <h3 class="text-2xl font-semibold mt-4">Compétences:</h3>
+                <div v-if="competences.length > 0">
+                    <ul>
+                        <li v-for="comp in competences" :key="comp.competence.idCompetence" class="text-sm">
+                            {{ comp.competence.competence }} - {{ comp.point }} points
+                        </li>
+                    </ul>
+                </div>
+                <div v-else>
+                    No Competences
+                </div>
+            </div>
+            <div v-if="experiences">
+                <h3 class="text-2xl font-semibold mt-4">Expériences:</h3>
+                <div v-if="experiences.length > 0">
+                    <ul>
+                        <li v-for="exp in experiences" :key="exp.poste.idPoste" class="text-sm">
+                            {{ exp.poste.nomPoste }} - {{ exp.ans }} ans
+                        </li>
+                    </ul>
+                </div>
+                <div v-else>
+                    No Experiences
+                </div>
+            </div>
         </div>
-        <div v-else>
-            No Competences
-        </div>
-
-        <div v-if="experiences">
-            <h3 class="text-xl font-semibold mt-4">Expériences requises:</h3>
-            <ul>
-                <li v-for="exp in experiences" :key="exp.poste.idPoste">
-                    {{ exp.poste.nomPoste }} - {{ exp.ans }} ans
-                </li>
-            </ul>
-        </div>
-        <div v-else>
-            No Experiences
+        <br>
+        <hr>
+        <div>
+            <!-- <div v-if="langues">
+                <h3 class="text-2xl font-semibold mt-4">Langues:</h3>
+                <div v-if="langues.length > 0">
+                    <ul>
+                        <li v-for="lg in langues" :key="lg.langue.idLangue">
+                            {{ lg.langue.langue }} - {{ lg.niveauLangue?.niveau }} points
+                        </li>
+                    </ul>
+                </div>
+                <div v-else>
+                    No langues
+                </div>
+            </div> -->
+            <div v-if="diplomes">
+                <h3 class="text-2xl font-semibold mt-4">Diplomes:</h3>
+                <div v-if="diplomes.length > 0">
+                    <ul>
+                        <li v-for="dipl in diplomes" :key="dipl.diplome.diplome" class="text-sm">
+                            {{ dipl.diplome }} - {{ dipl.niveauDiplome?.niveauDiplome }}
+                        </li>
+                    </ul>
+                </div>
+                <div v-else>
+                    No Experiences
+                </div>
+            </div>
         </div>
     </div>
 </template>

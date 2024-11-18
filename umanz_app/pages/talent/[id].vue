@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import type { Talent } from '~/types';
 
@@ -9,16 +8,15 @@ import CV from '~/components/talent/CV.vue';
 const route = useRoute();
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const talentId = computed(() => route.params.id);
-const { data: talent, error: talentError } = useFetch<Talent>(`${apiUrl}/talents/${talentId.value}`);
-
-const profilePicture = ref('/default-profile.png');
-
+const { data: talent } = useFetch<Talent>(`${apiUrl}/talents/${talentId.value}`);
 </script>
 
 <template>
     <div v-if="talent">
-        <Profil :talent="talent" :photo="profilePicture" />
-        <CV :competences="talent.competences" :experiences="talent.experiences" />
+        <Profil :talent="talent" />
+        <br>
+        <CV :competences="talent.competenceTalents" :experiences="talent.experienceTalents"
+            :langues="talent.talentLangues" :diplomes="talent.diplomes" />
     </div>
     <div v-else>
         <p>Loading profile...</p>
