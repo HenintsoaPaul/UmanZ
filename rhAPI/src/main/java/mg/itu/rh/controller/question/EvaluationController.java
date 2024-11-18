@@ -69,4 +69,10 @@ public class EvaluationController {
     public List<Evaluation> findEvaluationNotNoted(){
         return evaluationService.findEvaluationNotNoted();
     }
+
+    @GetMapping("/non_note/{id}")
+    @JsonView(POV.Question.class)
+    public Evaluation findEvaluationNotNoted(@PathVariable("id")Long id){
+        return evaluationService.findEvaluationNotNoted(id);
+    }
 }

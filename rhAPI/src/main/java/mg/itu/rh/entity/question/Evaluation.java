@@ -28,7 +28,7 @@ public class Evaluation {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_talent")
-    @JsonView(POV.Question.class)
+    @JsonView({POV.Question.class})
     private Talent talent;
 
     @Transient
