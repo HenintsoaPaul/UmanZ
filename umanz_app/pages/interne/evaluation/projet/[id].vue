@@ -17,7 +17,7 @@ async function handleSubmit() {
     evaluationPlayload.dateEvaluation = evaluation.value?.dateEvaluation;
     evaluationPlayload.evaluations = evaluation.value?.questionEvaluations.map(
       question => ({
-        idQuestionEvaluation: question.questionProjet.idQuestionProjet,
+        idQuestionProjet: question.questionProjet.idQuestionProjet,
         note: question.note
       })
     );

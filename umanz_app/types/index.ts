@@ -144,7 +144,7 @@ export interface Evaluation {
 }
 
 export interface QuestionEvaluationNote {
-    idQuestionEvaluation: number,
+    idQuestionProjet: number,
     note: number
 }
 
