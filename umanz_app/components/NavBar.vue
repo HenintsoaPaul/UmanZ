@@ -75,7 +75,7 @@ const logout = () => {
           <ul
             class="absolute z-index-50 left-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <li v-for="sub in navLink.children">
-              <router-link :to="sub.link" class="block px-4 py-2 hover:bg-gray-200 hover:rounded-lg">
+              <router-link :to="sub.link" class="block px-4 py-2 hover:bg-gray-200 hover:rounded-lg z-index-50">
                 {{ sub.label }}
               </router-link>
             </li>

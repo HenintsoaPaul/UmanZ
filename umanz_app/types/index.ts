@@ -3,7 +3,13 @@ export interface Formation {
     nomFormation: string,
     dateDebut: string,
     dateFin: string,
+    estFini: boolean,
     competenceCibles: CompetenceCible[]
+}
+
+export interface Participation {
+    contrat: Contrat,
+    dateInscription: string
 }
 
 export interface CompetenceCible {

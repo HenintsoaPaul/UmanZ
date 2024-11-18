@@ -29,6 +29,10 @@ public class Formation {
     @JsonView( POV.Public.class )
     private LocalDate dateFin;
 
+    @Column( name = "est_fini" )
+    @JsonView( POV.Public.class )
+    private boolean estFini;
+
     @OneToMany( fetch = FetchType.LAZY )
     @JoinColumn( name = "id_formation" )
     @JsonView( POV.Public.class )

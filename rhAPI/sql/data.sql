@@ -119,12 +119,12 @@ VALUES ('2024-01-01', 'Tech Corp', '2025-03-01', 1),
        ('2024-04-05', 'Tech Corp', '2025-06-05', 2),
        ('2024-05-01', 'Tech Corp', '2025-07-01', 5);
 
-INSERT INTO formation (nom_formation, date_debut, date_fin)
-VALUES ('Formation Java', '2023-01-10', '2023-03-10'),
-       ('Gestion de projet', '2023-02-01', '2023-04-01'),
-       ('Design UX/UI', '2023-05-15', '2023-07-15'),
-       ('Sécurité informatique', '2023-06-20', '2023-08-20'),
-       ('Big Data', '2023-09-10', '2023-11-10');
+INSERT INTO formation (nom_formation, date_debut, date_fin, est_fini)
+VALUES ('Formation Java', '2023-01-10', '2023-03-10', false),
+       ('Gestion de projet', '2023-02-01', '2023-04-01', false),
+       ('Design UX/UI', '2023-05-15', '2023-07-15', false),
+       ('Sécurité informatique', '2023-06-20', '2023-08-20', false),
+       ('Big Data', '2023-09-10', '2023-11-10', false);
 
 INSERT INTO type_rupture (nom_type_rupture)
 VALUES ('Fin de contrat'),

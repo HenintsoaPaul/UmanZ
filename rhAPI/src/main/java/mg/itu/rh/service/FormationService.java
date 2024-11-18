@@ -1,6 +1,7 @@
 package mg.itu.rh.service;
 
 import mg.itu.rh.dto.FormationDTO;
+import mg.itu.rh.entity.CompetenceCible;
 import mg.itu.rh.entity.Formation;
 import mg.itu.rh.repository.FormationRepository;
 import org.springframework.stereotype.Service;
@@ -31,10 +32,22 @@ public class FormationService {
         formation.setNomFormation( formationDTO.getNomFormation() );
         formation.setDateDebut( formationDTO.getDateDebut() );
         formation.setDateFin( formationDTO.getDateFin() );
+        formation.setEstFini( false );
 
         formation = this.formationRepository.save( formation );
         // Save into tables liaisons
         competenceCibleService.saveAllFromDTO( formationDTO.getCompetences(), formation );
         return formation;
+    }
+
+    public Formation finir( Long id ) {
+        Formation f = this.findById( id );
+        f.setEstFini( true );
+
+        for ( CompetenceCible cpc: f.getCompetenceCibles() ) {
+
+        }
+
+        return this.formationRepository.save( f );
     }
 }
