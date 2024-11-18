@@ -60,6 +60,10 @@ public class Annonce {
     @JsonView({POV.Public.class})
     private List<AnnonceLangue> annonceLangues=new ArrayList<AnnonceLangue>();
 
+    @Transient
+    @JsonView({POV.Public.class})
+    private double pourcentage;
+
     public void addDiplome(Diplome diplome){
         this.diplomes.add(diplome);
     }
