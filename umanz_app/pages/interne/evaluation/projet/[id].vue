@@ -52,13 +52,13 @@ async function handleSubmit() {
             <h3>{{ questionEvaluation.questionProjet.question }}</h3>
             <p><strong>Réponse :</strong> {{ questionEvaluation.reponse }}</p>
             <label for="note-{{ questionEvaluation.questionProjet.idQuestionProjet }}">
-              Note (0-20) :
+              Note (0-10) :
               <UInput
                   type="number"
                   v-model.number="questionEvaluation.note"
                   :id="`note-${questionEvaluation.questionProjet.idQuestionProjet}`"
                   min="0"
-                  max="20"
+                  max="10"
               />
             </label>
           </UFormGroup>
