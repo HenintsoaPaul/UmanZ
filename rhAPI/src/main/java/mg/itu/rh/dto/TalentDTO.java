@@ -14,4 +14,7 @@ public class TalentDTO {
 
     private List<CompetenceTalentDTO> competences;
     private List<ExperienceTalentDTO> experiences;
+
+    private List<DiplomeDTO> diplomes;
+    private List<LangueDTO> langues;
 }

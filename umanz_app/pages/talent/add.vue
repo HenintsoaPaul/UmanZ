@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { reactive, ref, toRaw } from 'vue';
 
 import FormTalent from '~/components/talent/FormTalent.vue';
-import type { Competence, CompetenceAnnonce, ExperiencePoste, Poste } from '~/types';
+import type { Competence, CompetenceAnnonce, Diplome, DiplomeAvecNiveau, ExperiencePoste, Langue, LangueAvecNiveau, NiveauDiplome, NiveauLangue, Poste } from '~/types';
 
 const schema = z.object({
     nom: z.string().min(1, 'Le nom est obligatoire'),
@@ -21,6 +21,8 @@ interface Form {
     isAdmin: Boolean;
     competences: CompetenceAnnonce[];
     experiences: ExperiencePoste[];
+    languesAvecNiveaux: LangueAvecNiveau[];
+    diplomesAvecNiveaux: DiplomeAvecNiveau[];
 }
 const form = reactive<Form>({
     nom: '',
@@ -30,30 +32,17 @@ const form = reactive<Form>({
     isAdmin: false,
     competences: [],
     experiences: [],
+    languesAvecNiveaux: [],
+    diplomesAvecNiveaux: [],
 });
 
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const { data: postes, refresh: refreshPostes } = useFetch<Poste[]>(`${apiUrl}/postes`);
 const { data: competences, refresh: refreshCompetences } = useFetch<Competence[]>(`${apiUrl}/competences`);
-
-const updateForm = () => {
-    if (postes.value && competences.value) {
-        form.experiences = postes.value.map(pt => ({
-            ans: 0,
-            poste: toRaw(pt)
-        }));
-        form.competences = competences.value.map(cp => ({
-            point: 0,
-            competence: toRaw(cp)
-        }));
-    }
-};
-
-onMounted(async () => {
-    await refreshPostes();
-    await refreshCompetences();
-    updateForm();
-});
+const { data: langues, refresh: refreshLangues } = useFetch<Langue[]>(`${apiUrl}/langues`);
+const { data: niveaulangues, refresh: refreshNiveauLangues } = useFetch<NiveauLangue[]>(`${apiUrl}/niveau_langues`);
+const { data: diplomes, refresh: refreshDiplomes } = useFetch<Diplome[]>(`${apiUrl}/diplomes`);
+const { data: niveauDiplomes, refresh: refreshniveauDiplomes } = useFetch<NiveauDiplome[]>(`${apiUrl}/niveau_diplomes`);
 
 const errorMessage = ref('');
 const successMessage = ref('');
@@ -69,12 +58,16 @@ async function onSubmit() {
 
     loading.value = true;
     try {
+        const { languesAvecNiveaux, diplomesAvecNiveaux, ...f } = form;
         const formKdj = toRaw({
-            ...form,
-            competences: form.competences.filter(cp => cp.point > 0),
-            experiences: form.experiences.filter(exp => exp.ans > 0)
+            ...f,
+            competences: f.competences.filter(cp => cp.point > 0).map(e => toRaw(e)),
+            experiences: f.experiences.filter(exp => exp.ans > 0).map(e => toRaw(e)),
+            langues: languesAvecNiveaux.filter(lg => lg.niveauLangue != null).map(e => toRaw(e)),
+            diplomes: diplomesAvecNiveaux.filter(dp => dp.selected === true).map(e => toRaw(e)),
         });
-        console.log(toRaw(formKdj));
+
+        console.log(toRaw(formKdj));    
 
         const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
         const response = await $fetch(`${apiUrl}/talents`, {
@@ -93,20 +86,51 @@ async function onSubmit() {
         loading.value = false;
     }
 }
+
+onMounted(async () => {
+    await refreshPostes();
+    await refreshCompetences();
+    await refreshDiplomes();
+    await refreshLangues();
+    await refreshniveauDiplomes();
+    await refreshNiveauLangues();
+    if (postes.value && competences.value && langues.value && diplomes.value) {
+        form.experiences = postes.value.map(pt => ({
+            ans: 0,
+            poste: toRaw(pt)
+        }));
+        form.competences = competences.value.map(cp => ({
+            point: 0,
+            competence: toRaw(cp)
+        }));
+        form.languesAvecNiveaux = langues.value.map(lg => ({
+            langue: toRaw(lg),
+            niveauLangue: null
+        }));
+        form.diplomesAvecNiveaux = diplomes.value.map(dp => ({
+            diplome: toRaw(dp),
+            selected: false,
+            niveauDiplome: null
+        }));
+    }
+});
 </script>
 
 <template>
     <div class="talent-form">
         <h1 class="text-2xl font-bold mb-6">Profil Talent</h1>
 
-        <FormTalent :form="form" :schema="schema" :loading="loading" :error-message="errorMessage"
-            :success-message="successMessage" @submit="onSubmit" />
+        <template v-if="niveauDiplomes && niveaulangues">
+            <FormTalent :form="form" :schema="schema" :loading="loading" :niveau-diplomes="niveauDiplomes"
+                :niveau-langues="niveaulangues" :error-message="errorMessage" :success-message="successMessage"
+                @submit="onSubmit" />
+        </template>
     </div>
 </template>
 
 <style scoped>
 .talent-form {
-    max-width: 600px;
+    max-width: 800px;
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #ccc;

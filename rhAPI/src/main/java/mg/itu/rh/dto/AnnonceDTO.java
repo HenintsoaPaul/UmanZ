@@ -22,7 +22,7 @@ public class AnnonceDTO {
     private List<ExperiencePosteDTO> experiences;
 
     @JsonView( { POV.Public.class } )
-    private List<AnnonceDiplomeDTO> diplomes;
+    private List<DiplomeDTO> diplomes;
     @JsonView( { POV.Public.class } )
-    private List<AnnonceLangueDTO> langues;
+    private List<LangueDTO> langues;
 }

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import type { Talent } from '~/types';
 
@@ -16,7 +15,8 @@ const { data: talent } = useFetch<Talent>(`${apiUrl}/talents/${talentId.value}`)
     <div v-if="talent">
         <Profil :talent="talent" />
         <br>
-        <CV :competences="talent.competenceTalents" :experiences="talent.experienceTalents" />
+        <CV :competences="talent.competenceTalents" :experiences="talent.experienceTalents"
+            :langues="talent.talentLangues" :diplomes="talent.diplomes" />
     </div>
     <div v-else>
         <p>Loading profile...</p>

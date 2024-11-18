@@ -1,8 +1,8 @@
 package mg.itu.rh.entity.id;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
@@ -10,13 +10,10 @@ import java.io.Serializable;
 
 @Embeddable
 @EqualsAndHashCode
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class IdTalentLangue implements Serializable {
-    @Column(name = "id_langue")
-    private Long idLangue;
-    @Column(name = "id_niveau_langue")
-    private Long idNiveauLangue;
-    @Column(name = "id_talent")
+public class IdTalentDiplome implements Serializable {
     private Long idTalent;
+    private Long idDiplome;
 }

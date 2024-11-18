@@ -44,7 +44,9 @@ export interface Talent {
     password: string,
     isAdmin: boolean,
     competenceTalents: CompetenceTalent[],
-    experienceTalents: ExperienceTalent[]
+    experienceTalents: ExperienceTalent[],
+    diplomes: DiplomeAvecNiveau[],
+    talentLangues: LangueAvecNiveau[]
 }
 
 export interface Competence {
@@ -154,6 +156,7 @@ export interface LangueAvecNiveau {
 
 export interface DiplomeAvecNiveau {
     diplome: Diplome;
+    selected: boolean;
     niveauDiplome: NiveauDiplome | null
 }
 

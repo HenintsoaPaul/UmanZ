@@ -1,6 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
-    layout: 'blank'
+    layout: 'blank',
+    middleware: 'logout'
 });
 
 import { useRouter } from 'vue-router'
@@ -36,6 +37,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         if (user) {
             if (user.mail === userEmail || user.password === userPassword) {
                 localStorage.setItem('idUser', user.idTalent.toString());
+                localStorage.setItem('emailUser', user.mail.toString());
                 localStorage.setItem('isAdmin', user.isAdmin.toString());
                 router.push('/Home');
             } else {

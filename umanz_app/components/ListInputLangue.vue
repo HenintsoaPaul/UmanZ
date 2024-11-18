@@ -18,7 +18,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <label class="block text-sm font-medium" v-if="props.title">
+    <label class="block text-xl font-medium" v-if="props.title">
         {{ props.title }}
     </label>
 
