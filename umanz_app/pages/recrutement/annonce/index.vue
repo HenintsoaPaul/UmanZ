@@ -20,6 +20,11 @@ const headers = [
         key: 'dateExpiration',
         label: 'Date Expiration',
         sortable: true
+    },
+    {
+        key: 'pourcentage',
+        label: 'Compatibilité (%)',
+        sortable: true
     }
 ];
 
@@ -39,7 +44,8 @@ const filteredLignes = computed(() => {
 async function loadAnnonces() {
     try {
         const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
-        const response = await axios.get(`${apiUrl}/annonce/disponible`);
+        const idTalent = Number(localStorage.getItem("idUser"));
+        const response = await axios.get(`${apiUrl}/annonce/disponible/${idTalent}`);
 
         if (response.status === 200 && Array.isArray(response.data)) {
             console.log(toRaw(response.data));
