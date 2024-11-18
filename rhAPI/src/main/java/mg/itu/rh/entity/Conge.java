@@ -43,11 +43,12 @@ public class Conge {
 
     }
 
-    public Conge(Long idConge,LocalDate dateDebut,int nbJour,String motif){
+    public Conge(Long idConge,LocalDate dateDebut,int nbJour,String motif, Contrat contrat){
         this.setIdConge(idConge);
         this.setDateDebut(dateDebut);
         this.setNbJour(nbJour);
         this.setMotif(motif);
+        this.setContrat(contrat);
         this.setDateFin();
     }
 

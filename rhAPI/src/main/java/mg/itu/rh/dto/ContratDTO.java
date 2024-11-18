@@ -28,4 +28,6 @@ public class ContratDTO {
     Long idTalent;
     @JsonView(POV.Public.class)
     Long idTypeContrat;
+    @JsonView(POV.Public.class)
+    Long idEntretien;
 }

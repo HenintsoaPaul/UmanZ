@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="font-mono">
         <NuxtLayout>
             <NuxtPage />
         </NuxtLayout>
@@ -7,10 +7,6 @@
 </template>
 
 <style>
-/* * {
-  font-family: Karla;
-} */
-
 .page-enter-active,
 .page-leave-active {
   transition: all 0.4s;

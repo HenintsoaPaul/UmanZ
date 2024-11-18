@@ -19,8 +19,6 @@ public class RuptureController {
 
     /*
     * {
-    *       "dateRupture":"2025-01-01",
-    *       "motif":"Rupture amiable",
     *       "idContrat":5,
     *       "idTypeRupture":4
     * }

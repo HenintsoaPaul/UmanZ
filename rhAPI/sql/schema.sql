@@ -63,6 +63,7 @@ CREATE TABLE formation(
                           nom_formation VARCHAR(50)  NOT NULL,
                           date_debut DATE NOT NULL,
                           date_fin DATE NOT NULL,
+    est_fini BOOLEAN,
                           PRIMARY KEY(id_formation)
 );
 
@@ -71,6 +72,29 @@ CREATE TABLE type_rupture(
                              nom_type_rupture VARCHAR(50)  NOT NULL,
                              PRIMARY KEY(id_type_rupture),
                              UNIQUE(nom_type_rupture)
+);
+
+CREATE TABLE niveau_diplome(
+                               id_niveau_diplome SERIAL,
+                               niveau_diplome INTEGER NOT NULL,
+                               nom_niveau_diplome VARCHAR(50)  NOT NULL,
+                               PRIMARY KEY(id_niveau_diplome),
+                               UNIQUE(niveau_diplome)
+);
+
+CREATE TABLE question_projet(
+                                id_question_projet SERIAL,
+                                question TEXT NOT NULL,
+                                PRIMARY KEY(id_question_projet),
+                                UNIQUE(question)
+);
+
+CREATE TABLE evaluation(
+                           id_evaluation SERIAL,
+                           date_evaluation DATE NOT NULL,
+                           id_talent INTEGER NOT NULL,
+                           PRIMARY KEY(id_evaluation),
+                           FOREIGN KEY(id_talent) REFERENCES talent(id_talent)
 );
 
 CREATE TABLE langue(
@@ -93,21 +117,6 @@ CREATE TABLE chat(
                      reponse TEXT NOT NULL,
                      PRIMARY KEY(id_chat),
                      UNIQUE(mot_cle)
-);
-
-CREATE TABLE question_projet(
-                                id_question_projet SERIAL,
-                                question TEXT NOT NULL,
-                                PRIMARY KEY(id_question_projet),
-                                UNIQUE(question)
-);
-
-CREATE TABLE evaluation(
-                           id_evaluation SERIAL,
-                           date_evaluation DATE NOT NULL,
-                           id_talent INTEGER NOT NULL,
-                           PRIMARY KEY(id_evaluation),
-                           FOREIGN KEY(id_talent) REFERENCES talent(id_talent)
 );
 
 CREATE TABLE domaine(
@@ -275,14 +284,6 @@ CREATE TABLE participation(
                               FOREIGN KEY(id_formation) REFERENCES formation(id_formation)
 );
 
-CREATE TABLE talent_diplome(
-                               id_talent INTEGER,
-                               id_diplome INTEGER,
-                               PRIMARY KEY(id_talent, id_diplome),
-                               FOREIGN KEY(id_talent) REFERENCES talent(id_talent),
-                               FOREIGN KEY(id_diplome) REFERENCES diplome(id_diplome)
-);
-
 CREATE TABLE talent_langue(
                               id_talent INTEGER,
                               id_langue INTEGER,
@@ -318,6 +319,14 @@ CREATE TABLE compatibilite(
                               PRIMARY KEY(id_talent, id_annonce),
                               FOREIGN KEY(id_talent) REFERENCES talent(id_talent),
                               FOREIGN KEY(id_annonce) REFERENCES annonce(id_annonce)
+);
+
+CREATE TABLE talent_diplome(
+                               id_talent INTEGER,
+                               id_diplome INTEGER,
+                               PRIMARY KEY(id_talent, id_diplome),
+                               FOREIGN KEY(id_talent) REFERENCES talent(id_talent),
+                               FOREIGN KEY(id_diplome) REFERENCES diplome(id_diplome)
 );
 
 CREATE TABLE question_evaluation(

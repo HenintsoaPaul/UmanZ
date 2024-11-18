@@ -4,7 +4,6 @@ import java.util.List;
 
 import mg.itu.rh.dto.EntretienCandidatureDTO;
 import mg.itu.rh.dto.EntretienValidationDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.annotation.JsonView;
@@ -23,10 +22,22 @@ public class EntretienController {
         this.entretienService = entretienService;
     }
 
+    @GetMapping( "/{id}" )
+    @JsonView( POV.Public.class )
+    public Entretien findById( @PathVariable( "id" ) Long id ) {
+        return entretienService.findById( id );
+    }
+
     @GetMapping( "/etat/{id}" )
     @JsonView( POV.Public.class )
     public List<Entretien> findByEtat( @PathVariable( "id" ) Long idEtat ) {
         return entretienService.findByEtat( idEtat );
+    }
+
+    @GetMapping( "/candidats" )
+    @JsonView( POV.Public.class )
+    public List<Entretien> getCandidaList() {
+        return entretienService.getCandidaList();
     }
 
     /*
@@ -39,23 +50,20 @@ public class EntretienController {
     }
 
     @PostMapping( "/validate" )
-    public void validate( @RequestBody EntretienValidationDTO validation ) {
-        entretienService.valider( validation );
+    @JsonView( POV.Full.class )
+    public Entretien validate( @RequestBody EntretienValidationDTO validation ) {
+        return entretienService.valider( validation );
     }
 
     @PostMapping( "/deny" )
-    public void deny( @RequestBody EntretienValidationDTO validation ) {
-        entretienService.refuser( validation );
+    @JsonView( POV.Full.class )
+    public Entretien deny( @RequestBody EntretienValidationDTO validation ) {
+        return entretienService.refuser( validation );
     }
 
     @PutMapping( "/" )
     public Entretien update( @RequestBody EntretienCandidatureDTO entretien )
             throws Exception {
         return entretienService.save( entretien );
-    }
-
-    @GetMapping( "/candidats" )
-    public List<Entretien> getCandidaList() {
-        return entretienService.getCandidaList();
     }
 }

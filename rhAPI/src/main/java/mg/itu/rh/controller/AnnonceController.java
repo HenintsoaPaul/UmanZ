@@ -58,7 +58,13 @@ public class AnnonceController {
     @GetMapping( "/disponible" )
     @JsonView( POV.Public.class )
     public List<Annonce> getAnnonceDisponible() {
-        return annonceService.findAnnonceAvailable();
+        return annonceService.findAllDisponible();
+    }
+
+    @GetMapping( "/disponible/{id}" )
+    @JsonView( POV.Public.class )
+    public List<Annonce> getAnnonceDisponible(@PathVariable("id")Long id) {
+        return annonceService.findAnnonceAvailable(id);
     }
 
     @PostMapping()

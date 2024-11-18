@@ -10,21 +10,24 @@ import java.util.List;
 
 @Service
 public class CompetenceService {
-    private final EntretienService entretienService;
     private final CompetenceRepository competenceRepository;
     private final CompetenceAnnonceRepository competenceAnnonceRepository;
 
-    public CompetenceService( EntretienService es, CompetenceRepository competenceRepository, CompetenceAnnonceRepository competenceAnnonceRepository ) {
-        this.entretienService = es;
+    public CompetenceService( CompetenceRepository competenceRepository, CompetenceAnnonceRepository competenceAnnonceRepository ) {
         this.competenceRepository = competenceRepository;
         this.competenceAnnonceRepository = competenceAnnonceRepository;
+    }
+
+    public Competence findById( Long id ) {
+        return this.competenceRepository.findById( id )
+                .orElseThrow( () -> new IllegalArgumentException( "Competence not found" ) );
     }
 
     public List<Competence> findAll() {
         return competenceRepository.findAllCompetences();
     }
 
-    public List<CompetenceAnnonce> findByIds(List<Long> ids) {
-        return competenceAnnonceRepository.findByIdIn(ids);
+    public List<CompetenceAnnonce> findByIds( List<Long> ids ) {
+        return competenceAnnonceRepository.findByIdIn( ids );
     }
 }

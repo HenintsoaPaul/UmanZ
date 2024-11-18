@@ -16,7 +16,7 @@
     "axios": "^1.7.7",
     "json-server": "^1.0.0-beta.3",
     "nuxt": "^3.14.159",
-    "nuxt-app": "file:",
+    "nuxt-auth-utils": "^0.5.4",
     "vue": "latest",
     "vue-router": "latest",
     "zod": "^3.23.8"

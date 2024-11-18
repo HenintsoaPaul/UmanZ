@@ -41,7 +41,7 @@ public class Entretien {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_annonce", nullable = false)
-    @JsonView({POV.Full.class})
+    @JsonView({POV.Public.class})
     private Annonce annonce;
 
     @ManyToOne(fetch = FetchType.LAZY)
