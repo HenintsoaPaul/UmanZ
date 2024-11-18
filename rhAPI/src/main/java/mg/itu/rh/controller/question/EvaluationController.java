@@ -47,16 +47,16 @@ public class EvaluationController {
     /*
     {
         "idEvaluation":8,
-            "evaluations":[
-        {
-            "note":3,
-                "idQuestionEvaluation":8
-        },
-        {
-            "note":7,
-                "idQuestionEvaluation":8
-        }
-    ]
+        "evaluations":[
+            {
+                "note":3,
+                "idQuestionProjet":1
+            },
+            {
+                "note":7,
+                "idQuestionProjet":2
+            }
+        ]
     }*/
     @PostMapping("/evaluate")
     @JsonView(POV.Question.class)
@@ -68,5 +68,11 @@ public class EvaluationController {
     @JsonView(POV.Question.class)
     public List<Evaluation> findEvaluationNotNoted(){
         return evaluationService.findEvaluationNotNoted();
+    }
+
+    @GetMapping("/non_note/{id}")
+    @JsonView(POV.Question.class)
+    public Evaluation findEvaluationNotNoted(@PathVariable("id")Long id){
+        return evaluationService.findEvaluationNotNoted(id);
     }
 }

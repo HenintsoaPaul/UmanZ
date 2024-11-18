@@ -28,7 +28,7 @@ public class AnnonceService {
         this.annonceDiplomeService = annonceDiplomeService;
     }
 
-    public List<Compatibilite> findAnnonceAvailable( Long idTalent ) {
+    public List<Annonce> findAnnonceAvailable( Long idTalent ) {
         return compatibiliteService.findAllDispoByIdTalent( idTalent );
     }
 
@@ -55,26 +55,6 @@ public class AnnonceService {
         compatibiliteService.save( annonce );
         return annonce;
     }
-
-//    @Transactional
-//    public void addDiplome( Annonce annonce, List<AnnonceDiplomeDTO> annonceDiplomeDTOS ) {
-//        for ( AnnonceDiplomeDTO dto: annonceDiplomeDTOS ) {
-//            Diplome diplome = dto.getDiplome();
-//            NiveauDiplome nd = dto.getNiveauDiplome();
-//        }
-//    }
-//
-//    @Transactional
-//    public void addLangue( Annonce annonce, List<AnnonceLangueDTO> annonceLangues ) {
-//        annonce.setAnnonceLangues( new ArrayList<>() );
-//        for ( AnnonceLangueDTO annonceLangue : annonceLangues ) {
-//            AnnonceLangue langueAnnonce = new AnnonceLangue();
-//            langueAnnonce.setAnnonce( annonce );
-//            langueAnnonce.setLangue( langueService.findById( annonceLangue.getIdLangue() ) );
-//            langueAnnonce.setNiveauLangue( niveauLangueService.findById( annonceLangue.getIdLangue() ) );
-//            annonce.getAnnonceLangues().add( langueAnnonce );
-//        }
-//    }
 
     public List<Annonce> findAllDisponible() {
         return annonceRepository.findAnnonceAvailable();

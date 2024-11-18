@@ -77,3 +77,9 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         </div>
     </div>
 </template>
+
+<style scoped>
+body {
+    font-family: 'Inter', sans-serif;
+}
+</style>

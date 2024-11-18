@@ -201,11 +201,11 @@ CREATE TABLE question_technique(
 
 CREATE TABLE reponse(
                         id_reponse SERIAL,
-                        reponse VARCHAR(255)  NOT NULL,
-                        note NUMERIC(15,2)   NOT NULL,
-                        id_question_technique INTEGER NOT NULL,
-                        PRIMARY KEY(id_reponse),
-                        FOREIGN KEY(id_question_technique) REFERENCES question_technique(id_question_technique)
+                        reponse TEXT NOT NULL,
+                       note NUMERIC(15,2)   NOT NULL,
+                       id_question_technique INTEGER NOT NULL,
+                       PRIMARY KEY(id_reponse),
+                       FOREIGN KEY(id_question_technique) REFERENCES question_technique(id_question_technique)
 );
 
 CREATE TABLE resultat_technique(

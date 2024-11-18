@@ -1,12 +1,11 @@
 <script setup>
 const router = useRouter();
 const idUserStr = computed( () => localStorage.getItem( "idUser" ) );
-const userEmail = computed( () => localStorage.getItem( "emailUser" ) );
 const loggedIn = ref( false );
 
 onMounted( () => {
   if ( idUserStr ) {
-    const idUser = Number( idUserStr );
+    Number( idUserStr );
     loggedIn.value = true;
   } else {
     logout();
@@ -58,6 +57,19 @@ const navLinks = [
       { label: "Ajouter", link: "/interne/absence/add" },
     ]
   },
+  {
+    label: "Evaluation",
+    children: [
+      { label: "Voir Liste Projet", link: "/interne/evaluation/projet" },
+      { label: "Faire une évaluation", link: "/talent/evaluation/projet" }
+    ]
+  },
+  {
+    label: "Chat",
+    children: [
+      { label: "Chat Guide", link: "/chat" }
+    ]
+  }
 ];
 
 const logout = () => {
@@ -84,9 +96,6 @@ const logout = () => {
       </ul>
       <div>
         <template v-if="loggedIn">
-          <!-- <p class="inline-block mr-4">
-            Hi {{ userEmail }} !
-          </p> -->
           <button @click="logout" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Log
             out</button>
         </template>
