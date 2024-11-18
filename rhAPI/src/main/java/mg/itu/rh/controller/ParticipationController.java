@@ -2,8 +2,10 @@ package mg.itu.rh.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import mg.itu.rh.dto.ParticipationDTO;
+import mg.itu.rh.entity.Formation;
 import mg.itu.rh.entity.Participation;
 import mg.itu.rh.other.POV;
+import mg.itu.rh.service.FormationService;
 import mg.itu.rh.service.ParticipationService;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,9 +15,11 @@ import java.util.List;
 @RequestMapping( "/participations" )
 public class ParticipationController {
     private final ParticipationService participationService;
+    private final FormationService formationService;
 
-    public ParticipationController( ParticipationService participationService ) {
+    public ParticipationController( ParticipationService participationService, FormationService formationService ) {
         this.participationService = participationService;
+        this.formationService = formationService;
     }
 
     @GetMapping
@@ -34,6 +38,7 @@ public class ParticipationController {
     @JsonView( POV.Public.class )
     public Participation save( @RequestBody ParticipationDTO participationDTO )
             throws Exception {
-        return participationService.save( participationDTO );
+        Formation formation = this.formationService.findById( participationDTO.getIdFormation() );
+        return participationService.save( participationDTO, formation );
     }
 }

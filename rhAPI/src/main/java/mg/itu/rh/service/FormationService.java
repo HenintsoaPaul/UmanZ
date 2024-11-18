@@ -49,7 +49,6 @@ public class FormationService {
 
     public Formation finir( Long id ) {
         Formation f = this.findById( id );
-
         for ( Participation part : participationService.findAllByFormation( f.getIdFormation() ) ) {
             for ( CompetenceCible cpc : f.getCompetenceCibles() ) {
                 TalentCompetence talentCompetence = talentCompetenceService.findByCompetenceAndContrat( cpc.getCompetence(), part.getContrat() );
@@ -58,7 +57,6 @@ public class FormationService {
                 talentCompetenceService.save( talentCompetence );
             }
         }
-
         f.setEstFini( true );
         return this.formationRepository.save( f );
     }
