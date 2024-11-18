@@ -28,7 +28,7 @@ public class AnnonceService {
         this.annonceDiplomeService = annonceDiplomeService;
     }
 
-    public List<Compatibilite> findAnnonceAvailable( Long idTalent ) {
+    public List<Annonce> findAnnonceAvailable( Long idTalent ) {
         return compatibiliteService.findAllDispoByIdTalent( idTalent );
     }
 

@@ -11,7 +11,12 @@ const headers = [
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const { data: talents } = useFetch<Talent[]>(`${apiUrl}/talents`);
 
-const { q, filteredRows: filteredTalents } = useFilteredRows(talents);
+// Fonction pour charger les données des talents depuis l'API
+async function loadTalents() {
+    try {
+        const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
+        const response = await axios.get(`${apiUrl}/talents`);
+
         if (response.status === 200) {
             apiTalents.value = response.data;
         } else {
