@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, toRaw } from 'vue';
 import axios from 'axios';
 
 interface Question {
@@ -34,8 +34,31 @@ onMounted(() => {
   loadQuestions();
 });
 
-function handleSubmit() {
-  console.log(toRaw(formState.value)); // Traitez ici les données du formulaire
+async function handleSubmit() {
+  // Créer l'objet d'évaluation selon le format attendu
+  const evaluationPayload = {
+    idTalent: Number(localStorage.getItem("idUser")),
+    dateEvaluation: new Date().toISOString().split('T')[0], // Date au format YYYY-MM-DD
+    evaluations: Object.entries(formState.value).map(([idQuestionProjet, reponse]) => ({
+      idQuestionProjet: Number(idQuestionProjet),
+      reponse: reponse || "Je ne sais pas" // Valeur par défaut si aucune réponse
+    }))
+  };
+
+  try {
+    console.log(toRaw(evaluationPayload));
+
+    const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
+    const response = await axios.post(`${apiUrl}/evaluation`, evaluationPayload);
+
+    if (response.status === 200) {
+      console.log('Évaluation enregistrée avec succès:', response.data);
+    } else {
+      console.error('Erreur lors de l\'enregistrement de l\'évaluation', response.data);
+    }
+  } catch (error) {
+    console.error('Erreur lors de la requête API:', error);
+  }
 }
 </script>
 
