@@ -15,7 +15,6 @@ import mg.itu.rh.other.POV;
 @Data
 @NoArgsConstructor
 public class Talent {
-
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "id_talent" )
@@ -31,28 +30,13 @@ public class Talent {
     @JsonView( { POV.Public.class } )
     private String mail;
 
+    @Column( name = "password" )
     @JsonView( { POV.Public.class } )
-    @Column(name="nom")
-    @JsonView({POV.Public.class})
-    private String nom;
-
-    @Column(name="prenom")
-    @JsonView({POV.Public.class})
-    private String prenom;
-
-    @Column(name="mail")
-    @JsonView({POV.Public.class})
-    private String mail;
-
-    @Column(name="password")
-    @JsonView({POV.Public.class})
-
     private String password;
 
     @JsonView( { POV.Public.class } )
     @Column( name = "is_admin" )
     private boolean isAdmin;
-
 
     @JsonView( { POV.Public.class } )
     @OneToMany( mappedBy = "talent", cascade = CascadeType.ALL, fetch = FetchType.LAZY )
@@ -88,15 +72,4 @@ public class Talent {
     }
 }
 
-    // @ManyToMany
-    // @JoinTable(
-    //     name = "talent_competence",
-    //     joinColumns = @JoinColumn(name = "id_talent"),
-    //     inverseJoinColumns = @JoinColumn(name = "id_competence")
-    // )
-    
-    public String getEmail(){
-        return this.mail;
-    }
-}
 
