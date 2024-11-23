@@ -44,16 +44,13 @@ const isAdmin = computed(() => localStorage.getItem("isAdmin") === 'true');
                                 <p class="text-gray-700">{{ row.poste.description }}</p>
                             </div>
 
-                            <template v-if="isAdmin">
-                                <button
-                                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2"
-                                    @click="$router.push(`/recrutement/annonce/${row.idAnnonce}`)">
-                                    Voir Détails
-                                </button>
-                            </template>
-                            <template v-else>
-                                <button
-                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4"
+                            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2"
+                                @click="$router.push(`/recrutement/annonce/${row.idAnnonce}`)">
+                                Voir Détails
+                            </button>
+
+                            <template v-if="!isAdmin">
+                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4"
                                     @click="handleCandidater(row.idAnnonce)">
                                     Candidater
                                 </button>

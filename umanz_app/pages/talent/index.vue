@@ -2,16 +2,22 @@
 import type { Talent } from '~/types';
 
 const headers = [
-    { key: 'idTalent', label: 'ID', sortable: true },
-    { key: 'nom', label: 'Nom', sortable: true },
-    { key: 'prenom', label: 'Prénom', sortable: true },
-    { key: 'mail', label: 'Email', sortable: true }
+  { key: 'idTalent', label: 'ID', sortable: true },
+  { key: 'nom', label: 'Nom', sortable: true },
+  { key: 'prenom', label: 'Prénom', sortable: true },
+  { key: 'mail', label: 'Email', sortable: true }
 ];
 
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const { data: talents } = useFetch<Talent[]>(`${apiUrl}/talents`);
 
 const { q, filteredRows: filteredTalents } = useFilteredRows(talents);
+
+const expand = ref({
+  openedRows: [],
+  row: {}
+})
+
 </script>
 
 <template>
@@ -21,5 +27,11 @@ const { q, filteredRows: filteredTalents } = useFilteredRows(talents);
         <UInput v-model="q" placeholder="Filtrer les talents..." />
     </div>
 
-    <UTable :columns="headers" :rows="filteredTalents ?? []" />
+    <UTable :columns="headers" :rows="filteredTalents ?? []" v-model:expand="expand">
+        <template #expand="{ row }">
+            <UButton @click="$router.push(`/interne/evaluation/projet/note/${row.idTalent}`)">
+              Note d'évaluations de projet
+            </UButton>
+        </template>
+    </UTable>
 </template>

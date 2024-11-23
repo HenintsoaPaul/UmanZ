@@ -22,6 +22,6 @@ public class Reponse {
     private double note;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="id_question_technique")
-    private QuestionTechnique questionTechnique;
+    @JoinColumn(name="id_question")
+    private Question question;
 }

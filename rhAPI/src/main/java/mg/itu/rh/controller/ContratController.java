@@ -5,9 +5,10 @@ import mg.itu.rh.dto.ContratDTO;
 import mg.itu.rh.entity.Contrat;
 import mg.itu.rh.other.POV;
 import mg.itu.rh.service.ContratService;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping( "/contrat" )

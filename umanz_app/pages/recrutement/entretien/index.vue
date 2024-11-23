@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import type { Entretien } from '~/types';
 
+definePageMeta({
+    middleware: ['auth']
+});
+
 const router = useRouter();
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const { data: entretiens, refresh: refreshEntretiens } = useFetch<Entretien[]>(`${apiUrl}/entretien/etat/${3}`);

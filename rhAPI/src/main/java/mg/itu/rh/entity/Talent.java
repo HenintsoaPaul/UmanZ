@@ -30,6 +30,7 @@ public class Talent {
     @JsonView( { POV.Public.class } )
     private String mail;
 
+    @Column( name = "password" )
     @JsonView( { POV.Public.class } )
     private String password;
 
@@ -70,3 +71,5 @@ public class Talent {
         this.setAdmin( talentDTO.isAdmin() );
     }
 }
+
+

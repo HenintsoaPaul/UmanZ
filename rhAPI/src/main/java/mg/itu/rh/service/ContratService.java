@@ -4,9 +4,10 @@ import mg.itu.rh.dto.ContratDTO;
 import mg.itu.rh.entity.Contrat;
 import mg.itu.rh.entity.TypeContrat;
 import mg.itu.rh.repository.ContratRepository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import org.springframework.stereotype.Service;
 
 @Service
 public class ContratService {
@@ -25,7 +26,8 @@ public class ContratService {
     }
 
     public Contrat findActualContratByIdTalent( Long idTalent ) {
-        return contratRepository.findActualContratByIdTalent( idTalent ).orElseThrow( () -> new RuntimeException( "Cette personne n'est pas un employe ou n'est plus un employe" ) );
+        return contratRepository.findActualContratByIdTalent( idTalent )
+                .orElseThrow( () -> new RuntimeException( "Cette personne n'est pas un employe ou n'est plus un employe" ) );
     }
 
     public Contrat findById( Long idContrat ) {

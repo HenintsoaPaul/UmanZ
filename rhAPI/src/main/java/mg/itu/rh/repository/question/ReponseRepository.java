@@ -10,6 +10,6 @@ import java.util.Optional;
 
 @Service
 public interface ReponseRepository extends JpaRepository<Reponse,Long> {
-    @Query("select r from Reponse r where r.idReponse=:idReponse and r.questionTechnique.idQuestionTechnique=:idQuestion")
+    @Query("select r from Reponse r where r.idReponse=:idReponse and r.question.idQuestion=:idQuestion")
     public Optional<Reponse> findByIdReponseAndIdQuestion(@Param("idReponse")Long idReponse,@Param("idQuestion")Long idQuestion);
 }

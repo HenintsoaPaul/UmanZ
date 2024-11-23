@@ -3,7 +3,13 @@ export interface Formation {
     nomFormation: string,
     dateDebut: string,
     dateFin: string,
+    estFini: boolean,
     competenceCibles: CompetenceCible[]
+}
+
+export interface Participation {
+    contrat: Contrat,
+    dateInscription: string
 }
 
 export interface CompetenceCible {
@@ -44,7 +50,9 @@ export interface Talent {
     password: string,
     isAdmin: boolean,
     competenceTalents: CompetenceTalent[],
-    experienceTalents: ExperienceTalent[]
+    experienceTalents: ExperienceTalent[],
+    diplomes: DiplomeAvecNiveau[],
+    talentLangues: LangueAvecNiveau[]
 }
 
 export interface Competence {
@@ -122,4 +130,103 @@ export interface Rupture {
 export interface TypeContrat {
     idTypeContrat: number,
     typeContrat: string,
+}
+
+export interface Chat {
+    idChat: number;
+    motCle: string;
+    reponse: string;
+}
+
+export interface Compatibilite {
+    talent: Talent;
+    annonce: Annonce;
+    pourcentage: number;
+}
+
+export interface Langue {
+    idLangue: number;
+    langue: string;
+}
+
+export interface NiveauLangue {
+    idNiveauLangue: number;
+    niveauLangue: string;
+    niveau: number;
+}
+
+export interface LangueAvecNiveau {
+    langue: Langue;
+    niveauLangue: NiveauLangue | null
+}
+
+export interface DiplomeAvecNiveau {
+    diplome: Diplome;
+    selected: boolean;
+    niveauDiplome: NiveauDiplome | null
+}
+
+export interface AnnonceLangue {
+    annonce: Annonce;
+    langue: Langue;
+    niveauLangue: NiveauLangue;
+}
+
+export interface TalentLangue {
+    talent: Talent;
+    langue: Langue;
+    niveauLangue: NiveauLangue;
+}
+
+export interface Diplome {
+    idDiplome: number;
+    diplome: string;
+    niveauDiplome: NiveauDiplome
+}
+
+export interface NiveauDiplome {
+    idNiveauDiplome: number;
+    niveau: string;
+    niveauDiplome: number;
+}
+
+export interface AnnonceDiplome {
+    annonce: Annonce;
+    diplome: Diplome;
+}
+
+export interface TalentDiplome {
+    talent: Talent;
+    diplome: Diplome;
+}
+
+export interface QuestionProjet {
+    idQuestionProjet: number,
+    question: string
+}
+
+export interface QuestionEvaluation {
+    questionProjet: QuestionProjet,
+    note: number,
+    reponse: string
+}
+
+export interface Evaluation {
+    idEvaluation: number,
+    dateEvaluation: string,
+    talent: Talent,
+    moyenne: number,
+    questionEvaluations: QuestionEvaluation[]
+}
+
+export interface QuestionEvaluationNote {
+    idQuestionProjet: number,
+    note: number
+}
+
+export interface EvaluationNote {
+    idEvaluation?: number,
+    idTalent?: number,
+    dateEvaluation?: string,
+    evaluations?: QuestionEvaluationNote[]
 }

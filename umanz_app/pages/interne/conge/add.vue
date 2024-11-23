@@ -31,7 +31,7 @@ const contrats = ref<Contrat[]>([]); // État réactif pour stocker les contrats
 // Charger les contrats depuis l'API
 const loadContrats = async () => {
     try {
-        const response = await axios.get('/api/contrats');
+        const response = await axios.get('http://localhost:911/contrat');
         if (response.status === 200) {
             contrats.value = response.data;
         } else {

@@ -64,6 +64,10 @@ public class Compatibilite {
         this.setPourcentage();
     }
 
+    public void setPourcentageAnnonce(){
+        this.getAnnonce().setPourcentage(this.getPourcentage());
+    }
+
     protected double calculateByDiplome() {
         double max = 0;
         Set<Diplome> diplomesAnnonce = this.getAnnonce().getDiplomes();

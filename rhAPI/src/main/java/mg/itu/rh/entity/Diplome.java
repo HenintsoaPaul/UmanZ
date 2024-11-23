@@ -20,5 +20,6 @@ public class Diplome {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_niveau_diplome")
+    @JsonView({POV.Public.class})
     private NiveauDiplome niveauDiplome;
 }

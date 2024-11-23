@@ -12,16 +12,18 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import mg.itu.rh.dto.ContratDTO;
 import mg.itu.rh.other.POV;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class Contrat {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
-    @Column( name = "id_contrat" )
-    @JsonView( POV.Public.class )
+    @Column(name="id_contrat")
+    @JsonView({POV.Public.class})
     private Long idContrat;
 
     @JsonView( POV.Public.class )
@@ -61,9 +63,9 @@ public class Contrat {
     @JsonView( POV.Public.class )
     private double nbHeureJour;
 
-    @ManyToOne( fetch = FetchType.LAZY )
-    @JoinColumn( name = "id_poste" )
-    @JsonView( POV.Public.class )
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_poste")
+    @JsonView({POV.Public.class})
     private Poste poste;
 
     public Contrat( ContratDTO contratDTO ) {
@@ -75,9 +77,5 @@ public class Contrat {
         this.setDateDebut( contratDTO.getDateDebut() );
         LocalDate dFin = contratDTO.getDateFin();
         if ( dFin != null ) this.setDateFin( contratDTO.getDateFin() );
-    }
-
-    public Contrat() {
-
     }
 }
