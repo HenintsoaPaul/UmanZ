@@ -16,7 +16,7 @@ public class IdTalentAnnonce implements Serializable {
     @Column(name = "id_annonce")
     private Long idAnnonce;
     public IdTalentAnnonce(){}
-    public IdTalentAnnonce(Long idAnnonce,Long idTalent){
+    public IdTalentAnnonce(Long idAnnonce, Long idTalent){
         this.setIdAnnonce(idAnnonce);
         this.setIdTalent(idTalent);
     }

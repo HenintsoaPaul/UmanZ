@@ -6,7 +6,6 @@ import mg.itu.rh.entity.recrutement.Annonce;
 import mg.itu.rh.repository.recrutement.AnnonceRepository;
 import mg.itu.rh.service.PosteService;
 import org.springframework.stereotype.Service;
-import mg.itu.rh.dto.critere.DiplomeDTO;
 
 import java.util.List;
 
@@ -14,20 +13,15 @@ import java.util.List;
 public class AnnonceService {
     private final AnnonceRepository annonceRepository;
     private final PosteService posteService;
-    private final CompetenceAnnonceService competenceAnnonceService;
-    private final ExperiencePosteService experiencePosteService;
     private final CompatibiliteService compatibiliteService;
-    private final AnnonceLangueService annonceLangueService;
-    private final AnnonceDiplomeService annonceDiplomeService;
 
-    public AnnonceService( AnnonceRepository annonceRepository, PosteService posteService, CompetenceAnnonceService competenceAnnonceService, ExperiencePosteService experiencePosteService, CompatibiliteService compatibiliteService, AnnonceLangueService annonceLangueService, AnnonceDiplomeService annonceDiplomeService ) {
+    private final ExperiencePosteService experiencePosteService;
+
+    public AnnonceService(AnnonceRepository annonceRepository, PosteService posteService, CompatibiliteService compatibiliteService, ExperiencePosteService experiencePosteService) {
         this.annonceRepository = annonceRepository;
         this.posteService = posteService;
-        this.competenceAnnonceService = competenceAnnonceService;
-        this.experiencePosteService = experiencePosteService;
         this.compatibiliteService = compatibiliteService;
-        this.annonceLangueService = annonceLangueService;
-        this.annonceDiplomeService = annonceDiplomeService;
+        this.experiencePosteService = experiencePosteService;
     }
 
     public List<Annonce> findAnnonceAvailable(Long idTalent ) {
@@ -47,12 +41,7 @@ public class AnnonceService {
         annonce.setPoste( posteService.findById( annonceDTO.getIdPoste() ) );
         annonce = annonceRepository.save( annonce );
 
-        // Save into tables liaisons
         experiencePosteService.saveAllFromDTO( annonceDTO.getExperiences(), annonce );
-        competenceAnnonceService.saveAllFromDTO( annonceDTO.getCompetences(), annonce );
-
-        annonceDiplomeService.saveAll( annonceDTO.getDiplomes(), annonce );
-        annonceLangueService.saveAll( annonceDTO.getLangues(), annonce);
 
         compatibiliteService.save( annonce );
         return annonce;

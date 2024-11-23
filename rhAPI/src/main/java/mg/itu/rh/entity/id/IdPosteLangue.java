@@ -10,8 +10,8 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class IdAnnonceLangue implements Serializable {
-    private Long idAnnonce;
+public class IdPosteLangue implements Serializable {
+    private Long idPoste;
     private Long idLangue;
     private Long idNiveauLangue;
 }

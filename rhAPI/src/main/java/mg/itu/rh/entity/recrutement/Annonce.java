@@ -40,38 +40,9 @@ public class Annonce {
     @Column(name = "date_rupture")
     private LocalDate dateRupture;
 
-    @OneToMany(mappedBy = "annonce",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JsonView({POV.Full.class})
-    private List<CompetenceAnnonce> competenceAnnonces=new ArrayList<CompetenceAnnonce>();
-
     @OneToMany(mappedBy="annonce",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     @JsonView({POV.Full.class})
     private List<ExperiencePoste> experiencePostes=new ArrayList<ExperiencePoste>();
-
-    @ManyToMany
-    @JoinTable(
-            name = "annonce_diplome",
-            joinColumns = @JoinColumn(name = "id_annonce"),
-            inverseJoinColumns = @JoinColumn(name = "id_diplome")
-    )
-    @JsonView({POV.Public.class})
-    private Set<Diplome> diplomes=new HashSet<Diplome>();
-
-    @OneToMany(mappedBy="annonce",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-    @JsonView({POV.Public.class})
-    private List<AnnonceLangue> annonceLangues=new ArrayList<AnnonceLangue>();
-
-    @Transient
-    @JsonView({POV.Public.class})
-    private double pourcentage;
-
-    public void addDiplome(Diplome diplome){
-        this.diplomes.add(diplome);
-    }
-
-    public void addCompetence(CompetenceAnnonce competenceAnnonce){
-        this.competenceAnnonces.add(competenceAnnonce);
-    }
 
     public void addExperiencePoste(ExperiencePoste experiencePoste){
         this.experiencePostes.add(experiencePoste);

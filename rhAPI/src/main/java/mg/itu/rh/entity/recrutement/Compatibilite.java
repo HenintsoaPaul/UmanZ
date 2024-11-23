@@ -70,12 +70,12 @@ public class Compatibilite {
     }
 
     public void setPourcentageAnnonce(){
-        this.getAnnonce().setPourcentage(this.getPourcentage());
+        this.getAnnonce().getPoste().setPourcentage(this.getPourcentage());
     }
 
     protected double calculateByDiplome() {
         double max = 0;
-        Set<Diplome> diplomesAnnonce = this.getAnnonce().getDiplomes();
+        Set<Diplome> diplomesAnnonce = this.getAnnonce().getPoste().getDiplomes();
         Set<Diplome> diplomesTalent = this.talent.getDiplomes();
         for ( Diplome diplomeAnnonce : diplomesAnnonce ) {
             for ( Diplome diplomeTalent : diplomesTalent ) {
@@ -90,9 +90,9 @@ public class Compatibilite {
 
     protected double calculateByCompetence() {
         double point = 0;
-        List<CompetenceAnnonce> competenceAnnonces = this.getAnnonce().getCompetenceAnnonces();
+        List<CompetencePoste> competenceAnnonces = this.getAnnonce().getPoste().getCompetencePostes();
         List<TalentCompetence> talentCompetences = this.talent.getTalentCompetences();
-        for ( CompetenceAnnonce competenceAnnonce : competenceAnnonces ) {
+        for ( CompetencePoste competenceAnnonce : competenceAnnonces ) {
             boolean matched = false;
             for ( TalentCompetence talentCompetence : talentCompetences ) {
                 if ( talentCompetence.getCompetence().getIdCompetence().equals( competenceAnnonce.getCompetence().getIdCompetence() ) ) {
@@ -112,9 +112,9 @@ public class Compatibilite {
 
     protected double calculateByLangue() {
         double point = 0;
-        List<AnnonceLangue> annonceLangues = this.getAnnonce().getAnnonceLangues();
+        List<PosteLangue> annonceLangues = this.getAnnonce().getPoste().getPosteLangues();
         List<TalentLangue> talentLangues = this.talent.getTalentLangues();
-        for ( AnnonceLangue annonceLangue : annonceLangues ) {
+        for ( PosteLangue annonceLangue : annonceLangues ) {
             boolean matched = false;
             for ( TalentLangue talentLangue : talentLangues ) {
                 if ( annonceLangue.getLangue().getIdLangue().equals( talentLangue.getLangue().getIdLangue() ) ) {
@@ -159,7 +159,7 @@ public class Compatibilite {
         return 3.0;
     }
 
-    protected static double calculateByCompetence( CompetenceAnnonce competenceAnnonce, TalentCompetence competenceTalent ) {
+    protected static double calculateByCompetence(CompetencePoste competenceAnnonce, TalentCompetence competenceTalent ) {
         if ( competenceAnnonce.getPoint() > competenceTalent.getPoint() ) {
             return 10;
         } else if ( competenceAnnonce.getPoint() == competenceTalent.getPoint() ) {
@@ -168,7 +168,7 @@ public class Compatibilite {
         return 20;
     }
 
-    protected static double calculateByLangue( AnnonceLangue annonceLangue, TalentLangue talentLangue ) {
+    protected static double calculateByLangue(PosteLangue annonceLangue, TalentLangue talentLangue ) {
         if ( annonceLangue.getNiveauLangue().getNiveau() > talentLangue.getNiveauLangue().getNiveau() ) {
             return 10;
         } else if ( annonceLangue.getNiveauLangue().getNiveau() == talentLangue.getNiveauLangue().getNiveau() ) {

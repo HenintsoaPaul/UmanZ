@@ -3,22 +3,23 @@ package mg.itu.rh.entity.recrutement;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Data;
+import mg.itu.rh.entity.Poste;
 import mg.itu.rh.entity.critere.NiveauLangue;
 import mg.itu.rh.entity.critere.Langue;
-import mg.itu.rh.entity.id.IdAnnonceLangue;
+import mg.itu.rh.entity.id.IdPosteLangue;
 import mg.itu.rh.other.POV;
 
 @Entity
 @Data
-@Table(name="annonce_langue")
-public class AnnonceLangue {
+@Table(name="langue_poste")
+public class PosteLangue {
     @EmbeddedId
-    private IdAnnonceLangue id=new IdAnnonceLangue();
+    private IdPosteLangue id=new IdPosteLangue();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("idAnnonce")
-    @JoinColumn(name = "id_annonce",insertable = false,updatable = false)
-    private Annonce annonce;
+    @MapsId("idPoste")
+    @JoinColumn(name = "id_poste",insertable = false,updatable = false)
+    private Poste poste;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("idLangue")

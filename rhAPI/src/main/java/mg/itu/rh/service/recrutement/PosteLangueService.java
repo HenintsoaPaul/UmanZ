@@ -2,39 +2,40 @@ package mg.itu.rh.service.recrutement;
 
 import jakarta.transaction.Transactional;
 import mg.itu.rh.dto.critere.LangueDTO;
+import mg.itu.rh.entity.Poste;
 import mg.itu.rh.entity.recrutement.Annonce;
-import mg.itu.rh.entity.recrutement.AnnonceLangue;
+import mg.itu.rh.entity.recrutement.PosteLangue;
 import mg.itu.rh.entity.critere.Langue;
 import mg.itu.rh.entity.critere.NiveauLangue;
-import mg.itu.rh.entity.id.IdAnnonceLangue;
+import mg.itu.rh.entity.id.IdPosteLangue;
 import mg.itu.rh.repository.recrutement.AnnonceLangueRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class AnnonceLangueService {
+public class PosteLangueService {
     private final AnnonceLangueRepository annonceLangueRepository;
 
-    public AnnonceLangueService( AnnonceLangueRepository annonceLangueRepository ) {
+    public PosteLangueService(AnnonceLangueRepository annonceLangueRepository ) {
         this.annonceLangueRepository = annonceLangueRepository;
     }
 
     @Transactional
-    public AnnonceLangue save( AnnonceLangue annonceLangue ) {
+    public PosteLangue save(PosteLangue annonceLangue ) {
         return annonceLangueRepository.save( annonceLangue );
     }
 
     @Transactional
-    public void saveAll(List<LangueDTO> langues, Annonce annonce ) {
+    public void saveAll(List<LangueDTO> langues, Poste poste ) {
         for ( LangueDTO dto : langues ) {
-            AnnonceLangue annonceLangue = new AnnonceLangue();
+            PosteLangue annonceLangue = new PosteLangue();
             Langue l = dto.getLangue();
-            annonceLangue.setAnnonce( annonce );
+            annonceLangue.setPoste( poste );
             annonceLangue.setLangue( l );
             NiveauLangue nl = dto.getNiveauLangue();
             annonceLangue.setNiveauLangue( nl );
-            annonceLangue.setId( new IdAnnonceLangue( annonce.getIdAnnonce(), l.getIdLangue(), nl.getIdNiveauLangue() ) );
+            annonceLangue.setId( new IdPosteLangue( poste.getIdPoste(), l.getIdLangue(), nl.getIdNiveauLangue() ) );
             this.save( annonceLangue );
         }
     }

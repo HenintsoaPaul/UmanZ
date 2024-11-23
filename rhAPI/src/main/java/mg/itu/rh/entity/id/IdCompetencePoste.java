@@ -2,7 +2,6 @@ package mg.itu.rh.entity.id;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -13,14 +12,14 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @Data
 @NoArgsConstructor
-public class IdCompetenceAnnonce implements Serializable {
+public class IdCompetencePoste implements Serializable {
     @Column(name = "id_competence")
     private Long idCompetence;
     @Column(name = "id_annonce")
-    private Long idAnnonce;
+    private Long idPoste;
 
-    public IdCompetenceAnnonce(Long idCompetence, Long idAnnonce) {
+    public IdCompetencePoste(Long idCompetence, Long idPoste) {
         this.idCompetence = idCompetence;
-        this.idAnnonce = idAnnonce;
+        this.idPoste = idPoste;
     }
 }

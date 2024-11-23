@@ -1,6 +1,7 @@
 package mg.itu.rh.service.recrutement;
 
 import jakarta.transaction.Transactional;
+import mg.itu.rh.entity.Poste;
 import mg.itu.rh.entity.recrutement.Annonce;
 import mg.itu.rh.entity.recrutement.Compatibilite;
 import mg.itu.rh.entity.talent.Talent;
@@ -33,7 +34,6 @@ public class CompatibiliteService {
         List<Compatibilite> compatibilites=new ArrayList<Compatibilite>();
         for(int i=0;i<talents.size();i++){
             Compatibilite compatibilite=new Compatibilite(annonce,talents.get(i));
-            System.out.println(compatibilite.getPourcentage()+" pourcentage");
             compatibilites.add(this.save(compatibilite));
         }
         return compatibilites;

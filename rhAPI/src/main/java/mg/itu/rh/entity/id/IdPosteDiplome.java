@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class IdAnnonceDiplome implements Serializable {
-    private Long idAnnonce;
+public class IdPosteDiplome implements Serializable {
+    private Long idPoste;
     private Long idDiplome;
 }

@@ -2,36 +2,36 @@ package mg.itu.rh.service.recrutement;
 
 import jakarta.transaction.Transactional;
 import mg.itu.rh.dto.critere.DiplomeDTO;
-import mg.itu.rh.entity.recrutement.Annonce;
-import mg.itu.rh.entity.recrutement.AnnonceDiplome;
+import mg.itu.rh.entity.Poste;
+import mg.itu.rh.entity.recrutement.PosteDiplome;
 import mg.itu.rh.entity.critere.Diplome;
-import mg.itu.rh.entity.id.IdAnnonceDiplome;
+import mg.itu.rh.entity.id.IdPosteDiplome;
 import mg.itu.rh.repository.recrutement.AnnonceDiplomeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class AnnonceDiplomeService {
+public class PosteDiplomeService {
     private final AnnonceDiplomeRepository annonceDiplomeRepository;
 
-    public AnnonceDiplomeService( AnnonceDiplomeRepository annonceDiplomeRepository ) {
+    public PosteDiplomeService(AnnonceDiplomeRepository annonceDiplomeRepository ) {
         this.annonceDiplomeRepository = annonceDiplomeRepository;
     }
 
     @Transactional
-    public AnnonceDiplome save( AnnonceDiplome annonceDiplome ) {
+    public PosteDiplome save(PosteDiplome annonceDiplome ) {
         return annonceDiplomeRepository.save( annonceDiplome );
     }
 
     @Transactional
-    public void saveAll(List<DiplomeDTO> diplomes, Annonce annonce ) {
+    public void saveAll(List<DiplomeDTO> diplomes, Poste poste ) {
         for ( DiplomeDTO dto : diplomes ) {
-            AnnonceDiplome annonceDiplome = new AnnonceDiplome();
-            annonceDiplome.setAnnonce( annonce );
+            PosteDiplome annonceDiplome = new PosteDiplome();
+            annonceDiplome.setPoste( poste );
             Diplome d = dto.getDiplome();
             annonceDiplome.setDiplome( d );
-            annonceDiplome.setId( new IdAnnonceDiplome( annonce.getIdAnnonce(), d.getIdDiplome() ) );
+            annonceDiplome.setId( new IdPosteDiplome( poste.getIdPoste(), d.getIdDiplome() ) );
             this.save( annonceDiplome );
         }
     }
