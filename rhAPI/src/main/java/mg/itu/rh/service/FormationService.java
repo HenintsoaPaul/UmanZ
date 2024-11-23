@@ -1,6 +1,6 @@
 package mg.itu.rh.service;
 
-import mg.itu.rh.controller.question.ResultatTechniqueController;
+import mg.itu.rh.controller.question.ResultatController;
 import mg.itu.rh.dto.FormationDTO;
 import mg.itu.rh.entity.CompetenceCible;
 import mg.itu.rh.entity.Formation;
@@ -18,7 +18,7 @@ public class FormationService {
     private final ParticipationService participationService;
     private final TalentCompetenceService talentCompetenceService;
 
-    public FormationService( FormationRepository formationRepository, CompetenceCibleService competenceCibleService, ParticipationService participationService, TalentCompetenceService talentCompetenceService, ResultatTechniqueController resultatTechniqueController ) {
+    public FormationService( FormationRepository formationRepository, CompetenceCibleService competenceCibleService, ParticipationService participationService, TalentCompetenceService talentCompetenceService, ResultatController resultatTechniqueController ) {
         this.formationRepository = formationRepository;
         this.competenceCibleService = competenceCibleService;
         this.participationService = participationService;

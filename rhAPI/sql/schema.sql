@@ -185,22 +185,22 @@ CREATE TABLE question(
 
 CREATE TABLE reponse(
                         id_reponse SERIAL,
-                        reponse VARCHAR(50)  NOT NULL,
+                        reponse TEXT NOT NULL,
                         note NUMERIC(15,2)   NOT NULL,
                         id_question INTEGER NOT NULL,
                         PRIMARY KEY(id_reponse),
                         FOREIGN KEY(id_question) REFERENCES question(id_question)
 );
 
-CREATE TABLE resultat_technique(
-                                   id_resultat_technique SERIAL,
-                                   note NUMERIC(15,2)  ,
-                                   date_resultat TIMESTAMP,
-                                   id_domaine INTEGER NOT NULL,
-                                   id_talent INTEGER NOT NULL,
-                                   PRIMARY KEY(id_resultat_technique),
-                                   FOREIGN KEY(id_domaine) REFERENCES domaine(id_domaine),
-                                   FOREIGN KEY(id_talent) REFERENCES talent(id_talent)
+CREATE TABLE resultat(
+                         id_resultat SERIAL,
+                         note NUMERIC(15,2)  ,
+                         date_resultat TIMESTAMP,
+                         id_domaine INTEGER NOT NULL,
+                         id_talent INTEGER NOT NULL,
+                         PRIMARY KEY(id_resultat),
+                         FOREIGN KEY(id_domaine) REFERENCES domaine(id_domaine),
+                         FOREIGN KEY(id_talent) REFERENCES talent(id_talent)
 );
 
 CREATE TABLE talent_competence(

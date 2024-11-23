@@ -7,18 +7,16 @@ import mg.itu.rh.entity.Talent;
 import mg.itu.rh.other.POV;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.util.List;
 
 @Entity
 @Data
-@Table(name = "resultat_technique")
-public class ResultatTechnique {
+public class Resultat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_resultat_technique")
+    @Column(name = "id_resultat")
     @JsonView({POV.Question.class})
-    private Long idResultatTechnique;
+    private Long idResultat;
 
     @JsonView({POV.Question.class})
     private double note;
@@ -54,7 +52,7 @@ public class ResultatTechnique {
     }
     protected void setDomaine(){
         if(reponses.size()!=0){
-            this.setDomaine(reponses.get(0).getQuestionTechnique().getDomaine());
+            this.setDomaine(reponses.get(0).getQuestion().getDomaine());
         }
     }
 }

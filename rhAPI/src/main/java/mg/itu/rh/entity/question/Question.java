@@ -9,13 +9,13 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "question_technique")
-public class QuestionTechnique {
+@Table(name = "question")
+public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_question_technique")
+    @Column(name = "id_question")
     @JsonView({POV.Public.class})
-    private Long idQuestionTechnique;
+    private Long idQuestion;
 
     @JsonView({POV.Public.class})
     private String question;
@@ -24,7 +24,7 @@ public class QuestionTechnique {
     @JoinColumn(name = "id_domaine")
     private Domaine domaine;
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "questionTechnique")
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "question")
     @JsonView({POV.Public.class})
     private List<Reponse> reponses;
 }
