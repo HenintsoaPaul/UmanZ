@@ -1,0 +1,30 @@
+package mg.itu.rh.entity.recrutement;
+
+import com.fasterxml.jackson.annotation.JsonView;
+import jakarta.persistence.*;
+import lombok.Data;
+import mg.itu.rh.entity.critere.Competence;
+import mg.itu.rh.entity.id.IdCompetenceAnnonce;
+import mg.itu.rh.entity.recrutement.Annonce;
+import mg.itu.rh.other.POV;
+
+@Entity
+@Data
+@Table( name = "competence_annonce" )
+public class CompetenceAnnonce {
+    @EmbeddedId
+    private IdCompetenceAnnonce id;
+
+    @ManyToOne( fetch = FetchType.LAZY )
+    @JsonView( { POV.Public.class } )
+    @JoinColumn( name = "id_competence", insertable = false, updatable = false )
+    private Competence competence;
+
+    @ManyToOne( fetch = FetchType.LAZY )
+    @JsonView( { POV.Full.class } )
+    @JoinColumn( name = "id_annonce", insertable = false, updatable = false )
+    private Annonce annonce;
+
+    @JsonView( { POV.Public.class } )
+    private int point;
+}
