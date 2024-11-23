@@ -5,7 +5,6 @@ import lombok.Data;
 
 @Entity
 @Data
-@Inheritance()
 public class Domaine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
