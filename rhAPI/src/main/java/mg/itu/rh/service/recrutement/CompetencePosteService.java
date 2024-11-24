@@ -37,7 +37,7 @@ public class CompetencePosteService {
         return competenceAnnonceRepository.save( ca );
     }
 
-    public List<CompetencePoste> findAllByIdAnnonce(Long idPoste ) {
-        return competenceAnnonceRepository.findAllByIdPoste( idPoste );
+    public List<CompetencePoste> findAllByIdAnnonce(Long idAnnonce ) {
+        return competenceAnnonceRepository.findAllByIdPoste( idAnnonce );
     }
 }
