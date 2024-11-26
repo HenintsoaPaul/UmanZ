@@ -3,13 +3,14 @@ package mg.itu.rh.entity.interne;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Data;
-import mg.itu.rh.entity.interne.Contrat;
+import lombok.NoArgsConstructor;
 import mg.itu.rh.other.POV;
 
 import java.time.LocalDate;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class Conge {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,18 +32,26 @@ public class Conge {
     @Column(name = "date_validation")
     private LocalDate dateValidation;
 
+    @Column(name = "motif_refus")
+    @JsonView({POV.Public.class})
+    private String motifRefus;
+
+    @Column(name = "date_refus")
+    private LocalDate dateRefus;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonView({POV.Public.class})
     @JoinColumn(name = "id_contrat")
     private Contrat contrat;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonView({POV.Public.class})
+    @JoinColumn(name = "id_type_conge")
+    private TypeConge typeConge;
+
     @JsonView({POV.Public.class})
     @Transient
     private LocalDate dateFin;
-
-    public Conge(){
-
-    }
 
     public Conge(Long idConge,LocalDate dateDebut,int nbJour,String motif, Contrat contrat){
         this.setIdConge(idConge);
