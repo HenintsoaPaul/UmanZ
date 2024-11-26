@@ -27,6 +27,7 @@ CREATE TABLE formation(
                           nom_formation VARCHAR(50)  NOT NULL,
                           date_debut DATE NOT NULL,
                           date_fin DATE NOT NULL,
+                          est_fini BOOLEAN,
                           PRIMARY KEY(id_formation)
 );
 
@@ -196,7 +197,7 @@ CREATE TABLE question(
 
 CREATE TABLE reponse(
                         id_reponse SERIAL,
-                        reponse VARCHAR(50)  NOT NULL,
+                        reponse TEXT NOT NULL,
                         note NUMERIC(15,2)   NOT NULL,
                         id_question INTEGER NOT NULL,
                         PRIMARY KEY(id_reponse),
