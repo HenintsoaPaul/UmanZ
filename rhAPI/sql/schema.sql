@@ -1,10 +1,3 @@
-CREATE TABLE competence(
-                           id_competence SERIAL,
-                           competence VARCHAR(50)  NOT NULL,
-                           PRIMARY KEY(id_competence),
-                           UNIQUE(competence)
-);
-
 CREATE TABLE talent(
                        id_talent SERIAL,
                        nom VARCHAR(50)  NOT NULL,
@@ -13,13 +6,6 @@ CREATE TABLE talent(
                        password VARCHAR(255) ,
                        is_admin BOOLEAN NOT NULL,
                        PRIMARY KEY(id_talent)
-);
-
-CREATE TABLE poste(
-                      id_poste SERIAL,
-                      nom_poste VARCHAR(50)  NOT NULL,
-                      description_poste VARCHAR(255)  NOT NULL,
-                      PRIMARY KEY(id_poste)
 );
 
 CREATE TABLE etat_entretien(
@@ -34,17 +20,6 @@ CREATE TABLE type_contrat(
                              id_type_contrat SERIAL,
                              type_contrat VARCHAR(50) ,
                              PRIMARY KEY(id_type_contrat)
-);
-
-CREATE TABLE annonce(
-                        id_annonce SERIAL,
-                        date_annonce DATE NOT NULL,
-                        entreprise VARCHAR(50) ,
-                        date_expiration DATE,
-                        date_rupture DATE,
-                        id_poste INTEGER NOT NULL,
-                        PRIMARY KEY(id_annonce),
-                        FOREIGN KEY(id_poste) REFERENCES poste(id_poste)
 );
 
 CREATE TABLE formation(
@@ -99,21 +74,57 @@ CREATE TABLE domaine(
                         UNIQUE(domaine)
 );
 
-CREATE TABLE entretien(
-                          id_entretien SERIAL,
-                          date_creation DATE NOT NULL,
-                          date_validation DATE,
-                          note INTEGER,
-                          motif VARCHAR(255) ,
-                          id_enfant INTEGER,
-                          id_annonce INTEGER NOT NULL,
-                          id_etat_entretien INTEGER NOT NULL,
-                          id_talent INTEGER NOT NULL,
-                          PRIMARY KEY(id_entretien),
-                          FOREIGN KEY(id_enfant) REFERENCES entretien(id_entretien),
-                          FOREIGN KEY(id_annonce) REFERENCES annonce(id_annonce),
-                          FOREIGN KEY(id_etat_entretien) REFERENCES etat_entretien(id_etat_entretien),
-                          FOREIGN KEY(id_talent) REFERENCES talent(id_talent)
+CREATE TABLE type_conge(
+                           id_type_conge SERIAL,
+                           nom_type_conge VARCHAR(50)  NOT NULL,
+                           PRIMARY KEY(id_type_conge)
+);
+
+CREATE TABLE type_justificatif(
+                                  id_type_justificatif SERIAL,
+                                  nom_type_justificatif VARCHAR(50)  NOT NULL,
+                                  PRIMARY KEY(id_type_justificatif)
+);
+
+CREATE TABLE evenement_interne(
+                                  id_evenement_interne SERIAL,
+                                  nom_evenement_libre VARCHAR(50)  NOT NULL,
+                                  date_evenement_interne DATE NOT NULL,
+                                  lieu_evenement_interne VARCHAR(50)  NOT NULL,
+                                  description TEXT,
+                                  img_evenement_interne TEXT,
+                                  PRIMARY KEY(id_evenement_interne)
+);
+
+CREATE TABLE type_competence(
+                                id_type_competence SERIAL,
+                                nom_type_competence VARCHAR(50)  NOT NULL,
+                                PRIMARY KEY(id_type_competence)
+);
+
+CREATE TABLE type_poste(
+                           id_type_poste SERIAL,
+                           nom_type_poste VARCHAR(50)  NOT NULL,
+                           rang_type_poste INTEGER NOT NULL,
+                           PRIMARY KEY(id_type_poste)
+);
+
+CREATE TABLE competence(
+                           id_competence SERIAL,
+                           competence VARCHAR(50)  NOT NULL,
+                           id_type_competence INTEGER NOT NULL,
+                           PRIMARY KEY(id_competence),
+                           UNIQUE(competence),
+                           FOREIGN KEY(id_type_competence) REFERENCES type_competence(id_type_competence)
+);
+
+CREATE TABLE poste(
+                      id_poste SERIAL,
+                      nom_poste VARCHAR(50)  NOT NULL,
+                      description_poste VARCHAR(255)  NOT NULL,
+                      id_type_poste INTEGER NOT NULL,
+                      PRIMARY KEY(id_poste),
+                      FOREIGN KEY(id_type_poste) REFERENCES type_poste(id_type_poste)
 );
 
 CREATE TABLE contrat(
@@ -134,6 +145,17 @@ CREATE TABLE contrat(
                         FOREIGN KEY(id_type_contrat) REFERENCES type_contrat(id_type_contrat)
 );
 
+CREATE TABLE annonce(
+                        id_annonce SERIAL,
+                        date_annonce DATE NOT NULL,
+                        entreprise VARCHAR(50) ,
+                        date_expiration DATE,
+                        date_rupture DATE,
+                        id_poste INTEGER NOT NULL,
+                        PRIMARY KEY(id_annonce),
+                        FOREIGN KEY(id_poste) REFERENCES poste(id_poste)
+);
+
 CREATE TABLE rupture(
                         id_rupture SERIAL,
                         date_rupture DATE NOT NULL,
@@ -144,17 +166,6 @@ CREATE TABLE rupture(
                         UNIQUE(id_contrat),
                         FOREIGN KEY(id_type_rupture) REFERENCES type_rupture(id_type_rupture),
                         FOREIGN KEY(id_contrat) REFERENCES contrat(id_contrat)
-);
-
-CREATE TABLE conge(
-                      id_conge SERIAL,
-                      date_debut DATE NOT NULL,
-                      nb_jour INTEGER NOT NULL,
-                      motif VARCHAR(50) ,
-                      date_validation DATE,
-                      id_contrat INTEGER NOT NULL,
-                      PRIMARY KEY(id_conge),
-                      FOREIGN KEY(id_contrat) REFERENCES contrat(id_contrat)
 );
 
 CREATE TABLE absence(
@@ -203,6 +214,49 @@ CREATE TABLE resultat_technique(
                                    FOREIGN KEY(id_talent) REFERENCES talent(id_talent)
 );
 
+CREATE TABLE justificatif(
+                             id_justificatif SERIAL,
+                             date_justificatif DATE NOT NULL,
+                             image_justificatif TEXT NOT NULL,
+                             id_type_justificatif INTEGER NOT NULL,
+                             PRIMARY KEY(id_justificatif),
+                             FOREIGN KEY(id_type_justificatif) REFERENCES type_justificatif(id_type_justificatif)
+);
+
+CREATE TABLE entretien(
+                          id_entretien SERIAL,
+                          date_creation DATE NOT NULL,
+                          date_validation DATE,
+                          note INTEGER,
+                          motif VARCHAR(255) ,
+                          id_enfant INTEGER,
+                          id_annonce INTEGER NOT NULL,
+                          id_etat_entretien INTEGER NOT NULL,
+                          id_talent INTEGER NOT NULL,
+                          PRIMARY KEY(id_entretien),
+                          FOREIGN KEY(id_enfant) REFERENCES entretien(id_entretien),
+                          FOREIGN KEY(id_annonce) REFERENCES annonce(id_annonce),
+                          FOREIGN KEY(id_etat_entretien) REFERENCES etat_entretien(id_etat_entretien),
+                          FOREIGN KEY(id_talent) REFERENCES talent(id_talent)
+);
+
+CREATE TABLE conge(
+                      id_conge SERIAL,
+                      nb_jour INTEGER NOT NULL,
+                      motif VARCHAR(50) ,
+                      date_debut DATE NOT NULL,
+                      date_validation DATE,
+                      motif_refus TEXT,
+                      date_refus DATE,
+                      id_justificatif INTEGER,
+                      id_type_conge INTEGER NOT NULL,
+                      id_contrat INTEGER NOT NULL,
+                      PRIMARY KEY(id_conge),
+                      FOREIGN KEY(id_justificatif) REFERENCES justificatif(id_justificatif),
+                      FOREIGN KEY(id_type_conge) REFERENCES type_conge(id_type_conge),
+                      FOREIGN KEY(id_contrat) REFERENCES contrat(id_contrat)
+);
+
 CREATE TABLE talent_competence(
                                   id_competence INTEGER,
                                   id_talent INTEGER,
@@ -210,15 +264,6 @@ CREATE TABLE talent_competence(
                                   PRIMARY KEY(id_competence, id_talent),
                                   FOREIGN KEY(id_competence) REFERENCES competence(id_competence),
                                   FOREIGN KEY(id_talent) REFERENCES talent(id_talent)
-);
-
-CREATE TABLE competence_annonce(
-                                   id_competence INTEGER,
-                                   id_annonce INTEGER,
-                                   point INTEGER NOT NULL,
-                                   PRIMARY KEY(id_competence, id_annonce),
-                                   FOREIGN KEY(id_competence) REFERENCES competence(id_competence),
-                                   FOREIGN KEY(id_annonce) REFERENCES annonce(id_annonce)
 );
 
 CREATE TABLE experience_talent(
@@ -275,29 +320,48 @@ CREATE TABLE talent_langue(
                               FOREIGN KEY(id_niveau_langue) REFERENCES niveau_langue(id_niveau_langue)
 );
 
-CREATE TABLE annonce_diplome(
-                                id_annonce INTEGER,
-                                id_diplome INTEGER,
-                                PRIMARY KEY(id_annonce, id_diplome),
-                                FOREIGN KEY(id_annonce) REFERENCES annonce(id_annonce),
-                                FOREIGN KEY(id_diplome) REFERENCES diplome(id_diplome)
+CREATE TABLE diplome_poste(
+                              id_poste INTEGER,
+                              id_diplome INTEGER,
+                              PRIMARY KEY(id_poste, id_diplome),
+                              FOREIGN KEY(id_poste) REFERENCES poste(id_poste),
+                              FOREIGN KEY(id_diplome) REFERENCES diplome(id_diplome)
 );
 
-CREATE TABLE annonce_langue(
-                               id_annonce INTEGER,
-                               id_langue INTEGER,
-                               id_niveau_langue INTEGER,
-                               PRIMARY KEY(id_annonce, id_langue, id_niveau_langue),
-                               FOREIGN KEY(id_annonce) REFERENCES annonce(id_annonce),
-                               FOREIGN KEY(id_langue) REFERENCES langue(id_langue),
-                               FOREIGN KEY(id_niveau_langue) REFERENCES niveau_langue(id_niveau_langue)
+CREATE TABLE langue_poste(
+                             id_poste INTEGER,
+                             id_langue INTEGER,
+                             id_niveau_langue INTEGER,
+                             PRIMARY KEY(id_poste, id_langue, id_niveau_langue),
+                             FOREIGN KEY(id_poste) REFERENCES poste(id_poste),
+                             FOREIGN KEY(id_langue) REFERENCES langue(id_langue),
+                             FOREIGN KEY(id_niveau_langue) REFERENCES niveau_langue(id_niveau_langue)
 );
 
 CREATE TABLE compatibilite(
                               id_talent INTEGER,
-                              id_annonce INTEGER,
+                              id_poste INTEGER,
                               pourcentage NUMERIC(15,2)  ,
-                              PRIMARY KEY(id_talent, id_annonce),
+                              PRIMARY KEY(id_talent, id_poste),
                               FOREIGN KEY(id_talent) REFERENCES talent(id_talent),
-                              FOREIGN KEY(id_annonce) REFERENCES annonce(id_annonce)
+                              FOREIGN KEY(id_poste) REFERENCES poste(id_poste)
+);
+
+CREATE TABLE competence_poste(
+                                 id_competence INTEGER,
+                                 id_poste INTEGER,
+                                 point_requis INTEGER NOT NULL,
+                                 PRIMARY KEY(id_competence, id_poste),
+                                 FOREIGN KEY(id_competence) REFERENCES competence(id_competence),
+                                 FOREIGN KEY(id_poste) REFERENCES poste(id_poste)
+);
+
+CREATE TABLE candidat_historique
+(
+    id_candidat_histo SERIAL PRIMARY KEY,
+    id_talent         INTEGER,
+    action            VARCHAR(255),
+    description       VARCHAR(255),
+    date_action       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_talent FOREIGN KEY (id_talent) REFERENCES Talent (id_talent) ON DELETE CASCADE
 );
