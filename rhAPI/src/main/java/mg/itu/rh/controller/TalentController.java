@@ -1,10 +1,10 @@
 package mg.itu.rh.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import mg.itu.rh.dto.TalentDTO;
-import mg.itu.rh.entity.Talent;
+import mg.itu.rh.dto.talent.TalentDTO;
+import mg.itu.rh.entity.talent.Talent;
 import mg.itu.rh.other.POV;
-import mg.itu.rh.service.TalentService;
+import mg.itu.rh.service.talent.TalentService;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
