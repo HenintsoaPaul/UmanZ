@@ -3,6 +3,7 @@ package mg.itu.rh.entity;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import mg.itu.rh.dto.poste.PosteDTO;
 import mg.itu.rh.entity.critere.Diplome;
 import mg.itu.rh.entity.recrutement.CompetencePoste;
@@ -17,6 +18,7 @@ import java.util.Set;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class Poste {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -41,6 +43,7 @@ public class Poste {
     private List<ExperiencePoste> experiencePostes=new ArrayList<ExperiencePoste>();
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="id_type_poste")
     @JsonView({POV.Public.class})
     private TypePoste typePoste;
 
@@ -72,9 +75,6 @@ public class Poste {
     public void addExperiencePoste(ExperiencePoste experiencePoste){
         this.experiencePostes.add(experiencePoste);
     }
-
-
-    public Poste() {}
 
     public Poste(Long idPoste, String nomPoste, String descriptionPoste) {
         this.idPoste = idPoste;

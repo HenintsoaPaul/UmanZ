@@ -19,7 +19,7 @@ public class Talent {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "id_talent" )
-    @JsonView( { POV.Public.class, POV.Question.class } )
+    @JsonView( { POV.Public.class, POV.Question.class, POV.Auth.class } )
     private Long idTalent;
 
     @JsonView( { POV.Public.class, POV.Question.class } )
@@ -28,14 +28,14 @@ public class Talent {
     @JsonView( { POV.Public.class, POV.Question.class } )
     private String prenom;
 
-    @JsonView( { POV.Public.class } )
+    @JsonView( { POV.Public.class, POV.Auth.class } )
     private String mail;
 
     @Column( name = "password" )
     @JsonView( { POV.Public.class } )
     private String password;
 
-    @JsonView( { POV.Public.class } )
+    @JsonView( { POV.Public.class, POV.Auth.class } )
     @Column( name = "is_admin" )
     private boolean isAdmin;
 
