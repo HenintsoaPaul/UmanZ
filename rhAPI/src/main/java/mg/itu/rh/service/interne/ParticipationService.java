@@ -1,6 +1,7 @@
 package mg.itu.rh.service.interne;
 
 import mg.itu.rh.dto.interne.ParticipationDTO;
+import mg.itu.rh.entity.id.IdParticipation;
 import mg.itu.rh.entity.interne.Formation;
 import mg.itu.rh.entity.interne.Participation;
 import mg.itu.rh.repository.interne.ParticipationRepository;
@@ -22,7 +23,7 @@ public class ParticipationService {
         return participationRepository.findAll();
     }
 
-    public Participation findById( Long id ) {
+    public Participation findById( IdParticipation id ) {
         return participationRepository.findById( id )
                 .orElseThrow( () -> new RuntimeException( "Participation not found" ) );
     }

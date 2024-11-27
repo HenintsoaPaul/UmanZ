@@ -1,4 +1,4 @@
-package mg.itu.rh.entity.question.id;
+package mg.itu.rh.entity.evaluation.id;
 
 import jakarta.persistence.Embeddable;
 import lombok.Data;
