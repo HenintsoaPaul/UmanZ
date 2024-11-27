@@ -1,5 +1,6 @@
 package mg.itu.rh.repository.recrutement;
 
+import mg.itu.rh.entity.id.IdExperiencePoste;
 import mg.itu.rh.entity.recrutement.ExperiencePoste;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ExperiencePosteRepository extends JpaRepository<ExperiencePoste, Long> {
+public interface ExperiencePosteRepository extends JpaRepository<ExperiencePoste, IdExperiencePoste> {
     List<ExperiencePoste> findByIdIn( List<Long> ids );
 
     @Query( "SELECT ep FROM ExperiencePoste ep " +

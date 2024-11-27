@@ -36,14 +36,14 @@ public class Poste {
 
     @OneToMany(mappedBy = "poste",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonView({POV.Full.class})
-    private List<CompetencePoste> competencePostes=new ArrayList<CompetencePoste>();
+    private List<CompetencePoste> competencePostes= new ArrayList<>();
 
     @OneToMany(mappedBy="poste",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     @JsonView({POV.Full.class})
-    private List<ExperiencePoste> experiencePostes=new ArrayList<ExperiencePoste>();
+    private List<ExperiencePoste> experiencePostes= new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="id_type_poste")
+    @JoinColumn(name = "id_type_poste")
     @JsonView({POV.Public.class})
     private TypePoste typePoste;
 
@@ -54,11 +54,11 @@ public class Poste {
             inverseJoinColumns = @JoinColumn(name = "id_diplome")
     )
     @JsonView({POV.Public.class})
-    private Set<Diplome> diplomes=new HashSet<Diplome>();
+    private Set<Diplome> diplomes= new HashSet<>();
 
     @OneToMany(mappedBy="poste",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     @JsonView({POV.Public.class})
-    private List<PosteLangue> posteLangues=new ArrayList<PosteLangue>();
+    private List<PosteLangue> posteLangues= new ArrayList<>();
 
     @Transient
     @JsonView({POV.Public.class})

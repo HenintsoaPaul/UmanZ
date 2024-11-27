@@ -46,7 +46,7 @@ VALUES ('Serie C', 1),
        ('Mathematique', 3),
        ('Mathematique', 4);
 
-INSERT INTO type_competence (nom_type_competence)
+INSERT INTO type_competence(nom_type_competence)
 VALUES ('Hard skill'),
        ('Soft skill');
 
@@ -69,9 +69,9 @@ VALUES ('Cloud Computing', 1),
 INSERT INTO competence (competence, id_type_competence)
 VALUES ('Communication', 2),
        ('Leadership', 2),
-       ('Programmation', 2),
-       ('Gestion de projet', 2),
-       ('Design', 2);
+       ('Programmation', 1),
+       ('Gestion de projet', 1),
+       ('Design', 1);
 
 INSERT INTO talent (nom, prenom, mail, password, is_admin)
 VALUES ('Dupont', 'Jean', 'jean.dupont@example.com', 'password1', true),
@@ -110,27 +110,19 @@ VALUES (1, 1),
        (5, 10),
        (5, 11);
 
-INSERT INTO type_poste (nom_type_poste, rang_type_poste)
+INSERT INTO type_poste(nom_type_poste, rang_type_poste)
 VALUES ('Ouvrier', 1),
-       ('Employe', 2),
-       ('Technicien', 3),
-       ('Agent de Maitrise', 3),
+       ('Employé', 2),
+       ('Technicien et/ou Agent de Maîtrise', 3),
        ('Cadre', 4),
-       ('Dirigeant', 5),
-       ('Hors-Cadre', 6);
+       ('Dirigeant', 5);
 
 INSERT INTO poste (nom_poste, description_poste, id_type_poste)
 VALUES ('Developpeur', 'Responsable du developpement des applications', 2),
-       ('Chef de projet', 'Gestion et coordination des projets', 6),
+       ('Chef de projet', 'Gestion et coordination des projets', 4),
        ('Designer', 'Creation des interfaces graphiques et visuels', 2),
        ('Analyste', 'Analyse des besoins fonctionnels et techniques', 3),
-       ('Support technique', 'Assistance et resolution des problemes techniques', 1),
-       ('Ingenieur DevOps', 'Assurer le deploiement et l''integration continue des applications', 3),
-       ('Data Scientist', 'Analyser et interpreter des donnees complexes pour guider les decisions strategiques', 3),
-       ('Responsable RH', 'Gestion des ressources humaines et developpement du personnel', 7),
-       ('Consultant', 'Conseiller les entreprises dans leur strategie de croissance', 7),
-       ('Developpeur Frontend', 'Developpement de l''interface utilisateur des applications web', 3),
-       ('Architecte Logiciel', 'Conception et gestion de l''architecture des systemes informatiques', 4);;
+       ('Support technique', 'Assistance et resolution des problemes techniques', 3);
 
 INSERT INTO annonce (date_annonce, entreprise, date_expiration, id_poste)
 VALUES ('2024-01-01', 'Tech Corp', '2025-03-01', 1),
@@ -139,12 +131,12 @@ VALUES ('2024-01-01', 'Tech Corp', '2025-03-01', 1),
        ('2024-04-05', 'Tech Corp', '2025-06-05', 2),
        ('2024-05-01', 'Tech Corp', '2025-07-01', 5);
 
-INSERT INTO formation (nom_formation, date_debut, date_fin, est_fini)
-VALUES ('Formation Java', '2023-01-10', '2023-03-10', false),
-       ('Gestion de projet', '2023-02-01', '2023-04-01', false),
-       ('Design UX/UI', '2023-05-15', '2023-07-15', false),
-       ('Securite informatique', '2023-06-20', '2023-08-20', false),
-       ('Big Data', '2023-09-10', '2023-11-10', false);
+INSERT INTO formation (nom_formation, date_debut, date_fin)
+VALUES ('Formation Java', '2023-01-10', '2023-03-10'),
+       ('Gestion de projet', '2023-02-01', '2023-04-01'),
+       ('Design UX/UI', '2023-05-15', '2023-07-15'),
+       ('Securite informatique', '2023-06-20', '2023-08-20'),
+       ('Big Data', '2023-09-10', '2023-11-10');
 
 INSERT INTO type_rupture (nom_type_rupture)
 VALUES ('Fin de contrat'),
@@ -165,6 +157,14 @@ INSERT INTO rupture (date_rupture, motif, id_type_rupture, id_contrat)
 VALUES ('2024-01-01', 'Fin de contrat', 1, 1),
        ('2023-08-01', 'Fin de CDD', 1, 2),
        ('2023-10-01', 'Licenciement', 3, 3);
+
+INSERT INTO poste (nom_poste, description_poste, id_type_poste)
+VALUES ('Ingenieur DevOps', 'Assurer le deploiement et l''integration continue des applications', 3),
+       ('Data Scientist', 'Analyser et interpreter des donnees complexes pour guider les decisions strategiques', 3),
+       ('Responsable RH', 'Gestion des ressources humaines et developpement du personnel', 4),
+       ('Consultant', 'Conseiller les entreprises dans leur strategie de croissance', 4),
+       ('Developpeur Frontend', 'Developpement de l''interface utilisateur des applications web', 2),
+       ('Architecte Logiciel', 'Conception et gestion de l''architecture des systemes informatiques', 3);
 
 INSERT INTO annonce (date_annonce, entreprise, date_expiration, id_poste)
 VALUES ('2024-10-15', 'Innovative Solutions', '2025-01-15', 6),
