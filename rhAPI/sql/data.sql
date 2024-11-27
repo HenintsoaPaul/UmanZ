@@ -46,28 +46,32 @@ VALUES ('Serie C', 1),
        ('Mathematique', 3),
        ('Mathematique', 4);
 
-INSERT INTO competence (competence)
-VALUES ('Cloud Computing'),
-       ('Machine Learning'),
-       ('Big Data Analysis'),
-       ('Gestion de projet agile'),
-       ('UX/UI Design'),
-       ('Developpement mobile'),
-       ('Cybersecurity'),
-       ('Base de donnees SQL'),
-       ('JavaScript'),
-       ('Python'),
-       ('Developpement backend'),
-       ('Docker'),
-       ('Kubernetes');
+INSERT INTO type_competence(nom_type_competence)
+VALUES ('Hard skill'),
+       ('Soft skill');
+
+INSERT INTO competence (competence, id_type_competence)
+VALUES ('Cloud Computing', 1),
+       ('Machine Learning', 1),
+       ('Big Data Analysis', 1),
+       ('Gestion de projet agile', 1),
+       ('UX/UI Design', 1),
+       ('Developpement mobile', 1),
+       ('Cybersecurity', 1),
+       ('Base de donnees SQL', 1),
+       ('JavaScript', 1),
+       ('Python', 1),
+       ('Developpement backend', 1),
+       ('Docker', 1),
+       ('Kubernetes', 1);
 
 
-INSERT INTO competence (competence)
-VALUES ('Communication'),
-       ('Leadership'),
-       ('Programmation'),
-       ('Gestion de projet'),
-       ('Design');
+INSERT INTO competence (competence, id_type_competence)
+VALUES ('Communication', 2),
+       ('Leadership', 2),
+       ('Programmation', 1),
+       ('Gestion de projet', 1),
+       ('Design', 1);
 
 INSERT INTO talent (nom, prenom, mail, password, is_admin)
 VALUES ('Dupont', 'Jean', 'jean.dupont@example.com', 'password1', true),
@@ -106,12 +110,19 @@ VALUES (1, 1),
        (5, 10),
        (5, 11);
 
-INSERT INTO poste (nom_poste, description_poste)
-VALUES ('Developpeur', 'Responsable du developpement des applications'),
-       ('Chef de projet', 'Gestion et coordination des projets'),
-       ('Designer', 'Creation des interfaces graphiques et visuels'),
-       ('Analyste', 'Analyse des besoins fonctionnels et techniques'),
-       ('Support technique', 'Assistance et resolution des problemes techniques');
+INSERT INTO type_poste(nom_type_poste, rang_type_poste)
+VALUES ('Ouvrier', 1),
+       ('Employé', 2),
+       ('Technicien et/ou Agent de Maîtrise', 3),
+       ('Cadre', 4),
+       ('Dirigeant', 5);
+
+INSERT INTO poste (nom_poste, description_poste, id_type_poste)
+VALUES ('Developpeur', 'Responsable du developpement des applications', 2),
+       ('Chef de projet', 'Gestion et coordination des projets', 4),
+       ('Designer', 'Creation des interfaces graphiques et visuels', 2),
+       ('Analyste', 'Analyse des besoins fonctionnels et techniques', 3),
+       ('Support technique', 'Assistance et resolution des problemes techniques', 3);
 
 INSERT INTO annonce (date_annonce, entreprise, date_expiration, id_poste)
 VALUES ('2024-01-01', 'Tech Corp', '2025-03-01', 1),
@@ -120,12 +131,12 @@ VALUES ('2024-01-01', 'Tech Corp', '2025-03-01', 1),
        ('2024-04-05', 'Tech Corp', '2025-06-05', 2),
        ('2024-05-01', 'Tech Corp', '2025-07-01', 5);
 
-INSERT INTO formation (nom_formation, date_debut, date_fin, est_fini)
-VALUES ('Formation Java', '2023-01-10', '2023-03-10', false),
-       ('Gestion de projet', '2023-02-01', '2023-04-01', false),
-       ('Design UX/UI', '2023-05-15', '2023-07-15', false),
-       ('Securite informatique', '2023-06-20', '2023-08-20', false),
-       ('Big Data', '2023-09-10', '2023-11-10', false);
+INSERT INTO formation (nom_formation, date_debut, date_fin)
+VALUES ('Formation Java', '2023-01-10', '2023-03-10'),
+       ('Gestion de projet', '2023-02-01', '2023-04-01'),
+       ('Design UX/UI', '2023-05-15', '2023-07-15'),
+       ('Securite informatique', '2023-06-20', '2023-08-20'),
+       ('Big Data', '2023-09-10', '2023-11-10');
 
 INSERT INTO type_rupture (nom_type_rupture)
 VALUES ('Fin de contrat'),
@@ -142,25 +153,18 @@ VALUES ('Contrat CDI Developpeur', '2023-01-01', '2024-01-01', 20.00, 5, 25, 8.0
        ('Contrat d''essai Chef de Projet', '2023-06-01', NULL, 25.00, 4, 15, 7.0, 2, 4, 1),
        ('Contrat CDI Support technique', '2024-01-01', NULL, 19.50, 5, 25, 7.5, 5, 5, 3);
 
--- INSERT INTO entretien (date_creation, date_validation, note, motif, id_enfant, id_annonce, id_etat_entretien, id_talent)
--- VALUES ('2023-02-15', '2023-02-20', 85, 'Entretien positif', NULL, 1, 4, 1),
---        ('2023-03-10', '2023-03-15', 90, 'Candidat qualifie', NULL, 2, 5, 2),
---        ('2023-04-05', NULL, NULL, 'En attente de validation', 1, 3, 1, 3),
---        ('2023-05-01', NULL, 70, 'Competences insuffisantes', NULL, 4, 2, 4),
---        ('2023-06-01', NULL, NULL, 'Annulation', 2, 5, 6, 5);
-
 INSERT INTO rupture (date_rupture, motif, id_type_rupture, id_contrat)
 VALUES ('2024-01-01', 'Fin de contrat', 1, 1),
        ('2023-08-01', 'Fin de CDD', 1, 2),
        ('2023-10-01', 'Licenciement', 3, 3);
 
-INSERT INTO poste (nom_poste, description_poste)
-VALUES ('Ingenieur DevOps', 'Assurer le deploiement et l''integration continue des applications'),
-       ('Data Scientist', 'Analyser et interpreter des donnees complexes pour guider les decisions strategiques'),
-       ('Responsable RH', 'Gestion des ressources humaines et developpement du personnel'),
-       ('Consultant', 'Conseiller les entreprises dans leur strategie de croissance'),
-       ('Developpeur Frontend', 'Developpement de l''interface utilisateur des applications web'),
-       ('Architecte Logiciel', 'Conception et gestion de l''architecture des systemes informatiques');
+INSERT INTO poste (nom_poste, description_poste, id_type_poste)
+VALUES ('Ingenieur DevOps', 'Assurer le deploiement et l''integration continue des applications', 3),
+       ('Data Scientist', 'Analyser et interpreter des donnees complexes pour guider les decisions strategiques', 3),
+       ('Responsable RH', 'Gestion des ressources humaines et developpement du personnel', 4),
+       ('Consultant', 'Conseiller les entreprises dans leur strategie de croissance', 4),
+       ('Developpeur Frontend', 'Developpement de l''interface utilisateur des applications web', 2),
+       ('Architecte Logiciel', 'Conception et gestion de l''architecture des systemes informatiques', 3);
 
 INSERT INTO annonce (date_annonce, entreprise, date_expiration, id_poste)
 VALUES ('2024-10-15', 'Innovative Solutions', '2025-01-15', 6),
@@ -170,7 +174,7 @@ VALUES ('2024-10-15', 'Innovative Solutions', '2025-01-15', 6),
        ('2024-11-09', 'WebGenius', '2025-05-15', 10),
        ('2024-11-10', 'CodeCrafters', '2025-06-20', 11);
 
-insert into annonce_langue (id_annonce, id_langue, id_niveau_langue)
+insert into langue_poste (id_poste, id_langue, id_niveau_langue)
 VALUES (1, 1, 3),
        (1, 2, 2),
        (1, 3, 1),
@@ -186,7 +190,7 @@ VALUES (1, 1, 3),
        (6, 1, 1),
        (6, 5, 3);
 
-insert into annonce_diplome (id_annonce, id_diplome)
+insert into diplome_poste (id_poste, id_diplome)
 values (1, 4),
        (2, 5),
        (2, 10),
@@ -197,14 +201,14 @@ values (1, 4),
        (6, 2);
 
 -- Ingenieur DevOps (poste 6)
-INSERT INTO competence_annonce (id_competence, id_annonce, point)
+INSERT INTO competence_poste (id_competence, id_poste, point_requis)
 VALUES (14, 1, 5), -- Docker
        (15, 1, 5), -- Kubernetes
        (12, 1, 4);
 -- Leadership
 
 -- Data Scientist (poste 7)
-INSERT INTO competence_annonce (id_competence, id_annonce, point)
+INSERT INTO competence_poste (id_competence, id_poste, point_requis)
 VALUES (2, 2, 5),  -- Machine Learning
        (3, 2, 5),  -- Big Data Analysis
        (10, 2, 4), -- Python
@@ -212,28 +216,28 @@ VALUES (2, 2, 5),  -- Machine Learning
 -- Cloud Computing
 
 -- Responsable RH (poste 8)
-INSERT INTO competence_annonce (id_competence, id_annonce, point)
+INSERT INTO competence_poste (id_competence, id_poste, point_requis)
 VALUES (12, 3, 5), -- Leadership
        (10, 3, 4), -- Communication
        (1, 3, 3);
 -- Cloud Computing
 
 -- Consultant (poste 9)
-INSERT INTO competence_annonce (id_competence, id_annonce, point)
+INSERT INTO competence_poste (id_competence, id_poste, point_requis)
 VALUES (4, 4, 5),  -- Gestion de projet agile
        (12, 4, 4), -- Leadership
        (10, 4, 3);
 -- Communication
 
 -- Developpeur Frontend (poste 10)
-INSERT INTO competence_annonce (id_competence, id_annonce, point)
+INSERT INTO competence_poste (id_competence, id_poste, point_requis)
 VALUES (9, 5, 5), -- JavaScript
        (5, 5, 4), -- UX/UI Design
        (13, 5, 4);
 -- Developpement frontend
 
 -- Architecte Logiciel (poste 11)
-INSERT INTO competence_annonce (id_competence, id_annonce, point)
+INSERT INTO competence_poste (id_competence, id_poste, point_requis)
 VALUES (13, 6, 5), -- Developpement backend
        (14, 6, 4), -- Docker
        (1, 6, 4);
@@ -266,15 +270,23 @@ VALUES (10, 5, 3);
 
 -- Architecte Logiciel (poste 11)
 INSERT INTO experience_poste (id_poste, id_annonce, ans)
-VALUES (11, 6, 6); -- 6 ans d'experience en architecture logicielle
+VALUES (11, 6, 6);
+-- 6 ans d'experience en architecture logicielle
 
-INSERT INTO conge (date_debut, date_validation, nb_jour, motif, id_contrat)
-VALUES ('2024-12-01', '2024-12-01', 5, 'Conge annuel', 1),  -- Conge annuel pour le contrat 1
-       ('2024-12-15', '2024-12-15', 3, 'Conge maladie', 2), -- Conge maladie pour le contrat 2
-       ('2024-11-20', null, 7, 'Conge parental', 3),        -- Conge parental pour le contrat 3
-       ('2024-11-05', null, 10, 'Conge sabbatique', 4),     -- Conge sabbatique pour le contrat 4
-       ('2024-12-10', '2024-12-10', 4, 'Conge urgent', 5),
-       ('2024-08-10', '2024-08-10', 5, 'Conge annuel', 1);
+INSERT INTO type_justificatif (nom_type_justificatif)
+VALUES ('Certificat Medical'),
+       ('Certificat maternite');
+
+INSERT INTO justificatif (date_justificatif, image_justificatif, id_type_justificatif)
+VALUES ('2024-01-01', '/img/fuf.png', 1),
+       ('2024-01-01', '/img/fuf.png', 2);
+
+INSERT INTO type_conge (nom_type_conge)
+VALUES ('Conge Paye'),
+       ('Conge maladie'),
+       ('Conge exceptionnel'),
+       ('Conge maternite');
+
 
 INSERT INTO chat (mot_cle, reponse)
 VALUES ('au revoir', 'Au revoir :)'),
@@ -306,7 +318,7 @@ VALUES ('au revoir', 'Au revoir :)'),
        ('contact',
         'Pour toute question specifique, vous pouvez nous contacter par email a recrutement@entreprise.com.');
 
-insert into compatibilite(id_annonce, id_talent, pourcentage)
+insert into compatibilite(id_poste, id_talent, pourcentage)
 values (1, 1, 20.23),
        (1, 2, 50.14),
        (1, 3, 33.33),

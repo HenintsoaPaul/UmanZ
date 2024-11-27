@@ -21,7 +21,7 @@ const formState = reactive({
 });
 
 const router = useRouter();
-const { authenticate } = useAuth();
+const { authenticate, saveUser } = useAuth();
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
     const isValid = schema.safeParse(event.data).success;
@@ -31,20 +31,13 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         const userPassword = formState.password;
 
         const apiUrl = useRuntimeConfig().public.apiUrl;
-        const user = await authenticate(userEmail, userPassword, `${apiUrl}/talents/users`);
-
+        const user = await authenticate(userEmail, userPassword, apiUrl);
 
         if (user) {
-            if (user.mail === userEmail || user.password === userPassword) {
-                localStorage.setItem('idUser', user.idTalent.toString());
-                localStorage.setItem('emailUser', user.mail.toString());
-                localStorage.setItem('isAdmin', user.isAdmin.toString());
-                router.push('/Home');
-            } else {
-                formState.error = 'Email ou Mot de Passe incorrecte'
-            }
+            saveUser(user);
+            router.push('/Home');
         } else {
-            formState.error = 'Utilisateur inconnu'
+            formState.error = 'Email ou Mot de passe inconnu'
         }
     }
 }
