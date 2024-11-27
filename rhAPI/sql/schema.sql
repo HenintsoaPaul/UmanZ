@@ -196,7 +196,7 @@ CREATE TABLE question(
 
 CREATE TABLE reponse(
                         id_reponse SERIAL,
-                        reponse VARCHAR(50)  NOT NULL,
+                        reponse TEXT NOT NULL,
                         note NUMERIC(15,2)   NOT NULL,
                         id_question INTEGER NOT NULL,
                         PRIMARY KEY(id_reponse),
