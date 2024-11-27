@@ -1,10 +1,13 @@
 package mg.itu.rh.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import mg.itu.rh.dto.interne.FicheDTO;
 import mg.itu.rh.dto.talent.TalentDTO;
 import mg.itu.rh.entity.talent.Talent;
 import mg.itu.rh.other.POV;
+import mg.itu.rh.service.interne.ContratService;
 import mg.itu.rh.service.talent.TalentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,9 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping( "/talents" )
 public class TalentController {
     private final TalentService talentService;
+    private final ContratService contratService;
 
-    public TalentController( TalentService talentService ) {
+    public TalentController(TalentService talentService, ContratService contratService) {
         this.talentService = talentService;
+        this.contratService = contratService;
     }
 
     @GetMapping
@@ -59,5 +64,11 @@ public class TalentController {
     public String rejeterCandidat( @RequestParam String email ) {
         talentService.rejetCandidat( email );
         return "Candidat rejeté et notification envoyée à " + email;
+    }
+
+    @GetMapping("/fiche_paie")
+    @JsonView(POV.Public.class)
+    public FicheDTO findFiche(@RequestParam(name = "idTalent")Long idTalent,@RequestParam(name = "annee")int annee,@RequestParam(name = "mois")int mois){
+        return contratService.findFiche(annee,mois,idTalent);
     }
 }

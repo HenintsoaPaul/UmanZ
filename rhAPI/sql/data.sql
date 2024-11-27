@@ -14,6 +14,13 @@ VALUES ('Contrat d''essaie'),
        ('Contrat duree determine (CDD)'),
        ('Contrat duree indetermine (CDI)');
 
+INSERT INTO type_poste (nom_type_poste,rang_type_poste)
+VALUES ('Ouvrier',1),
+       ('Employes',2),
+       ('Techiniciens et Agents de Maîtrise',3),
+       ('Cadres',4),
+       ('Dirigeants',5);
+
 INSERT INTO niveau_langue(nom_niveau_langue, niveau_langue)
 VALUES ('Debutant', 1),
        ('Intermediaire', 2),
@@ -106,12 +113,12 @@ VALUES (1, 1),
        (5, 10),
        (5, 11);
 
-INSERT INTO poste (nom_poste, description_poste)
-VALUES ('Developpeur', 'Responsable du developpement des applications'),
-       ('Chef de projet', 'Gestion et coordination des projets'),
-       ('Designer', 'Creation des interfaces graphiques et visuels'),
-       ('Analyste', 'Analyse des besoins fonctionnels et techniques'),
-       ('Support technique', 'Assistance et resolution des problemes techniques');
+INSERT INTO poste (nom_poste, description_poste,id_type_poste)
+VALUES ('Developpeur', 'Responsable du developpement des applications',1),
+       ('Chef de projet', 'Gestion et coordination des projets',2),
+       ('Designer', 'Creation des interfaces graphiques et visuels',3),
+       ('Analyste', 'Analyse des besoins fonctionnels et techniques',4),
+       ('Support technique', 'Assistance et resolution des problemes techniques',5);
 
 INSERT INTO annonce (date_annonce, entreprise, date_expiration, id_poste)
 VALUES ('2024-01-01', 'Tech Corp', '2025-03-01', 1),

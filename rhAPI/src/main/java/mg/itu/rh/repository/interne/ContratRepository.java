@@ -1,5 +1,6 @@
 package mg.itu.rh.repository.interne;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,4 +19,11 @@ public interface ContratRepository extends JpaRepository<Contrat,Long> {
 
     @Query("SELECT c FROM Contrat c")
     public List<Contrat> findAllContrat();
+
+    //select * from contrat where date_debut in (select min(date_debut) from contrat where id_talent=1)
+    @Query("select c from Contrat c where c.dateDebut in (select min(c.dateDebut) from Contrat c where c.talent.idTalent=:idTalent)")
+    public Optional<Contrat> findContratEmbauche(@Param("idTalent")Long idTalent);
+
+    @Query("select c from Contrat c where c.dateDebut <= :date and :date <= c.dateFin and not c.idContrat in (select r.contrat.idContrat from Rupture r where :date < r.dateRupture)")
+    public Optional<Contrat> findContratByDateTalent(@Param("date")LocalDate date,@Param("idTalent")Long idTalent);
 }
