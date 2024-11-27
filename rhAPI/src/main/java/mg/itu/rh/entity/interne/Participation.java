@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import mg.itu.rh.entity.id.IdParticipation;
-import mg.itu.rh.entity.interne.Contrat;
-import mg.itu.rh.entity.interne.Formation;
 import mg.itu.rh.other.POV;
 
 import java.time.LocalDate;
