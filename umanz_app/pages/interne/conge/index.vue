@@ -11,18 +11,12 @@ const headers = [
     { key: 'dateFin', label: 'Date Validation' }
 ];
 
-// Variable pour stocker les données de l'API
-const lignes = ref<Conge[]>([]);
-const q = ref('');
+const conges = ref<Conge[]>([]);
 
-const filteredLignes = computed(() => {
-    return q.value
-        ? lignes.value.filter((e: Conge) =>
-            Object.values(e).some((value) =>
-                String(value).toLowerCase().includes(q.value.toLowerCase())
-            )
-        )
-        : lignes.value;
+const { q, filteredRows: filteredConges } = useFilteredRows(conges);
+const expand = ref({
+    openedRows: [],
+    row: {}
 });
 
 async function loadConge() {
@@ -51,7 +45,7 @@ async function loadConge() {
                     }
                 };
             });
-            lignes.value = congeData;
+            conges.value = congeData;
         } else {
             console.error('Erreur lors de la récupération des données', response.data);
         }
@@ -61,11 +55,6 @@ async function loadConge() {
 }
 
 loadConge();
-
-const expand = ref({
-    openedRows: [],
-    row: {}
-});
 
 const validerFn = async (idConge: number, idContrat: number) => {
     const apiUrl = useRuntimeConfig().public.apiUrl;
@@ -98,7 +87,7 @@ const validerFn = async (idConge: number, idContrat: number) => {
             <UInput v-model="q" placeholder="Filtrer les congés..." class="w-full max-w-md px-4 py-2 rounded-lg" />
         </div>
 
-        <UTable :columns="headers" :rows="filteredLignes" v-model:expand="expand">
+        <UTable :columns="headers" :rows="filteredConges ?? []" v-model:expand="expand">
             <template #default="{ row }">
                 <tr>
                     <td>{{ row.idConge }}</td>

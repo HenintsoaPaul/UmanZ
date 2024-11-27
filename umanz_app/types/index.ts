@@ -18,15 +18,6 @@ export interface CompetenceCible {
     pointGagne: number,
 }
 
-export interface Conge {
-    idConge: number,
-    dateDebut: string,
-    nbJour: number,
-    motif?: string,
-    dateValidation?: string,
-    contrat: Contrat
-}
-
 export interface Contrat {
     idContrat: number,
     contrat: string,
