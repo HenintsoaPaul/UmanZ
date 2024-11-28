@@ -21,7 +21,7 @@ public class CongeController {
 
     @GetMapping
     @JsonView( POV.Full.class )
-    public List<CongeTalentDTO> findALl() {
+    public List<CongeTalentDTO> findAll() {
         return congeService.findAllValide();
     }
 
@@ -41,6 +41,12 @@ public class CongeController {
     @JsonView( POV.Public.class )
     public List<Conge> getCongeByTalent( @PathVariable( "id" ) Long id ) {
         return congeService.findCongeByIdTalent( id );
+    }
+
+    @GetMapping( "/paye/{id}" )
+    @JsonView( POV.Public.class )
+    public int getSoldeCongePayeByContrat( @PathVariable( "id" ) Long idContrat ) {
+        return congeService.getNbCongePayePrisByIdContrat( idContrat );
     }
 
     @JsonView( POV.Public.class )

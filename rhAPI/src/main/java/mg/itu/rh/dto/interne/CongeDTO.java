@@ -10,4 +10,5 @@ public class CongeDTO {
     int nbJour;
     LocalDate dateDebut;
     String motif;
+    Long idTypeConge;
 }
