@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 @Data
 public class CongeDTO {
-    Long idTalent;
+    Long idContrat;
     int nbJour;
     LocalDate dateDebut;
     String motif;

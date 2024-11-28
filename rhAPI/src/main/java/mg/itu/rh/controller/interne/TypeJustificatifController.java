@@ -1,29 +1,28 @@
 package mg.itu.rh.controller.interne;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonView;
+import mg.itu.rh.entity.interne.TypeJustificatif;
 import mg.itu.rh.other.POV;
-import mg.itu.rh.repository.interne.TypeContratRepository;
+import mg.itu.rh.repository.interne.TypeJustificatifRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import mg.itu.rh.entity.interne.TypeContrat;
+import java.util.List;
 
 
 @RestController
-@RequestMapping( "/type_contrats" )
-public class TypeContratController {
-    private final TypeContratRepository typeContratRepository;
+@RequestMapping( "/type_justificatifs" )
+public class TypeJustificatifController {
+    private final TypeJustificatifRepository typeJustificatifRepository;
 
-    public TypeContratController( TypeContratRepository typeContratRepository ) {
-        this.typeContratRepository = typeContratRepository;
+    public TypeJustificatifController( TypeJustificatifRepository typeJustificatifRepository ) {
+        this.typeJustificatifRepository = typeJustificatifRepository;
     }
 
     @GetMapping
     @JsonView( POV.Public.class )
-    public List<TypeContrat> getTypeContrat() {
-        return typeContratRepository.findAll();
+    public List<TypeJustificatif> getTypeJustificatif() {
+        return typeJustificatifRepository.findAll();
     }
 }

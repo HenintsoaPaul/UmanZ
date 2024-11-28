@@ -1,16 +1,19 @@
 package mg.itu.rh.service.interne;
 
-import mg.itu.rh.entity.interne.TypeContrat;
-import mg.itu.rh.repository.interne.TypeContratRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import mg.itu.rh.entity.interne.TypeConge;
+import mg.itu.rh.repository.interne.TypeCongeRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TypeContratService {
-    @Autowired
-    private TypeContratRepository typeContratRepository;
+public class TypeCongeService {
+    private final TypeCongeRepository typeCongeRepository;
 
-    public TypeContrat findById(Long id){
-        return typeContratRepository.findById(id).orElseThrow(()->new RuntimeException("Type de contrat non reconnue"));
+    public TypeCongeService( TypeCongeRepository typeCongeRepository ) {
+        this.typeCongeRepository = typeCongeRepository;
+    }
+
+    public TypeConge findById( Long id ) {
+        return typeCongeRepository.findById( id )
+                .orElseThrow( () -> new RuntimeException( "Type de conge non reconnue" ) );
     }
 }

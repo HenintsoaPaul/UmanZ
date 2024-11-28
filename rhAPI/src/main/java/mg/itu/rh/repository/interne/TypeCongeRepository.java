@@ -1,9 +1,8 @@
 package mg.itu.rh.repository.interne;
 
+import mg.itu.rh.entity.interne.TypeConge;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import mg.itu.rh.entity.interne.TypeContrat;
+public interface TypeCongeRepository extends JpaRepository<TypeConge, Long> {
 
-public interface TypeContratRepository extends JpaRepository<TypeContrat, Long>{
-    
 }

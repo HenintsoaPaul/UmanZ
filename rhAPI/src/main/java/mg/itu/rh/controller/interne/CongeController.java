@@ -6,53 +6,47 @@ import mg.itu.rh.dto.interne.CongeTalentDTO;
 import mg.itu.rh.entity.interne.Conge;
 import mg.itu.rh.other.POV;
 import mg.itu.rh.service.interne.CongeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/conge")
+@RequestMapping( "/conges" )
 public class CongeController {
-    @Autowired
-    private CongeService congeService;
+    private final CongeService congeService;
+
+    public CongeController( CongeService congeService ) {
+        this.congeService = congeService;
+    }
 
     @GetMapping
-    @JsonView(POV.Full.class)
-    public List<CongeTalentDTO> findALl(){
-        return  congeService.findAllValide();
+    @JsonView( POV.Full.class )
+    public List<CongeTalentDTO> findALl() {
+        return congeService.findAllValide();
     }
 
-    @GetMapping("/non_valide")
-    @JsonView(POV.Full.class)
-    public List<CongeTalentDTO> findALlNonValide(){
-        return  congeService.findAllNonValide();
+    @GetMapping( "/non_valide" )
+    @JsonView( POV.Full.class )
+    public List<CongeTalentDTO> findALlNonValide() {
+        return congeService.findAllNonValide();
     }
 
-    @GetMapping("/validate/{idConge}")
-    @JsonView(POV.Full.class)
-    public Conge validate(@PathVariable("idConge") Long idConge){
-        return congeService.validate(idConge);
+    @GetMapping( "/validate/{idConge}" )
+    @JsonView( POV.Full.class )
+    public Conge validate( @PathVariable( "idConge" ) Long idConge ) {
+        return congeService.validate( idConge );
     }
 
-    @GetMapping("/talent/{id}")
-    @JsonView(POV.Public.class)
-    public List<Conge> getCongeByTalent(@PathVariable("id") Long id){
-        return congeService.findCongeByIdTalent(id);
+    @GetMapping( "/talent/{id}" )
+    @JsonView( POV.Public.class )
+    public List<Conge> getCongeByTalent( @PathVariable( "id" ) Long id ) {
+        return congeService.findCongeByIdTalent( id );
     }
 
-    /* *
-     *   {
-     *       "idTalent":5,
-     *       "nbJour":3,
-     *       "dateDebut":"2024-10-10",
-     *       "motif":"Repos kely fa valaka be"
-     *   }
-     * */
-    @JsonView(POV.Public.class)
+    @JsonView( POV.Public.class )
     @PostMapping
-    public Conge save(@RequestBody CongeDTO congeDTO)throws Exception{
-        return congeService.save(congeDTO);
+    public Conge save( @RequestBody CongeDTO congeDTO )
+            throws Exception {
+        return congeService.save( congeDTO );
     }
-
 }
