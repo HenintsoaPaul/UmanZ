@@ -18,4 +18,5 @@ public class PosteController {
     public List<Poste> getAllPostes() {
         return posteService.findAll();
     }
+    
 }
