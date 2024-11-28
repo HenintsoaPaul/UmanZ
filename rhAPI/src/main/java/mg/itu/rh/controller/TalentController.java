@@ -1,20 +1,22 @@
 package mg.itu.rh.controller;
 
+import java.util.List;
+
+import org.springframework.data.repository.query.Param;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.fasterxml.jackson.annotation.JsonView;
+
 import mg.itu.rh.dto.talent.TalentDTO;
 import mg.itu.rh.entity.talent.Talent;
 import mg.itu.rh.other.POV;
 import mg.itu.rh.service.talent.TalentService;
-import org.springframework.data.repository.query.Param;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping( "/talents" )

@@ -1,13 +1,14 @@
 package mg.itu.rh.service.interne;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import mg.itu.rh.dto.interne.AbsenceDTO;
 import mg.itu.rh.entity.interne.Absence;
 import mg.itu.rh.entity.interne.Contrat;
 import mg.itu.rh.repository.interne.AbsenceRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class AbsenceService {
@@ -16,7 +17,6 @@ public class AbsenceService {
 
     @Autowired
     private ContratService contratService; 
-
 
     public List<Absence> findAll() {
         return absenceRepository.findAllAbsences();
@@ -27,8 +27,12 @@ public class AbsenceService {
         absence.setMotif(absenceDTO.getMotif());
         absence.setDateAbsence(absenceDTO.getDateAbsence());
 
-        Contrat contrat = contratService.findById(absenceDTO.getIdContrat());
+        Long idTalent = absenceDTO.getIdTalent();
+        Contrat contrat = contratService.findActualContratByIdTalent(idTalent);
         absence.setContrat(contrat);
+
+        // Contrat contrat = contratService.findById(absenceDTO.getIdContrat());
+        // absence.setContrat(contrat);
 
         return absenceRepository.save(absence);
     }
