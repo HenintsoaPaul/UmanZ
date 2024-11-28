@@ -24,6 +24,6 @@ public interface ContratRepository extends JpaRepository<Contrat,Long> {
     @Query("select c from Contrat c where c.dateDebut in (select min(c.dateDebut) from Contrat c where c.talent.idTalent=:idTalent)")
     public Optional<Contrat> findContratEmbauche(@Param("idTalent")Long idTalent);
 
-    @Query("select c from Contrat c where c.dateDebut <= :date and :date <= c.dateFin and not c.idContrat in (select r.contrat.idContrat from Rupture r where :date < r.dateRupture)")
+    @Query("select c from Contrat c where c.dateDebut <= :date and (:date <= c.dateFin or c.dateFin is null) and not c.idContrat in (select r.contrat.idContrat from Rupture r where r.dateRupture < :date) and c.talent.idTalent=:idTalent")
     public Optional<Contrat> findContratByDateTalent(@Param("date")LocalDate date,@Param("idTalent")Long idTalent);
 }

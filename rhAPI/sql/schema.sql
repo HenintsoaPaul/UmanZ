@@ -5,7 +5,9 @@ CREATE TABLE talent(
                        mail VARCHAR(50)  NOT NULL,
                        password VARCHAR(255) ,
                        is_admin BOOLEAN NOT NULL,
-                       PRIMARY KEY(id_talent)
+                       id_cnaps VARCHAR(50)  NOT NULL,
+                       PRIMARY KEY(id_talent),
+                       UNIQUE(id_cnaps)
 );
 
 CREATE TABLE etat_entretien(
@@ -196,7 +198,7 @@ CREATE TABLE question(
 
 CREATE TABLE reponse(
                         id_reponse SERIAL,
-                        reponse VARCHAR(50)  NOT NULL,
+                        reponse TEXT NOT NULL,
                         note NUMERIC(15,2)   NOT NULL,
                         id_question INTEGER NOT NULL,
                         PRIMARY KEY(id_reponse),
@@ -356,8 +358,7 @@ CREATE TABLE competence_poste(
                                  FOREIGN KEY(id_poste) REFERENCES poste(id_poste)
 );
 
-CREATE TABLE candidat_historique
-(
+CREATE TABLE candidat_historique(
     id_candidat_histo SERIAL PRIMARY KEY,
     id_talent         INTEGER,
     action            VARCHAR(255),

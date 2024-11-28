@@ -8,9 +8,13 @@ import mg.itu.rh.entity.talent.Talent;
 import mg.itu.rh.other.POV;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 @Getter
 public class FicheDTO {
+    public final static double PLAFOND_CNAPS=20_000;
+
+    private LocalDate date;
     private Talent talent;
     private Contrat contratEmbauche;
     private Contrat contratActuel;
@@ -37,6 +41,14 @@ public class FicheDTO {
     private double tauxHoraire;
     @JsonView({POV.Public.class})
     private double indice;
+    @JsonView({POV.Public.class})
+    private double retenueCnaps;
+    @JsonView({POV.Public.class})
+    private double retenueSanitaire;
+
+    public void setDate(LocalDate date){
+        this.date=date;
+    }
 
     protected void setNomPrenom(){
         this.nomPrenom=this.getTalent().getNom()+" "+this.getTalent().getPrenom();
@@ -47,7 +59,7 @@ public class FicheDTO {
     }
 
     protected void setFonction(){
-        this.fonction=this.contratActuel.getContrat();
+        this.fonction=this.contratActuel.getPoste().getNomPoste();
     }
 
     protected void setDateEmbauche(){
@@ -55,15 +67,29 @@ public class FicheDTO {
     }
 
     protected void setIdCnaps(){
-        this.idCnaps="10";
+        this.idCnaps=this.getTalent().getIdCnaps();
     }
 
     protected void setAnciennete(){
-        this.anciennete="12 ans";
+        Period period=Period.between(this.getContratEmbauche().getDateDebut(),this.getDate());
+        String value="";
+        if(period.getYears()!=0){
+            value+=period.getYears()+" ans";
+        }
+        if(period.getMonths()!=0){
+            value+=period.getMonths()+" mois";
+        }
+        if(period.getDays()!=0){
+            if(value!=""){
+                value+=" et ";
+            }
+            value+=period.getDays()+" jours";
+        }
+        this.anciennete=value;
     }
 
     protected void setClassification(){
-        this.classification="HC";
+        this.classification=this.getContratActuel().getPoste().getTypePoste().getTypePoste();
     }
 
     protected void setSalaire(){
@@ -75,30 +101,38 @@ public class FicheDTO {
         this.tauxJournalier=(int)((this.salaire/173.33)*nbHeure);
         this.tauxHoraire=(int)(this.salaire/173.33);
         this.indice=(int)(this.getTauxJournalier()/1.334);
+        this.retenueCnaps=PLAFOND_CNAPS;
+        double valueRetenue=this.retenueCnaps/100.0;
+        if(valueRetenue<PLAFOND_CNAPS){
+            this.retenueCnaps=valueRetenue;
+        }
+        this.retenueSanitaire=valueRetenue;
     }
 
     public void setTalent(Talent talent){
         this.talent=talent;
         this.setNomPrenom();
         this.setMatricule();
-        this.setFonction();
         this.setIdCnaps();
     }
 
     public void setContratActuel(Contrat contrat){
         this.contratActuel=contrat;
-        this.setDateEmbauche();
+        this.setClassification();
+        this.setSalaire();
+        this.setFonction();
     }
 
     public void setContratEmbauche(Contrat contrat){
         this.contratEmbauche=contrat;
-        this.setClassification();
-        this.setSalaire();
+        this.setDateEmbauche();
     }
 
-    public FicheDTO(Talent talent,Contrat contratEmbauche,Contrat contratActuel){
+    public FicheDTO(Talent talent,Contrat contratEmbauche,Contrat contratActuel,LocalDate date){
+        this.setDate(date);
         this.setTalent(talent);
         this.setContratEmbauche(contratEmbauche);
         this.setContratActuel(contratActuel);
+        this.setAnciennete();
     }
 }

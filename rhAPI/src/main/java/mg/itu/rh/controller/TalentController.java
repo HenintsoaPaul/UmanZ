@@ -66,6 +66,22 @@ public class TalentController {
         return "Candidat rejeté et notification envoyée à " + email;
     }
 
+    /*
+    *
+    {
+            "nomPrenom": "Leroy Paul",
+            "matricule": 5,
+            "fonction": "Support technique",
+            "dateEmbauche": "2024-01-01",
+            "anciennete": "9 mois et 30 jours",
+            "classification": "Dirigeants",
+            "idCnaps": "CNP354632",
+            "salaire": 4387.5,
+            "tauxJournalier": 189,
+            "tauxHoraire": 25,
+            "indice": 141
+     }
+    * */
     @GetMapping("/fiche_paie")
     @JsonView(POV.Public.class)
     public FicheDTO findFiche(@RequestParam(name = "idTalent")Long idTalent,@RequestParam(name = "annee")int annee,@RequestParam(name = "mois")int mois){

@@ -28,6 +28,10 @@ public class Talent {
     @JsonView( { POV.Public.class, POV.Question.class } )
     private String prenom;
 
+    @JsonView( { POV.Public.class, POV.Question.class } )
+    @Column(name = "id_cnaps")
+    private String idCnaps;
+
     @JsonView( { POV.Public.class } )
     private String mail;
 

@@ -61,9 +61,10 @@ public class ContratService {
     @Transactional
     public FicheDTO findFiche(int annee,int mois,Long idTalent){
         Talent talent=talentService.findById(idTalent);
-        Contrat contratEmbauche=contratRepository.findContratEmbauche(idTalent).orElseThrow(()->new RuntimeException("Cette personne n'est pas un employe"));
-        Contrat contratActuel=contratRepository.findContratByDateTalent(LocalDate.of(annee,mois+1,1).minusDays(1),idTalent).orElseThrow(()->new RuntimeException("Cette personne n'est pas un employe"));
-        return new FicheDTO(talent,contratEmbauche,contratActuel);
+        LocalDate dateActuel=LocalDate.of(annee,mois+1,1).minusDays(1);
+        Contrat contratEmbauche=contratRepository.findContratEmbauche(idTalent).orElseThrow(()->new RuntimeException("Cette personne n'a jamais travaille chez nous"));
+        Contrat contratActuel=contratRepository.findContratByDateTalent(dateActuel,idTalent).orElseThrow(()->new RuntimeException("Cette personne n'est pas un employe la date du "+dateActuel));
+        return new FicheDTO(talent,contratEmbauche,contratActuel,dateActuel);
     }
 
     public List<Contrat> findAll() {
