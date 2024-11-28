@@ -5,7 +5,6 @@ definePageMeta({
 });
 
 import { z } from 'zod'
-import type { FormSubmitEvent } from '#ui/types'
 
 const schema = z.object({
     nom: z.string(),
@@ -15,8 +14,6 @@ const schema = z.object({
     password: z.string().min(8, 'Must be at least 8 characters'),
     password2: z.string().min(8, 'Must be at least 8 characters'),
 });
-type Schema = z.output<typeof schema>;
-
 const formState = reactive({
     nom: undefined,
     prenom: undefined,
