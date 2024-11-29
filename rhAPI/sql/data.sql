@@ -73,13 +73,14 @@ VALUES ('Communication', 2),
        ('Gestion de projet', 1),
        ('Design', 1);
 
-INSERT INTO talent (nom, prenom, mail, password, is_admin)
-VALUES ('Dupont', 'Jean', 'jean.dupont@example.com', 'password1', true),
-       ('Martin', 'Alice', 'alice.martin@example.com', 'password2', false),
-       ('Petit', 'Louis', 'louis.petit@example.com', 'password3', false),
-       ('Durand', 'Emma', 'emma.durand@example.com', 'password4', false),
-       ('Leroy', 'Paul', 'paul.leroy@example.com', 'password5', false),
-       ('Dupont', 'Jean', 'recipientgestion@gmail.com', 'recepgestion', true);
+INSERT INTO talent (nom, prenom, mail, password, date_naissance, is_admin)
+VALUES
+    ('Dupont', 'Jean', 'jean.dupont@example.com', 'password1', '1985-03-15', true),
+    ('Martin', 'Alice', 'alice.martin@example.com', 'password2', '1990-07-20', false),
+    ('Petit', 'Louis', 'louis.petit@example.com', 'password3', '1995-01-12', false),
+    ('Durand', 'Emma', 'emma.durand@example.com', 'password4', '1988-11-30', false),
+    ('Leroy', 'Paul', 'paul.leroy@example.com', 'password5', '1993-04-25', false),
+    ('Dupont', 'Jean', 'recipientgestion@gmail.com', 'recepgestion', '1982-06-10', true);
 
 insert into talent_langue(id_talent, id_langue, id_niveau_langue)
 VALUES (1, 1, 3),

@@ -4,12 +4,15 @@ definePageMeta({
     middleware: 'logout'
 });
 
+import axios from 'axios';
 import { z } from 'zod'
+
+const message = ref('');
 
 const schema = z.object({
     nom: z.string(),
     prenom: z.string(),
-    email: z.string().email('Email invalide'),
+    mail: z.string().email('Email invalide'),
     dateNaissance: z.string().date(),
     password: z.string().min(8, 'Must be at least 8 characters'),
     password2: z.string().min(8, 'Must be at least 8 characters'),
@@ -17,7 +20,7 @@ const schema = z.object({
 const formState = reactive({
     nom: undefined,
     prenom: undefined,
-    email: undefined,
+    mail: undefined,
     dateNaissance: undefined,
     password: undefined,
     password2: undefined,
@@ -25,15 +28,27 @@ const formState = reactive({
 });
 
 async function onSubmit() {
-    console.log('Soumission');
-    console.log(toRaw(formState));
-
     if (formState.password !== formState.password2) {
         formState.error = 'Les 2 mots de passe ne correspondent pas'
         return;
     }
 
-    console.log('Password checked');
+    const {password2, error, ...data} = formState;
+
+    try {
+        console.log(data);
+
+        const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
+        const response = await axios.post(`${apiUrl}/talents`, data);
+        if (response.status === 200) {
+            message.value = 'Inscription réussie';
+        } else {
+            formState.error = "Erreur lors de l'inscription";
+            console.error("Erreur lors de l'inscription", response.data);
+        }
+    } catch (error) {
+        console.error('Erreur lors de la requête API:', error);
+    }
 }
 </script>
 
@@ -55,7 +70,7 @@ async function onSubmit() {
                 </UFormGroup>
 
                 <UFormGroup label="Email" name="email">
-                    <UInput v-model="formState.email"
+                    <UInput v-model="formState.mail"
                         class="w-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </UFormGroup>
 
