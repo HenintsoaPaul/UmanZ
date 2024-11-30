@@ -1,13 +1,15 @@
 package mg.itu.rh.entity.interne;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class HeureSupplementaire {
     @Id
@@ -16,7 +18,7 @@ public class HeureSupplementaire {
     private String motif;
 
     @Column(nullable = false)
-    private LocalDateTime dateHeure;
+    private LocalDateTime dateHeureDebut;
 
     @Column(nullable = false)
     private LocalDateTime dateHeureCreation;
@@ -28,4 +30,8 @@ public class HeureSupplementaire {
     @ManyToOne
     @JoinColumn(nullable = false, name = "id_contrat")
     private Contrat contrat;
+
+    public double montant() {
+        return tauxMajoration * contrat.getSalaireHoraire();
+    }
 }
