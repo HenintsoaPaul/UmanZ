@@ -2,7 +2,9 @@ package mg.itu.rh.service.interne;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import mg.itu.rh.entity.interne.Contrat;
 import mg.itu.rh.entity.interne.HeureSupplementaire;
+import mg.itu.rh.exception.MaxHeuresSuppDepasseException;
 import mg.itu.rh.repository.interne.HeureSupplementaireRepository;
 import mg.itu.rh.request.HeureSupplementaireRequest;
 import mg.itu.rh.service.api.JourFerieService;
@@ -16,29 +18,47 @@ import java.util.List;
 @AllArgsConstructor
 @Service
 public class HeureSupplementaireService {
+    public static final short MAX_HEURE_SUPP_HEBDOMADAIRE = 20;
+
     private final HeureSupplementaireRepository heureSupplementaireRepository;
     private final JourFerieService jourFerieService;
-    private final ContratService contratService;
+    private final ContratService   contratService;
 
     @Transactional
-    public void save(HeureSupplementaireRequest heureSupplementaireRequest) {
+    public Double getTotalHeuresForWeekByContrat(Long idContrat, LocalDateTime dateHeureDebut) {
+        return heureSupplementaireRepository.findTotalHeuresForWeekByContrat(idContrat, dateHeureDebut);
+    }
+
+    @Transactional
+    public void save(HeureSupplementaireRequest heureSupplementaireRequest)
+        throws MaxHeuresSuppDepasseException {
         LocalDateTime dateHeureDebut = heureSupplementaireRequest.getDateHeureDebut();
-        double nbHeure = heureSupplementaireRequest.getNbHeure();
-        double tauxMajoration = getTauxMajoration(dateHeureDebut, nbHeure, jourFerieService.getAllForYear(dateHeureDebut.getYear()));
+
+        Contrat contrat = contratService.findById(heureSupplementaireRequest.getIdContrat());
+        Double totalHeuresSuppForWeek = heureSupplementaireRepository.findTotalHeuresForWeekByContrat(contrat.getIdContrat(), dateHeureDebut);
+        if (totalHeuresSuppForWeek == MAX_HEURE_SUPP_HEBDOMADAIRE) return;
+
+        double nbHeure  = heureSupplementaireRequest.getNbHeure();
+        double excedant = totalHeuresSuppForWeek + nbHeure - MAX_HEURE_SUPP_HEBDOMADAIRE;
+
+        if (dateHeureDebut.isAfter(LocalDateTime.now()) && excedant > 0)
+            throw new MaxHeuresSuppDepasseException(totalHeuresSuppForWeek, excedant);
+        if (excedant > 0) nbHeure = MAX_HEURE_SUPP_HEBDOMADAIRE - totalHeuresSuppForWeek;
 
         HeureSupplementaire heureSupplementaire = HeureSupplementaire.builder()
             .motif(heureSupplementaireRequest.getMotif())
             .dateHeureDebut(dateHeureDebut)
             .nbHeure(nbHeure)
-            .tauxMajoration(tauxMajoration)
-            .contrat(contratService.findById(heureSupplementaireRequest.getIdContrat()))
+            .tauxMajoration(getTauxMajoration(dateHeureDebut, totalHeuresSuppForWeek,
+                jourFerieService.getAllForYear(dateHeureDebut.getYear())))
+            .contrat(contrat)
             .build();
 
         heureSupplementaireRepository.save(heureSupplementaire);
     }
 
     private double getTauxMajoration(
-        LocalDateTime dateHeureDebut, double nbHeure, List<LocalDate> joursFeries
+        LocalDateTime dateHeureDebut, double totalHeuresSuppForWeekActuel, List<LocalDate> joursFeries
     ) {
         double taux = 0.0;
 
@@ -46,7 +66,7 @@ public class HeureSupplementaireService {
         if (joursFeries.contains(dateHeureDebut.toLocalDate())) taux = 2;
 
         if (taux == 0) {
-            if (nbHeure <= 8)
+            if (totalHeuresSuppForWeekActuel <= 8)
                  taux = 1.3;
             else taux = 1.5;
         }

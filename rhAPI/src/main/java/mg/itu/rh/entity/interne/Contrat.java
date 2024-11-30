@@ -81,7 +81,7 @@ public class Contrat {
         if ( dFin != null ) this.setDateFin( contratDTO.getDateFin() );
     }
 
-    public double heureHebdomadaire() {
-        return nbHeureJour * nbJourSemaine;
+    public double salaireBase() {
+        return salaireHoraire * 173.33;
     }
 }
