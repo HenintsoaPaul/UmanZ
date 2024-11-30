@@ -369,9 +369,9 @@ CREATE TABLE candidat_historique
 
 CREATE TABLE heure_supplementaire
 (
-    id                  SERIAL,
+    id                  BIGSERIAL,
     motif               TEXT,
-    date_heure          TIMESTAMP     NOT NULL,
+    date_heure_debut    TIMESTAMP     NOT NULL,
     date_heure_creation TIMESTAMP     NOT NULL DEFAULT NOW(),
     nb_heure            NUMERIC(5, 2) NOT NULL,
     taux_majoration     NUMERIC(5, 2) NOT NULL,
