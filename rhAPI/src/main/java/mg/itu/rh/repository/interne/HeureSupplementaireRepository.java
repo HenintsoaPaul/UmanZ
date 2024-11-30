@@ -6,8 +6,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface HeureSupplementaireRepository extends JpaRepository<HeureSupplementaire, Long> {
+
+    @Query("SELECT hs " +
+        "FROM HeureSupplementaire hs " +
+        "WHERE hs.contrat.idContrat = :idContrat AND MONTH(hs.dateHeureDebut) = :mois")
+    List<HeureSupplementaire> findByContratAndMois(@Param("idContrat") Long idContrat, @Param("mois") int mois);
 
     @Query(value = "SELECT COALESCE(SUM(hs.nb_heure), 0)\n" +
         "FROM heure_supplementaire hs\n" +

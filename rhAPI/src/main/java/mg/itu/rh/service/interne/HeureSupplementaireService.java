@@ -24,6 +24,10 @@ public class HeureSupplementaireService {
     private final JourFerieService jourFerieService;
     private final ContratService   contratService;
 
+    public List<HeureSupplementaire> getByContratAndMois(Long idContrat, int mois) {
+        return heureSupplementaireRepository.findByContratAndMois(idContrat, mois);
+    }
+
     @Transactional
     public Double getTotalHeuresForWeekByContrat(Long idContrat, LocalDateTime dateHeureDebut) {
         return heureSupplementaireRepository.findTotalHeuresForWeekByContrat(idContrat, dateHeureDebut);
