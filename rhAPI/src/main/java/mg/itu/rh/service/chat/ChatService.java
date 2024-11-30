@@ -33,9 +33,9 @@ public class ChatService {
     public static final String API_KEY = "jPyVs0wDMDNbq3zEq75GTgtZSdrbsbsyMcoE7D2I"; 
 
     public String getPrompt(String question){
-        List<Competence> listeCompetences = competenceRepo.findAll();
+//        List<Competence> listeCompetences = competenceRepo.findAll();
             
-        String prompt = String.format("""
+        String prompt = """
                 Vous êtes un assistant intelligent spécialisé dans la réponse aux questions des candidats postulant dans mon entreprise en utilisant les données suivantes :
                 Reponds au candidats avec le minimum de paragraphe avec un emojie si possible, et fait en sorte que tu discutte directement avec le candidat , joue vraiment un role , le dit pas des mots du genre 'Voici une réponse adaptée pour un candidat : '
 
@@ -50,15 +50,15 @@ public class ChatService {
                 9 - Remarque qu'a chaque validation d'entretient il y aura une discussion entre les dirigeants avant de passer a l'etape suivante
                 8- Il peut commencer a travailler
 
-                """);
-            StringBuilder promptBuilder = new StringBuilder(prompt);            
-            
+                """;
+            StringBuilder promptBuilder = new StringBuilder(prompt);
+
             /* Tout ce que l'IA devrait savoir ici */
 
-            promptBuilder.append(". La liste des principales competences dans l'entreprise: \n");
-            for (int i = 0; i < listeCompetences.size() ; i++) {
-                promptBuilder.append("\n "+listeCompetences.get(i).getCompetence() +"\n");   
-            }      
+//            promptBuilder.append(". La liste des principales competences dans l'entreprise: \n");
+//            for (int i = 0; i < listeCompetences.size() ; i++) {
+//                promptBuilder.append("\n "+listeCompetences.get(i).getCompetence() +"\n");
+//            }
             //
             promptBuilder.append("\nQuestion : ").append(question);
             promptBuilder.append("\r\n" +
