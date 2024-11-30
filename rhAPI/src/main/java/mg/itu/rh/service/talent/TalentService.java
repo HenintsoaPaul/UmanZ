@@ -1,6 +1,7 @@
 package mg.itu.rh.service.talent;
 
 import jakarta.transaction.Transactional;
+import mg.itu.rh.dto.talent.AuthDTO;
 import mg.itu.rh.dto.talent.TalentDTO;
 import mg.itu.rh.entity.talent.Talent;
 
@@ -40,8 +41,9 @@ public class TalentService {
         return talentRepository.findAll();
     }
 
-    public Talent findByEmailAndPassword( String email, String password ) {
-        return talentRepository.findByEmailAndPassword( email, password ).orElse( null );
+    public Talent findByEmailAndPassword( AuthDTO authDTO ) {
+        String email = authDTO.getEmail(), pwd = authDTO.getPassword();
+        return talentRepository.findByEmailAndPassword( email, pwd ).orElse( null );
     }
 
     @Transactional

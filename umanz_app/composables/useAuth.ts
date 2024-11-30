@@ -1,19 +1,31 @@
-import axios from "axios";
 import type { Talent } from "~/types";
 
 export function useAuth() {
-    const authenticate = async (email: string, password: string, url: string): Promise<Talent | null> => {
+    const authenticate = async (email: string, password: string, apiUrl: string): Promise<Talent | null> => {
         try {
-            const response = await axios.get<Talent>(url, {
-                params: { email, password }
+            const response = await $fetch<Talent>(`${apiUrl}/talents/auth`, {
+                method: 'POST',
+                body: {
+                    email: email,
+                    password: password
+                }
             });
-
-            return response.data;
-        } catch (err) {
-            console.error('Erreur lors de l\'authentication de l\'utilisateur:', err);
+            console.log('Authentication data sent successfully', response);
+            return response;
+        } catch (error) {
+            console.error('Failed to send Authentication data', error);
             return null;
         }
     }
 
-    return { authenticate };
+    const saveUser = (user: Talent): void => {
+        localStorage.setItem('idUser', user.idTalent.toString());
+        localStorage.setItem('emailUser', user.mail.toString());
+        localStorage.setItem('isAdmin', user.isAdmin.toString());
+    }
+
+    return { 
+        authenticate,
+        saveUser
+     };
 }

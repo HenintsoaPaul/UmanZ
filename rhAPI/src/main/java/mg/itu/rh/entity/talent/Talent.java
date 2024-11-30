@@ -1,6 +1,5 @@
 package mg.itu.rh.entity.talent;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -20,7 +19,7 @@ public class Talent {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "id_talent" )
-    @JsonView( { POV.Public.class, POV.Question.class } )
+    @JsonView( { POV.Public.class, POV.Question.class, POV.Auth.class } )
     private Long idTalent;
 
     @JsonView( { POV.Public.class, POV.Question.class } )
@@ -29,18 +28,14 @@ public class Talent {
     @JsonView( { POV.Public.class, POV.Question.class } )
     private String prenom;
 
-    @JsonView( { POV.Public.class } )
+    @JsonView( { POV.Public.class, POV.Auth.class } )
     private String mail;
 
     @Column( name = "password" )
     @JsonView( { POV.Public.class } )
     private String password;
 
-    @Column( name = "date_naissance" )
-    @JsonView( { POV.Public.class } )
-    private LocalDate dateNaissance;
-
-    @JsonView( { POV.Public.class } )
+    @JsonView( { POV.Public.class, POV.Auth.class } )
     @Column( name = "is_admin" )
     private boolean isAdmin;
 
@@ -74,7 +69,6 @@ public class Talent {
         this.setPrenom( talentDTO.getPrenom() );
         this.setMail( talentDTO.getMail() );
         this.setPassword( talentDTO.getPassword() );
-        this.setDateNaissance( talentDTO.getDateNaissance() );
         this.setAdmin( talentDTO.isAdmin() );
     }
 }

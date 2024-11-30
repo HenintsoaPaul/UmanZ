@@ -3,6 +3,7 @@ package mg.itu.rh.entity;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import mg.itu.rh.dto.poste.PosteDTO;
 import mg.itu.rh.entity.critere.Diplome;
 import mg.itu.rh.entity.recrutement.CompetencePoste;
@@ -17,6 +18,7 @@ import java.util.Set;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class Poste {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -34,14 +36,14 @@ public class Poste {
 
     @OneToMany(mappedBy = "poste",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonView({POV.Full.class})
-    private List<CompetencePoste> competencePostes= new ArrayList<>();
+    private List<CompetencePoste> competencePostes=new ArrayList<CompetencePoste>();
 
     @OneToMany(mappedBy="poste",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     @JsonView({POV.Full.class})
-    private List<ExperiencePoste> experiencePostes= new ArrayList<>();
+    private List<ExperiencePoste> experiencePostes=new ArrayList<ExperiencePoste>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_type_poste")
+    @JoinColumn(name="id_type_poste")
     @JsonView({POV.Public.class})
     private TypePoste typePoste;
 
@@ -52,11 +54,11 @@ public class Poste {
             inverseJoinColumns = @JoinColumn(name = "id_diplome")
     )
     @JsonView({POV.Public.class})
-    private Set<Diplome> diplomes= new HashSet<>();
+    private Set<Diplome> diplomes=new HashSet<Diplome>();
 
     @OneToMany(mappedBy="poste",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     @JsonView({POV.Public.class})
-    private List<PosteLangue> posteLangues= new ArrayList<>();
+    private List<PosteLangue> posteLangues=new ArrayList<PosteLangue>();
 
     @Transient
     @JsonView({POV.Public.class})
@@ -73,9 +75,6 @@ public class Poste {
     public void addExperiencePoste(ExperiencePoste experiencePoste){
         this.experiencePostes.add(experiencePoste);
     }
-
-
-    public Poste() {}
 
     public Poste(Long idPoste, String nomPoste, String descriptionPoste) {
         this.idPoste = idPoste;

@@ -28,6 +28,7 @@ CREATE TABLE formation(
                           nom_formation VARCHAR(50)  NOT NULL,
                           date_debut DATE NOT NULL,
                           date_fin DATE NOT NULL,
+                          est_fini BOOLEAN,
                           PRIMARY KEY(id_formation)
 );
 
@@ -355,4 +356,27 @@ CREATE TABLE competence_poste(
                                  PRIMARY KEY(id_competence, id_poste),
                                  FOREIGN KEY(id_competence) REFERENCES competence(id_competence),
                                  FOREIGN KEY(id_poste) REFERENCES poste(id_poste)
+);
+
+CREATE TABLE candidat_historique
+(
+    id_candidat_histo SERIAL PRIMARY KEY,
+    id_talent         INTEGER,
+    action            VARCHAR(255),
+    description       VARCHAR(255),
+    date_action       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_talent FOREIGN KEY (id_talent) REFERENCES Talent (id_talent) ON DELETE CASCADE
+);
+
+CREATE TABLE heure_supplementaire
+(
+    id                  BIGSERIAL,
+    motif               TEXT,
+    date_heure_debut    TIMESTAMP     NOT NULL,
+    date_heure_creation TIMESTAMP     NOT NULL DEFAULT NOW(),
+    nb_heure            NUMERIC(5, 2) NOT NULL,
+    taux_majoration     NUMERIC(5, 2) NOT NULL,
+    id_contrat          INTEGER       NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_contrat) REFERENCES contrat (id_contrat)
 );
