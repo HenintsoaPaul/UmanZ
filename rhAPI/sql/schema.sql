@@ -365,3 +365,28 @@ CREATE TABLE candidat_historique
     date_action       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_talent FOREIGN KEY (id_talent) REFERENCES Talent (id_talent) ON DELETE CASCADE
 );
+
+CREATE TABLE categories (
+    id_categories SERIAL PRIMARY KEY ,
+    nom VARCHAR(50),
+    description TEXT
+);
+
+CREATE TABLE categories_position (
+    id_poste INTEGER,      
+    id_categories INTEGER,
+    point_categorie INTEGER,
+    PRIMARY KEY (id_poste, id_categories), -- Clé primaire composite
+    FOREIGN KEY (id_poste) REFERENCES poste(id_poste),
+    FOREIGN KEY (id_categories) REFERENCES categories(id_categories)
+);
+
+CREATE TABLE employe ( 
+    id_employee SERIAL PRIMARY KEY ,
+    nom VARCHAR(50),
+    email VARCHAR(100),
+    id_poste INTEGER,
+    id_categories INTEGER,
+    date_of_hire DATE,
+    FOREIGN KEY (id_poste, id_categories) REFERENCES categories_position (id_poste, id_categories)
+); 
