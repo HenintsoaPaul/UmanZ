@@ -28,6 +28,9 @@ const formState = reactive({
 });
 
 async function onSubmit() {
+    formState.error = '';
+    message.value = '';
+
     if (formState.password !== formState.password2) {
         formState.error = 'Les 2 mots de passe ne correspondent pas'
         return;
@@ -41,7 +44,7 @@ async function onSubmit() {
         const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
         const response = await axios.post(`${apiUrl}/talents`, data);
         if (response.status === 200) {
-            message.value = 'Inscription réussie';
+            message.value = 'Inscription réussie !';
         } else {
             formState.error = "Erreur lors de l'inscription";
             console.error("Erreur lors de l'inscription", response.data);
@@ -57,6 +60,17 @@ async function onSubmit() {
         <div class="border border-slate-50 p-8 rounded-lg shadow-md w-full max-w-md text-slate-500">
             <h2 class="text-2xl font-bold mb-6 text-center">Inscription</h2>
             <UForm :schema="schema" :state="formState" class="space-y-4" @submit.prevent="onSubmit">
+
+                <div v-if="message" class="flex items-center p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+                    <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                    </svg>
+                    <span class="sr-only">Info</span>
+                    <div>
+                        <span class="font-medium">{{ message }}</span>
+                    </div>
+                </div>
+
                 <UFormGroup label="Nom" name="nom">
                     <UInput
                         v-model="formState.nom"

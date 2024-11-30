@@ -49,11 +49,11 @@ public class TalentService {
         Talent t = new Talent( talentDTO );
         t = this.save( t );
         // set liaisons
-        experienceTalentService.saveAllFromDTO( talentDTO.getExperiences(), t );
-        competenceTalentService.saveAllFromDTO( talentDTO.getCompetences(), t );
+        if ( talentDTO.getExperiences() != null ) experienceTalentService.saveAllFromDTO( talentDTO.getExperiences(), t );
+        if ( talentDTO.getCompetences() != null ) competenceTalentService.saveAllFromDTO( talentDTO.getCompetences(), t );
 
-        talentDiplomeService.saveAll( talentDTO.getDiplomes(), t );
-        talentLangueService.saveAll( talentDTO.getLangues(), t);
+        if ( talentDTO.getDiplomes() != null ) talentDiplomeService.saveAll( talentDTO.getDiplomes(), t );
+        if ( talentDTO.getLangues() != null ) talentLangueService.saveAll( talentDTO.getLangues(), t);
         return t;
     }
 
