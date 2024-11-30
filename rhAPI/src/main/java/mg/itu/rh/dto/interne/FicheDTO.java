@@ -93,13 +93,15 @@ public class FicheDTO {
     }
 
     protected void setSalaire(){
+        double nbHeureMois=173.33;
         double nbHeure=24.0;
-        if(this.getContratActuel().getNbHeureJour()!=8.0){
+        if(this.getContratActuel().getNbHeureJour()<8.0){
+            nbHeureMois=this.getContratActuel().getNbHeureJour()*this.getContratActuel().getNbJourSemaine()*4;
             nbHeure=this.getContratActuel().getNbHeureJour();
         }
-        this.salaire=this.getContratActuel().getSalaireHoraire()*nbHeure*30.0;
-        this.tauxJournalier=(int)((this.salaire/173.33)*nbHeure);
-        this.tauxHoraire=(int)(this.salaire/173.33);
+        this.salaire=this.getContratActuel().getSalaireHoraire()*nbHeureMois;
+        this.tauxJournalier=(int)(this.getContratActuel().getSalaireHoraire()*nbHeure);
+        this.tauxHoraire=(int)this.getContratActuel().getSalaireHoraire();
         this.indice=(int)(this.getTauxJournalier()/1.334);
         this.retenueCnaps=PLAFOND_CNAPS;
         double valueRetenue=this.retenueCnaps/100.0;
