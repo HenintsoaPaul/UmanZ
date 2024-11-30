@@ -24,8 +24,8 @@ import mg.itu.rh.other.POV;
 public class Contrat {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
-    @Column(name="id_contrat")
-    @JsonView({POV.Public.class, POV.Conge.class})
+    @Column( name = "id_contrat" )
+    @JsonView( { POV.Public.class, POV.Conge.class } )
     private Long idContrat;
 
     @JsonView( POV.Public.class )
@@ -41,7 +41,7 @@ public class Contrat {
 
     @ManyToOne( fetch = FetchType.LAZY )
     @JoinColumn( name = "id_talent" )
-    @JsonView( {POV.Public.class, POV.Conge.class} )
+    @JsonView( { POV.Public.class, POV.Conge.class } )
     private Talent talent;
 
     @ManyToOne( fetch = FetchType.LAZY )
@@ -50,7 +50,7 @@ public class Contrat {
     private TypeContrat typeContrat;
 
     @Column( name = "nb_jour_conge_an" )
-    @JsonView( POV.Public.class )
+    @JsonView( { POV.Public.class, POV.Conge.class } )
     private int nbJourCongeAn;
 
     @Column( name = "salaire_horaire" )
@@ -65,9 +65,9 @@ public class Contrat {
     @JsonView( POV.Public.class )
     private double nbHeureJour;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_poste")
-    @JsonView({POV.Public.class})
+    @ManyToOne( fetch = FetchType.LAZY )
+    @JoinColumn( name = "id_poste" )
+    @JsonView( { POV.Public.class, POV.Conge.class } )
     private Poste poste;
 
     public Contrat( ContratDTO contratDTO ) {

@@ -31,6 +31,10 @@ public class CongeService {
                 .orElseThrow( () -> new RuntimeException( "Conge not found" ) );
     }
 
+    public List<Conge> findAllCongeNeedsValidation() {
+        return this.congeRepository.findAllCongeNeedsValidation();
+    }
+
     public List<Conge> findAllValidatedByIdContrat( Long idContrat ) {
         return congeRepository.findAllValidatedByIdContrat( idContrat );
     }

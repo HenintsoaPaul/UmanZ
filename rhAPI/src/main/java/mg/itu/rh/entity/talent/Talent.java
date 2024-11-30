@@ -25,7 +25,7 @@ public class Talent {
     @JsonView( { POV.Public.class, POV.Question.class, POV.Conge.class } )
     private String nom;
 
-    @JsonView( { POV.Public.class, POV.Question.class } )
+    @JsonView( { POV.Public.class, POV.Question.class, POV.Conge.class } )
     private String prenom;
 
     @JsonView( { POV.Public.class, POV.Auth.class } )

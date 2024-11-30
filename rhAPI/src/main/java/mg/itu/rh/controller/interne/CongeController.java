@@ -29,22 +29,16 @@ public class CongeController {
         return congeRepository.findAll();
     }
 
-    @GetMapping( "/valide/true" )
+    @GetMapping( "/validated" )
     @JsonView( POV.Full.class )
     public List<CongeTalentDTO> findAllValide() {
         return congeService.findAllValide();
     }
 
-    @GetMapping( "/valide/false" )
+    @GetMapping( "/refused" )
     @JsonView( POV.Full.class )
     public List<CongeTalentDTO> findALlNonValide() {
         return congeService.findAllNonValide();
-    }
-
-    @GetMapping( "/validate/{idConge}" )
-    @JsonView( POV.Full.class )
-    public Conge validate( @PathVariable( "idConge" ) Long idConge ) {
-        return congeService.validate( idConge );
     }
 
     @GetMapping( "/talent/{id}" )
@@ -53,32 +47,34 @@ public class CongeController {
         return congeService.findCongeByIdTalent( id );
     }
 
-//    @GetMapping( "/{id}?validated={state}" )
+//    /**
+//     * Retourne le solde de conge paye pour un individu identifie par son contrat.
+//     * Cette fonction suppose que l' idContrat est pour un contrat qui est toujours
+//     * en cours jusqu'a present.
+//     *
+//     * @param idContrat id du contrat d'un individu
+//     */
+//    @GetMapping( "/{id}/payes/nb_jour" )
 //    @JsonView( POV.Conge.class )
-//    public SoldeCongeDTO getSoldeCongePayeByContrat( @PathVariable( "id" ) Long idContrat, @PathVariable( "state" ) Long idState  )
-//            throws CongeException {
-//        if ( idState != 1L && idState != 0L ) {
-//            throw new CongeException( "State can only be 1 or 0" );
-//        }
+//    public SoldeCongeDTO getSoldeCongePayeByContrat( @PathVariable( "id" ) Long idContrat ) {
 //        return congeService.getSoldeCongePayeByIdContrat( idContrat );
 //    }
-
-    /**
-     * Retourne le solde de conge paye pour un individu identifie par son contrat.
-     * Cette fonction suppose que l' idContrat est pour un contrat qui est toujours
-     * en cours jusqu'a present.
-     *
-     * @param idContrat id du contrat d'un individu
-     */
-    @GetMapping( "/{id}/payes/nb_jour" )
-    @JsonView( POV.Conge.class )
-    public SoldeCongeDTO getSoldeCongePayeByContrat( @PathVariable( "id" ) Long idContrat ) {
-        return congeService.getSoldeCongePayeByIdContrat( idContrat );
-    }
 
     @JsonView( POV.Public.class )
     @PostMapping( "/demandes" )
     public Conge saveDemande( @RequestBody CongeDTO congeDTO ) {
         return congeService.saveDemandeConge( congeDTO );
+    }
+
+    @GetMapping( "/needs-validation" )
+    @JsonView( POV.Conge.class )
+    public List<Conge> findAllCongeNeedsValidation() {
+        return congeService.findAllCongeNeedsValidation();
+    }
+
+    @PutMapping( "/validate/{idConge}" )
+    @JsonView( POV.Conge.class )
+    public Conge validate( @PathVariable( "idConge" ) Long idConge ) {
+        return congeService.validate( idConge );
     }
 }
