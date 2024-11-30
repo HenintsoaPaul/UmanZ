@@ -13,56 +13,58 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Conge {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_conge")
-    @JsonView({POV.Public.class})
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @Column( name = "id_conge" )
+    @JsonView( { POV.Public.class, POV.Conge.class } )
     private Long idConge;
 
-    @Column(name = "date_debut")
-    @JsonView({POV.Public.class})
+    @Column( name = "date_debut" )
+    @JsonView( { POV.Public.class, POV.Conge.class } )
     private LocalDate dateDebut;
 
-    @Column(name = "nb_jour")
-    @JsonView({POV.Public.class})
+    @Column( name = "nb_jour" )
+    @JsonView( { POV.Public.class, POV.Conge.class } )
     private int nbJour;
 
-    @JsonView({POV.Public.class})
+    @JsonView( { POV.Public.class, POV.Conge.class } )
     private String motif;
 
-    @Column(name = "date_validation")
+    @Column( name = "date_validation" )
+    @JsonView( { POV.Public.class, POV.Conge.class } )
     private LocalDate dateValidation;
 
-    @Column(name = "motif_refus")
-    @JsonView({POV.Public.class})
+    @Column( name = "motif_refus" )
+    @JsonView( { POV.Public.class, POV.Conge.class } )
     private String motifRefus;
 
-    @Column(name = "date_refus")
+    @Column( name = "date_refus" )
+    @JsonView( { POV.Public.class, POV.Conge.class } )
     private LocalDate dateRefus;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonView({POV.Public.class})
-    @JoinColumn(name = "id_contrat")
+    @ManyToOne( fetch = FetchType.LAZY )
+    @JsonView( { POV.Public.class, POV.Conge.class } )
+    @JoinColumn( name = "id_contrat" )
     private Contrat contrat;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonView({POV.Public.class})
-    @JoinColumn(name = "id_type_conge")
+    @ManyToOne( fetch = FetchType.LAZY )
+    @JsonView( { POV.Public.class, POV.Conge.class } )
+    @JoinColumn( name = "id_type_conge" )
     private TypeConge typeConge;
 
-    @JsonView({POV.Public.class})
+    @JsonView( { POV.Public.class, POV.Conge.class } )
     @Transient
     private LocalDate dateFin;
 
-    public Conge(Long idConge,LocalDate dateDebut,int nbJour,String motif, Contrat contrat){
-        this.setIdConge(idConge);
-        this.setDateDebut(dateDebut);
-        this.setNbJour(nbJour);
-        this.setMotif(motif);
-        this.setContrat(contrat);
+    public Conge( Long idConge, LocalDate dateDebut, int nbJour, String motif, Contrat contrat ) {
+        this.setIdConge( idConge );
+        this.setDateDebut( dateDebut );
+        this.setNbJour( nbJour );
+        this.setMotif( motif );
+        this.setContrat( contrat );
         this.setDateFin();
     }
 
-    protected void setDateFin(){
-        this.setDateFin(dateDebut.plusDays(nbJour));
+    protected void setDateFin() {
+        this.setDateFin( dateDebut.plusDays( nbJour ) );
     }
 }

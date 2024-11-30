@@ -3,6 +3,7 @@ package mg.itu.rh.service.interne;
 import mg.itu.rh.constante.ConstanteConge;
 import mg.itu.rh.dto.interne.CongeDTO;
 import mg.itu.rh.dto.interne.CongeTalentDTO;
+import mg.itu.rh.dto.interne.SoldeCongeDTO;
 import mg.itu.rh.entity.interne.Conge;
 import mg.itu.rh.entity.interne.Contrat;
 import mg.itu.rh.exception.interne.CongeException;
@@ -17,15 +18,21 @@ import java.util.List;
 public class CongeService {
     private final CongeRepository congeRepository;
     private final ContratService contratService;
+    private final TypeCongeService typeCongeService;
 
-    public CongeService( CongeRepository congeRepository, ContratService contratService ) {
+    public CongeService( CongeRepository congeRepository, ContratService contratService, TypeCongeService typeCongeService ) {
         this.congeRepository = congeRepository;
         this.contratService = contratService;
+        this.typeCongeService = typeCongeService;
     }
 
     public Conge findById( Long idConge ) {
         return congeRepository.findById( idConge )
                 .orElseThrow( () -> new RuntimeException( "Conge not found" ) );
+    }
+
+    public List<Conge> findAllValidatedByIdContrat( Long idContrat ) {
+        return congeRepository.findAllValidatedByIdContrat( idContrat );
     }
 
     public List<CongeTalentDTO> findAllValide() {
@@ -46,21 +53,23 @@ public class CongeService {
         return congeRepository.findCongeByIdTalent( idTalent );
     }
 
-    public Conge save( CongeDTO congeDTO )
-            throws Exception {
+    public Conge saveDemandeConge( CongeDTO congeDTO ) {
         Contrat contrat = contratService.findById( congeDTO.getIdContrat() );
         Conge conge = new Conge();
         conge.setContrat( contrat );
         conge.setDateDebut( congeDTO.getDateDebut() );
         conge.setMotif( congeDTO.getMotif() );
         conge.setNbJour( congeDTO.getNbJour() );
+        conge.setTypeConge( this.typeCongeService.findById( congeDTO.getIdTypeConge() ) );
 
-        Long idType = congeDTO.getIdTypeConge();
-        if ( idType == 1L ) {
-            this.controllerSoldeCongePaye( conge );
-        } else if ( idType == 3L ) {
-            this.controllerSoldeCongeExceptionnel( conge, congeDTO.getDateDebut().getYear() );
-        }
+//        Decommenter si on a besoin de controller le solde avant une demande
+//        Long idType = congeDTO.getIdTypeConge();
+//        if ( idType == 1L ) {
+//            this.controllerSoldeCongePaye( conge );
+//        } else if ( idType == 3L ) {
+//            this.controllerSoldeCongeExceptionnel( conge, congeDTO.getDateDebut().getYear() );
+//        }
+
         return congeRepository.save( conge );
     }
 
@@ -74,18 +83,25 @@ public class CongeService {
     }
 
     // Get solde
+
     /**
      * Olona efa niasa 12 mois izay vao mahazo maka conge, fa misy cumul fona pendant ce temps.
      *
      * @return nbMoisService * 2.5 - nbEfaPris
      */
-    private double getSoldeCongePayeByContrat( Contrat contrat )
-            throws CongeException {
-        long nbMoisDeService = ChronoUnit.MONTHS.between( contrat.getDateDebut(), contrat.getDateDebut() );
-        controller12moisServiceMin( nbMoisDeService );
-
+    private double getSoldeCongePayeByContrat( long nbMoisDeService, int nbJourPris ) {
         double nbJourCongeRehetra = ConstanteConge.nbCongePayeMensuel * nbMoisDeService;
-        return nbJourCongeRehetra - this.getNbCongePayePrisByIdContrat( contrat.getIdContrat() );
+        return nbJourCongeRehetra - nbJourPris;
+    }
+
+    public SoldeCongeDTO getSoldeCongePayeByIdContrat( Long idContrat ) {
+        Contrat contrat = contratService.findById( idContrat );
+        int nbCongePayePris = this.getNbCongePayePrisByIdContrat( contrat.getIdContrat() );
+
+        long nbMoisDeService = ChronoUnit.MONTHS.between( contrat.getDateDebut(), LocalDate.now() );
+        double solde = this.getSoldeCongePayeByContrat( nbMoisDeService, nbCongePayePris );
+
+        return new SoldeCongeDTO( idContrat, nbCongePayePris, solde, nbMoisDeService );
     }
 
     private double getSoldeCongeExceptionnelByContrat( Contrat contrat, int year ) {
@@ -99,17 +115,20 @@ public class CongeService {
         if ( monthDifference < 12 ) throw new CongeException( monthDifference );
     }
 
-    private void controllerSolde( double solde, int nbJourDemande )
-            throws CongeException {
-        if ( solde - nbJourDemande <= 0 ) {
-            throw new CongeException( "Solde de conge insuffisant. Il vous reste " + nbJourDemande + " jr de conge." );
-        }
-    }
-
     private void controllerSoldeCongePaye( Conge conge )
             throws RuntimeException, CongeException {
-        double solde = getSoldeCongePayeByContrat( conge.getContrat() );
-        controllerSolde( solde, conge.getNbJour() );
+        Contrat contrat = conge.getContrat();
+        long nbMoisDeService = ChronoUnit.MONTHS.between( contrat.getDateDebut(), conge.getDateDebut() );
+        controller12moisServiceMin( nbMoisDeService );
+
+        int nbPris = this.getNbCongePayePrisByIdContrat( contrat.getIdContrat() );
+        double solde = getSoldeCongePayeByContrat( nbMoisDeService, nbPris );
+
+        SoldeCongeDTO soldeCongeDTO = new SoldeCongeDTO( contrat.getIdContrat(), nbPris, solde, nbMoisDeService );
+
+        System.out.println( soldeCongeDTO.toString() );
+
+        soldeCongeDTO.controllerDemande( conge.getNbJour() );
 
         // TODO: controller justificatif pour les conges maladies
         System.out.println( "Manao check justificatif maladie..." );
@@ -118,7 +137,12 @@ public class CongeService {
 
     private void controllerSoldeCongeExceptionnel( Conge conge, int year )
             throws CongeException {
-        double solde = getSoldeCongeExceptionnelByContrat( conge.getContrat(), year );
-        controllerSolde( solde, conge.getNbJour() );
+        Contrat contrat = conge.getContrat();
+
+        int nbPris = this.getNbCongeExceptionnelPrisByIdContrat( contrat.getIdContrat(), year );
+        double solde = getSoldeCongeExceptionnelByContrat( contrat, year );
+
+        SoldeCongeDTO soldeCongeDTO = new SoldeCongeDTO( contrat.getIdContrat(), nbPris, solde, year );
+        soldeCongeDTO.controllerDemande( conge.getNbJour() );
     }
 }

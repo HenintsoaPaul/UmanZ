@@ -16,6 +16,7 @@ public interface CongeRepository extends JpaRepository<Conge, Long> {
     List<Conge> findCongeByIdTalent( @Param( "idTalent" ) Long idTalent );
 
     // TODO: mbola tss anle hoe maty ilay conge non pris au bout de 3 ans
+    @Deprecated
     @Query( value = "SELECT coalesce(sum(nb_jour), 0) AS nb_conge_pris FROM conge " +
             "WHERE id_contrat = :idContrat AND id_type_conge = 1 AND date_validation is not null"
             , nativeQuery = true )
@@ -26,9 +27,19 @@ public interface CongeRepository extends JpaRepository<Conge, Long> {
             , nativeQuery = true )
     int findNbJourCongeExceptionnelPris( @Param( "idContrat" ) Long idContrat, int year );
 
-    @Query( "select new mg.itu.rh.dto.interne.CongeTalentDTO(c.contrat.talent,c.nbJour,c.dateDebut,c.motif) from Conge c where not c.dateValidation is null" )
+    @Query( "select new mg.itu.rh.dto.interne.CongeTalentDTO(c.contrat.talent,c.nbJour,c.dateDebut,c.motif) " +
+            "from Conge c " +
+            "where c.dateValidation is not null" )
     List<CongeTalentDTO> findAllWithTalent();
 
-    @Query( "select new mg.itu.rh.dto.interne.CongeTalentDTO(c.contrat.talent,c.nbJour,c.dateDebut,c.motif) from Conge c where c.dateValidation is null" )
+    @Query( "select new mg.itu.rh.dto.interne.CongeTalentDTO(c.contrat.talent,c.nbJour,c.dateDebut,c.motif) " +
+            "from Conge c " +
+            "where c.dateValidation is null" )
     List<CongeTalentDTO> findAllWithTalentNonValide();
+
+    @Query( "SELECT c " +
+            "FROM Conge c " +
+            "WHERE c.dateValidation is not null " +
+            " AND c.contrat.idContrat = :idContrat" )
+    List<Conge> findAllValidatedByIdContrat( @Param( "idContrat" ) Long idContrat );
 }

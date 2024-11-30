@@ -25,7 +25,7 @@ public class Contrat {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column(name="id_contrat")
-    @JsonView({POV.Public.class})
+    @JsonView({POV.Public.class, POV.Conge.class})
     private Long idContrat;
 
     @JsonView( POV.Public.class )
@@ -41,7 +41,7 @@ public class Contrat {
 
     @ManyToOne( fetch = FetchType.LAZY )
     @JoinColumn( name = "id_talent" )
-    @JsonView( POV.Public.class )
+    @JsonView( {POV.Public.class, POV.Conge.class} )
     private Talent talent;
 
     @ManyToOne( fetch = FetchType.LAZY )

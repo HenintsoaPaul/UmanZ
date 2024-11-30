@@ -11,4 +11,6 @@ public class CongeDTO {
     LocalDate dateDebut;
     String motif;
     Long idTypeConge;
+
+    // todo: add justificatif DTO
 }
