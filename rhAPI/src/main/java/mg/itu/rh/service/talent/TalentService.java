@@ -1,7 +1,6 @@
 package mg.itu.rh.service.talent;
 
 import jakarta.transaction.Transactional;
-import mg.itu.rh.dto.talent.AuthDTO;
 import mg.itu.rh.dto.talent.TalentDTO;
 import mg.itu.rh.entity.talent.Talent;
 
@@ -37,13 +36,8 @@ public class TalentService {
                 .orElseThrow( () -> new RuntimeException( "Talent not found" ) );
     }
 
-    public List<Talent> findAll(){
+    public List<Talent> findAll() {
         return talentRepository.findAll();
-    }
-
-    public Talent findByEmailAndPassword( AuthDTO authDTO ) {
-        String email = authDTO.getEmail(), pwd = authDTO.getPassword();
-        return talentRepository.findByEmailAndPassword( email, pwd ).orElse( null );
     }
 
     @Transactional
@@ -55,7 +49,7 @@ public class TalentService {
         competenceTalentService.saveAllFromDTO( talentDTO.getCompetences(), t );
 
         talentDiplomeService.saveAll( talentDTO.getDiplomes(), t );
-        talentLangueService.saveAll( talentDTO.getLangues(), t);
+        talentLangueService.saveAll( talentDTO.getLangues(), t );
         return t;
     }
 
@@ -63,31 +57,31 @@ public class TalentService {
         return this.talentRepository.save( talent );
     }
 
-    public void prendreEntretien(String candidatEmail) {
+    public void prendreEntretien( String candidatEmail ) {
         try {
-            Talent t = talentRepository.findByEmail(candidatEmail).orElse(null);
+            Talent t = talentRepository.findByEmail( candidatEmail ).orElse( null );
             String subject = "Entretien Planifié";
             String body = "<h1>Bonjour,</h1><p>Votre entretien a été planifié. Merci de confirmer votre présence.</p>";
             // TODO: atao mande ny email
 //            emailService.sendEmail(candidatEmail, subject, body);
-            System.out.println("Tsy mande ny email");
-            candidatHistoriqueService.ajouterHistoriqueEtNotifier(t, subject, body);
-        } catch (Exception e) {
-            System.out.println("Erreur d'envoi de l'e-mail : " + e.getMessage());
+            System.out.println( "Tsy mande ny email" );
+            candidatHistoriqueService.ajouterHistoriqueEtNotifier( t, subject, body );
+        } catch ( Exception e ) {
+            System.out.println( "Erreur d'envoi de l'e-mail : " + e.getMessage() );
         }
     }
 
-    public void rejetCandidat(String candidatEmail) {
+    public void rejetCandidat( String candidatEmail ) {
         try {
-            Talent t = talentRepository.findByEmail(candidatEmail).orElse(null);
+            Talent t = talentRepository.findByEmail( candidatEmail ).orElse( null );
             String subject = "Candidature rejetée";
             String body = "<h1>Bonjour,</h1><p>Nous sommes désolés de vous informer que votre candidature n'a pas été retenue.</p>";
             // TODO: atao mande ny email
 //            emailService.sendEmail(candidatEmail, subject, body);
-            System.out.println("Tsy mande ny email");
-            candidatHistoriqueService.ajouterHistoriqueEtNotifier(t, subject, body);
-        } catch (Exception e) {
-            System.out.println("Erreur d'envoi de l'e-mail : " + e.getMessage());
+            System.out.println( "Tsy mande ny email" );
+            candidatHistoriqueService.ajouterHistoriqueEtNotifier( t, subject, body );
+        } catch ( Exception e ) {
+            System.out.println( "Erreur d'envoi de l'e-mail : " + e.getMessage() );
         }
     }
 

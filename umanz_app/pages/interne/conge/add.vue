@@ -1,15 +1,18 @@
 <script setup lang="ts">
+definePageMeta({
+    middleware: 'auth-is-user'
+});
+
 import { z } from 'zod'
 import { reactive, ref, computed } from 'vue'
-import type { FormConge } from '~/types/dto';
-import type { TypeConge, TypeJustificatif } from '~/types/interne';
+import type { FormConge } from '~/types/interne/dto';
+import type { TypeConge } from '~/types/interne';
 
 const idUser = computed(() => localStorage.getItem("idUser"));
-const { demanderCongerFn } = useCongeActions();
+const { demanderCongerFn, validateJustificatif } = useCongeActions();
 
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const { data: typeConges } = useFetch<TypeConge[]>(`${apiUrl}/type_conges`);
-const { data: typeJustificatifs } = useFetch<TypeJustificatif[]>(`${apiUrl}/type_justificatifs`);
 
 const schema = z.object({
     nbJour: z.number().min(1, "Le nombre de jour de conge minimum est 1 jour."),
@@ -25,12 +28,11 @@ const form = reactive<FormConge>({
     justificatif: {
         imageJustificatif: '',
         dateJustificatif: '',
-        idTypeJustificatif: 0
     }
 });
 
-const isFormValid = computed(() => {
-    return schema.safeParse({ ...form }).success;
+const validateForm = computed(() => {
+    return schema.safeParse({ ...form });
 });
 
 const loading = ref(false);
@@ -38,16 +40,23 @@ const formError = ref('');
 
 async function onSubmit(event: Event) {
     event.preventDefault();
-    if (!isFormValid.value) {
-        formError.value = 'Veuillez remplir correctement tous les champs.';
+    const validationResult = validateForm.value;
+    if (!validationResult.success) {
+        formError.value = validationResult.error.errors.map(err => err.message).join('\n');
         return;
     }
 
     loading.value = true;
     try {
-        await demanderCongerFn(form, Number(idUser.value), apiUrl);
+        const idTypeConge = form.idTypeConge;
+        if (idTypeConge === 2 || idTypeConge === 4) {
+            let err = validateJustificatif(form.justificatif);
+            if (err.length > 0) throw new Error(err);
+        }
+
+        await demanderCongerFn(toRaw(form), Number(idUser.value), apiUrl);
     } catch (error) {
-        formError.value = 'Erreur lors de l\'envoi du formulaire.';
+        formError.value = `Erreur lors de l'envoi du formulaire: ${(error as Error)?.message}`;
     } finally {
         loading.value = false;
     }
@@ -102,18 +111,6 @@ async function onSubmit(event: Event) {
                         <input v-model="form.justificatif.imageJustificatif" type="string" id="date_debut"
                             class="w-full p-2 border border-gray-300 rounded mt-1" />
                     </div>
-                </div>
-
-                <div class="mb-4">
-                    <label for="type_justificatif" class="block text-gray-700">Type Justificatif</label>
-                    <select v-model="form.justificatif.idTypeJustificatif" id="type_justificatif"
-                        class="w-full p-2 border border-gray-300 rounded mt-1">
-                        <option value="" disabled>Choisir un type justificatif</option>
-                        <option v-for="tjustif in typeJustificatifs" :key="tjustif.idTypeJustificatif"
-                            :value="tjustif.idTypeJustificatif">
-                            {{ tjustif.nomTypeJustificatif }}
-                        </option>
-                    </select>
                 </div>
             </div>
 
