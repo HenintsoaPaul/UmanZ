@@ -1,11 +1,11 @@
-package mg.itu.rh.entity;
+package mg.itu.rh.entity.interne;
 
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Data
-public class Category {
+public class Categories {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

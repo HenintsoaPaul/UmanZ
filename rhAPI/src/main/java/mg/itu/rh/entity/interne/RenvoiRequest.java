@@ -1,4 +1,4 @@
-package mg.itu.rh.entity;
+package mg.itu.rh.entity.interne;
 
 public class RenvoiRequest {
     private String email;

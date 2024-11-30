@@ -1,6 +1,6 @@
 package mg.itu.rh.controller;
 
-import mg.itu.rh.entity.Chat;
+import mg.itu.rh.entity.interne.Chat;
 import mg.itu.rh.repository.ChatRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;

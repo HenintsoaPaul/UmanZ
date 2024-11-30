@@ -5,7 +5,8 @@ import mg.itu.rh.entity.talent.ExperienceTalent;
 import mg.itu.rh.entity.talent.Talent;
 import mg.itu.rh.entity.id.IdExperienceTalent;
 import mg.itu.rh.repository.talent.ExperienceTalentRepository;
-import mg.itu.rh.service.PosteService;
+import mg.itu.rh.service.interne.PosteService;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,7 +1,7 @@
-package mg.itu.rh.service;
+package mg.itu.rh.service.interne;
 
 import mg.itu.rh.dto.poste.PosteDTO;
-import mg.itu.rh.entity.Poste;
+import mg.itu.rh.entity.interne.Poste;
 import mg.itu.rh.repository.PosteRepository;
 import mg.itu.rh.service.recrutement.PosteDiplomeService;
 import mg.itu.rh.service.recrutement.CompetencePosteService;

@@ -14,7 +14,6 @@ import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import mg.itu.rh.dto.interne.ContratDTO;
-import mg.itu.rh.entity.Poste;
 import mg.itu.rh.entity.talent.Talent;
 import mg.itu.rh.other.POV;
 

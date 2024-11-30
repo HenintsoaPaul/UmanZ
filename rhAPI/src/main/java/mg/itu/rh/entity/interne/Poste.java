@@ -1,4 +1,4 @@
-package mg.itu.rh.entity;
+package mg.itu.rh.entity.interne;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;

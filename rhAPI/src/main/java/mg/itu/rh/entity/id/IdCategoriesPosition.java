@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Embeddable
 @EqualsAndHashCode
-public class IdCategoryPosition implements Serializable {
+public class IdCategoriesPosition implements Serializable {
     @Column(name = "id_poste")
     private Long idPoste;
 

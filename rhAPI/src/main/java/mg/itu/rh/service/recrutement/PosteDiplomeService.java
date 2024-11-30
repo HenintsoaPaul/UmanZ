@@ -2,10 +2,10 @@ package mg.itu.rh.service.recrutement;
 
 import jakarta.transaction.Transactional;
 import mg.itu.rh.dto.critere.DiplomeDTO;
-import mg.itu.rh.entity.Poste;
 import mg.itu.rh.entity.recrutement.PosteDiplome;
 import mg.itu.rh.entity.critere.Diplome;
 import mg.itu.rh.entity.id.IdPosteDiplome;
+import mg.itu.rh.entity.interne.Poste;
 import mg.itu.rh.repository.recrutement.AnnonceDiplomeRepository;
 import org.springframework.stereotype.Service;
 

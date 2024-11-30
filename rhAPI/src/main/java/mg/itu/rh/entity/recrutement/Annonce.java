@@ -2,16 +2,13 @@ package mg.itu.rh.entity.recrutement;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import mg.itu.rh.entity.*;
-import mg.itu.rh.entity.critere.Diplome;
+import mg.itu.rh.entity.interne.Poste;
 import mg.itu.rh.other.POV;
 
 @Entity
