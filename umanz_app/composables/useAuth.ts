@@ -1,4 +1,4 @@
-import type { AuthDTO } from "~/types/dto";
+import type { AuthDTO } from "~/types/auth";
 
 export function useAuth() {
     const authenticate = async (email: string, password: string, apiUrl: string): Promise<AuthDTO> => {

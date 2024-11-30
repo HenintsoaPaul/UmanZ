@@ -1,4 +1,4 @@
-import type { Contrat } from "..";
+import type { Contrat } from "../contrat";
 
 export interface TypeJustificatif {
     idTypeJustificatif: number;
@@ -24,4 +24,22 @@ export interface Conge {
     motif?: string,
     dateValidation?: string,
     contrat: Contrat
+}
+
+export interface JustificatifDTO {
+    dateJustificatif: string;
+    imageJustificatif: string;
+}
+
+export interface FormConge {
+    dateDebut: string;
+    nbJour: number;
+    motif: string;
+    idTypeConge: number;
+    justificatif: JustificatifDTO;
+}
+
+export interface CongeDTO {
+    conge: Conge;
+    soldeConge: number;
 }

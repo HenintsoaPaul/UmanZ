@@ -7,31 +7,11 @@ export interface Formation {
     competenceCibles: CompetenceCible[]
 }
 
-export interface Participation {
-    contrat: Contrat,
-    dateInscription: string
-}
-
 export interface CompetenceCible {
     competence: Competence,
     formation: Formation,
     pointGagne: number,
 }
-
-export interface Contrat {
-    idContrat: number,
-    contrat: string,
-    dateDebut: string,
-    dateFin?: string,
-    salaireHoraire: number,
-    nbJourSemaine: number,
-    nbJourCongeAn: number,
-    nbHeureJour: number,
-    poste: Poste,
-    talent: Talent,
-    idTypeContrat: number
-}
-
 
 export interface Talent {
     idTalent: number,
