@@ -56,7 +56,7 @@ public class ChatController {
             Map<String, Object> jsonRequest = new HashMap<>();
             jsonRequest.put("model", "command-r-plus");
             jsonRequest.put("prompt", prompt);
-            jsonRequest.put("max_tokens", 100);
+            jsonRequest.put("max_tokens", 1000);
             jsonRequest.put("temperature", 0.7);
 
             // Convertir en JSON avec Jackson
