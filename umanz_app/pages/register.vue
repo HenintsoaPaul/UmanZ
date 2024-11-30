@@ -114,6 +114,11 @@ async function onSubmit() {
                     </UButton>
                 </div>
 
+                <div class="text-sm mt-4">
+                    Vous avez déjà un compte ?
+                    <NuxtLink class="text-green-400" to="/">Connectez-vous ici</NuxtLink>
+                </div>
+
             </UForm>
         </div>
     </div>
