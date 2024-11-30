@@ -1,6 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
-    middleware: 'auth-is-user'
+    middleware: 'auth-is-emp'
 });
 
 import { z } from 'zod'
@@ -8,7 +8,7 @@ import { reactive, ref, computed } from 'vue'
 import type { FormConge } from '~/types/interne/dto';
 import type { TypeConge } from '~/types/interne';
 
-const idUser = computed(() => localStorage.getItem("idUser"));
+const idContrat = computed(() => localStorage.getItem("umanz-idContrat"));
 const { demanderCongerFn, validateJustificatif } = useCongeActions();
 
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
@@ -54,7 +54,7 @@ async function onSubmit(event: Event) {
             if (err.length > 0) throw new Error(err);
         }
 
-        await demanderCongerFn(toRaw(form), Number(idUser.value), apiUrl);
+        await demanderCongerFn(toRaw(form), Number(idContrat.value), apiUrl);
     } catch (error) {
         formError.value = `Erreur lors de l'envoi du formulaire: ${(error as Error)?.message}`;
     } finally {
