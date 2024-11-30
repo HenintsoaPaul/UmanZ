@@ -80,4 +80,8 @@ public class Contrat {
         LocalDate dFin = contratDTO.getDateFin();
         if ( dFin != null ) this.setDateFin( contratDTO.getDateFin() );
     }
+
+    public double heureHebdomadaire() {
+        return nbHeureJour * nbJourSemaine;
+    }
 }
