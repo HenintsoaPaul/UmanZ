@@ -3,21 +3,18 @@ import { defineProps } from 'vue';
 
 const props = defineProps<{
     conge: Conge;
+    apiUrl: string;
 }>();
 
-function validerFn() {
-    // emit("valider", props.conge);
-}
+const emit = defineEmits(["valider", "refuser"]);
+const validerFn = () => { emit("valider", props.conge); }
+const refuserFn = () => { emit("refuser", props.conge); }
 
-function refuserFn() {
-    // emit("refuser", props.conge);
-}
-
-const isChangeable = computed(() => props.dateValidation == null || props.dateRefus == null);
+const isChangeable = computed(() => props.conge.dateValidation == null || props.conge.dateRefus == null);
 </script>
 
 <template>
-    <div class="flex">
+    <div class="flex gap-4">
         <div class="w-1/2">
             <div class="mb-4">
                 <h3 class="text font-semibold mb-2">Poste:</h3>
@@ -40,7 +37,7 @@ const isChangeable = computed(() => props.dateValidation == null || props.dateRe
                 </button>
 
                 <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2"
-                    @click="refuserFn">
+                    @click="refuserFn" :disabled="conge.motifRefus.length == 0">
                     Refuser
                 </button>
             </template>

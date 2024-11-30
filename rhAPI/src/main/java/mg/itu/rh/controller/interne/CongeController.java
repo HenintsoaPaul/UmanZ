@@ -77,4 +77,10 @@ public class CongeController {
     public Conge validate( @PathVariable( "idConge" ) Long idConge ) {
         return congeService.validate( idConge );
     }
+
+    @PutMapping( "/refuse/{idConge}" )
+    @JsonView( POV.Conge.class )
+    public Conge refuse( @PathVariable( "idConge" ) Long idConge, @RequestBody String motifRefus ) {
+        return congeService.refuse( idConge, motifRefus );
+    }
 }

@@ -24,6 +24,7 @@ export interface Conge {
     motif?: string,
     dateValidation?: string,
     dateRefus?: string,
+    motifRefus?: string,
     typeConge: TypeConge,
     contrat: Contrat
 }

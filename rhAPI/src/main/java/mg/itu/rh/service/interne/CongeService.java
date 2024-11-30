@@ -49,6 +49,13 @@ public class CongeService {
         return congeRepository.save( conge );
     }
 
+    public Conge refuse( Long idConge, String motifRefus ) {
+        Conge conge = this.findById( idConge );
+        conge.setDateRefus( LocalDate.now() );
+        conge.setMotifRefus( motifRefus );
+        return congeRepository.save( conge );
+    }
+
     public List<CongeTalentDTO> findAllNonValide() {
         return congeRepository.findAllWithTalentNonValide();
     }

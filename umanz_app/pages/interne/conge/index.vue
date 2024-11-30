@@ -1,4 +1,8 @@
 <script setup lang="ts">
+definePageMeta({
+    middleware: ['auth-is-admin']
+})
+
 import type { Conge } from '~/types';
 import { ref, computed, toRaw } from 'vue';
 import DemandeCongeExpend from '~/components/conge/DemandeCongeExpend';
@@ -14,7 +18,7 @@ const headers = [
 ];
 
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
-const { data: conges } = useFetch<Conge[]>(`${apiUrl}/conges/needs-validation`);
+const { data: conges, refresh: refreshConges } = useFetch<Conge[]>(`${apiUrl}/conges/needs-validation`);
 
 const { q, filteredRows: filteredConges } = useFilteredRows(conges);
 const expand = ref({
@@ -22,8 +26,20 @@ const expand = ref({
     row: {}
 });
 
-onMounted(() => console.log(toRaw(conges))
-)
+const { validerCongerFn, refuserCongerFn } = useCongeActions();
+async function validerFn(conge: Conge) {
+    await validerCongerFn(conge.idConge, apiUrl);
+    refreshConges();
+}
+async function refuserFn(conge: Conge) {
+    const motifRefus: string = conge.motifRefus;
+    if (motifRefus.length <= 0) {
+        console.error("MotifRefus is required");
+        return;
+    }
+    await refuserCongerFn(conge.idConge, conge.motifRefus, apiUrl);
+    refreshConges();
+}
 </script>
 
 <template>
@@ -37,7 +53,7 @@ onMounted(() => console.log(toRaw(conges))
         <UTable :columns="headers" :rows="filteredConges ?? []" v-model:expand="expand">
             <template #expand="{ row }">
                 <div class="p-4">
-                    <DemandeCongeExpend :conge="row" />
+                    <DemandeCongeExpend :conge="row" :api-url="apiUrl" @valider="validerFn" @refuser="refuserFn" />
                 </div>
             </template>
         </UTable>
