@@ -23,6 +23,8 @@ export interface Conge {
     nbJour: number,
     motif?: string,
     dateValidation?: string,
+    dateRefus?: string,
+    typeConge: TypeConge,
     contrat: Contrat
 }
 
