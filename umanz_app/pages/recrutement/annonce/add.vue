@@ -1,131 +1,178 @@
 <script setup lang="ts">
-import axios from 'axios';
-import { ref } from 'vue'
-import type { Poste } from '~/types';
+import { ref, onMounted } from 'vue'
+import type { Competence, CompetenceAnnonce, Diplome, DiplomeAvecNiveau, ExperiencePoste, Langue, LangueAvecNiveau, NiveauDiplome, NiveauLangue, Poste } from '~/types';
 
-// Interfaces
+definePageMeta({
+    middleware: ['auth']
+})
+
+const apiUrl = useRuntimeConfig().public.apiUrl as string;
+const { data: postes, refresh: refreshPostes } = useFetch<Poste[]>(`${apiUrl}/postes`);
+const { data: competences, refresh: refreshCompetences } = useFetch<Competence[]>(`${apiUrl}/competences`);
+const { data: diplomes, refresh: refreshDiplomes } = useFetch<Diplome[]>(`${apiUrl}/diplomes`);
+const { data: niveauDiplomes, refresh: refreshniveauDiplomes } = useFetch<NiveauDiplome[]>(`${apiUrl}/niveau_diplomes`);
+const { data: langues, refresh: refreshLangues } = useFetch<Langue[]>(`${apiUrl}/langues`);
+const { data: niveaulangues, refresh: refreshNiveauLangues } = useFetch<NiveauLangue[]>(`${apiUrl}/niveau_langues`);
+
 interface Form {
     dateAnnonce: string;
     dateExpiration: string;
-    poste: string;
-    descPoste: string;
-    competences: string[];
-    experiences: ExperienceItem[];
+    idPoste: string;
+    competences: CompetenceAnnonce[];
+    experiences: ExperiencePoste[];
+    languesAvecNiveaux: LangueAvecNiveau[];
+    diplomesAvecNiveaux: DiplomeAvecNiveau[];
 }
-
-interface CompetenceOption {
-    value: string;
-    label: string;
-}
-
-interface ExperienceItem {
-    value: string;
-    label: string;
-    duree: number;
-}
-
-// Data
-const competences: CompetenceOption[] = [
-    { value: 'option1', label: 'Conduite' },
-    { value: 'option2', label: 'Dynamisme' },
-    { value: 'option3', label: 'Ponctualite' },
-]
-
-const experiences: ExperienceItem[] = [
-    { value: 'option1', label: 'Informaticien', duree: 0 },
-    { value: 'option2', label: 'Gardien', duree: 0 },
-]
-
-const form = ref<Form>({
+const form = reactive<Form>({
     dateAnnonce: '',
     dateExpiration: '',
-    poste: '',
-    descPoste: '',
+    idPoste: '',
     competences: [],
-    experiences: [...experiences]
-})
+    experiences: [],
+    languesAvecNiveaux: [],
+    diplomesAvecNiveaux: [],
+});
 
-const postes = ref<Poste[]>([]);
+const errorMessage = ref('');
+const successMessage = ref('');
+const loading = ref(false);
 
-const loadPoste = async (apiUrl: string) => {
+async function onSubmit() {
+    loading.value = true;
     try {
-        const response = await axios.get(`${apiUrl}/postes`);
+        const { languesAvecNiveaux, diplomesAvecNiveaux, ...f } = form;
+        const formKdj = toRaw({
+            ...f,
+            competences: f.competences.filter(cp => cp.point > 0).map(e => toRaw(e)),
+            experiences: f.experiences.filter(exp => exp.ans > 0).map(e => toRaw(e)),
+            langues: languesAvecNiveaux.filter(lg => lg.niveauLangue != null).map(e => toRaw(e)),
+            diplomes: diplomesAvecNiveaux.filter(dp => dp.selected === true).map(e => toRaw(e)),
+        });
 
-        if (response.status === 200) {
-            postes.value = response.data;
-        } else {
-            console.error('Erreur lors de la récupération des postes', response.data);
-        }
-    } catch (error) {
-        console.error('Erreur lors de la requête API:', error);
-    }
-};
+        console.log(toRaw(formKdj));
+        const response = await $fetch(`${apiUrl}/annonce`, {
+            method: 'POST',
+            body: toRaw(formKdj)
+        });
 
-onMounted(() => {
-    const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
-    loadPoste(apiUrl);
-})
-
-// Method
-const submitForm = async () => {
-    try {
-        console.log(toRaw(form.value));
-
-        const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
-        console.log(apiUrl);
-
-
-        const response = await axios.post(apiUrl, toRaw(form.value));
-        console.log('Form submitted successfully:', response.data);
+        console.log('Form submitted successfully:', response);
+        errorMessage.value = '';
+        successMessage.value = 'Le formulaire a été soumis avec succès.';
     } catch (error) {
         console.error('Error submitting form:', error);
+        errorMessage.value = 'Une erreur s\'est produite lors de la soumission du formulaire.';
+        successMessage.value = '';
+    }
+    finally {
+        loading.value = false;
     }
 };
+
+onMounted(async () => {
+    await refreshPostes();
+    await refreshCompetences();
+    await refreshDiplomes();
+    await refreshLangues();
+    await refreshniveauDiplomes();
+    await refreshNiveauLangues();
+    if (postes.value && competences.value && langues.value && diplomes.value) {
+        form.experiences = postes.value.map(pt => ({
+            ans: 0,
+            poste: toRaw(pt)
+        }));
+        form.competences = competences.value.map(cp => ({
+            point: 0,
+            competence: toRaw(cp)
+        }));
+        form.languesAvecNiveaux = langues.value.map(lg => ({
+            langue: toRaw(lg),
+            niveauLangue: null
+        }));
+        form.diplomesAvecNiveaux = diplomes.value.map(dp => ({
+            diplome: toRaw(dp),
+            selected: false,
+            niveauDiplome: null
+        }));
+    }
+});
 </script>
 
 <template>
-    <div class="absence-form">
-        <h1>Ajouter Annonce</h1>
+    <div class="absence-form max-w-3xl mx-auto p-6 border border-white rounded-lg shadow-md">
+        <h1 class="text-2xl font-bold mb-6">Ajouter Annonce</h1>
 
-        <form @submit.prevent="submitForm">
+        <form @submit.prevent="onSubmit" class="space-y-6">
             <!-- Daty -->
             <div class="form-group">
-                <label for="dateAnnonce">Date d'Annonce:</label>
-                <input type="date" id="dateAnnonce" v-model="form.dateAnnonce" required />
+                <label for="dateAnnonce" class="block text-sm font-medium">Date d'Annonce:</label>
+                <input type="date" id="dateAnnonce" v-model="form.dateAnnonce" required
+                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
             </div>
             <div class="form-group">
-                <label for="dateExpiration">Date d'Expiration:</label>
-                <input type="date" id="dateExpiration" v-model="form.dateExpiration" required />
+                <label for="dateExpiration" class="block text-sm font-medium">Date d'Expiration:</label>
+                <input type="date" id="dateExpiration" v-model="form.dateExpiration" required
+                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
             </div>
 
             <!-- Poste -->
-            <div class="form-group">
-                <select id="poste" v-model="form.poste" required>
-                    <option v-for="poste in postes" :key="poste.idPoste" :value="poste.idPoste">{{ poste.nomPoste }}
-                    </option>
-                </select>
-            </div>
-
-            <!-- Competences -->
-            <div class="form-group">
-                <label>Competences:</label>
-                <div v-for="option in competences" :key="option.value" class="checkbox-group">
-                    <input type="checkbox" :id="option.value" :value="option.value" v-model="form.competences" />
-                    <label :for="option.value">{{ option.label }}</label>
+            <div v-if="postes">
+                <div class="form-group">
+                    <label for="poste" class="block text-sm font-medium">Poste:</label>
+                    <select id="poste" v-model="form.idPoste" required
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <option v-for="poste in postes" :key="poste.idPoste" :value="poste.idPoste">{{ poste.nomPoste }}
+                        </option>
+                    </select>
                 </div>
             </div>
 
-            <!-- Experiences -->
-            <div class="form-group">
-                <label>Experiences:</label>
-                <div v-for="(item, index) in experiences" :key="index" class="checkbox-group">
-                    <label :for="item.value">{{ item.label }}</label>
-                    <input type="number" v-model="form.experiences.find(i => i.label === item.label)!.duree"
-                        placeholder="Durée (années)" />
+            <hr>
+            <div class="flex gap-4 w-full">
+                <div class="w-1/2" v-if="niveaulangues">
+                    <ListInputLangue title="Langues" :niveau-langues="niveaulangues"
+                        :list-langue-avec-niveau="form.languesAvecNiveaux" />
+                </div>
+                <div v-else>
+                    Loading Langues...
+                </div>
+                <div class="w-1/2" v-if="niveauDiplomes">
+                    <ListInputDiplome title="Diplomes" :niveau-diplomes="niveauDiplomes"
+                        :list-diplome-avec-niveau="form.diplomesAvecNiveaux" />
+                </div>
+                <div v-else>
+                    Loading Diplomes...
+                </div>
+            </div>
+            <hr>
+
+            <!-- Competences et Experiences -->
+            <div class="grid grid-cols-2 gap-4">
+                <div v-if="form.competences.length > 0" class="form-group">
+                    <ListInputCompetence title="Competences" :competences="form.competences" />
+                </div>
+                <div v-else>
+                    Loading Competences...
+                </div>
+
+                <div v-if="form.experiences.length > 0" class="form-group">
+                    <ListInputExperience title="Experiences" :experiences="form.experiences" />
+                </div>
+                <div v-else>
+                    Loading Experiences...
                 </div>
             </div>
 
-            <button type="submit">Soumettre</button>
+            <button type="submit" :disabled="loading"
+                class="w-full inline-flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                {{ loading ? 'Chargement...' : 'Soumettre' }}
+            </button>
         </form>
+
+        <div v-if="errorMessage" class="mt-4 text-red-500">
+            {{ errorMessage }}
+        </div>
+        <div v-if="successMessage" class="mt-4 text-green-500">
+            {{ successMessage }}
+        </div>
     </div>
 </template>
