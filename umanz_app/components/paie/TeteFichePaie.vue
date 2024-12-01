@@ -1,69 +1,82 @@
 <script setup lang="ts">
-const dataLeft = [
-    {
-        label: "Nom et Prénoms",
-        value: "RAZAFIARISON Laza"
-    },
-    {
-        label: "Matricule",
-        value: "627/TNR"
-    },
-    {
-        label: "Fonction",
-        value: "MPITOLONA"
-    },
-    {
-        label: "N° CNaPS",
-        value: "~"
-    },
-    {
-        label: "Date d'embauche",
-        value: "3/25/2011"
-    },
-    {
-        label: "Ancienneté",
-        value: "12 an(s) 5 mois et 10 jour(s)"
-    },
-];
-const dataRight = [
-    {
-        label: "Classification",
-        value: "HC"
-    },
-    {
-        label: "Salaire de base",
-        value: 4083409.09
-    },
-    {
-        label: "Taux journaliers",
-        value: 136114.00
-    },
-    {
-        label: "Taux horaires",
-        value: 23559.00
-    },
-    {
-        label: "Indice",
-        value: 17660.00
-    },
-];
+
+import type { PaysLipsHeader } from '~/types';
+
+defineProps<{
+    paysLipsHeader: PaysLipsHeader
+}>();
+
 </script>
 
 <template>
     <div class="container mx-auto flex gap-4">
         <div class="w-1/2">
-            <div class="mb-4" v-for="(elmt, i) in dataLeft" :key="i">
+            <div class="mb-4">
                 <p class="text-gray-500">
-                    <strong class="font-semibold text-gray-100">{{ elmt.label }} :</strong>
-                    {{ elmt.value }}
+                    <strong class="font-semibold text-gray-100">Nom et prénom(s) :</strong>
+                    {{ paysLipsHeader?.nomPrenom }}
+                </p>
+            </div>
+            <div class="mb-4">
+                <p class="text-gray-500">
+                    <strong class="font-semibold text-gray-100">Matricule :</strong>
+                    {{ paysLipsHeader?.matricule }}
+                </p>
+            </div>
+            <div class="mb-4">
+                <p class="text-gray-500">
+                    <strong class="font-semibold text-gray-100">Fonction :</strong>
+                    {{ paysLipsHeader?.fonction }}
+                </p>
+            </div>
+            <div class="mb-4">
+                <p class="text-gray-500">
+                    <strong class="font-semibold text-gray-100">Numéro CNaPS :</strong>
+                    {{ paysLipsHeader?.idCnaps }}
+                </p>
+            </div>
+            <div class="mb-4">
+                <p class="text-gray-500">
+                    <strong class="font-semibold text-gray-100">Date d'embauche :</strong>
+                    {{ paysLipsHeader?.dateEmbauche }}
+                </p>
+            </div>
+            <div class="mb-4">
+                <p class="text-gray-500">
+                    <strong class="font-semibold text-gray-100">Ancienneté :</strong>
+                    {{ paysLipsHeader?.anciennete }}
                 </p>
             </div>
         </div>
         <div class="w-1/2">
-            <div class="mb-4" v-for="(elmt, i) in dataRight" :key="i">
+            <div class="mb-4">
                 <p class="text-gray-500">
-                    <strong class="font-semibold text-gray-100">{{ elmt.label }} :</strong>
-                    {{ elmt.value }}
+                    <strong class="font-semibold text-gray-100">Classification :</strong>
+                    {{ paysLipsHeader?.classification }}
+                </p>
+            </div>
+            <div class="mb-4">
+                <p class="text-gray-500">
+                    <strong class="font-semibold text-gray-100">Salaire de base :</strong>
+                    {{ paysLipsHeader?.salaire }}
+                </p>
+            </div>
+            <div class="mb-4">
+                <p class="text-gray-500">
+                    <strong class="font-semibold text-gray-100">Taux journalier :</strong>
+                    {{ paysLipsHeader?.tauxJournalier }}
+                </p>
+            </div>
+            <div class="mb-4">
+                <p class="text-gray-500">
+                    <strong class="font-semibold text-gray-100">Taux horaire :</strong>
+                    {{ paysLipsHeader?.tauxHoraire }}
+                </p>
+            </div>
+            <div class="mb-4">
+                <p class="text-gray-500">
+                    <strong class="font-semibold text-gray-100">Indice :</strong>
+                    {{ paysLipsHeader?.indice }}
                 </p>
             </div>
         </div>
