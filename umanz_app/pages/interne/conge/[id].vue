@@ -2,29 +2,13 @@
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import type { Conge } from '~/types/interne/conge';
+import CalendarConge from '~/components/conge/CalendarConge.vue';
 
 const route = useRoute();
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const idContrat = computed(() => route.params.id);
 
 const { data: conges, error: congesError } = useFetch<Conge[]>(`${apiUrl}/conges/taken-by/${idContrat.value}`);
-
-
-// =====calendar=====
-const colors = ['blue', 'green', 'red', 'yellow', 'purple'];
-const attrs = computed(() => {
-    return conges.value?.map((conge, index) => ({
-        key: `conge-${conge.idConge}`,
-        highlight: {
-            color: colors[index % colors.length],
-            fillMode: 'solid'
-        },
-        dates: { start: new Date(conge.dateDebut), end: new Date(conge.dateFin) }
-    }))
-})
-
-
-const date = ref(new Date())
 
 // ==============
 const headers = [
@@ -64,12 +48,9 @@ const expand = ref({
                 </UTable>
             </div>
 
-            <div>
-                <client-only>
-                    <h2>Calendar</h2>
-                    <VCalendar v-model="date" :attributes="attrs" />
-                </client-only>
-            </div>
+            <client-only>
+                <CalendarConge :conges="conges" />
+            </client-only>
         </div>
         <div v-else>
             Loading Details...
