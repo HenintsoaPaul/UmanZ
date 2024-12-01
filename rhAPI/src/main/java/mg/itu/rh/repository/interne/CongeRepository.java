@@ -47,4 +47,9 @@ public interface CongeRepository extends JpaRepository<Conge, Long> {
             "FROM Conge c " +
             "WHERE c.dateValidation is null AND c.dateRefus is null")
     List<Conge> findAllCongeNeedsValidation();
+
+    @Query( "SELECT c " +
+            "FROM Conge c " +
+            "WHERE c.dateValidation is not null AND c.contrat.idContrat = :idContrat")
+    List<Conge> findAllTakenByContrat( @Param( "idContrat" ) Long idContrat );
 }

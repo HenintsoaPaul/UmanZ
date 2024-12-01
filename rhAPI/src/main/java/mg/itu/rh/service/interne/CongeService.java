@@ -33,6 +33,10 @@ public class CongeService {
                 .orElseThrow( () -> new RuntimeException( "Conge not found" ) );
     }
 
+    public List<Conge> findAllTakenByContrat( Long idContrat ) {
+        return this.congeRepository.findAllTakenByContrat( idContrat );
+    }
+
     public List<PendingCongeDTO> findAllCongeNeedsValidation() {
         List<PendingCongeDTO> pendingConges = new ArrayList<>();
         double solde;

@@ -30,23 +30,23 @@ public class CongeController {
         return congeRepository.findAll();
     }
 
-    @GetMapping( "/validated" )
-    @JsonView( POV.Full.class )
-    public List<CongeTalentDTO> findAllValide() {
-        return congeService.findAllValide();
-    }
-
-    @GetMapping( "/refused" )
-    @JsonView( POV.Full.class )
-    public List<CongeTalentDTO> findALlNonValide() {
-        return congeService.findAllNonValide();
-    }
-
-    @GetMapping( "/talent/{id}" )
-    @JsonView( POV.Public.class )
-    public List<Conge> getCongeByTalent( @PathVariable( "id" ) Long id ) {
-        return congeService.findCongeByIdTalent( id );
-    }
+//    @GetMapping( "/validated" )
+//    @JsonView( POV.Full.class )
+//    public List<CongeTalentDTO> findAllValide() {
+//        return congeService.findAllValide();
+//    }
+//
+//    @GetMapping( "/refused" )
+//    @JsonView( POV.Full.class )
+//    public List<CongeTalentDTO> findALlNonValide() {
+//        return congeService.findAllNonValide();
+//    }
+//
+//    @GetMapping( "/talent/{id}" )
+//    @JsonView( POV.Public.class )
+//    public List<Conge> getCongeByTalent( @PathVariable( "id" ) Long id ) {
+//        return congeService.findCongeByIdTalent( id );
+//    }
 
     @JsonView( POV.Public.class )
     @PostMapping( "/demandes" )
@@ -71,5 +71,11 @@ public class CongeController {
     @JsonView( POV.Conge.class )
     public Conge refuse( @PathVariable( "idConge" ) Long idConge, @RequestBody String motifRefus ) {
         return congeService.refuse( idConge, motifRefus );
+    }
+
+    @GetMapping( "/taken-by/{idContrat}" )
+    @JsonView( POV.Conge.class )
+    public List<Conge> findAllTakenByContrat( @PathVariable( "idContrat" ) Long idContrat ) {
+        return congeService.findAllTakenByContrat( idContrat );
     }
 }
