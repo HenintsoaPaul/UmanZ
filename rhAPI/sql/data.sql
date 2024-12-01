@@ -69,9 +69,9 @@ VALUES ('Cloud Computing', 1),
 INSERT INTO competence (competence, id_type_competence)
 VALUES ('Communication', 2),
        ('Leadership', 2),
-       ('Programmation', 2),
-       ('Gestion de projet', 2),
-       ('Design', 2);
+       ('Programmation', 1),
+       ('Gestion de projet', 1),
+       ('Design', 1);
 
 INSERT INTO talent (nom, prenom, mail, password, is_admin, date_naissance)
 VALUES ('Dupont', 'Jean', 'jean.dupont@example.com', 'password1', true, '1985-04-12'),
@@ -286,20 +286,11 @@ VALUES (10, 5, 3);
 
 -- Architecte Logiciel (poste 11)
 INSERT INTO experience_poste (id_poste, id_annonce, ans)
-VALUES (11, 6, 6);
--- 6 ans d'experience en architecture logicielle
-
-INSERT INTO type_justificatif (nom_type_justificatif)
-VALUES ('Certificat Medical'),
-       ('Certificat maternite');
-
-INSERT INTO justificatif (date_justificatif, image_justificatif, id_type_justificatif)
-VALUES ('2024-01-01', '/img/fuf.png', 1),
-       ('2024-01-01', '/img/fuf.png', 2);
+VALUES (11, 6, 6); -- 6 ans d'experience en architecture logicielle
 
 INSERT INTO type_conge(nom_type_conge)
 VALUES ('Annuel'),
-       ('Médical'),
+       ('Medical'),
        ('Evènement spécial');
 
 INSERT INTO conge (date_debut, date_validation, nb_jour, motif, id_contrat, id_type_conge)
@@ -578,58 +569,3 @@ VALUES
 ('Elle implique les collaborateurs dans les decisions.', 5.0, 30),
 ('Elle ameliore la satisfaction des employes.', 4.5, 30),
 ('Elle favorise un environnement de travail collaboratif.', 4.0, 30);
-
--- Insertion des types de postes
-INSERT INTO type_poste (nom_type_poste, rang_type_poste)
-VALUES ('Ouvrier', 1),
-       ('Administratif', 2),
-       ('Technicien', 3),
-       ('Responsable', 4),
-       ('Cadre', 5);
-
-INSERT INTO poste (nom_poste, description_poste, id_type_poste)
-VALUES ('Manutentionnaire', 'Poste d''execution pour les taches physiques et manuelles', 1),       -- Ouvrier
-       ('Assistant Administratif', 'Poste administratif pour le soutien de bureau', 2),            -- Administratif
-       ('Technicien de Maintenance', 'Poste de technicien pour la maintenance d''equipements', 3), -- Technicien
-       ('Responsable d''Equipe', 'Poste de supervision pour la gestion d''une equipe', 4),         -- Responsable
-       ('Directeur General', 'Poste de direction pour la gestion strategique de l''organisation', 5);
--- Cadre
-
--- Insertion des niveaux de diplôme
-INSERT INTO niveau_diplome (niveau_diplome, nom_niveau_diplome)
-VALUES (5, 'Baccalaureat'),
-       (6, 'BTS Maintenance Industrielle'),
-       (7, 'Licence en Gestion'),
-       (8, 'Master en Management'),
-       (9, 'Doctorat en Sciences'),
-       (10, 'MBA');
-
--- Insertion des diplômes avec leur niveau
-INSERT INTO diplome (nom_diplome, id_niveau_diplome)
-VALUES ('Baccalaureat', 6),
-       ('BTS Maintenance Industrielle', 7),
-       ('Licence en Gestion', 8),
-       ('Master en Management', 9),
-       ('Doctorat en Sciences', 10),
-       ('MBA', 10);
-
--- Insertion de talents et liaisons avec leurs diplômes
-INSERT INTO talent_diplome (id_talent, id_diplome)
-VALUES (1, 2),
-       (2, 4),
-       (3, 2),
-       (5, 6);
-
--- Insertion de l'experience des talents dans leurs postes respectifs
-INSERT INTO experience_talent (id_talent, id_poste, ans)
-VALUES (3, 3, 6),
-       (4, 4, 8),
-       (5, 5, 10);
-
--- Insertion des competences des talents
-INSERT INTO talent_competence (id_talent, id_competence, point)
-VALUES (1, 1, 80),
-       (2, 2, 70),
-       (3, 3, 90),
-       (4, 4, 85),
-       (5, 5, 95);

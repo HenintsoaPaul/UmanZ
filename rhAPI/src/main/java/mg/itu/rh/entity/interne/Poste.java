@@ -23,11 +23,11 @@ public class Poste {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id_poste")
-    @JsonView({POV.Public.class})
+    @JsonView({POV.Public.class, POV.Conge.class})
     private Long idPoste;
 
     @Column(name = "nom_poste")
-    @JsonView({POV.Public.class})
+    @JsonView({POV.Public.class, POV.Conge.class})
     private String nomPoste;
 
     @Column(name="description_poste")

@@ -12,10 +12,10 @@ public class TypeConge {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "id_type_conge" )
-    @JsonView( POV.Public.class )
+    @JsonView( {POV.Public.class, POV.Conge.class} )
     private Long idTypeConge;
 
     @Column( name = "nom_type_conge" )
-    @JsonView( POV.Public.class )
+    @JsonView( {POV.Public.class, POV.Conge.class} )
     private String nomTypeConge;
 }

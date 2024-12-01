@@ -11,7 +11,7 @@ import mg.itu.rh.service.interne.ContratService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping( "/contrat" )
+@RequestMapping( "/contrats" )
 public class ContratController {
     private final ContratService contratService;
 
@@ -31,20 +31,6 @@ public class ContratController {
         return contratService.findById( id );
     }
 
-    /*
-     * {
-     *       "contrat":"Contrat mahafinaritra",
-     *       "dateDebut":"2025-01-01",
-     *       "dateFin":"2025-12-12",
-     *       "salaireHoraire":125000,
-     *       "nbJourSemaine":5,
-     *       "nbJourCongeAn":20,
-     *       "nbHeureJour":8,
-     *       "idPoste":11,
-     *       "idTalent":4,
-     *       "idTypeContrat":3
-     * }
-     * */
     @PostMapping
     @JsonView( POV.Public.class )
     public Contrat save( @RequestBody ContratDTO contratDTO ) {

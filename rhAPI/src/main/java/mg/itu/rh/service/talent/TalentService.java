@@ -63,27 +63,31 @@ public class TalentService {
         return this.talentRepository.save( talent );
     }
 
-    public void prendreEntretien(String candidatEmail) {
+    public void prendreEntretien( String candidatEmail ) {
         try {
-            Talent t = talentRepository.findByEmail(candidatEmail).orElse(null);
+            Talent t = talentRepository.findByEmail( candidatEmail ).orElse( null );
             String subject = "Entretien Planifié";
             String body = "<h1>Bonjour,</h1><p>Votre entretien a été planifié. Merci de confirmer votre présence.</p>";
-            System.out.println("Tsy mande ny email");
-            candidatHistoriqueService.ajouterHistoriqueEtNotifier(t, subject, body);
-        } catch (Exception e) {
-            System.out.println("Erreur d'envoi de l'e-mail : " + e.getMessage());
+            // TODO: atao mande ny email
+//            emailService.sendEmail(candidatEmail, subject, body);
+            System.out.println( "Tsy mande ny email" );
+            candidatHistoriqueService.ajouterHistoriqueEtNotifier( t, subject, body );
+        } catch ( Exception e ) {
+            System.out.println( "Erreur d'envoi de l'e-mail : " + e.getMessage() );
         }
     }
 
-    public void rejetCandidat(String candidatEmail) {
+    public void rejetCandidat( String candidatEmail ) {
         try {
-            Talent t = talentRepository.findByEmail(candidatEmail).orElse(null);
+            Talent t = talentRepository.findByEmail( candidatEmail ).orElse( null );
             String subject = "Candidature rejetée";
             String body = "<h1>Bonjour,</h1><p>Nous sommes désolés de vous informer que votre candidature n'a pas été retenue.</p>";
-            System.out.println("Tsy mande ny email");
-            candidatHistoriqueService.ajouterHistoriqueEtNotifier(t, subject, body);
-        } catch (Exception e) {
-            System.out.println("Erreur d'envoi de l'e-mail : " + e.getMessage());
+            // TODO: atao mande ny email
+//            emailService.sendEmail(candidatEmail, subject, body);
+            System.out.println( "Tsy mande ny email" );
+            candidatHistoriqueService.ajouterHistoriqueEtNotifier( t, subject, body );
+        } catch ( Exception e ) {
+            System.out.println( "Erreur d'envoi de l'e-mail : " + e.getMessage() );
         }
     }
 

@@ -14,7 +14,11 @@ export default defineNuxtConfig({
       mode: 'out-in'
     }
   },
-  modules: ['@nuxt/ui', 'nuxt-auth-utils'],
+  modules: [
+    '@nuxt/ui',
+    'nuxt-auth-utils',
+    '@samk-dev/nuxt-vcalendar',
+  ],
   plugins: [
     '~/plugins/iconify.js'
   ],
