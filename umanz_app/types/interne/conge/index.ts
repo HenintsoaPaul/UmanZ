@@ -42,7 +42,7 @@ export interface FormConge {
     justificatif: JustificatifDTO;
 }
 
-export interface CongeDTO {
+export interface PendingCongeDTO {
     conge: Conge;
     soldeConge: number;
 }

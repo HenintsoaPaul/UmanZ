@@ -94,7 +94,39 @@ const isAdmin = computed(() => localStorage.getItem("isAdmin") === 'true');
 
         <br>
 
-        <h1 class="text-3xl font-bold mb-6 text-center">Candidats En Attente de Validation</h1>
+        <h1 class="text-3xl font-bold mb-6 text-center">Candidats Interne</h1>
+        <div v-if="candidats">
+            <div v-if="candidats.length > 0">
+                <UTable :columns="columnsCandidats" :rows="candidats" v-model:expand="expand"
+                    class="w-full shadow-md rounded-lg overflow-hidden">
+                    <template #expand="{ row }">
+                        <template v-if="isAdmin">
+                            <button
+                                class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mt-2 rounded mr-2"
+                                @click="validerFn(row.idTalent)">
+                                Valider
+                            </button>
+                            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 mt-2 rounded mr-2"
+                                @click="refuserFn(row.idTalent)">
+                                Refuser
+                            </button>
+                        </template>
+                        <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 mt-2 rounded"
+                            @click="$router.push(`/talent/${row.idTalent}`)">
+                            Consulter CV
+                        </button>
+                    </template>
+                </UTable>
+            </div>
+            <div v-else>
+                No Candidats
+            </div>
+        </div>
+        <div v-else>
+            Loading Candidats...
+        </div>
+
+        <h1 class="text-3xl font-bold mb-6 text-center">Candidats Externe</h1>
         <div v-if="candidats">
             <div v-if="candidats.length > 0">
                 <UTable :columns="columnsCandidats" :rows="candidats" v-model:expand="expand"

@@ -3,22 +3,22 @@ definePageMeta({
     middleware: ['auth-is-admin']
 })
 
-import type { Conge } from '~/types';
+import type { PendingCongeDTO } from '~/types';
 import { ref, computed, toRaw } from 'vue';
 import DemandeCongeExpend from '~/components/conge/DemandeCongeExpend';
 
 const headers = [
-    { key: 'idConge', label: 'ID', sortable: true },
-    { key: 'contrat.idContrat', label: 'Contrat', sortable: true },
-    { key: 'dateDebut', label: 'Date Debut', sortable: true },
-    { key: 'nbJour', label: 'Nb Jour', sortable: true },
+    { key: 'conge.idConge', label: 'ID', sortable: true },
+    { key: 'conge.contrat.idContrat', label: 'Contrat', sortable: true },
+    { key: 'conge.dateDebut', label: 'Date Debut', sortable: true },
+    { key: 'conge.nbJour', label: 'Nb Jour', sortable: true },
     { key: 'solde', label: 'Solde' },
-    { key: 'contrat.poste.nomPoste', label: 'Poste' },
-    { key: 'typeConge.nomTypeConge', label: 'Type' },
+    { key: 'conge.contrat.poste.nomPoste', label: 'Poste' },
+    { key: 'conge.typeConge.nomTypeConge', label: 'Type' },
 ];
 
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
-const { data: conges, refresh: refreshConges } = useFetch<Conge[]>(`${apiUrl}/conges/needs-validation`);
+const { data: conges, refresh: refreshConges } = useFetch<PendingCongeDTO[]>(`${apiUrl}/conges/needs-validation`);
 
 const { q, filteredRows: filteredConges } = useFilteredRows(conges);
 const expand = ref({
@@ -27,7 +27,11 @@ const expand = ref({
 });
 
 const { validerCongerFn, refuserCongerFn } = useCongeActions();
-async function validerFn(conge: Conge) {
+async function validerFn(conge: Conge, solde: number) {
+    if (solde < conge.nbJour) {
+        console.error("Solde insuffisant");
+        return;
+    }
     await validerCongerFn(conge.idConge, apiUrl);
     refreshConges();
 }
@@ -53,7 +57,7 @@ async function refuserFn(conge: Conge) {
         <UTable :columns="headers" :rows="filteredConges ?? []" v-model:expand="expand">
             <template #expand="{ row }">
                 <div class="p-4">
-                    <DemandeCongeExpend :conge="row" :api-url="apiUrl" @valider="validerFn" @refuser="refuserFn" />
+                    <DemandeCongeExpend :conge="row.conge" :solde="row.solde" :api-url="apiUrl" @valider="validerFn" @refuser="refuserFn" />
                 </div>
             </template>
         </UTable>

@@ -3,11 +3,12 @@ import { defineProps } from 'vue';
 
 const props = defineProps<{
     conge: Conge;
+    solde: number;
     apiUrl: string;
 }>();
 
 const emit = defineEmits(["valider", "refuser"]);
-const validerFn = () => { emit("valider", props.conge); }
+const validerFn = () => { emit("valider", [props.conge, props.solde]); }
 const refuserFn = () => { emit("refuser", props.conge); }
 
 const isChangeable = computed(() => props.conge.dateValidation == null || props.conge.dateRefus == null);
@@ -32,12 +33,12 @@ const isChangeable = computed(() => props.conge.dateValidation == null || props.
                     class="w-full max-w-md py-2 rounded-lg" />
 
                 <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                    @click="validerFn">
+                    @click="validerFn" :disabled="solde < conge.nbJour">
                     Valider
                 </button>
 
                 <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2"
-                    @click="refuserFn" :disabled="conge.motifRefus.length == 0">
+                    @click="refuserFn" :disabled="conge.motifRefus == null || conge.motifRefus.length === 0">
                     Refuser
                 </button>
             </template>
