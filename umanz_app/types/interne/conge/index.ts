@@ -47,3 +47,9 @@ export interface PendingCongeDTO {
     conge: Conge;
     soldeConge: number;
 }
+
+export interface SoldeCongeByTypeDTO {
+    contrat: Contrat;
+    typeConge: TypeConge;
+    soldeConge: number;
+}

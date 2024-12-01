@@ -3,6 +3,7 @@ import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import type { Conge } from '~/types/interne/conge';
 import CalendarConge from '~/components/conge/CalendarConge.vue';
+import SoldeConge from '~/components/conge/SoldeConge.vue';
 
 const route = useRoute();
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
@@ -24,6 +25,23 @@ const expand = ref({
     openedRows: [],
     row: {}
 });
+
+
+// ======= solde =========
+const soldesConges = [
+    {
+        typeConge: { nomTypeConge: 'Paid Leave' },
+        soldeConge: 10
+    },
+    {
+        typeConge: { nomTypeConge: 'Sick Leave' },
+        soldeConge: 5
+    },
+    {
+        typeConge: { nomTypeConge: 'Maternity Leave' },
+        soldeConge: 20
+    }
+];
 </script>
 
 <template>
@@ -48,9 +66,13 @@ const expand = ref({
                 </UTable>
             </div>
 
-            <client-only>
-                <CalendarConge :conges="conges" />
-            </client-only>
+            <div class="flex gap-4">
+                <SoldeConge :soldesConges="soldesConges" />
+
+                <client-only>
+                    <CalendarConge :conges="conges" />
+                </client-only>
+            </div>
         </div>
         <div v-else>
             Loading Details...
