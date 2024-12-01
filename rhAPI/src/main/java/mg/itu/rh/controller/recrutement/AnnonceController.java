@@ -21,13 +21,13 @@ import java.util.List;
 public class AnnonceController {
     private final AnnonceService annonceService;
     private final EntretienService entretienService;
-    private final CompetencePosteService competenceAnnonceService;
+    private final CompetencePosteService competencePosteService;
     private final ExperiencePosteService experiencePosteService;
 
     public AnnonceController(AnnonceService as, EntretienService es, CompetencePosteService competenceAnnonceService, ExperiencePosteService experiencePosteService ) {
         this.annonceService = as;
         this.entretienService = es;
-        this.competenceAnnonceService = competenceAnnonceService;
+        this.competencePosteService = competenceAnnonceService;
         this.experiencePosteService = experiencePosteService;
     }
 
@@ -46,7 +46,7 @@ public class AnnonceController {
     @GetMapping( "/{id}/competences" )
     @JsonView( POV.Public.class )
     public List<CompetencePoste> getCompetencesAnnonce(@PathVariable( "id" ) Long id ) {
-        return competenceAnnonceService.findAllByIdAnnonce( id );
+        return competencePosteService.findAllByIdAnnonce( id );
     }
 
     @GetMapping( "/{id}/experiences" )
