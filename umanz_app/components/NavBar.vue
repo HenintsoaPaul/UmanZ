@@ -3,9 +3,11 @@ const router = useRouter();
 const idUserStr = computed( () => localStorage.getItem( "idUser" ) );
 const loggedIn = ref( false );
 
+const idUser = ref(0);
+
 onMounted( () => {
   if ( idUserStr ) {
-    Number( idUserStr );
+    idUser.value = Number( idUserStr.value );
     loggedIn.value = true;
   } else {
     logout();
@@ -72,36 +74,43 @@ const navLinks = [
   }
 ];
 
+const showProfile = () => {
+    router.push(`/talent/${idUser.value}`);
+}
+
 const logout = () => {
   router.push( "/" );
 };
 </script>
 
 <template>
-  <header class="bg-gray-800 text-white p-4 mb-5">
-    <nav class="container mx-auto flex justify-between items-center">
-      <div class="text-xl font-bold">UmanZ</div>
-      <ul class="flex space-x-4">
-        <li v-for="navLink in navLinks" class="relative group">
-          <p>{{ navLink.label }}</p>
-          <ul
-            class="absolute z-index-50 left-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <li v-for="sub in navLink.children">
-              <router-link :to="sub.link" class="block px-4 py-2 hover:bg-gray-200 hover:rounded-lg z-index-50">
-                {{ sub.label }}
-              </router-link>
-            </li>
-          </ul>
-        </li>
-      </ul>
-      <div>
-        <template v-if="loggedIn">
-          <button @click="logout" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Log
-            out</button>
-        </template>
-      </div>
-    </nav>
-  </header>
+      <header class="bg-gray-800 text-white p-4 mb-5">
+            <nav class="container mx-auto flex justify-between items-center">
+                  <div class="text-xl font-bold">UmanZ</div>
+                  <ul class="flex space-x-4">
+                        <li>
+                            <p class="hover:cursor-pointer" @click="showProfile">Mon profil</p>
+                        </li>
+                        <li v-for="navLink in navLinks" class="relative group">
+                              <p>{{ navLink.label }}</p>
+                              <ul
+                                    class="absolute z-index-50 left-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    <li v-for="sub in navLink.children">
+                                          <router-link :to="sub.link" class="block px-4 py-2 hover:bg-gray-200 hover:rounded-lg z-index-50">
+                                                {{ sub.label }}
+                                          </router-link>
+                                    </li>
+                              </ul>
+                        </li>
+                  </ul>
+                  <div>
+                        <template v-if="loggedIn">
+                              <button @click="logout" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Log
+                                out</button>
+                        </template>
+                  </div>
+            </nav>
+      </header>
 </template>
 
 <style lang="css">

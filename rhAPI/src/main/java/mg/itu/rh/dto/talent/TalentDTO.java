@@ -4,6 +4,7 @@ import lombok.Data;
 import mg.itu.rh.dto.critere.DiplomeDTO;
 import mg.itu.rh.dto.critere.LangueDTO;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -12,6 +13,7 @@ public class TalentDTO {
     private String prenom;
     private String mail;
     private String password;
+    private LocalDate dateNaissance;
     private boolean isAdmin;
 
     private List<CompetenceTalentDTO> competences;

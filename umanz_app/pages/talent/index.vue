@@ -32,6 +32,9 @@ const expand = ref({
             <UButton @click="$router.push(`/interne/evaluation/projet/note/${row.idTalent}`)">
               Note d'évaluations de projet
             </UButton>
+            <UButton @click="$router.push(`/talent/${row.idTalent}`)">
+                Voir le profil
+            </UButton>
         </template>
     </UTable>
 </template>
