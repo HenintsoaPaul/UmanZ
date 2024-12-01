@@ -1,6 +1,6 @@
 <script setup>
 const router = useRouter();
-const idUserStr = computed( () => localStorage.getItem( "idUser" ) );
+const idUserStr = computed( () => localStorage.getItem( "umanz-idUser" ) );
 const loggedIn = ref( false );
 
 const idUser = ref(0);
