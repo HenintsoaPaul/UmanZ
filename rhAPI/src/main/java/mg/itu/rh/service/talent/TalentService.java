@@ -89,7 +89,7 @@ public class TalentService {
         return talentRepository.findAll();
     }
 
-    public List<Talent> getEmployeesByCategory(Long idCategories) {
-        return talentRepository.findByCategoriesPosition_Id_IdCategories(idCategories);
-    }
+//    public List<Talent> getEmployeesByCategory(Long idCategories) {
+//        return talentRepository.findByCategoriesPosition_Id_IdCategories(idCategories);
+//    }
 }

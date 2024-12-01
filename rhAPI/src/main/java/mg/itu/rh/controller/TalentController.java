@@ -2,7 +2,6 @@ package mg.itu.rh.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import mg.itu.rh.dto.talent.TalentDTO;
-import mg.itu.rh.entity.interne.Poste;
 import mg.itu.rh.entity.interne.RenvoiRequest;
 import mg.itu.rh.entity.talent.Talent;
 import mg.itu.rh.service.interne.*;
@@ -24,16 +23,16 @@ public class TalentController {
     // @Autowired
     // private final EmailService emailService;
 
-    private final PromotionService promotionService;
+    // private final PromotionService promotionService;
 
     public TalentController(
-            TalentService talentService,
+            TalentService talentService
 //            EmailService emailService,
-            PromotionService promotionService
+//            PromotionService promotionService
     ) {
         this.talentService = talentService;
 //        this.emailService = emailService;
-        this.promotionService = promotionService;
+//        this.promotionService = promotionService;
     }
 
     @GetMapping
@@ -42,22 +41,22 @@ public class TalentController {
         return talentService.findAll();
     }
 
-    @GetMapping("/by-category/{idCategories}")
-    @JsonView( POV.Public.class )
-    public ResponseEntity<List<Talent>> getEmployeesByCategory(@PathVariable Long idCategories) {
-        List<Talent> employees = talentService.getEmployeesByCategory(idCategories);
-        if (employees.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(employees);
-    }
+//    @GetMapping("/by-category/{idCategories}")
+//    @JsonView( POV.Public.class )
+//    public ResponseEntity<List<Talent>> getEmployeesByCategory(@PathVariable Long idCategories) {
+//        List<Talent> employees = talentService.getEmployeesByCategory(idCategories);
+//        if (employees.isEmpty()) {
+//            return ResponseEntity.noContent().build();
+//        }
+//        return ResponseEntity.ok(employees);
+//    }
 
-    @GetMapping("/{employeeId}/promotions")
-    @JsonView( POV.Public.class )
-    public ResponseEntity<List<Poste>> getPossiblePromotions(@PathVariable Integer employeeId) {
-        List<Poste> promotions = promotionService.getPromotionsForEmployee(employeeId);
-        return ResponseEntity.ok(promotions);
-    }
+//    @GetMapping("/{employeeId}/promotions")
+//    @JsonView( POV.Public.class )
+//    public ResponseEntity<List<Poste>> getPossiblePromotions(@PathVariable Integer employeeId) {
+//        List<Poste> promotions = promotionService.getPromotionsForEmployee(employeeId);
+//        return ResponseEntity.ok(promotions);
+//    }
 
     @PostMapping("/send-renvoi-email")
     @JsonView( POV.Public.class )
