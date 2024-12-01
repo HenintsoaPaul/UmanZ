@@ -1,5 +1,6 @@
 package mg.itu.rh.entity.talent;
 
+import java.time.LocalDate;
 import java.util.*;
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -32,6 +33,10 @@ public class Talent {
     @Column( name = "password" )
     @JsonView( { POV.Public.class } )
     private String password;
+
+    @Column( name = "date_naissance")
+    @JsonView( { POV.Public.class } )
+    private LocalDate dateNaissance;
 
     @JsonView( { POV.Public.class, POV.Auth.class } )
     @Column( name = "is_admin" )
@@ -79,6 +84,7 @@ public class Talent {
         this.setPrenom( talentDTO.getPrenom() );
         this.setMail( talentDTO.getMail() );
         this.setPassword( talentDTO.getPassword() );
+        this.setDateNaissance( talentDTO.getDateNaissance() );
         this.setAdmin( talentDTO.isAdmin() );
     }
 }

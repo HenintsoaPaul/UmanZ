@@ -1,25 +1,18 @@
 package mg.itu.rh.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import mg.itu.rh.dto.talent.AuthDTO;
 import mg.itu.rh.dto.talent.TalentDTO;
 import mg.itu.rh.entity.interne.RenvoiRequest;
 import mg.itu.rh.entity.talent.Talent;
-import mg.itu.rh.service.interne.*;
 import mg.itu.rh.other.POV;
 import mg.itu.rh.service.talent.TalentService;
 
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping( "/talents" )
@@ -84,6 +77,12 @@ public class TalentController {
         return talentService.findById( id );
     }
 
+    @PostMapping( "/auth" )
+    @JsonView( POV.Auth.class )
+    public Talent authenticate( @RequestBody AuthDTO authDTO ) {
+        return talentService.findByEmailAndPassword( authDTO );
+    }
+
     @PostMapping
     @JsonView( POV.Public.class )
     public Talent create( @RequestBody TalentDTO talentDTO ) {
@@ -91,7 +90,6 @@ public class TalentController {
     }
 
     @PostMapping( "/entretien" )
-    @JsonView( POV.Public.class )
     public String prendreEntretien( @RequestParam String email ) {
         talentService.prendreEntretien( email );
         return "Entretien pris et notification envoyée à " + email;
