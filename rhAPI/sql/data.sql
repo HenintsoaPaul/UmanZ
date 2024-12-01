@@ -73,13 +73,14 @@ VALUES ('Communication', 2),
        ('Gestion de projet', 2),
        ('Design', 2);
 
-INSERT INTO talent (nom, prenom, mail, password, is_admin)
-VALUES ('Dupont', 'Jean', 'jean.dupont@example.com', 'password1', true),
-       ('Martin', 'Alice', 'alice.martin@example.com', 'password2', false),
-       ('Petit', 'Louis', 'louis.petit@example.com', 'password3', false),
-       ('Durand', 'Emma', 'emma.durand@example.com', 'password4', false),
-       ('Leroy', 'Paul', 'paul.leroy@example.com', 'password5', false),
-       ('Dupont', 'Jean', 'recipientgestion@gmail.com', 'recepgestion', true);
+INSERT INTO talent (nom, prenom, mail, password, is_admin, date_naissance)
+VALUES ('Dupont', 'Jean', 'jean.dupont@example.com', 'password1', true, '1985-04-12'),
+       ('Martin', 'Alice', 'alice.martin@example.com', 'password2', false, '1990-07-25'),
+       ('Petit', 'Louis', 'louis.petit@example.com', 'password3', false, '1988-11-15'),
+       ('Durand', 'Emma', 'emma.durand@example.com', 'password4', false, '1995-03-08'),
+       ('Leroy', 'Paul', 'paul.leroy@example.com', 'password5', false, '1992-01-30'),
+       ('Dupont', 'Jean', 'recipientgestion@gmail.com', 'recepgestion', true, '1985-04-12');
+
 
 insert into talent_langue(id_talent, id_langue, id_niveau_langue)
 VALUES (1, 1, 3),
@@ -579,65 +580,59 @@ VALUES
 ('Elle favorise un environnement de travail collaboratif.', 4.0, 30);
 
 -- Insertion des types de postes
-INSERT INTO type_poste (nom_type_poste, rang_type_poste) VALUES
-('Ouvrier', 1),
-('Administratif', 2),
-('Technicien', 3),
-('Responsable', 4),
-('Cadre', 5);
+INSERT INTO type_poste (nom_type_poste, rang_type_poste)
+VALUES ('Ouvrier', 1),
+       ('Administratif', 2),
+       ('Technicien', 3),
+       ('Responsable', 4),
+       ('Cadre', 5);
 
-INSERT INTO poste (nom_poste, description_poste, id_type_poste) VALUES
-('Manutentionnaire', 'Poste d''execution pour les taches physiques et manuelles', 1),  -- Ouvrier
-('Assistant Administratif', 'Poste administratif pour le soutien de bureau', 2),  -- Administratif
-('Technicien de Maintenance', 'Poste de technicien pour la maintenance d''equipements', 3),  -- Technicien
-('Responsable d''Equipe', 'Poste de supervision pour la gestion d''une equipe', 4),  -- Responsable
-('Directeur General', 'Poste de direction pour la gestion strategique de l''organisation', 5);  -- Cadre
+INSERT INTO poste (nom_poste, description_poste, id_type_poste)
+VALUES ('Manutentionnaire', 'Poste d''execution pour les taches physiques et manuelles', 1),       -- Ouvrier
+       ('Assistant Administratif', 'Poste administratif pour le soutien de bureau', 2),            -- Administratif
+       ('Technicien de Maintenance', 'Poste de technicien pour la maintenance d''equipements', 3), -- Technicien
+       ('Responsable d''Equipe', 'Poste de supervision pour la gestion d''une equipe', 4),         -- Responsable
+       ('Directeur General', 'Poste de direction pour la gestion strategique de l''organisation', 5);
+-- Cadre
 
 -- Insertion des niveaux de diplôme
-INSERT INTO niveau_diplome (niveau_diplome, nom_niveau_diplome) VALUES
-(5, 'Baccalaureat'),
-(6, 'BTS Maintenance Industrielle'),
-(7, 'Licence en Gestion'),
-(8, 'Master en Management'),
-(9, 'Doctorat en Sciences'),
-(10, 'MBA');
+INSERT INTO niveau_diplome (niveau_diplome, nom_niveau_diplome)
+VALUES (5, 'Baccalaureat'),
+       (6, 'BTS Maintenance Industrielle'),
+       (7, 'Licence en Gestion'),
+       (8, 'Master en Management'),
+       (9, 'Doctorat en Sciences'),
+       (10, 'MBA');
 
 -- Insertion des diplômes avec leur niveau
-INSERT INTO diplome (nom_diplome, id_niveau_diplome) VALUES
-('Baccalaureat', 6),
-('BTS Maintenance Industrielle', 7),
-('Licence en Gestion', 8),
-('Master en Management', 9),
-('Doctorat en Sciences', 10),
-('MBA', 11);
-
-INSERT INTO talent (nom, prenom, mail, password, is_admin, id_poste, id_categories, date_of_hire) VALUES
-('Jean', 'Dupont', 'jean.dupont@example.com', 'password123', false, 1, 1, '2020-06-15'),  -- Manutentionnaire (Ouvriers)
-('Marie', 'Martin', 'marie.martin@example.com', 'password123', false, 2, 2, '2018-09-01'),  -- Assistant Administratif (Employes)
-('Paul', 'Lemoine', 'paul.lemoine@example.com', 'password123', false, 3, 3, '2017-04-23'),  -- Technicien de Maintenance (Techniciens et agents de maitrise)
-('Claire', 'Lefevre', 'claire.lefevre@example.com', 'password123', false, 4, 4, '2015-11-01'),  -- Responsable d'Equipe (Cadres)
-('Bernard', 'Roy', 'bernard.roy@example.com', 'password123', true, 5, 5, '2010-03-12');  -- Directeur General (Dirigeants)
+INSERT INTO diplome (nom_diplome, id_niveau_diplome)
+VALUES ('Baccalaureat', 6),
+       ('BTS Maintenance Industrielle', 7),
+       ('Licence en Gestion', 8),
+       ('Master en Management', 9),
+       ('Doctorat en Sciences', 10),
+       ('MBA', 11);
 
 -- Insertion de talents et liaisons avec leurs diplômes
-INSERT INTO talent_diplome (id_talent, id_diplome) VALUES
-(1, 2),
-(2, 4),
-(3, 2),
-(4, 4),
-(5, 6);
+INSERT INTO talent_diplome (id_talent, id_diplome)
+VALUES (1, 2),
+       (2, 4),
+       (3, 2),
+       (4, 4),
+       (5, 6);
 
 -- Insertion de l'experience des talents dans leurs postes respectifs
-INSERT INTO experience_talent (id_talent, id_poste, ans) VALUES
-(1, 1, 3),
-(2, 2, 5),
-(3, 3, 6),
-(4, 4, 8),
-(5, 5, 10);
+INSERT INTO experience_talent (id_talent, id_poste, ans)
+VALUES (1, 1, 3),
+       (2, 2, 5),
+       (3, 3, 6),
+       (4, 4, 8),
+       (5, 5, 10);
 
 -- Insertion des competences des talents
-INSERT INTO talent_competence (id_talent, id_competence, point) VALUES
-(1, 1, 80),
-(2, 2, 70),
-(3, 3, 90),
-(4, 4, 85),
-(5, 5, 95);
+INSERT INTO talent_competence (id_talent, id_competence, point)
+VALUES (1, 1, 80),
+       (2, 2, 70),
+       (3, 3, 90),
+       (4, 4, 85),
+       (5, 5, 95);
