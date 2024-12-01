@@ -4,7 +4,10 @@ import jakarta.transaction.Transactional;
 import mg.itu.rh.dto.poste.CompetencePosteDTO;
 import mg.itu.rh.entity.Poste;
 import mg.itu.rh.entity.id.IdCompetencePoste;
+import mg.itu.rh.entity.recrutement.Annonce;
 import mg.itu.rh.entity.recrutement.CompetencePoste;
+import mg.itu.rh.repository.PosteRepository;
+import mg.itu.rh.repository.recrutement.AnnonceRepository;
 import mg.itu.rh.repository.recrutement.CompetencePosteRepository;
 import mg.itu.rh.service.critere.CompetenceService;
 import org.springframework.stereotype.Service;
@@ -15,10 +18,14 @@ import java.util.List;
 public class CompetencePosteService {
     private final CompetenceService competenceService;
     private final CompetencePosteRepository competenceAnnonceRepository;
+    private final PosteRepository posteRepository;
+    private final AnnonceRepository annonceRepository;
 
-    public CompetencePosteService(CompetenceService competenceService, CompetencePosteRepository competenceAnnonceRepository ) {
+    public CompetencePosteService(CompetenceService competenceService, CompetencePosteRepository competenceAnnonceRepository, PosteRepository posteRepository, AnnonceRepository annonceRepository) {
         this.competenceService = competenceService;
         this.competenceAnnonceRepository = competenceAnnonceRepository;
+        this.posteRepository = posteRepository;
+        this.annonceRepository = annonceRepository;
     }
 
     @Transactional
@@ -38,6 +45,8 @@ public class CompetencePosteService {
     }
 
     public List<CompetencePoste> findAllByIdAnnonce(Long idAnnonce ) {
-        return competenceAnnonceRepository.findAllByIdPoste( idAnnonce );
+        Annonce annonce = annonceRepository.findById(idAnnonce)
+                .orElseThrow(() -> new RuntimeException("Annonce introuvable"));
+        return competenceAnnonceRepository.findAllByIdPoste( annonce.getPoste().getIdPoste() );
     }
 }
