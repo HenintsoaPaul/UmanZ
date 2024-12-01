@@ -5,6 +5,7 @@ import mg.itu.rh.dto.interne.CongeDTO;
 import mg.itu.rh.dto.interne.CongeTalentDTO;
 import mg.itu.rh.dto.interne.PendingCongeDTO;
 import mg.itu.rh.entity.interne.Conge;
+import mg.itu.rh.exception.interne.CongeException;
 import mg.itu.rh.other.POV;
 import mg.itu.rh.repository.interne.CongeRepository;
 import mg.itu.rh.service.interne.CongeService;
@@ -47,19 +48,6 @@ public class CongeController {
         return congeService.findCongeByIdTalent( id );
     }
 
-//    /**
-//     * Retourne le solde de conge paye pour un individu identifie par son contrat.
-//     * Cette fonction suppose que l' idContrat est pour un contrat qui est toujours
-//     * en cours jusqu'a present.
-//     *
-//     * @param idContrat id du contrat d'un individu
-//     */
-//    @GetMapping( "/{id}/payes/nb_jour" )
-//    @JsonView( POV.Conge.class )
-//    public SoldeCongeDTO getSoldeCongePayeByContrat( @PathVariable( "id" ) Long idContrat ) {
-//        return congeService.getSoldeCongePayeByIdContrat( idContrat );
-//    }
-
     @JsonView( POV.Public.class )
     @PostMapping( "/demandes" )
     public Conge saveDemande( @RequestBody CongeDTO congeDTO ) {
@@ -74,7 +62,8 @@ public class CongeController {
 
     @PutMapping( "/validate/{idConge}" )
     @JsonView( POV.Conge.class )
-    public Conge validate( @PathVariable( "idConge" ) Long idConge ) {
+    public Conge validate( @PathVariable( "idConge" ) Long idConge )
+            throws CongeException {
         return congeService.validate( idConge );
     }
 

@@ -56,8 +56,16 @@ public class CongeService {
         return congeRepository.findAllWithTalent();
     }
 
-    public Conge validate( Long idConge ) {
+    public Conge validate( Long idConge )
+            throws CongeException {
         Conge conge = this.findById( idConge );
+
+        if ( conge.getTypeConge().getIdTypeConge() == 1L ) {
+            controllerSoldeCongePaye( conge );
+        } else if ( conge.getTypeConge().getIdTypeConge() == 3L ) {
+            controllerSoldeCongeExceptionnel( conge, conge.getDateDebut().getYear() );
+        }
+
         conge.setDateValidation( LocalDate.now() );
         return congeRepository.save( conge );
     }
@@ -139,6 +147,12 @@ public class CongeService {
         if ( monthDifference < 12 ) throw new CongeException( monthDifference );
     }
 
+    /**
+     * 12 mois de service minimum
+     * Solde doit encore suffisant au nombre de jour demandee
+     * ...Pas encore de controle de justificatif
+     */
+    @Deprecated
     private void controllerSoldeCongePaye( Conge conge )
             throws RuntimeException, CongeException {
         Contrat contrat = conge.getContrat();
