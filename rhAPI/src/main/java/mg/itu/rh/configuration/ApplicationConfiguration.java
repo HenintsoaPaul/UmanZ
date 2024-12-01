@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableCaching
-public class CacheConfiguration {
+public class ApplicationConfiguration {
 
     @Bean
     public CacheManager cacheManager() {
