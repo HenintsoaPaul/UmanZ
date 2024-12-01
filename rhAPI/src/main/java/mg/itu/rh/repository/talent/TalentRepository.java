@@ -15,4 +15,6 @@ public interface TalentRepository extends JpaRepository<Talent,Long> {
 
     @Query("select t from Talent t where t.mail=:email")
     Optional<Talent> findByEmail( @Param( "email" ) String email );
+
+//    List<Talent> findByCategoriesPosition_Id_IdCategories(Long idCategories);
 }

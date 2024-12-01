@@ -46,7 +46,7 @@ VALUES ('Serie C', 1),
        ('Mathematique', 3),
        ('Mathematique', 4);
 
-INSERT INTO type_competence (nom_type_competence)
+INSERT INTO type_competence(nom_type_competence)
 VALUES ('Hard skill'),
        ('Soft skill');
 
@@ -110,7 +110,7 @@ VALUES (1, 1),
        (5, 10),
        (5, 11);
 
-INSERT INTO type_poste (nom_type_poste, rang_type_poste)
+INSERT INTO type_poste(nom_type_poste, rang_type_poste)
 VALUES ('Ouvrier', 1),
        ('Employe', 2),
        ('Technicien', 3),
@@ -139,12 +139,12 @@ VALUES ('2024-01-01', 'Tech Corp', '2025-03-01', 1),
        ('2024-04-05', 'Tech Corp', '2025-06-05', 2),
        ('2024-05-01', 'Tech Corp', '2025-07-01', 5);
 
-INSERT INTO formation (nom_formation, date_debut, date_fin, est_fini)
-VALUES ('Formation Java', '2023-01-10', '2023-03-10', false),
-       ('Gestion de projet', '2023-02-01', '2023-04-01', false),
-       ('Design UX/UI', '2023-05-15', '2023-07-15', false),
-       ('Securite informatique', '2023-06-20', '2023-08-20', false),
-       ('Big Data', '2023-09-10', '2023-11-10', false);
+INSERT INTO formation (nom_formation, date_debut, date_fin)
+VALUES ('Formation Java', '2023-01-10', '2023-03-10'),
+       ('Gestion de projet', '2023-02-01', '2023-04-01'),
+       ('Design UX/UI', '2023-05-15', '2023-07-15'),
+       ('Securite informatique', '2023-06-20', '2023-08-20'),
+       ('Big Data', '2023-09-10', '2023-11-10');
 
 INSERT INTO type_rupture (nom_type_rupture)
 VALUES ('Fin de contrat'),
@@ -161,10 +161,25 @@ VALUES ('Contrat CDI Developpeur', '2023-01-01', '2024-01-01', 20.00, 5, 25, 8.0
        ('Contrat d''essai Chef de Projet', '2023-06-01', NULL, 25.00, 4, 15, 7.0, 2, 4, 1),
        ('Contrat CDI Support technique', '2024-01-01', NULL, 19.50, 5, 25, 7.5, 5, 5, 3);
 
+-- INSERT INTO entretien (date_creation, date_validation, note, motif, id_enfant, id_annonce, id_etat_entretien, id_talent)
+-- VALUES ('2023-02-15', '2023-02-20', 85, 'Entretien positif', NULL, 1, 4, 1),
+--        ('2023-03-10', '2023-03-15', 90, 'Candidat qualifie', NULL, 2, 5, 2),
+--        ('2023-04-05', NULL, NULL, 'En attente de validation', 1, 3, 1, 3),
+--        ('2023-05-01', NULL, 70, 'Competences insuffisantes', NULL, 4, 2, 4),
+--        ('2023-06-01', NULL, NULL, 'Annulation', 2, 5, 6, 5);
+
 INSERT INTO rupture (date_rupture, motif, id_type_rupture, id_contrat)
 VALUES ('2024-01-01', 'Fin de contrat', 1, 1),
        ('2023-08-01', 'Fin de CDD', 1, 2),
        ('2023-10-01', 'Licenciement', 3, 3);
+
+INSERT INTO poste (nom_poste, description_poste, id_type_poste)
+VALUES ('Ingenieur DevOps', 'Assurer le deploiement et l''integration continue des applications', 3),
+       ('Data Scientist', 'Analyser et interpreter des donnees complexes pour guider les decisions strategiques', 3),
+       ('Responsable RH', 'Gestion des ressources humaines et developpement du personnel', 4),
+       ('Consultant', 'Conseiller les entreprises dans leur strategie de croissance', 4),
+       ('Developpeur Frontend', 'Developpement de l''interface utilisateur des applications web', 2),
+       ('Architecte Logiciel', 'Conception et gestion de l''architecture des systemes informatiques', 3);
 
 INSERT INTO annonce (date_annonce, entreprise, date_expiration, id_poste)
 VALUES ('2024-10-15', 'Innovative Solutions', '2025-01-15', 6),
@@ -281,12 +296,18 @@ INSERT INTO justificatif (date_justificatif, image_justificatif, id_type_justifi
 VALUES ('2024-01-01', '/img/fuf.png', 1),
        ('2024-01-01', '/img/fuf.png', 2);
 
-INSERT INTO type_conge (nom_type_conge)
-VALUES ('Conge Paye'),
-       ('Conge maladie'),
-       ('Conge exceptionnel'),
-       ('Conge maternite');
+INSERT INTO type_conge(nom_type_conge)
+VALUES ('Annuel'),
+       ('Médical'),
+       ('Evènement spécial');
 
+INSERT INTO conge (date_debut, date_validation, nb_jour, motif, id_contrat, id_type_conge)
+VALUES ('2024-12-01', '2024-12-01', 5, 'Conge annuel', 1, 1),  -- Conge annuel pour le contrat 1
+       ('2024-12-15', '2024-12-15', 3, 'Conge maladie', 2, 2), -- Conge maladie pour le contrat 2
+       ('2024-11-20', null, 7, 'Conge parental', 3, 1),        -- Conge parental pour le contrat 3
+       ('2024-11-05', null, 10, 'Conge sabbatique', 4, 1),     -- Conge sabbatique pour le contrat 4
+       ('2024-12-10', '2024-12-10', 4, 'Conge urgent', 5, 3),
+       ('2024-08-10', '2024-08-10', 5, 'Conge annuel', 1, 1);
 
 INSERT INTO chat (mot_cle, reponse)
 VALUES ('au revoir', 'Au revoir :)'),
@@ -556,3 +577,67 @@ VALUES
 ('Elle implique les collaborateurs dans les decisions.', 5.0, 30),
 ('Elle ameliore la satisfaction des employes.', 4.5, 30),
 ('Elle favorise un environnement de travail collaboratif.', 4.0, 30);
+
+-- Insertion des types de postes
+INSERT INTO type_poste (nom_type_poste, rang_type_poste) VALUES
+('Ouvrier', 1),
+('Administratif', 2),
+('Technicien', 3),
+('Responsable', 4),
+('Cadre', 5);
+
+INSERT INTO poste (nom_poste, description_poste, id_type_poste) VALUES
+('Manutentionnaire', 'Poste d''execution pour les taches physiques et manuelles', 1),  -- Ouvrier
+('Assistant Administratif', 'Poste administratif pour le soutien de bureau', 2),  -- Administratif
+('Technicien de Maintenance', 'Poste de technicien pour la maintenance d''equipements', 3),  -- Technicien
+('Responsable d''Equipe', 'Poste de supervision pour la gestion d''une equipe', 4),  -- Responsable
+('Directeur General', 'Poste de direction pour la gestion strategique de l''organisation', 5);  -- Cadre
+
+-- Insertion des niveaux de diplôme
+INSERT INTO niveau_diplome (niveau_diplome, nom_niveau_diplome) VALUES
+(5, 'Baccalaureat'),
+(6, 'BTS Maintenance Industrielle'),
+(7, 'Licence en Gestion'),
+(8, 'Master en Management'),
+(9, 'Doctorat en Sciences'),
+(10, 'MBA');
+
+-- Insertion des diplômes avec leur niveau
+INSERT INTO diplome (nom_diplome, id_niveau_diplome) VALUES
+('Baccalaureat', 6),
+('BTS Maintenance Industrielle', 7),
+('Licence en Gestion', 8),
+('Master en Management', 9),
+('Doctorat en Sciences', 10),
+('MBA', 11);
+
+INSERT INTO talent (nom, prenom, mail, password, is_admin, id_poste, id_categories, date_of_hire) VALUES
+('Jean', 'Dupont', 'jean.dupont@example.com', 'password123', false, 1, 1, '2020-06-15'),  -- Manutentionnaire (Ouvriers)
+('Marie', 'Martin', 'marie.martin@example.com', 'password123', false, 2, 2, '2018-09-01'),  -- Assistant Administratif (Employes)
+('Paul', 'Lemoine', 'paul.lemoine@example.com', 'password123', false, 3, 3, '2017-04-23'),  -- Technicien de Maintenance (Techniciens et agents de maitrise)
+('Claire', 'Lefevre', 'claire.lefevre@example.com', 'password123', false, 4, 4, '2015-11-01'),  -- Responsable d'Equipe (Cadres)
+('Bernard', 'Roy', 'bernard.roy@example.com', 'password123', true, 5, 5, '2010-03-12');  -- Directeur General (Dirigeants)
+
+-- Insertion de talents et liaisons avec leurs diplômes
+INSERT INTO talent_diplome (id_talent, id_diplome) VALUES
+(1, 2),
+(2, 4),
+(3, 2),
+(4, 4),
+(5, 6);
+
+-- Insertion de l'experience des talents dans leurs postes respectifs
+INSERT INTO experience_talent (id_talent, id_poste, ans) VALUES
+(1, 1, 3),
+(2, 2, 5),
+(3, 3, 6),
+(4, 4, 8),
+(5, 5, 10);
+
+-- Insertion des competences des talents
+INSERT INTO talent_competence (id_talent, id_competence, point) VALUES
+(1, 1, 80),
+(2, 2, 70),
+(3, 3, 90),
+(4, 4, 85),
+(5, 5, 95);

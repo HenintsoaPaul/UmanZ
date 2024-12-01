@@ -1,14 +1,12 @@
-package mg.itu.rh.service;
+package mg.itu.rh.service.interne;
 
 import mg.itu.rh.dto.poste.PosteDTO;
-import mg.itu.rh.entity.Poste;
+import mg.itu.rh.entity.interne.Poste;
 import mg.itu.rh.repository.PosteRepository;
 import mg.itu.rh.service.recrutement.PosteDiplomeService;
 import mg.itu.rh.service.recrutement.CompetencePosteService;
 import mg.itu.rh.service.recrutement.PosteLangueService;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class PosteService {
@@ -29,9 +27,9 @@ public class PosteService {
                 .orElseThrow( () -> new RuntimeException( "Poste non reconnue" ) );
     }
 
-    public List<Poste> findAll() {
-        return posteRepository.findAllPostes();
-    }
+//    public List<Poste> findAll() {
+//        return posteRepository.findAllPostes();
+//    }
 
     public Poste save(Poste poste){
         return posteRepository.save(poste);

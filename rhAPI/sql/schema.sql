@@ -28,7 +28,6 @@ CREATE TABLE formation(
                           nom_formation VARCHAR(50)  NOT NULL,
                           date_debut DATE NOT NULL,
                           date_fin DATE NOT NULL,
-                          est_fini BOOLEAN,
                           PRIMARY KEY(id_formation)
 );
 
