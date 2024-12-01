@@ -1,9 +1,5 @@
 package mg.itu.rh.controller;
 
-import mg.itu.rh.service.*;
-
-import mg.itu.rh.service.interne.EmailService;
-import mg.itu.rh.service.interne.PromotionService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
