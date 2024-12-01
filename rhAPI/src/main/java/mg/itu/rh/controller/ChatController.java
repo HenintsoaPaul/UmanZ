@@ -1,11 +1,8 @@
 package mg.itu.rh.controller;
 
-import mg.itu.rh.entity.interne.Chat;
-import mg.itu.rh.repository.ChatRepository;
+import lombok.RequiredArgsConstructor;
 import mg.itu.rh.service.chat.ChatService;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -20,18 +17,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/chat")
 public class ChatController {
-
-    //private final ChatRepository chatRepository;
-
-    @Autowired
-    ChatService chatService;
-
-    // public ChatController(ChatRepository chatRepository) {
-    //     this.chatRepository = chatRepository;
-    // }
+    private final ChatService chatService;
+    // private final ChatRepository chatRepository;
 
     // @PostMapping
     // public String chat(@RequestBody Map<String, String> payload) {
@@ -47,15 +38,12 @@ public class ChatController {
         try {
             // Récupérer les données de la requête
             String question = (String) requestData.get("message");
-            if (question == null) {
-                return ResponseEntity.badRequest().body("Question manquante");
-            }
-            
-            String prompt = chatService.getPrompt(question);
+            if (question == null) return ResponseEntity.badRequest().body("Question manquante");
+
             // Créer le corps de la requête pour l'API Cohere
             Map<String, Object> jsonRequest = new HashMap<>();
             jsonRequest.put("model", "command-r-plus");
-            jsonRequest.put("prompt", prompt);
+            jsonRequest.put("prompt", chatService.genererPrompt(question));
             jsonRequest.put("max_tokens", 1000);
             jsonRequest.put("temperature", 0.7);
 
@@ -71,7 +59,7 @@ public class ChatController {
             // Construire la requête avec RestTemplate
             HttpEntity<String> requestEntity = new HttpEntity<>(jsonBody, headers);
             RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<Map> response = restTemplate.exchange(ChatService.COHERE_API_URL, HttpMethod.POST, requestEntity, Map.class);
+            ResponseEntity<Map> response = restTemplate.exchange(ChatService.API_URL, HttpMethod.POST, requestEntity, Map.class);
 
             // Extraire la réponse générée par Cohere
             Map<String, Object> responseBody = response.getBody();
@@ -80,14 +68,11 @@ public class ChatController {
             }
             
             Object generations = responseBody.get("generations");
-            if (generations instanceof ArrayList) {
-                ArrayList<?> generationsList = (ArrayList<?>) generations;
-                if (!generationsList.isEmpty() && generationsList.get(0) instanceof Map) {
-                    Map<?, ?> generation = (Map<?, ?>) generationsList.get(0);
+            if (generations instanceof ArrayList<?> generationsList)
+                if (!generationsList.isEmpty() && generationsList.get(0) instanceof Map<?, ?> generation) {
                     String generatedText = (String) generation.get("text");
                     return ResponseEntity.ok(generatedText.trim());
                 }
-            }
             return ResponseEntity.status(500).body("Format de réponse invalide");
         } catch (Exception e) {
             e.printStackTrace();
