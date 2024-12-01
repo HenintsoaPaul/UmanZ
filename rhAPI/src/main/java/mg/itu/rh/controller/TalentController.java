@@ -123,9 +123,9 @@ public class TalentController {
             "indice": 141
      }
     * */
-    @GetMapping( "/fiche_paie" )
+    @GetMapping( "/{idTalent}/fiche-paie" )
     @JsonView( POV.Public.class )
-    public FicheDTO findFiche( @RequestParam( name = "idTalent" ) Long idTalent, @RequestParam( name = "annee" ) int annee, @RequestParam( name = "mois" ) int mois ) {
+    public FicheDTO findFiche( @PathVariable( name = "idTalent" ) Long idTalent, @RequestParam( name = "annee" ) int annee, @RequestParam( name = "mois" ) int mois ) {
         return contratService.findFiche( annee, mois, idTalent );
     }
 }
