@@ -64,7 +64,7 @@ public class Conge {
         this.setDateFin();
     }
 
-    protected void setDateFin() {
+    public void setDateFin() {
         this.setDateFin( dateDebut.plusDays( nbJour ) );
     }
 }

@@ -20,6 +20,7 @@ export interface TypeConge {
 export interface Conge {
     idConge: number,
     dateDebut: string,
+    dateFin: string,
     nbJour: number,
     motif?: string,
     dateValidation?: string,

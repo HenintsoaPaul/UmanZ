@@ -34,7 +34,9 @@ public class CongeService {
     }
 
     public List<Conge> findAllTakenByContrat( Long idContrat ) {
-        return this.congeRepository.findAllTakenByContrat( idContrat );
+        List<Conge> conges = this.congeRepository.findAllTakenByContrat( idContrat );
+        for ( Conge c : conges ) c.setDateFin();
+        return conges;
     }
 
     public List<PendingCongeDTO> findAllCongeNeedsValidation() {
