@@ -20,16 +20,21 @@ import java.util.List;
 @RestController
 @RequestMapping( "/talents" )
 public class TalentController {
-    private TalentService talentService;
+    private final TalentService talentService;
 
-    @Autowired
-    private EmailService emailService;
+    // @Autowired
+    // private final EmailService emailService;
 
-    @Autowired
-    private PromotionService promotionService;
+    private final PromotionService promotionService;
 
-    public TalentController( TalentService talentService ) {
+    public TalentController(
+            TalentService talentService,
+//            EmailService emailService,
+            PromotionService promotionService
+    ) {
         this.talentService = talentService;
+//        this.emailService = emailService;
+        this.promotionService = promotionService;
     }
 
     @GetMapping
@@ -62,7 +67,7 @@ public class TalentController {
             String subject = "Motif de Renvoi";
             String body = "<h1>Bonjour,</h1><p>Motif du renvoi : " + renvoiRequest.getMotif() + "</p>";
 
-            emailService.sendEmail(renvoiRequest.getEmail(), subject, body);
+//            emailService.sendEmail(renvoiRequest.getEmail(), subject, body);
             return ResponseEntity.ok("Email envoyé avec succès.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de l'envoi de l'email : " + e.getMessage());

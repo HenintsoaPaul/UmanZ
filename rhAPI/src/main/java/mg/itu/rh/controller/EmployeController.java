@@ -1,37 +1,30 @@
 package mg.itu.rh.controller;
 
-import mg.itu.rh.entity.*;
-import mg.itu.rh.other.POV;
 import mg.itu.rh.service.*;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import mg.itu.rh.service.interne.EmailService;
+import mg.itu.rh.service.interne.PromotionService;
 import org.springframework.web.bind.annotation.*;
-
-import com.fasterxml.jackson.annotation.JsonView;
 
 @RestController
 @RequestMapping("/employees")
 public class EmployeController {
 
-    private final EmployeService employeeService;
-    private final EmailService emailService;
-    private final PromotionService promotionService;
+//    private final EmployeService employeeService;
+//    private final EmailService emailService;
+//    private final PromotionService promotionService;
+//
+//    public EmployeController(EmployeService employeeService, EmailService emailService, PromotionService promotionService) {
+//        this.employeeService = employeeService;
+//        this.emailService = emailService;
+//        this.promotionService = promotionService;
+//    }
 
-    public EmployeController(EmployeService employeeService, EmailService emailService, PromotionService promotionService) {
-        this.employeeService = employeeService;
-        this.emailService = emailService;
-        this.promotionService = promotionService;
-    }
-
-    @GetMapping("/all")
-    @JsonView( POV.Public.class )
-    public List<Employe> getAllEmployees() {
-        return employeeService.getAllEmployees();
-    }
+//    @GetMapping("/all")
+//    @JsonView( POV.Public.class )
+//    public List<Employe> getAllEmployees() {
+//        return employeeService.getAllEmployees();
+//    }
 
     // TODO: Décommenter le endpoint une fois que le fonctionnement de l'envoi d'email garanti
 //    @GetMapping("/by-category/{idCategory}")
