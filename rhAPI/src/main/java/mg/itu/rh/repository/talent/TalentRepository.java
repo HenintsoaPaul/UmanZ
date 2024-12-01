@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public interface TalentRepository extends JpaRepository<Talent,Long> {
@@ -16,4 +16,5 @@ public interface TalentRepository extends JpaRepository<Talent,Long> {
     @Query("select t from Talent t where t.mail=:email")
     public Optional<Talent> findByEmail(@Param("email")String email);
 
+    List<Talent> findByCategoriesPosition_Id_IdCategories(Long idCategories);
 }

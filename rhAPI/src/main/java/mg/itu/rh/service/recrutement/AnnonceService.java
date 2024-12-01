@@ -4,7 +4,8 @@ import jakarta.transaction.Transactional;
 import mg.itu.rh.dto.recrutement.AnnonceDTO;
 import mg.itu.rh.entity.recrutement.Annonce;
 import mg.itu.rh.repository.recrutement.AnnonceRepository;
-import mg.itu.rh.service.PosteService;
+import mg.itu.rh.service.interne.PosteService;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;

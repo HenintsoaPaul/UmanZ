@@ -2,8 +2,8 @@ package mg.itu.rh.service.recrutement;
 
 import jakarta.transaction.Transactional;
 import mg.itu.rh.dto.poste.CompetencePosteDTO;
-import mg.itu.rh.entity.Poste;
 import mg.itu.rh.entity.id.IdCompetencePoste;
+import mg.itu.rh.entity.interne.Poste;
 import mg.itu.rh.entity.recrutement.CompetencePoste;
 import mg.itu.rh.repository.recrutement.CompetencePosteRepository;
 import mg.itu.rh.service.critere.CompetenceService;

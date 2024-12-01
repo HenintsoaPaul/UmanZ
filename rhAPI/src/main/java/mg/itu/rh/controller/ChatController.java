@@ -1,6 +1,6 @@
 package mg.itu.rh.controller;
 
-import mg.itu.rh.entity.Chat;
+import mg.itu.rh.entity.interne.Chat;
 import mg.itu.rh.repository.ChatRepository;
 import mg.itu.rh.service.chat.ChatService;
 

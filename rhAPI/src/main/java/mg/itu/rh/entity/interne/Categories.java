@@ -1,18 +1,23 @@
-package mg.itu.rh.entity;
+package mg.itu.rh.entity.interne;
+
+import com.fasterxml.jackson.annotation.JsonView;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import mg.itu.rh.other.POV;
 
 @Entity
 @Data
-public class Category {
+public class Categories {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_categories")
+    @JsonView({POV.Public.class})
     private Long idCategories;
 
     @Column(name = "nom", nullable = false, length = 50)
+    @JsonView({POV.Public.class})
     private String nom;
 
     @Column(name = "description")
