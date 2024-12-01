@@ -1,13 +1,16 @@
 package mg.itu.rh.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import mg.itu.rh.dto.interne.FicheDTO;
 import mg.itu.rh.dto.talent.TalentDTO;
 import mg.itu.rh.entity.interne.RenvoiRequest;
 import mg.itu.rh.entity.talent.Talent;
 import mg.itu.rh.service.interne.*;
 import mg.itu.rh.other.POV;
+import mg.itu.rh.service.interne.ContratService;
 import mg.itu.rh.service.talent.TalentService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,18 +28,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping( "/talents" )
 public class TalentController {
     private final TalentService talentService;
-
-    // @Autowired
-    // private final EmailService emailService;
-
-    // private final PromotionService promotionService;
+    private final ContratService contratService;
 
     public TalentController(
-            TalentService talentService
+            TalentService talentService,
+            ContratService contratService
 //            EmailService emailService,
 //            PromotionService promotionService
+
     ) {
         this.talentService = talentService;
+        this.contratService = contratService;
 //        this.emailService = emailService;
 //        this.promotionService = promotionService;
     }
@@ -64,17 +66,17 @@ public class TalentController {
 //        return ResponseEntity.ok(promotions);
 //    }
 
-    @PostMapping("/send-renvoi-email")
+    @PostMapping( "/send-renvoi-email" )
     @JsonView( POV.Public.class )
-    public ResponseEntity<String> sendRenvoiEmail(@RequestBody RenvoiRequest renvoiRequest) {
+    public ResponseEntity<String> sendRenvoiEmail( @RequestBody RenvoiRequest renvoiRequest ) {
         try {
             String subject = "Motif de Renvoi";
             String body = "<h1>Bonjour,</h1><p>Motif du renvoi : " + renvoiRequest.getMotif() + "</p>";
 
 //            emailService.sendEmail(renvoiRequest.getEmail(), subject, body);
-            return ResponseEntity.ok("Email envoyé avec succès.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de l'envoi de l'email : " + e.getMessage());
+            return ResponseEntity.ok( "Email envoyé avec succès." );
+        } catch ( Exception e ) {
+            return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR ).body( "Erreur lors de l'envoi de l'email : " + e.getMessage() );
         }
     }
 
@@ -101,5 +103,27 @@ public class TalentController {
     public String rejeterCandidat( @RequestParam String email ) {
         talentService.rejetCandidat( email );
         return "Candidat rejeté et notification envoyée à " + email;
+    }
+
+    /*
+    *
+    {
+            "nomPrenom": "Leroy Paul",
+            "matricule": 5,
+            "fonction": "Support technique",
+            "dateEmbauche": "2024-01-01",
+            "anciennete": "9 mois et 30 jours",
+            "classification": "Dirigeants",
+            "idCnaps": "CNP354632",
+            "salaire": 4387.5,
+            "tauxJournalier": 189,
+            "tauxHoraire": 25,
+            "indice": 141
+     }
+    * */
+    @GetMapping( "/fiche_paie" )
+    @JsonView( POV.Public.class )
+    public FicheDTO findFiche( @RequestParam( name = "idTalent" ) Long idTalent, @RequestParam( name = "annee" ) int annee, @RequestParam( name = "mois" ) int mois ) {
+        return contratService.findFiche( annee, mois, idTalent );
     }
 }

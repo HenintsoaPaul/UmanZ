@@ -15,8 +15,11 @@ import java.util.List;
 @RequestMapping("/absences")
 public class AbsenceController {
 
-    @Autowired
-    private AbsenceService absenceService;
+    private final AbsenceService absenceService;
+
+    public AbsenceController(AbsenceService absenceService) {
+        this.absenceService = absenceService;
+    }
 
     @GetMapping
     @JsonView( POV.Public.class )

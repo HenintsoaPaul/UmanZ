@@ -45,6 +45,7 @@ public class Poste {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_type_poste")
     @JsonView({POV.Public.class})
+    @JoinColumn(name = "id_type_poste")
     private TypePoste typePoste;
 
     @ManyToMany

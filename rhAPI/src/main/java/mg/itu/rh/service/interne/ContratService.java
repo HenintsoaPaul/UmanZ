@@ -1,12 +1,16 @@
 package mg.itu.rh.service.interne;
 
+import jakarta.transaction.Transactional;
 import mg.itu.rh.dto.interne.ContratDTO;
+import mg.itu.rh.dto.interne.FicheDTO;
 import mg.itu.rh.entity.interne.Contrat;
 import mg.itu.rh.entity.interne.TypeContrat;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import mg.itu.rh.entity.talent.Talent;
 import mg.itu.rh.repository.interne.ContratRepository;
 import mg.itu.rh.service.recrutement.EntretienService;
 import mg.itu.rh.service.talent.TalentService;
@@ -51,6 +55,15 @@ public class ContratService {
         contrat.setTypeContrat( tc );
         contrat.setContrat( tc.getTypeContrat() ); // nom_contrat io ;>
         return this.save( contrat );
+    }
+
+    @Transactional
+    public FicheDTO findFiche(int annee,int mois,Long idTalent){
+        Talent talent=talentService.findById(idTalent);
+        LocalDate dateActuel=LocalDate.of(annee,mois+1,1).minusDays(1);
+        Contrat contratEmbauche=contratRepository.findContratEmbauche(idTalent).orElseThrow(()->new RuntimeException("Cette personne n'a jamais travaille chez nous"));
+        Contrat contratActuel=contratRepository.findContratByDateTalent(dateActuel,idTalent).orElseThrow(()->new RuntimeException("Cette personne n'est pas un employe la date du "+dateActuel));
+        return new FicheDTO(talent,contratEmbauche,contratActuel,dateActuel);
     }
 
     public List<Contrat> findAll() {
