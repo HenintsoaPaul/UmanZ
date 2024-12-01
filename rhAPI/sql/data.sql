@@ -112,7 +112,7 @@ VALUES (1, 1),
 
 INSERT INTO type_poste(nom_type_poste, rang_type_poste)
 VALUES ('Ouvrier', 1),
-       ('Employé', 2),
+       ('Employe', 2),
        ('Technicien et/ou Agent de Maîtrise', 3),
        ('Cadre', 4),
        ('Dirigeant', 5);
@@ -152,6 +152,13 @@ VALUES ('Contrat CDI Developpeur', '2023-01-01', '2024-01-01', 20.00, 5, 25, 8.0
        ('Contrat CDD Analyste', '2023-05-15', NULL, 22.00, 5, 30, 8.0, 4, 3, 2),
        ('Contrat d''essai Chef de Projet', '2023-06-01', NULL, 25.00, 4, 15, 7.0, 2, 4, 1),
        ('Contrat CDI Support technique', '2024-01-01', NULL, 19.50, 5, 25, 7.5, 5, 5, 3);
+
+-- INSERT INTO entretien (date_creation, date_validation, note, motif, id_enfant, id_annonce, id_etat_entretien, id_talent)
+-- VALUES ('2023-02-15', '2023-02-20', 85, 'Entretien positif', NULL, 1, 4, 1),
+--        ('2023-03-10', '2023-03-15', 90, 'Candidat qualifie', NULL, 2, 5, 2),
+--        ('2023-04-05', NULL, NULL, 'En attente de validation', 1, 3, 1, 3),
+--        ('2023-05-01', NULL, 70, 'Competences insuffisantes', NULL, 4, 2, 4),
+--        ('2023-06-01', NULL, NULL, 'Annulation', 2, 5, 6, 5);
 
 INSERT INTO rupture (date_rupture, motif, id_type_rupture, id_contrat)
 VALUES ('2024-01-01', 'Fin de contrat', 1, 1),
@@ -281,12 +288,18 @@ INSERT INTO justificatif (date_justificatif, image_justificatif, id_type_justifi
 VALUES ('2024-01-01', '/img/fuf.png', 1),
        ('2024-01-01', '/img/fuf.png', 2);
 
-INSERT INTO type_conge (nom_type_conge)
-VALUES ('Conge Paye'),
-       ('Conge maladie'),
-       ('Conge exceptionnel'),
-       ('Conge maternite');
+INSERT INTO type_conge(nom_type_conge)
+VALUES ('Annuel'),
+       ('Medical'),
+       ('Evènement spécial');
 
+INSERT INTO conge (date_debut, date_validation, nb_jour, motif, id_contrat, id_type_conge)
+VALUES ('2024-12-01', '2024-12-01', 5, 'Conge annuel', 1, 1),  -- Conge annuel pour le contrat 1
+       ('2024-12-15', '2024-12-15', 3, 'Conge maladie', 2, 2), -- Conge maladie pour le contrat 2
+       ('2024-11-20', null, 7, 'Conge parental', 3, 1),        -- Conge parental pour le contrat 3
+       ('2024-11-05', null, 10, 'Conge sabbatique', 4, 1),     -- Conge sabbatique pour le contrat 4
+       ('2024-12-10', '2024-12-10', 4, 'Conge urgent', 5, 3),
+       ('2024-08-10', '2024-08-10', 5, 'Conge annuel', 1, 1);
 
 INSERT INTO chat (mot_cle, reponse)
 VALUES ('au revoir', 'Au revoir :)'),

@@ -6,7 +6,8 @@ import mg.itu.rh.entity.recrutement.Annonce;
 import mg.itu.rh.entity.recrutement.ExperiencePoste;
 import mg.itu.rh.entity.id.IdExperiencePoste;
 import mg.itu.rh.repository.recrutement.ExperiencePosteRepository;
-import mg.itu.rh.service.PosteService;
+import mg.itu.rh.service.interne.PosteService;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;

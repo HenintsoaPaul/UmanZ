@@ -2,12 +2,12 @@ package mg.itu.rh.service.recrutement;
 
 import jakarta.transaction.Transactional;
 import mg.itu.rh.dto.critere.LangueDTO;
-import mg.itu.rh.entity.Poste;
 import mg.itu.rh.entity.recrutement.Annonce;
 import mg.itu.rh.entity.recrutement.PosteLangue;
 import mg.itu.rh.entity.critere.Langue;
 import mg.itu.rh.entity.critere.NiveauLangue;
 import mg.itu.rh.entity.id.IdPosteLangue;
+import mg.itu.rh.entity.interne.Poste;
 import mg.itu.rh.repository.recrutement.AnnonceLangueRepository;
 import org.springframework.stereotype.Service;
 

@@ -7,7 +7,7 @@ import mg.itu.rh.entity.talent.Talent;
 import java.util.List;
 
 import mg.itu.rh.repository.talent.TalentRepository;
-import mg.itu.rh.service.EmailService;
+import mg.itu.rh.service.interne.EmailService;
 import mg.itu.rh.service.recrutement.CandidatHistoriqueService;
 import org.springframework.stereotype.Service;
 
@@ -88,4 +88,8 @@ public class TalentService {
     public List<Talent> getAll() {
         return talentRepository.findAll();
     }
+
+//    public List<Talent> getEmployeesByCategory(Long idCategories) {
+//        return talentRepository.findByCategoriesPosition_Id_IdCategories(idCategories);
+//    }
 }
