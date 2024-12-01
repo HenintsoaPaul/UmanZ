@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { defineProps } from 'vue';
+import type { Conge } from '~/types/interne/conge';
 
 const props = defineProps<{
     conge: Conge;

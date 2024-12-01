@@ -3,9 +3,9 @@ definePageMeta({
     middleware: ['auth-is-admin']
 })
 
-import type { PendingCongeDTO } from '~/types';
-import { ref, computed, toRaw } from 'vue';
-import DemandeCongeExpend from '~/components/conge/DemandeCongeExpend';
+import { ref } from 'vue';
+import DemandeCongeExpend from '~/components/conge/DemandeCongeExpend.vue';
+import type { Conge, PendingCongeDTO } from '~/types/interne/conge';
 
 const headers = [
     { key: 'conge.idConge', label: 'ID', sortable: true },
@@ -27,22 +27,27 @@ const expand = ref({
 });
 
 const { validerCongerFn, refuserCongerFn } = useCongeActions();
-async function validerFn(conge: Conge, solde: number) {
-    if (solde < conge.nbJour) {
+async function validerFn(arr: any) {
+    const cng: Conge = arr[0];
+    const solde: number = arr[1];
+
+    if (solde < cng.nbJour) {
         console.error("Solde insuffisant");
         return;
     }
-    await validerCongerFn(conge.idConge, apiUrl);
+    await validerCongerFn(cng.idConge, apiUrl);
     refreshConges();
 }
 async function refuserFn(conge: Conge) {
-    const motifRefus: string = conge.motifRefus;
-    if (motifRefus.length <= 0) {
+    const motifRefus: string | undefined = conge.motifRefus;
+    if (motifRefus != undefined && motifRefus.length <= 0) {
+        if (motifRefus.length > 0) {
+            await refuserCongerFn(conge.idConge, motifRefus, apiUrl);
+            refreshConges();
+        }
         console.error("MotifRefus is required");
         return;
     }
-    await refuserCongerFn(conge.idConge, conge.motifRefus, apiUrl);
-    refreshConges();
 }
 </script>
 
@@ -57,7 +62,8 @@ async function refuserFn(conge: Conge) {
         <UTable :columns="headers" :rows="filteredConges ?? []" v-model:expand="expand">
             <template #expand="{ row }">
                 <div class="p-4">
-                    <DemandeCongeExpend :conge="row.conge" :solde="row.solde" :api-url="apiUrl" @valider="validerFn" @refuser="refuserFn" />
+                    <DemandeCongeExpend :conge="row.conge" :solde="row.solde" :api-url="apiUrl" @valider="validerFn"
+                        @refuser="refuserFn" />
                 </div>
             </template>
         </UTable>
