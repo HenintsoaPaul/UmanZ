@@ -43,7 +43,6 @@ public class Poste {
     private List<ExperiencePoste> experiencePostes= new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_type_poste")
     @JsonView({POV.Public.class})
     @JoinColumn(name = "id_type_poste")
     private TypePoste typePoste;
