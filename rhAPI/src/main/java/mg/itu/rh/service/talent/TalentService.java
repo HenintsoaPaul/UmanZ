@@ -66,8 +66,6 @@ public class TalentService {
             Talent t = talentRepository.findByEmail(candidatEmail).orElse(null);
             String subject = "Entretien Planifié";
             String body = "<h1>Bonjour,</h1><p>Votre entretien a été planifié. Merci de confirmer votre présence.</p>";
-            // TODO: atao mande ny email
-//            emailService.sendEmail(candidatEmail, subject, body);
             System.out.println("Tsy mande ny email");
             candidatHistoriqueService.ajouterHistoriqueEtNotifier(t, subject, body);
         } catch (Exception e) {
@@ -80,8 +78,6 @@ public class TalentService {
             Talent t = talentRepository.findByEmail(candidatEmail).orElse(null);
             String subject = "Candidature rejetée";
             String body = "<h1>Bonjour,</h1><p>Nous sommes désolés de vous informer que votre candidature n'a pas été retenue.</p>";
-            // TODO: atao mande ny email
-//            emailService.sendEmail(candidatEmail, subject, body);
             System.out.println("Tsy mande ny email");
             candidatHistoriqueService.ajouterHistoriqueEtNotifier(t, subject, body);
         } catch (Exception e) {

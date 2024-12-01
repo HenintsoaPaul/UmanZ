@@ -8,6 +8,8 @@ import mg.itu.rh.entity.talent.Talent;
 import mg.itu.rh.service.interne.*;
 import mg.itu.rh.other.POV;
 import mg.itu.rh.service.talent.TalentService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +21,11 @@ import java.util.List;
 @RequestMapping( "/talents" )
 public class TalentController {
     private TalentService talentService;
+
+    @Autowired
     private EmailService emailService;
+
+    @Autowired
     private PromotionService promotionService;
 
     public TalentController( TalentService talentService ) {
@@ -32,7 +38,8 @@ public class TalentController {
         return talentService.findAll();
     }
 
-    @GetMapping("/by-category/{categoryId}")
+    @GetMapping("/by-category/{idCategories}")
+    @JsonView( POV.Public.class )
     public ResponseEntity<List<Talent>> getEmployeesByCategory(@PathVariable Long idCategories) {
         List<Talent> employees = talentService.getEmployeesByCategory(idCategories);
         if (employees.isEmpty()) {
@@ -42,12 +49,14 @@ public class TalentController {
     }
 
     @GetMapping("/{employeeId}/promotions")
+    @JsonView( POV.Public.class )
     public ResponseEntity<List<Poste>> getPossiblePromotions(@PathVariable Integer employeeId) {
         List<Poste> promotions = promotionService.getPromotionsForEmployee(employeeId);
         return ResponseEntity.ok(promotions);
     }
 
     @PostMapping("/send-renvoi-email")
+    @JsonView( POV.Public.class )
     public ResponseEntity<String> sendRenvoiEmail(@RequestBody RenvoiRequest renvoiRequest) {
         try {
             String subject = "Motif de Renvoi";
@@ -79,6 +88,7 @@ public class TalentController {
     }
 
     @PostMapping( "/entretien" )
+    @JsonView( POV.Public.class )
     public String prendreEntretien( @RequestParam String email ) {
         talentService.prendreEntretien( email );
         return "Entretien pris et notification envoyée à " + email;
