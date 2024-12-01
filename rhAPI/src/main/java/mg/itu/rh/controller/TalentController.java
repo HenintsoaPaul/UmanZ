@@ -84,12 +84,6 @@ public class TalentController {
         return talentService.findById( id );
     }
 
-    @GetMapping( "/users" )
-    @JsonView( POV.Public.class )
-    public Talent login( @Param( "email" ) String email, @Param( "password" ) String password ) {
-        return talentService.findByEmailAndPassword( email, password );
-    }
-
     @PostMapping
     @JsonView( POV.Public.class )
     public Talent create( @RequestBody TalentDTO talentDTO ) {

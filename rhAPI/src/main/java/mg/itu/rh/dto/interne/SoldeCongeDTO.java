@@ -26,7 +26,7 @@ public class SoldeCongeDTO {
 
     public void controllerDemande( int nbJourDemande )
             throws CongeException {
-        if ( solde - nbJourDemande <= 0 ) {
+        if ( solde - nbJourDemande < 0 ) {
             throw new CongeException( "Solde de conge insuffisant. " +
                     "Il vous reste " + nbJourDemande + " jr de conge." );
         }
