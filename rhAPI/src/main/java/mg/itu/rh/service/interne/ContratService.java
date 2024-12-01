@@ -7,7 +7,6 @@ import mg.itu.rh.entity.interne.TypeContrat;
 import java.util.List;
 
 import mg.itu.rh.repository.interne.ContratRepository;
-import mg.itu.rh.service.PosteService;
 import mg.itu.rh.service.recrutement.EntretienService;
 import mg.itu.rh.service.talent.TalentService;
 import org.springframework.stereotype.Service;

@@ -3,10 +3,10 @@ package mg.itu.rh.entity.recrutement;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Data;
-import mg.itu.rh.entity.Poste;
 import mg.itu.rh.entity.critere.NiveauLangue;
 import mg.itu.rh.entity.critere.Langue;
 import mg.itu.rh.entity.id.IdPosteLangue;
+import mg.itu.rh.entity.interne.Poste;
 import mg.itu.rh.other.POV;
 
 @Entity

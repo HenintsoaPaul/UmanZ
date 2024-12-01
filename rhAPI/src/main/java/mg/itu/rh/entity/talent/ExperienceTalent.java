@@ -3,8 +3,8 @@ package mg.itu.rh.entity.talent;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Data;
-import mg.itu.rh.entity.Poste;
 import mg.itu.rh.entity.id.IdExperienceTalent;
+import mg.itu.rh.entity.interne.Poste;
 import mg.itu.rh.other.POV;
 
 @Entity

@@ -1,9 +1,9 @@
 package mg.itu.rh.dto.talent;
 
 import lombok.Data;
+import mg.itu.rh.entity.interne.Poste;
 import mg.itu.rh.entity.talent.ExperienceTalent;
-import mg.itu.rh.entity.Poste;
-import mg.itu.rh.service.PosteService;
+import mg.itu.rh.service.interne.PosteService;
 
 @Data
 public class ExperienceTalentDTO {

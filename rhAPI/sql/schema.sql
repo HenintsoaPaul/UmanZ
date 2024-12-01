@@ -1,3 +1,18 @@
+CREATE TABLE categories (
+    id_categories SERIAL PRIMARY KEY ,
+    nom VARCHAR(50),
+    description TEXT
+);
+
+CREATE TABLE categories_position (
+    id_poste INTEGER,      
+    id_categories INTEGER,
+    point_categorie INTEGER,
+    PRIMARY KEY (id_poste, id_categories), -- Clé primaire composite
+    FOREIGN KEY (id_poste) REFERENCES poste(id_poste),
+    FOREIGN KEY (id_categories) REFERENCES categories(id_categories)
+);
+
 CREATE TABLE talent(
                        id_talent SERIAL,
                        nom VARCHAR(50)  NOT NULL,
@@ -5,7 +20,11 @@ CREATE TABLE talent(
                        mail VARCHAR(50)  NOT NULL,
                        password VARCHAR(255) ,
                        is_admin BOOLEAN NOT NULL,
-                       PRIMARY KEY(id_talent)
+                       id_poste INTEGER,
+                       id_categories INTEGER,
+                       date_of_hire DATE,
+                       PRIMARY KEY(id_talent),
+                       FOREIGN KEY (id_poste, id_categories) REFERENCES categories_position (id_poste, id_categories)
 );
 
 CREATE TABLE etat_entretien(
@@ -126,7 +145,10 @@ CREATE TABLE poste(
                       PRIMARY KEY(id_poste),
                       FOREIGN KEY(id_type_poste) REFERENCES type_poste(id_type_poste)
 );
+ALTER TABLE poste
+ADD COLUMN type_poste VARCHAR(255);
 
+id_type_poste
 CREATE TABLE contrat(
                         id_contrat SERIAL,
                         contrat VARCHAR(100)  NOT NULL,
@@ -366,27 +388,3 @@ CREATE TABLE candidat_historique
     CONSTRAINT fk_talent FOREIGN KEY (id_talent) REFERENCES Talent (id_talent) ON DELETE CASCADE
 );
 
-CREATE TABLE categories (
-    id_categories SERIAL PRIMARY KEY ,
-    nom VARCHAR(50),
-    description TEXT
-);
-
-CREATE TABLE categories_position (
-    id_poste INTEGER,      
-    id_categories INTEGER,
-    point_categorie INTEGER,
-    PRIMARY KEY (id_poste, id_categories), -- Clé primaire composite
-    FOREIGN KEY (id_poste) REFERENCES poste(id_poste),
-    FOREIGN KEY (id_categories) REFERENCES categories(id_categories)
-);
-
-CREATE TABLE employe ( 
-    id_employee SERIAL PRIMARY KEY ,
-    nom VARCHAR(50),
-    email VARCHAR(100),
-    id_poste INTEGER,
-    id_categories INTEGER,
-    date_of_hire DATE,
-    FOREIGN KEY (id_poste, id_categories) REFERENCES categories_position (id_poste, id_categories)
-); 

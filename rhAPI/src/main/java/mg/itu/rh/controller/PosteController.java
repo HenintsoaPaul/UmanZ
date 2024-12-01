@@ -1,7 +1,8 @@
 package mg.itu.rh.controller;
 
-import mg.itu.rh.entity.Poste;
-import mg.itu.rh.service.PosteService;
+import mg.itu.rh.entity.interne.Poste;
+import mg.itu.rh.service.interne.PosteService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

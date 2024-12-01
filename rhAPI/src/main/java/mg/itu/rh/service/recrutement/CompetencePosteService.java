@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import mg.itu.rh.dto.poste.CompetencePosteDTO;
 import mg.itu.rh.entity.Poste;
 import mg.itu.rh.entity.id.IdCompetencePoste;
-import mg.itu.rh.entity.recrutement.Annonce;
 import mg.itu.rh.entity.recrutement.CompetencePoste;
 import mg.itu.rh.repository.recrutement.AnnonceRepository;
 import mg.itu.rh.repository.recrutement.CompetencePosteRepository;

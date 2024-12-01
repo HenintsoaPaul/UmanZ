@@ -1,6 +1,6 @@
-package mg.itu.rh.service;
+package mg.itu.rh.service.interne;
 
-import mg.itu.rh.entity.Poste;
+import mg.itu.rh.entity.interne.Poste;
 import mg.itu.rh.repository.PosteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,9 +13,8 @@ public class PromotionService {
     @Autowired
     private PosteRepository posteRepository;
 
-    // TODO : décommenter
-//    public List<Poste> getPromotionsForEmployee(Integer idEmploye) {
-//        return posteRepository.findPromotionsByEmployee(idEmploye);
-//    }
+    public List<Poste> getPromotionsForEmployee(Integer idTalent) {
+        return posteRepository.findPromotionsByTalent(idTalent);
+    }
 }
 

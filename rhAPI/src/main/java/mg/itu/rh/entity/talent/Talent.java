@@ -1,8 +1,6 @@
 package mg.itu.rh.entity.talent;
 
-import java.util.List;
-import java.util.Set;
-
+import java.util.*;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import jakarta.persistence.*;
@@ -10,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import mg.itu.rh.dto.talent.TalentDTO;
 import mg.itu.rh.entity.critere.Diplome;
+import mg.itu.rh.entity.interne.CategoriesPosition;
 import mg.itu.rh.other.POV;
 
 @Entity
@@ -38,6 +37,18 @@ public class Talent {
     @JsonView( { POV.Public.class } )
     @Column( name = "is_admin" )
     private boolean isAdmin;
+
+    @ManyToOne
+    @JoinColumns({
+        @JoinColumn(name = "id_poste", referencedColumnName = "id_poste"),
+        @JoinColumn(name = "id_categories", referencedColumnName = "id_categories")
+    })
+    @JsonView({POV.Public.class})
+    private CategoriesPosition categoriesPosition;
+
+    @JsonView({POV.Public.class})
+    @Column(name = "date_of_hire")
+    private Date dateOfHire;  
 
     @JsonView( { POV.Public.class } )
     @OneToMany( mappedBy = "talent", cascade = CascadeType.ALL, fetch = FetchType.LAZY )
