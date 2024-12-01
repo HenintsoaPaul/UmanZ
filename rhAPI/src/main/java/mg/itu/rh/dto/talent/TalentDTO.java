@@ -13,8 +13,9 @@ public class TalentDTO {
     private String prenom;
     private String mail;
     private String password;
-    private LocalDate dateNaissance;
     private boolean isAdmin;
+    private LocalDate dateNaissance;
+    private String idCnaps;
 
     private List<CompetenceTalentDTO> competences;
     private List<ExperienceTalentDTO> experiences;
