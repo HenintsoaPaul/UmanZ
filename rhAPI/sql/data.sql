@@ -611,21 +611,18 @@ VALUES ('Baccalaureat', 6),
        ('Licence en Gestion', 8),
        ('Master en Management', 9),
        ('Doctorat en Sciences', 10),
-       ('MBA', 11);
+       ('MBA', 10);
 
 -- Insertion de talents et liaisons avec leurs diplômes
 INSERT INTO talent_diplome (id_talent, id_diplome)
 VALUES (1, 2),
        (2, 4),
        (3, 2),
-       (4, 4),
        (5, 6);
 
 -- Insertion de l'experience des talents dans leurs postes respectifs
 INSERT INTO experience_talent (id_talent, id_poste, ans)
-VALUES (1, 1, 3),
-       (2, 2, 5),
-       (3, 3, 6),
+VALUES (3, 3, 6),
        (4, 4, 8),
        (5, 5, 10);
 
