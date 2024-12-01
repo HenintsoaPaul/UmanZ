@@ -17,13 +17,14 @@ import com.fasterxml.jackson.annotation.JsonView;
 @RequestMapping("/employees")
 public class EmployeController {
 
-    private EmployeService employeeService;
-    private EmailService emailService;
-    private PromotionService promotionService;
+    private final EmployeService employeeService;
+    private final EmailService emailService;
+    private final PromotionService promotionService;
 
-    @Autowired
-    public EmployeController(EmployeService employeeService) {
+    public EmployeController(EmployeService employeeService, EmailService emailService, PromotionService promotionService) {
         this.employeeService = employeeService;
+        this.emailService = emailService;
+        this.promotionService = promotionService;
     }
 
     @GetMapping("/all")
@@ -32,33 +33,36 @@ public class EmployeController {
         return employeeService.getAllEmployees();
     }
 
-    @GetMapping("/by-category/{categoryId}")
-    public ResponseEntity<List<Employe>> getEmployeesByCategory(@PathVariable Long idCategories) {
-        List<Employe> employees = employeeService.getEmployeesByCategory(idCategories);
-        if (employees.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(employees);
-    }
+    // TODO: Décommenter le endpoint une fois que le fonctionnement de l'envoi d'email garanti
+//    @GetMapping("/by-category/{idCategory}")
+//    public ResponseEntity<List<Employe>> getEmployeesByCategory(@PathVariable Long idCategory) {
+//        List<Employe> employees = employeeService.getEmployeesByCategory(idCategory);
+//        if (employees.isEmpty()) {
+//            return ResponseEntity.noContent().build();
+//        }
+//        return ResponseEntity.ok(employees);
+//    }
 
-    @GetMapping("/{employeeId}/promotions")
-    public ResponseEntity<List<Poste>> getPossiblePromotions(@PathVariable Integer employeeId) {
-        List<Poste> promotions = promotionService.getPromotionsForEmployee(employeeId);
-        return ResponseEntity.ok(promotions);
-    }
+    // TODO: Décommenter le endpoint une fois que le fonctionnement de l'envoi d'email garanti
+//    @GetMapping("/{employeeId}/promotions")
+//    public ResponseEntity<List<Poste>> getPossiblePromotions(@PathVariable Integer employeeId) {
+//        List<Poste> promotions = promotionService.getPromotionsForEmployee(employeeId);
+//        return ResponseEntity.ok(promotions);
+//    }
 
-    @PostMapping("/send-renvoi-email")
-    public ResponseEntity<String> sendRenvoiEmail(@RequestBody RenvoiRequest renvoiRequest) {
-        try {
-            String subject = "Motif de Renvoi";
-            String body = "<h1>Bonjour,</h1><p>Motif du renvoi : " + renvoiRequest.getMotif() + "</p>";
-
-            emailService.sendEmail(renvoiRequest.getEmail(), subject, body);
-            return ResponseEntity.ok("Email envoyé avec succès.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de l'envoi de l'email : " + e.getMessage());
-        }
-    }
+    // TODO: Décommenter le endpoint une fois que le fonctionnement de l'envoi d'email garanti
+//    @PostMapping("/send-renvoi-email")
+//    public ResponseEntity<String> sendRenvoiEmail(@RequestBody RenvoiRequest renvoiRequest) {
+//        try {
+//            String subject = "Motif de Renvoi";
+//            String body = "<h1>Bonjour,</h1><p>Motif du renvoi : " + renvoiRequest.getMotif() + "</p>";
+//
+//            emailService.sendEmail(renvoiRequest.getEmail(), subject, body);
+//            return ResponseEntity.ok("Email envoyé avec succès.");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de l'envoi de l'email : " + e.getMessage());
+//        }
+//    }
 
 }
 

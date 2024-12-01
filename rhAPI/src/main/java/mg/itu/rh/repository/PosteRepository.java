@@ -13,18 +13,19 @@ public interface PosteRepository extends JpaRepository<Poste, Long> {
     @Query("select c from Poste c")
     public List<Poste> findAllPostes();
 
-    @Query("""
-        SELECT p 
-        FROM CategoriesPosition cp
-        JOIN Poste p ON cp.id.idPoste = p.id
-        WHERE cp.pointCategorie > (
-            SELECT cpSub.pointCategorie
-            FROM CategoriesPosition cpSub
-            JOIN Employe e ON e.idPoste = cpSub.id.idPoste 
-            AND e.idCategories = cpSub.id.idCategories
-            WHERE e.id = :employeeId
-        )
-        ORDER BY cp.pointCategorie ASC
-    """)
-    List<Poste> findPromotionsByEmployee(@Param("employeeId") Integer employeeId);
+    // TODO : décommenter
+//    @Query("""
+//        SELECT p
+//        FROM CategoriesPosition cp
+//        JOIN Poste p ON cp.id.idPoste = p.id
+//        WHERE cp.pointCategorie > (
+//            SELECT cpSub.pointCategorie
+//            FROM CategoriesPosition cpSub
+//            JOIN Employe e ON e.idPoste = cpSub.id.idPoste
+//            AND e.idCategories = cpSub.id.idCategories
+//            WHERE e.id = :employeeId
+//        )
+//        ORDER BY cp.pointCategorie ASC
+//    """)
+//    List<Poste> findPromotionsByEmployee(@Param("employeeId") Integer employeeId);
 }

@@ -13,8 +13,9 @@ public class PromotionService {
     @Autowired
     private PosteRepository posteRepository;
 
-    public List<Poste> getPromotionsForEmployee(Integer idEmploye) {
-        return posteRepository.findPromotionsByEmployee(idEmploye);
-    }
+    // TODO : décommenter
+//    public List<Poste> getPromotionsForEmployee(Integer idEmploye) {
+//        return posteRepository.findPromotionsByEmployee(idEmploye);
+//    }
 }
 

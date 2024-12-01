@@ -20,8 +20,9 @@ public class EmployeService {
         return employeeRepository.findAll();
     }
 
-    public List<Employe> getEmployeesByCategory(Long idCategories) {
-        return employeeRepository.findByCategory_IdCategories(idCategories);
-    }
+    // TODO : décommenter une fois la fonctionnalité en marche
+//    public List<Employe> getEmployeesByCategory(Long idCategories) {
+//        return employeeRepository.findByCategory_IdCategories(idCategories);
+//    }
 }
 
