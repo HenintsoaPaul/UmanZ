@@ -1,6 +1,7 @@
 package mg.itu.rh.service.interne;
 
 import lombok.RequiredArgsConstructor;
+import mg.itu.rh.dto.rupture.RuptureRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 
@@ -23,6 +24,19 @@ public class EmailService {
 
     @Value( "${spring.mail.username}" )
     private String fromEmail;
+
+    public void writeEmail( String toEmail, String subject, RuptureRequest ruptureRequest )
+            throws MessagingException {
+        String body = String.format(
+                "<h1>%s</h1>" +
+                        "<p><strong>Motif :</strong> %s</p>" +
+                        "<p><strong>Date :</strong> %s</p>",
+                subject,
+                ruptureRequest.getMotif(),
+                ruptureRequest.getDate()
+        );
+        this.sendEmail( toEmail, subject, body );
+    }
 
     public void sendEmail( String toEmail, String subject, String body )
             throws MessagingException {

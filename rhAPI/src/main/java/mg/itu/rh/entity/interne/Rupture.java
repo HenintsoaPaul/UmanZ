@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import mg.itu.rh.dto.interne.RuptureDTO;
+import mg.itu.rh.dto.rupture.RuptureRequest;
 import mg.itu.rh.other.POV;
 
 import java.time.LocalDate;
@@ -43,5 +44,10 @@ public class Rupture {
     public Rupture( RuptureDTO ruptureDTO ) {
         this.setDateRupture( ruptureDTO.getDateRupture() );
         this.setMotif( ruptureDTO.getMotif() );
+    }
+
+    public Rupture( RuptureRequest ruptureRequest ) {
+        this.setDateRupture( LocalDate.parse( ruptureRequest.getDate() ) );
+        this.setMotif( ruptureRequest.getMotif() );
     }
 }
