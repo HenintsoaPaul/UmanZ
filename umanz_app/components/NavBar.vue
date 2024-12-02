@@ -75,6 +75,12 @@ const navLinks = [
     children: [
       { label: "Chat Guide", link: "/chat" }
     ]
+  },
+  {
+    label: "Heure supplementaire",
+    children: [
+      { label: "Insertion heure supplementaire", link: "/interne/heure_sup/add" }
+    ]
   }
 ];
 
