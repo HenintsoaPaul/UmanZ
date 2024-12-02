@@ -3,11 +3,9 @@ const router = useRouter();
 const idUserStr = computed( () => localStorage.getItem( "umanz-idUser" ) );
 const loggedIn = ref( false );
 
-const idUser = ref(0);
 
 onMounted( () => {
   if ( idUserStr ) {
-    idUser.value = Number( idUserStr );
     loggedIn.value = true;
   } else {
     logout();
@@ -38,13 +36,13 @@ const navLinks = [
       { label: "Ajouter", link: "/interne/formation/add" },
     ]
   },
-  {
-    label: "Contrats",
-    children: [
-      { label: "Voir Liste", link: "/interne/contrat" },
-      // { label: "Ajouter", link: "/interne/contrat/add" },
-    ]
-  },
+  // {
+  //   label: "Contrats",
+  //   children: [
+  //     { label: "Voir Liste", link: "/interne/contrat" },
+  //     // { label: "Ajouter", link: "/interne/contrat/add" },
+  //   ]
+  // },
   {
     label: "Conges",
     children: [
@@ -62,8 +60,8 @@ const navLinks = [
   {
     label: "Evaluation",
     children: [
-      { label: "Voir Liste Projet", link: "/interne/evaluation/projet" },
-      { label: "Faire une évaluation", link: "/talent/evaluation/projet" }
+      { label: "Voir Les résultats", link: "/talent/evaluation/resultat" },
+      { label: "Faire une évaluation", link: "/talent/evaluation/domaine" }
     ]
   },
     {
@@ -81,8 +79,16 @@ const navLinks = [
 ];
 
 const showProfile = () => {
-    router.push(`/talent/${idUser.value}`);
+    router.push(`/talent/${idUserStr.value}`);
 }
+const showEmpList = () => {
+    router.push(`/interne/emp`);
+}
+
+const isAdmin = computed(() => {
+    const bb = localStorage.getItem("umanz-isAdmin");
+    return bb ? Boolean(bb) : false;
+});
 
 const logout = () => {
   router.push( "/" );
@@ -96,6 +102,9 @@ const logout = () => {
                   <ul class="flex space-x-4">
                         <li>
                             <p class="hover:cursor-pointer" @click="showProfile">Mon profil</p>
+                        </li>
+                        <li v-if="isAdmin">
+                            <p class="hover:cursor-pointer" @click="showEmpList">Nos employes</p>
                         </li>
                         <li v-for="navLink in navLinks" class="relative group">
                               <p class="cursor-pointer">{{ navLink.label }}</p>

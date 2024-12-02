@@ -1,8 +1,6 @@
 package mg.itu.rh.service.interne;
 
-import jakarta.transaction.Transactional;
 import mg.itu.rh.dto.interne.ContratDTO;
-import mg.itu.rh.dto.interne.FicheDTO;
 import mg.itu.rh.entity.interne.Contrat;
 import mg.itu.rh.entity.interne.TypeContrat;
 
@@ -24,7 +22,7 @@ public class ContratService {
     private final PosteService posteService;
     private final EntretienService entretienService;
 
-    public ContratService(ContratRepository contratRepository, TalentService talentService, TypeContratService typeContratService, PosteService posteService, EntretienService entretienService) {
+    public ContratService( ContratRepository contratRepository, TalentService talentService, TypeContratService typeContratService, PosteService posteService, EntretienService entretienService ) {
         this.contratRepository = contratRepository;
         this.talentService = talentService;
         this.typeContratService = typeContratService;
@@ -34,6 +32,10 @@ public class ContratService {
 
     public Optional<Contrat> findActualContratByIdTalent( Long idTalent ) {
         return contratRepository.findActualContratByIdTalent( idTalent );
+    }
+
+    public List<Contrat> findAllContratNow(){
+        return contratRepository.findAllContratEnCoursOnDate(LocalDate.now());
     }
 
     public Contrat findById( Long idContrat ) {
@@ -68,5 +70,9 @@ public class ContratService {
 
     public List<Contrat> findAll() {
         return contratRepository.findAll();
+    }
+
+    public List<Contrat> findAllEmpNow() {
+        return contratRepository.findAllContratEnCoursOnDate( LocalDate.now() );
     }
 }

@@ -2,6 +2,8 @@ package mg.itu.rh.controller.interne;
 
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
+import mg.itu.rh.exception.interne.ContratException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,14 +19,10 @@ import mg.itu.rh.other.POV;
 import mg.itu.rh.service.interne.AbsenceService;
 
 @RestController
-@RequestMapping("/absences")
+@RequiredArgsConstructor
+@RequestMapping( "/absences" )
 public class AbsenceController {
-
     private final AbsenceService absenceService;
-
-    public AbsenceController(AbsenceService absenceService) {
-        this.absenceService = absenceService;
-    }
 
     @GetMapping
     @JsonView( POV.Public.class )
@@ -32,9 +30,10 @@ public class AbsenceController {
         return absenceService.findAll();
     }
 
-    @PostMapping("/save")
+    @PostMapping
     @JsonView( POV.Public.class )
-    public Absence saveAbsence(@RequestBody AbsenceDTO absenceDTO) {
-        return absenceService.save(absenceDTO);
+    public Absence saveAbsence( @RequestBody AbsenceDTO absenceDTO )
+            throws ContratException {
+        return absenceService.save( absenceDTO );
     }
 }

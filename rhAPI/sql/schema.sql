@@ -28,7 +28,7 @@ CREATE TABLE type_contrat(
 CREATE TABLE formation(
                           id_formation SERIAL,
                           nom_formation VARCHAR(50)  NOT NULL,
-                          date_debut DATE NOT NULL,
+                         date_debut DATE NOT NULL,
                           date_fin DATE NOT NULL,
                           est_fini BOOLEAN,
                           PRIMARY KEY(id_formation)
@@ -111,6 +111,16 @@ CREATE TABLE type_poste(
                            nom_type_poste VARCHAR(50)  NOT NULL,
                            rang_type_poste INTEGER NOT NULL,
                            PRIMARY KEY(id_type_poste)
+);
+
+CREATE TABLE candidat_historique(
+                                    id_candidat_historique SERIAL,
+                                    action VARCHAR(255) ,
+                                    description VARCHAR(255) ,
+                                    date_action TIMESTAMP default current_timestamp,
+                                    id_talent INTEGER NOT NULL,
+                                    PRIMARY KEY(id_candidat_historique),
+                                    FOREIGN KEY(id_talent) REFERENCES talent(id_talent)
 );
 
 CREATE TABLE competence(
@@ -207,15 +217,15 @@ CREATE TABLE reponse(
                         FOREIGN KEY(id_question) REFERENCES question(id_question)
 );
 
-CREATE TABLE resultat_technique(
-                                   id_resultat_technique SERIAL,
-                                   note NUMERIC(15,2)  ,
-                                   date_resultat TIMESTAMP,
-                                   id_domaine INTEGER NOT NULL,
-                                   id_talent INTEGER NOT NULL,
-                                   PRIMARY KEY(id_resultat_technique),
-                                   FOREIGN KEY(id_domaine) REFERENCES domaine(id_domaine),
-                                   FOREIGN KEY(id_talent) REFERENCES talent(id_talent)
+CREATE TABLE resultat(
+                         id_resultat SERIAL,
+                         note NUMERIC(15,2)  ,
+                         date_resultat TIMESTAMP,
+                         id_domaine INTEGER NOT NULL,
+                         id_talent INTEGER NOT NULL,
+                         PRIMARY KEY(id_resultat),
+                         FOREIGN KEY(id_domaine) REFERENCES domaine(id_domaine),
+                         FOREIGN KEY(id_talent) REFERENCES talent(id_talent)
 );
 
 CREATE TABLE justificatif(
@@ -231,7 +241,7 @@ CREATE TABLE heure_supplementaire(
                                      id SERIAL,
                                      motif TEXT,
                                      date_heure_debut TIMESTAMP NOT NULL,
-                                     date_heure_creation TIMESTAMP NOT NULL,
+                                     date_heure_creation TIMESTAMP NOT NULL default now(),
                                      nb_heure NUMERIC(5,2)   NOT NULL,
                                      taux_majoration NUMERIC(5,2)   NOT NULL,
                                      id_contrat INTEGER NOT NULL,
@@ -370,13 +380,4 @@ CREATE TABLE competence_poste(
                                  PRIMARY KEY(id_competence, id_poste),
                                  FOREIGN KEY(id_competence) REFERENCES competence(id_competence),
                                  FOREIGN KEY(id_poste) REFERENCES poste(id_poste)
-);
-
-CREATE TABLE candidat_historique(
-    id_candidat_histo SERIAL PRIMARY KEY,
-    id_talent         INTEGER,
-    action            VARCHAR(255),
-    description       VARCHAR(255),
-    date_action       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_talent FOREIGN KEY (id_talent) REFERENCES Talent (id_talent) ON DELETE CASCADE
 );

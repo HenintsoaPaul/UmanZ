@@ -24,23 +24,23 @@ public class Contrat {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "id_contrat" )
-    @JsonView( { POV.Public.class, POV.Conge.class } )
+    @JsonView( { POV.Public.class, POV.Conge.class, POV.Emp.class } )
     private Long idContrat;
 
     @JsonView( POV.Public.class )
     private String contrat;
 
     @Column( name = "date_debut" )
-    @JsonView( POV.Public.class )
+    @JsonView( { POV.Public.class, POV.Emp.class } )
     private LocalDate dateDebut;
 
     @Column( name = "date_fin" )
-    @JsonView( POV.Public.class )
+    @JsonView( { POV.Public.class, POV.Emp.class } )
     private LocalDate dateFin;
 
     @ManyToOne( fetch = FetchType.LAZY )
     @JoinColumn( name = "id_talent" )
-    @JsonView( { POV.Public.class, POV.Conge.class } )
+    @JsonView( { POV.Public.class, POV.Conge.class, POV.Emp.class } )
     private Talent talent;
 
     @ManyToOne( fetch = FetchType.LAZY )
@@ -66,7 +66,7 @@ public class Contrat {
 
     @ManyToOne( fetch = FetchType.LAZY )
     @JoinColumn( name = "id_poste" )
-    @JsonView( { POV.Public.class, POV.Conge.class } )
+    @JsonView( { POV.Public.class, POV.Conge.class, POV.Emp.class } )
     private Poste poste;
 
     public Contrat( ContratDTO contratDTO ) {
