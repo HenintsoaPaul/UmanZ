@@ -19,56 +19,77 @@ const canDemissioner = computed(() => {
 
 // TODO: manova anreto
 const motif = "fux u";
-const daty = new Date(2024, 11, 2);
+// const daty = new Date(2024, 11, 2);
+// const daty = "2024-11-2";
+const daty = "2021-01-12";
 // TODO: manova anreto
 
 const isLoading = ref(false);
 
 
-const demissionFn = () => {
+const demissionFn = async () => {
     isLoading.value = true;
-    console.log("demission");
+    console.log("Redirection vers form validation demission");
 
     const payLoad = {
         motif: motif, date: daty, idContrat: props.idContrat
     }
 
-    useFetch(`${props.apiUrl}/ruptures/demission`, {
-        method: 'POST',
-        body: JSON.stringify(payLoad),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }).then(({ data }) => {
-        if (data) {
-            console.log('Demission request sent successfully');
-        } else {
-            console.error('Failed to send demission request');
-        }
-    }).catch(error => {
-        console.error('Error:', error);
-    }).finally(() => {
+    try {
+        const response = $fetch<Rupture>(`${props.apiUrl}/ruptures/demission`, {
+            method: 'POST',
+            body: payLoad,
+        });
+        console.log('Demission request sent successfully', response);
+    }
+    catch (error) {
+        console.error('Failed to send demission request', error);
+    } finally {
         isLoading.value = false;
-    });
+    }
+}
+
+const validerFn = async () => {
+    isLoading.value = true;
+
+    const payLoad = {
+        dateValidation: daty
+    }
+    console.log(payLoad);
+
+    try {
+        const response = $fetch<Rupture>(`${props.apiUrl}/ruptures/validate/${props.idContrat}`, {
+            method: 'POST',
+            params: payLoad,
+        });
+        console.log('Demission request sent successfully', response);
+    }
+    catch (error) {
+        console.error('Failed to send demission request', error);
+    } finally {
+        isLoading.value = false;
+    }
 }
 </script>
 
 <template>
     <div class="container mx-auto">
-        <template v-if="canDemissioner">
-            <div class="mx-auto w-full flex flex-col items-center justify-center">
-
-                <UButton :loading="isLoading" @click="demissionFn" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                    Demission
-                </UButton>
+        <template v-if="pendingRupture">
+            <div class="flex flex-col items-center justify-center border border-gray-100 p-5 rounded-md">
+                <p class="mb-4 text-lg text-gray-200">Type: {{ pendingRupture.typeRupture.typeRupture }}</p>
+                <p class="mb-4 text-lg text-gray-200">Date declaration: {{ pendingRupture.dateRupture }}</p>
+                <button @click="validerFn"
+                    class="px-4 py-2 font-semibold text-white bg-orange-500 rounded hover:bg-orange-700">
+                    Accepter, sans broncher
+                </button>
             </div>
         </template>
-        <template v-else>
-            <div class="flex flex-col items-center justify-center border border-gray-100 p-5 rounded-md">
-                <p class="mb-4 text-lg text-gray-700">This is a simple paragraph.</p>
-                <button class="px-4 py-2 font-semibold text-white bg-blue-500 rounded hover:bg-blue-700">
-                    OK
-                </button>
+        <template v-else-if="canDemissioner">
+            <div class="mx-auto w-full flex flex-col items-center justify-center">
+                <UButton :loading="isLoading" @click="demissionFn"
+                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                    Demission
+                </UButton>
             </div>
         </template>
     </div>

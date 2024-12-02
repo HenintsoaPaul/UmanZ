@@ -95,7 +95,13 @@ export interface Entretien {
 
 export interface Rupture {
     dateRupture: string,
-    idContrat: number
+    idContrat: number,
+    typeRupture: TypeRupture
+}
+
+export interface TypeRupture {
+    idTypeRupture: number,
+    typeRupture: string,
 }
 
 export interface TypeContrat {
