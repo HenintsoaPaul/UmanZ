@@ -16,8 +16,12 @@ public interface ContratRepository extends JpaRepository<Contrat, Long> {
 
     @Query( "SELECT c " +
             "FROM Contrat c join c.talent t " +
-            "WHERE c.idContrat NOT IN (SELECT r.contrat.idContrat FROM Rupture r join r.contrat) " +
-            "   and t.idTalent=:idTalent " +
+            "WHERE c.idContrat NOT IN " +
+            "   (SELECT r.contrat.idContrat " +
+            "       FROM Rupture r " +
+            "       WHERE r.dateRuptureValidation is not null" +
+            "           and r.dateRuptureValidation <= current_date ) " +
+            "   and t.idTalent = :idTalent " +
             "   and (c.dateFin > CURRENT_DATE or c.dateFin is null)" )
     Optional<Contrat> findActualContratByIdTalent( @Param( "idTalent" ) Long idTalent );
 
