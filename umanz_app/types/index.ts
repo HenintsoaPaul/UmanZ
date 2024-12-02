@@ -17,6 +17,7 @@ export interface Talent {
     idTalent: number,
     nom: string,
     prenom: string,
+    nomPrenom?: string,
     mail: string,
     password: string,
     isAdmin: boolean,

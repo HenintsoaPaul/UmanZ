@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { z } from 'zod'
+import type { Contrat } from '~/types/interne/contrat';
 
 const schema = z.object({
     motif: z.string().min(1, "Motif d'absence obligatoire"),
@@ -17,6 +18,12 @@ const successMessage = ref('');
 const loading = ref(false);
 
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
+const { data: contrats } = useFetch<Contrat[]>(`${apiUrl}/contrats/now`);
+
+onMounted(() => {
+    console.log(toRaw(contrats));
+})
+
 async function onSubmit() {
     const result = schema.safeParse({ ...form });
     if (!result.success) {
@@ -57,8 +64,12 @@ async function onSubmit() {
                 <UInput v-model="form.dateAbsence" type="date" required />
             </UFormGroup>
 
-            <UFormGroup label="ID Contrat" name="idContrat">
-                <UInput v-model="form.idContrat" type="number" required />
+            <UFormGroup label="Employe" name="idContrat">
+                <USelect v-model="form.idContrat">
+                    <option v-for="contrat in contrats" :key="contrat.idContrat" :value="contrat.idContrat">
+                        {{ contrat.talent.nom + " " + contrat.talent.prenom }}
+                    </option>
+                </USelect>
             </UFormGroup>
 
             <UButton type="submit" :loading="loading">
