@@ -1,15 +1,20 @@
 package mg.itu.rh.controller.interne;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.annotation.JsonView;
+
 import mg.itu.rh.dto.interne.AbsenceDTO;
 import mg.itu.rh.entity.interne.Absence;
 import mg.itu.rh.other.POV;
 import mg.itu.rh.service.interne.AbsenceService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import com.fasterxml.jackson.annotation.JsonView;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/absences")
