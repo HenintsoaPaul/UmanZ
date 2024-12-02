@@ -24,6 +24,7 @@ interface FormState {
   [key: number]: string; // Permet d'indexer par numéro et de stocker une chaîne
 }
 const route = useRoute();
+const router = useRouter();
 const domaineId = computed(() => route.params.id);
 const questions = ref<Question[]>([]);
 const formState = ref<FormState>({}); // État du formulaire
@@ -65,13 +66,12 @@ async function handleSubmit() {
   };
 
   try {
-    console.log(toRaw(evaluationPayload));
-
     const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
     const response = await axios.post(`${apiUrl}/resultat`, evaluationPayload);
 
     if (response.status === 200) {
       console.log('Évaluation enregistrée avec succès:', response.data);
+      router.push("resultat");
     } else {
       console.error('Erreur lors de l\'enregistrement de l\'évaluation', response.data);
     }
