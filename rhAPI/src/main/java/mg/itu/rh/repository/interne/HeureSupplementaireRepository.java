@@ -1,5 +1,6 @@
 package mg.itu.rh.repository.interne;
 
+import mg.itu.rh.dto.interne.HeureSupplementaireDTO;
 import mg.itu.rh.entity.interne.HeureSupplementaire;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,12 +11,14 @@ import java.util.List;
 
 public interface HeureSupplementaireRepository extends JpaRepository<HeureSupplementaire, Long> {
 
-    @Query("SELECT hs " +
+    @Query("SELECT new mg.itu.rh.dto.interne.HeureSupplementaireDTO(hs.tauxMajoration * c.salaireHoraire, SUM(hs.nbHeure)) " +
         "FROM HeureSupplementaire hs " +
-        "WHERE hs.contrat.idContrat = :idContrat " +
-        "   AND MONTH(hs.dateHeureDebut) = :mois" +
-        "   AND YEAR(hs.dateHeureDebut)  = :annee")
-    List<HeureSupplementaire> findByContratAndMoisAndAnnee(
+        "JOIN hs.contrat c " +
+        "WHERE hs.contrat.idContrat   = :idContrat " +
+        "   AND MONTH(hs.dateHeureDebut) = :mois " +
+        "   AND YEAR(hs.dateHeureDebut)  = :annee " +
+        "GROUP BY hs.tauxMajoration")
+    List<HeureSupplementaireDTO> findSumHeuresAndMontantByContratAndMoisAndAnnee(
         @Param("idContrat") Long idContrat, @Param("mois") int mois, @Param("annee") int annee);
 
     @Query(value = "SELECT COALESCE(SUM(hs.nb_heure), 0)\n" +
