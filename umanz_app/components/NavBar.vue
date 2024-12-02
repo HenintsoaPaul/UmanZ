@@ -60,8 +60,8 @@ const navLinks = [
   {
     label: "Evaluation",
     children: [
-      { label: "Voir Liste Projet", link: "/interne/evaluation/projet" },
-      { label: "Faire une évaluation", link: "/talent/evaluation/projet" }
+      { label: "Voir Les résultats", link: "/talent/evaluation/resultat" },
+      { label: "Faire une évaluation", link: "/talent/evaluation/domaine" }
     ]
   },
   {

@@ -2,7 +2,7 @@
 import type { Entretien } from '~/types';
 
 definePageMeta({
-    middleware: ['auth']
+    middleware: ['auth-is-admin']
 });
 
 const router = useRouter();
