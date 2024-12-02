@@ -23,7 +23,7 @@ const formState = reactive({
     prenom: undefined,
     mail: undefined,
     dateNaissance: undefined,
-    idCnaps: undefined,
+    idCnaps: '',
     password: undefined,
     password2: undefined,
     error: ''
