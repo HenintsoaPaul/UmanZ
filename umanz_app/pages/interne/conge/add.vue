@@ -1,68 +1,61 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+definePageMeta({
+    middleware: 'auth-is-emp'
+});
+
 import { z } from 'zod'
-import { reactive, ref, computed, onMounted } from 'vue'
-import axios from 'axios'
-import type { Contrat } from '~/types';
+import { reactive, ref, computed } from 'vue'
+import type { FormConge, TypeConge } from '~/types/interne/conge';
 
-// Définir le schéma
+const idContrat = computed(() => localStorage.getItem("umanz-idContrat"));
+const { demanderCongerFn, validateJustificatif } = useCongeActions();
+
+const apiUrl = useRuntimeConfig().public.apiUrl as string;
+const { data: typeConges } = useFetch<TypeConge[]>(`${apiUrl}/type_conges`);
+
 const schema = z.object({
-    motif: z.string().min(1, 'Le motif est obligatoire'),
-    date_absence: z.string().date('Date d\'absence incorrecte'),
-    id_contrat: z.number().min(1, 'L\'ID du contrat est obligatoire')
+    nbJour: z.number().min(1, "Le nombre de jour de conge minimum est 1 jour."),
+    dateDebut: z.string().date('Veuillez specifier la date de debut.'),
+    idTypeConge: z.number().min(1, 'Veuillez specifier le type du conge.')
 });
-type Schema = z.output<typeof schema>;
 
-const formState = reactive({
+const form = reactive<FormConge>({
+    dateDebut: '',
+    nbJour: 1,
     motif: '',
-    date_absence: '',
-    id_contrat: 0,
-    error: ''
+    idTypeConge: 0,
+    justificatif: {
+        imageJustificatif: '',
+        dateJustificatif: '',
+    }
 });
 
-const isFormValid = computed(() => {
-    return schema.safeParse({ ...formState }).success;
+const validateForm = computed(() => {
+    return schema.safeParse({ ...form });
 });
 
 const loading = ref(false);
-const router = useRouter();
-const contrats = ref<Contrat[]>([]); // État réactif pour stocker les contrats
-
-// Charger les contrats depuis l'API
-const loadContrats = async () => {
-    try {
-        const response = await axios.get('http://localhost:911/contrat');
-        if (response.status === 200) {
-            contrats.value = response.data;
-        } else {
-            console.error('Erreur lors de la récupération des contrats', response.data);
-        }
-    } catch (error) {
-        console.error('Erreur lors de la requête API:', error);
-    }
-};
-
-onMounted(() => {
-    loadContrats();
-});
+const formError = ref('');
 
 async function onSubmit(event: Event) {
     event.preventDefault();
-    if (!isFormValid.value) {
-        formState.error = 'Veuillez remplir correctement tous les champs.';
+    const validationResult = validateForm.value;
+    if (!validationResult.success) {
+        formError.value = validationResult.error.errors.map(err => err.message).join('\n');
         return;
     }
 
     loading.value = true;
     try {
-        await axios.post('/api/conges', {
-            motif: formState.motif,
-            date_absence: formState.date_absence,
-            id_contrat: formState.id_contrat
-        });
-        router.push('/conges');
+        const idTypeConge = form.idTypeConge;
+        if (idTypeConge === 2 || idTypeConge === 4) {
+            let err = validateJustificatif(form.justificatif);
+            if (err.length > 0) throw new Error(err);
+        }
+
+        await demanderCongerFn(toRaw(form), Number(idContrat.value), apiUrl);
     } catch (error) {
-        formState.error = 'Erreur lors de l\'envoi du formulaire.';
+        formError.value = `Erreur lors de l'envoi du formulaire: ${(error as Error)?.message}`;
     } finally {
         loading.value = false;
     }
@@ -71,29 +64,57 @@ async function onSubmit(event: Event) {
 
 <template>
     <div class="container mx-auto">
-        <h1 class="text-3xl font-bold mb-6 text-center">Ajouter un Congé</h1>
+        <h1 class="text-3xl font-bold mb-6 text-center">Demander un Congé</h1>
         <form @submit="onSubmit" class="max-w-lg mx-auto">
             <div class="mb-4">
                 <label for="motif" class="block text-gray-700">Motif</label>
-                <input v-model="formState.motif" type="text" id="motif"
+                <input v-model="form.motif" type="text" id="motif"
                     class="w-full p-2 border border-gray-300 rounded mt-1" />
             </div>
-            <div class="mb-4">
-                <label for="date_absence" class="block text-gray-700">Date d'absence</label>
-                <input v-model="formState.date_absence" type="date" id="date_absence"
-                    class="w-full p-2 border border-gray-300 rounded mt-1" />
+
+            <div class="mb-4 flex gap-5">
+                <div class="w-1/2">
+                    <label for="nb_jour" class="block text-gray-700">Nombre de jour</label>
+                    <input v-model="form.nbJour" type="number" min="1" id="nb_jour"
+                        class="w-full p-2 border border-gray-300 rounded mt-1" />
+                </div>
+                <div class="w-1/2">
+                    <label for="date_debut" class="block text-gray-700">Date debut</label>
+                    <input v-model="form.dateDebut" type="date" id="date_debut"
+                        class="w-full p-2 border border-gray-300 rounded mt-1" />
+                </div>
             </div>
+
             <div class="mb-4">
-                <label for="id_contrat" class="block text-gray-700">Contrat</label>
-                <select v-model="formState.id_contrat" id="id_contrat"
+                <label for="type_conge" class="block text-gray-700">Type de conge</label>
+                <select v-model="form.idTypeConge" id="type_conge"
                     class="w-full p-2 border border-gray-300 rounded mt-1">
-                    <option value="" disabled>Choisir un contrat</option>
-                    <option v-for="contrat in contrats" :key="contrat.idContrat" :value="contrat.idContrat">
-                        {{ contrat.talent.nom }} - {{ contrat.talent.prenom }}
+                    <option value="" disabled>Choisir un type conge</option>
+                    <option v-for="tconge in typeConges" :key="tconge.idTypeConge" :value="tconge.idTypeConge">
+                        {{ tconge.nomTypeConge }}
                     </option>
                 </select>
             </div>
-            <div v-if="formState.error" class="text-red-500 mb-4">{{ formState.error }}</div>
+
+            <div class="border border-white px-4 py-4 mb-4">
+                <h3>Justificatif en cas de maladie</h3>
+
+                <div class="mb-4 flex gap-4">
+                    <div class="w-1/2">
+                        <label for="date_debut" class="block text-gray-700">Date prise du justificatif</label>
+                        <input v-model="form.justificatif.dateJustificatif" type="date" id="date_debut"
+                            class="w-full p-2 border border-gray-300 rounded mt-1" />
+                    </div>
+                    <div class="w-1/2">
+                        <label for="date_debut" class="block text-gray-700">Photo du justificatif</label>
+                        <input v-model="form.justificatif.imageJustificatif" type="string" id="date_debut"
+                            class="w-full p-2 border border-gray-300 rounded mt-1" />
+                    </div>
+                </div>
+            </div>
+
+            <p v-if="formError" class="text-red-500 mb-4">{{ formError }}</p>
+
             <button type="submit" :disabled="loading" class="w-full bg-blue-500 text-white p-2 rounded">
                 {{ loading ? 'Envoi en cours...' : 'Ajouter' }}
             </button>

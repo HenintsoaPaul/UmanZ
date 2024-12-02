@@ -7,45 +7,17 @@ export interface Formation {
     competenceCibles: CompetenceCible[]
 }
 
-export interface Participation {
-    contrat: Contrat,
-    dateInscription: string
-}
-
 export interface CompetenceCible {
     competence: Competence,
     formation: Formation,
     pointGagne: number,
 }
 
-export interface Conge {
-    idConge: number,
-    dateDebut: string,
-    nbJour: number,
-    motif?: string,
-    dateValidation?: string,
-    contrat: Contrat
-}
-
-export interface Contrat {
-    idContrat: number,
-    contrat: string,
-    dateDebut: string,
-    dateFin?: string,
-    salaireHoraire: number,
-    nbJourSemaine: number,
-    nbJourCongeAn: number,
-    nbHeureJour: number,
-    poste: Poste,
-    talent: Talent,
-    idTypeContrat: number
-}
-
-
 export interface Talent {
     idTalent: number,
     nom: string,
     prenom: string,
+    nomPrenom?: string,
     mail: string,
     password: string,
     isAdmin: boolean,
@@ -78,14 +50,6 @@ export interface Annonce {
     dateRupture: string | null,
     experiencePostes: ExperiencePoste[],
     competenceAnnonces: CompetenceAnnonce[]
-}
-
-
-export interface Absence {
-    idAbsence: number,
-    motif?: string,
-    dateAbsence: string,
-    idContrat: number,
 }
 
 export interface Poste {
@@ -125,6 +89,11 @@ export interface Entretien {
 export interface Rupture {
     dateRupture: string,
     idContrat: number
+}
+
+export interface Contrat {
+    idContrat: number,
+    talent: Talent
 }
 
 export interface TypeContrat {

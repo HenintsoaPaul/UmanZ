@@ -3,9 +3,9 @@ package mg.itu.rh.entity.recrutement;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Data;
-import mg.itu.rh.entity.Poste;
 import mg.itu.rh.entity.critere.Competence;
 import mg.itu.rh.entity.id.IdCompetencePoste;
+import mg.itu.rh.entity.interne.Poste;
 import mg.itu.rh.other.POV;
 
 @Entity
@@ -26,5 +26,6 @@ public class CompetencePoste {
     private Poste poste;
 
     @JsonView( { POV.Public.class } )
+    @Column( name = "point_requis")
     private int point;
 }

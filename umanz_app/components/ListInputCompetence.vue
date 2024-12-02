@@ -21,7 +21,7 @@ const props = defineProps({
         <label class="w-1/2 ml-2 block text-sm">
             {{ elmt.competence.competence }}
         </label>
-        <input type="number" v-model="elmt.point" placeholder="Point"
+        <input type="number" v-model="elmt.point" placeholder="Point" max="10" min="0"
             class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
     </div>
 </template>

@@ -1,11 +1,11 @@
 <script setup>
 const router = useRouter();
-const idUserStr = computed( () => localStorage.getItem( "idUser" ) );
+const idUserStr = computed( () => localStorage.getItem( "umanz-idUser" ) );
 const loggedIn = ref( false );
+
 
 onMounted( () => {
   if ( idUserStr ) {
-    Number( idUserStr );
     loggedIn.value = true;
   } else {
     logout();
@@ -36,13 +36,13 @@ const navLinks = [
       { label: "Ajouter", link: "/interne/formation/add" },
     ]
   },
-  {
-    label: "Contrats",
-    children: [
-      { label: "Voir Liste", link: "/interne/contrat" },
-      // { label: "Ajouter", link: "/interne/contrat/add" },
-    ]
-  },
+  // {
+  //   label: "Contrats",
+  //   children: [
+  //     { label: "Voir Liste", link: "/interne/contrat" },
+  //     // { label: "Ajouter", link: "/interne/contrat/add" },
+  //   ]
+  // },
   {
     label: "Conges",
     children: [
@@ -60,8 +60,8 @@ const navLinks = [
   {
     label: "Evaluation",
     children: [
-      { label: "Voir Liste Projet", link: "/interne/evaluation/projet" },
-      { label: "Faire une évaluation", link: "/talent/evaluation/projet" }
+      { label: "Voir Les résultats", link: "/talent/evaluation/resultat" },
+      { label: "Faire une évaluation", link: "/talent/evaluation/domaine" }
     ]
   },
   {
@@ -72,36 +72,54 @@ const navLinks = [
   }
 ];
 
+const showProfile = () => {
+    router.push(`/talent/${idUserStr.value}`);
+}
+const showEmpList = () => {
+    router.push(`/interne/emp`);
+}
+
+const isAdmin = computed(() => {
+    const bb = localStorage.getItem("umanz-isAdmin");
+    return bb ? Boolean(bb) : false;
+});
+
 const logout = () => {
   router.push( "/" );
 };
 </script>
 
 <template>
-  <header class="bg-gray-800 text-white p-4 mb-5">
-    <nav class="container mx-auto flex justify-between items-center">
-      <div class="text-xl font-bold">UmanZ</div>
-      <ul class="flex space-x-4">
-        <li v-for="navLink in navLinks" class="relative group">
-          <p>{{ navLink.label }}</p>
-          <ul
-            class="absolute z-index-50 left-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <li v-for="sub in navLink.children">
-              <router-link :to="sub.link" class="block px-4 py-2 hover:bg-gray-200 hover:rounded-lg z-index-50">
-                {{ sub.label }}
-              </router-link>
-            </li>
-          </ul>
-        </li>
-      </ul>
-      <div>
-        <template v-if="loggedIn">
-          <button @click="logout" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Log
-            out</button>
-        </template>
-      </div>
-    </nav>
-  </header>
+      <header class="bg-gray-800 text-white p-4 mb-5">
+            <nav class="container mx-auto flex justify-between items-center">
+                  <div class="text-xl font-bold">UmanZ</div>
+                  <ul class="flex space-x-4">
+                        <li>
+                            <p class="hover:cursor-pointer" @click="showProfile">Mon profil</p>
+                        </li>
+                        <li v-if="isAdmin">
+                            <p class="hover:cursor-pointer" @click="showEmpList">Nos employes</p>
+                        </li>
+                        <li v-for="navLink in navLinks" class="relative group">
+                              <p class="cursor-pointer">{{ navLink.label }}</p>
+                              <ul
+                                    class="absolute z-index-50 left-0 mb-5 w-48 bg-white text-black rounded-lg shadow-lg group-hover:block hidden duration-300">
+                                    <li v-for="sub in navLink.children">
+                                          <router-link :to="sub.link" class="block px-4 py-2 hover:bg-gray-200 hover:rounded-lg z-index-50">
+                                                {{ sub.label }}
+                                          </router-link>
+                                    </li>
+                              </ul>
+                        </li>
+                  </ul>
+                  <div>
+                        <template v-if="loggedIn">
+                              <button @click="logout" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Log
+                                out</button>
+                        </template>
+                  </div>
+            </nav>
+      </header>
 </template>
 
 <style lang="css">

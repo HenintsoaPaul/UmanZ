@@ -1,31 +1,17 @@
 <script setup lang="ts">
-import type { Contrat } from '~/types';
+import type { Contrat } from '~/types/interne/contrat';
 
 const { promotionFn, expulsionFn, demissionFn } = useContratActions();
 const currency = useRuntimeConfig().public.currency as string;
+
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
-const { data: contrats } = useFetch<Contrat[]>(`${apiUrl}/contrat`);
+const { data: contrats } = useFetch<Contrat[]>(`${apiUrl}/contrats/now`);
 
 const headers = [
-    {
-        key: 'idContrat',
-        label: 'ID',
-        sortable: true,
-    },
-    {
-        key: 'dateDebut',
-        label: 'Date Debut',
-        sortable: true
-    },
-    {
-        key: 'dateFin',
-        label: 'Date Fin',
-        sortable: true
-    },
-    {
-        key: 'poste.nomPoste',
-        label: 'Poste',
-    }
+    { key: 'idContrat', label: 'ID', sortable: true },
+    { key: 'talent.nomPrenom', label: 'Nom et Prenoms' },
+    { key: 'dateDebut', label: 'Date Debut', sortable: true },
+    { key: 'dateFin', label: 'Date Fin', sortable: true },
 ];
 
 const { q, filteredRows: filteredContrats } = useFilteredRows(contrats);

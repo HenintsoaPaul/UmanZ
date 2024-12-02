@@ -2,10 +2,10 @@ package mg.itu.rh.dto.recrutement;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
+import mg.itu.rh.entity.interne.Poste;
 import mg.itu.rh.entity.recrutement.ExperiencePoste;
-import mg.itu.rh.entity.Poste;
 import mg.itu.rh.other.POV;
-import mg.itu.rh.service.PosteService;
+import mg.itu.rh.service.interne.PosteService;
 
 @Data
 public class ExperiencePosteDTO {

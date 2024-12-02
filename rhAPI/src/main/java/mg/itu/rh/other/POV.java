@@ -5,4 +5,7 @@ public class POV {
     public class Question{}
     public class Full extends Public{}
     public class Auth{}
+    public class Conge{}
+    public class Paie{}
+    public class Emp{}
 }

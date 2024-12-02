@@ -12,13 +12,16 @@ interface FormState {
   [key: number]: string; // Permet d'indexer par numéro et de stocker une chaîne
 }
 
-const questions = ref<Question[]>([]);
+const questions = ref<Question[]>([
+  { idQuestionProjet: 1, question: "question 1" },
+  { idQuestionProjet: 2, question: "question 2" },
+]);
 const formState = ref<FormState>({}); // État du formulaire
 
 async function loadQuestions() {
   try {
     const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
-    const response = await axios.get(`${apiUrl}/question_projet`);
+    const response = await axios.get(`${apiUrl}/question`);
 
     if (response.status === 200 && Array.isArray(response.data)) {
       questions.value = response.data;
@@ -35,6 +38,8 @@ onMounted(() => {
 });
 
 async function handleSubmit() {
+  console.log(toRaw(formState.value));
+
   // Créer l'objet d'évaluation selon le format attendu
   const evaluationPayload = {
     idTalent: Number(localStorage.getItem("idUser")),

@@ -1,8 +1,8 @@
 package mg.itu.rh.dto.interne;
 
-import lombok.Data;
-
 import java.time.LocalDate;
+
+import lombok.Data;
 
 @Data
 public class AbsenceDTO {
