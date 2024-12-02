@@ -2,7 +2,7 @@ package mg.itu.rh.controller;
 
 import java.util.List;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import mg.itu.rh.constante.ConstanteEmail;
 import mg.itu.rh.entity.interne.RenvoiRequest;
 import mg.itu.rh.service.interne.ContratService;
@@ -29,7 +29,7 @@ import mg.itu.rh.service.talent.TalentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @RestController
 @RequestMapping( "/talents" )
 public class TalentController {
@@ -83,12 +83,6 @@ public class TalentController {
         }
     }
 
-    @GetMapping
-    @JsonView( POV.Public.class )
-    public List<Talent> findAll() {
-        return talentService.findAll();
-    }
-
 //    @GetMapping( "/by-category/{idCategories}" )
 //    @JsonView( POV.Public.class )
 //    public ResponseEntity<List<Talent>> getEmployeesByCategory( @PathVariable Long idCategories ) {
@@ -120,6 +114,12 @@ public class TalentController {
         }
     }
 
+    @GetMapping
+    @JsonView( POV.Public.class )
+    public List<Talent> findAll() {
+        return talentService.findAll();
+    }
+
     @GetMapping( "/{id}" )
     @JsonView( POV.Public.class )
     public Talent findById( @PathVariable( "id" ) Long id ) {
@@ -128,7 +128,7 @@ public class TalentController {
 
     @PostMapping
     @JsonView( POV.Public.class )
-    public Talent create( @RequestBody TalentDTO talentDTO ) {
+    public Talent save( @RequestBody TalentDTO talentDTO ) {
         return talentService.save( talentDTO );
     }
 
