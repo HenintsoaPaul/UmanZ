@@ -1,6 +1,8 @@
 package mg.itu.rh.service.interne;
 
+import jakarta.transaction.Transactional;
 import mg.itu.rh.dto.interne.ContratDTO;
+import mg.itu.rh.dto.interne.FicheDTO;
 import mg.itu.rh.entity.interne.Contrat;
 import mg.itu.rh.entity.interne.TypeContrat;
 
@@ -60,7 +62,7 @@ public class ContratService {
     }
 
     @Transactional
-    public FicheDTO findFiche(int annee,int mois,Long idTalent){
+    public FicheDTO findFiche(int annee, int mois, Long idTalent){
         Talent talent=talentService.findById(idTalent);
         LocalDate dateActuel=LocalDate.of(annee,mois+1,1).minusDays(1);
         Contrat contratEmbauche=contratRepository.findContratEmbauche(idTalent).orElseThrow(()->new RuntimeException("Cette personne n'a jamais travaille chez nous"));

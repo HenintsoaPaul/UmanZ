@@ -1,8 +1,11 @@
 package mg.itu.rh.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-import org.springframework.data.repository.query.Param;
+import mg.itu.rh.dto.interne.DetailsFichePaieBruteDTO;
+import mg.itu.rh.dto.interne.FicheDTO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,24 +21,17 @@ import mg.itu.rh.entity.talent.Talent;
 import mg.itu.rh.other.POV;
 import mg.itu.rh.service.talent.TalentService;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import mg.itu.rh.dto.talent.TalentDTO;
 import mg.itu.rh.entity.interne.RenvoiRequest;
-import mg.itu.rh.entity.talent.Talent;
 import mg.itu.rh.service.interne.*;
-import mg.itu.rh.other.POV;
-
-import mg.itu.rh.service.talent.TalentService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping( "/talents" )
 public class TalentController {
+    private final PaieService paieService;
     private TalentService talentService;
     private EmailService emailService;
     private ContratService contratService;
@@ -45,12 +41,13 @@ public class TalentController {
             TalentService talentService,
             ContratService contratService,
             EmailService emailService,
-            PromotionService promotionService
-    ) {
+            PromotionService promotionService,
+            PaieService paieService) {
         this.talentService = talentService;
         this.contratService = contratService;
 //        this.emailService = emailService;
 //        this.promotionService = promotionService;
+        this.paieService = paieService;
     }
 
     @GetMapping
