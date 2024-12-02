@@ -3,7 +3,7 @@ import PiedFichePaie from './PiedFichePaie.vue';
 import CorpsFichePaie from './CorpsFichePaie.vue';
 import TeteFichePaie from './TeteFichePaie.vue';
 
-import type { PaysLipsHeader } from '~/types';
+import type { PaysLipsHeader, PaysLipsDetails } from '~/types';
 
 const idUser = 1;
 const year = 2024;
@@ -15,12 +15,16 @@ const { data: paysLipsHeader } = useFetch<PaysLipsHeader>(`${apiUrl}/talents/${i
     query: { annee: year, mois: month },
 });
 
+const { data: paysLipsBrutDetails } = useFetch<PaysLipsDetails>(`${apiUrl}/talents/${idUser}/fiche-paie-brute`, {
+    query: { annee: year, mois: month },
+});
+
 </script>
 
 <template>
     <TeteFichePaie :pays-lips-header="paysLipsHeader" />
 
-    <CorpsFichePaie />
+    <CorpsFichePaie :pays-lips-brut-details="paysLipsBrutDetails" />
 
     <PiedFichePaie />
 </template>

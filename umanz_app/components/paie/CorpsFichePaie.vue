@@ -1,4 +1,11 @@
 <script setup lang="ts">
+
+import type {PaysLipsDetails} from "~/types";
+
+defineProps<{
+    paysLipsBrutDetails: PaysLipsDetails | null;
+}>();
+
 const headers = [
     { key: 'designation', label: 'Designation' },
     { key: 'nombre', label: 'Nombre' },

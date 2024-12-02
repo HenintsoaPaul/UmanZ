@@ -217,3 +217,10 @@ export interface PaysLipsHeader {
     retenueCnaps: number;
     retenueSanitaire: number;
 }
+
+export interface PaysLipsDetails {
+    designation: string;
+    taux: number;
+    montant: number;
+    nombre: number;
+}

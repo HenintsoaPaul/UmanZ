@@ -76,8 +76,14 @@ public class PaieService {
 
         details.add(getSalaireBaseDetails(tauxJournalier, tauxMensuel));
         details.add(getAbsenceDeductibleDetails(contratActuel.getIdContrat(), mois, annee, tauxJournalier));
-        details.add(getPrimeRendementDetails());
-        details.add(getPrimeAncienneteDetails());
+        details.add(getPrimesRendementDetails());
+        details.add(getPrimesAncienneteDetails());
+        // TODO: add extra hours details
+        details.add(getPrimesDiversesDetails());
+        details.add(getRappelsDetails());
+        details.add(getDroitsCongeDetails());
+        details.add(getDroitsPreavisDetails());
+        details.add(getIndemniteLicenciementDetails());
 
         return details;
     }
@@ -105,25 +111,80 @@ public class PaieService {
         return absenceDetails;
     }
 
-    private DetailsFichePaieBruteDTO getPrimeRendementDetails() {
-        DetailsFichePaieBruteDTO primeRendementDetails = new DetailsFichePaieBruteDTO();
+    private DetailsFichePaieBruteDTO getPrimesRendementDetails() {
+        DetailsFichePaieBruteDTO primesRendementDetails = new DetailsFichePaieBruteDTO();
 
-        primeRendementDetails.setDesignation("Primes de rendement");
-        primeRendementDetails.setTaux(0);
-        primeRendementDetails.setMontant(0);
-        primeRendementDetails.setNombre("");
+        primesRendementDetails.setDesignation("Primes de rendement");
+        primesRendementDetails.setTaux(0);
+        primesRendementDetails.setMontant(0);
+        primesRendementDetails.setNombre("");
 
-        return primeRendementDetails;
+        return primesRendementDetails;
     }
 
-    private DetailsFichePaieBruteDTO getPrimeAncienneteDetails() {
-        DetailsFichePaieBruteDTO primeRendementDetails = new DetailsFichePaieBruteDTO();
+    private DetailsFichePaieBruteDTO getPrimesAncienneteDetails() {
+        DetailsFichePaieBruteDTO primesAncienneteDetails = new DetailsFichePaieBruteDTO();
 
-        primeRendementDetails.setDesignation("Primes d'ancienneté");
-        primeRendementDetails.setTaux(0);
-        primeRendementDetails.setMontant(0);
-        primeRendementDetails.setNombre("");
+        primesAncienneteDetails.setDesignation("Primes d'ancienneté");
+        primesAncienneteDetails.setTaux(0);
+        primesAncienneteDetails.setMontant(0);
+        primesAncienneteDetails.setNombre("");
 
-        return primeRendementDetails;
+        return primesAncienneteDetails;
+    }
+
+    private DetailsFichePaieBruteDTO getPrimesDiversesDetails() {
+        DetailsFichePaieBruteDTO primesDiversesDetails = new DetailsFichePaieBruteDTO();
+
+        primesDiversesDetails.setDesignation("Primes diverses");
+        primesDiversesDetails.setTaux(0);
+        primesDiversesDetails.setMontant(0);
+        primesDiversesDetails.setNombre("");
+
+        return primesDiversesDetails;
+    }
+
+    private DetailsFichePaieBruteDTO getRappelsDetails() {
+        DetailsFichePaieBruteDTO rappelsDetails = new DetailsFichePaieBruteDTO();
+
+        rappelsDetails.setDesignation("Rappels sur période antérieure");
+        rappelsDetails.setTaux(0);
+        rappelsDetails.setMontant(0);
+        rappelsDetails.setNombre("");
+
+        return rappelsDetails;
+    }
+
+    private DetailsFichePaieBruteDTO getDroitsCongeDetails() {
+        DetailsFichePaieBruteDTO droitsCongeDetails = new DetailsFichePaieBruteDTO();
+
+        droitsCongeDetails.setDesignation("Droits de congé");
+        droitsCongeDetails.setTaux(0);
+        droitsCongeDetails.setMontant(0);
+        droitsCongeDetails.setNombre("");
+
+        return droitsCongeDetails;
+    }
+
+    private DetailsFichePaieBruteDTO getDroitsPreavisDetails() {
+        DetailsFichePaieBruteDTO droitsPreavisDetails = new DetailsFichePaieBruteDTO();
+
+        droitsPreavisDetails.setDesignation("Droits de préavis");
+        droitsPreavisDetails.setTaux(0);
+        droitsPreavisDetails.setMontant(0);
+        droitsPreavisDetails.setNombre("");
+
+        return droitsPreavisDetails;
+    }
+
+    private DetailsFichePaieBruteDTO getIndemniteLicenciementDetails() {
+        DetailsFichePaieBruteDTO indemniteDetails = new DetailsFichePaieBruteDTO();
+
+        indemniteDetails.setDesignation("Droits de préavis");
+        indemniteDetails.setTaux(0);
+        indemniteDetails.setMontant(0);
+        indemniteDetails.setNombre("");
+
+        return indemniteDetails;
     }
 }
