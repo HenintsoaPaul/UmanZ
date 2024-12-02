@@ -19,7 +19,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/chat")
+@RequestMapping( "/chat" )
 public class ChatController {
     private final ChatService chatService;
     // private final ChatRepository chatRepository;
@@ -34,49 +34,49 @@ public class ChatController {
     // }
 
     @PostMapping
-    public ResponseEntity<?> askQuestion(@RequestBody Map<String, Object> requestData) {
+    public ResponseEntity<?> askQuestion( @RequestBody Map<String, Object> requestData ) {
         try {
             // Récupérer les données de la requête
-            String question = (String) requestData.get("message");
-            if (question == null) return ResponseEntity.badRequest().body("Question manquante");
+            String question = ( String ) requestData.get( "message" );
+            if ( question == null ) return ResponseEntity.badRequest().body( "Question manquante" );
 
             // Créer le corps de la requête pour l'API Cohere
             Map<String, Object> jsonRequest = new HashMap<>();
-            jsonRequest.put("model", "command-r-plus");
-            jsonRequest.put("prompt", chatService.genererPrompt(question));
-            jsonRequest.put("max_tokens", 1000);
-            jsonRequest.put("temperature", 0.7);
+            jsonRequest.put( "model", "command-r-plus" );
+            jsonRequest.put( "prompt", chatService.genererPrompt( question ) );
+            jsonRequest.put( "max_tokens", 1000 );
+            jsonRequest.put( "temperature", 0.7 );
 
             // Convertir en JSON avec Jackson
             ObjectMapper objectMapper = new ObjectMapper();
-            String jsonBody = objectMapper.writeValueAsString(jsonRequest);
+            String jsonBody = objectMapper.writeValueAsString( jsonRequest );
 
             // Préparer les en-têtes HTTP
             HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.set("Authorization", "Bearer " + ChatService.API_KEY);
+            headers.setContentType( MediaType.APPLICATION_JSON );
+            headers.set( "Authorization", "Bearer " + ChatService.API_KEY );
 
             // Construire la requête avec RestTemplate
-            HttpEntity<String> requestEntity = new HttpEntity<>(jsonBody, headers);
+            HttpEntity<String> requestEntity = new HttpEntity<>( jsonBody, headers );
             RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<Map> response = restTemplate.exchange(ChatService.API_URL, HttpMethod.POST, requestEntity, Map.class);
+            ResponseEntity<Map> response = restTemplate.exchange( ChatService.API_URL, HttpMethod.POST, requestEntity, Map.class );
 
             // Extraire la réponse générée par Cohere
             Map<String, Object> responseBody = response.getBody();
-            if (responseBody == null || !responseBody.containsKey("generations")) {
-                return ResponseEntity.status(500).body("Réponse inattendue de l'API Cohere");
+            if ( responseBody == null || !responseBody.containsKey( "generations" ) ) {
+                return ResponseEntity.status( 500 ).body( "Réponse inattendue de l'API Cohere" );
             }
-            
-            Object generations = responseBody.get("generations");
-            if (generations instanceof ArrayList<?> generationsList)
-                if (!generationsList.isEmpty() && generationsList.get(0) instanceof Map<?, ?> generation) {
-                    String generatedText = (String) generation.get("text");
-                    return ResponseEntity.ok(generatedText.trim());
+
+            Object generations = responseBody.get( "generations" );
+            if ( generations instanceof ArrayList<?> generationsList )
+                if ( !generationsList.isEmpty() && generationsList.get( 0 ) instanceof Map<?, ?> generation ) {
+                    String generatedText = ( String ) generation.get( "text" );
+                    return ResponseEntity.ok( generatedText.trim() );
                 }
-            return ResponseEntity.status(500).body("Format de réponse invalide");
-        } catch (Exception e) {
+            return ResponseEntity.status( 500 ).body( "Format de réponse invalide" );
+        } catch ( Exception e ) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body("Erreur avec l'API Cohere : " + e.getMessage());
+            return ResponseEntity.status( 500 ).body( "Erreur avec l'API Cohere : " + e.getMessage() );
         }
     }
 

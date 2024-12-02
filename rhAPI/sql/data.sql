@@ -65,7 +65,6 @@ VALUES ('Cloud Computing', 1),
        ('Docker', 1),
        ('Kubernetes', 1);
 
-
 INSERT INTO competence (competence, id_type_competence)
 VALUES ('Communication', 2),
        ('Leadership', 2),
@@ -80,7 +79,6 @@ VALUES ('Dupont', 'Jean', 'jean.dupont@example.com', 'password1', true, '1985-04
        ('Durand', 'Emma', 'emma.durand@example.com', 'password4', false, '1995-03-08', 'CNP32684'),
        ('Leroy', 'Paul', 'paul.leroy@example.com', 'password5', false, '1992-01-30', 'CNP354632'),
        ('Dupont', 'Jean', 'recipientgestion@gmail.com', 'recepgestion', true, '1985-04-12', 'CNP48962');
-
 
 insert into talent_langue(id_talent, id_langue, id_niveau_langue)
 VALUES (1, 1, 3),
@@ -160,7 +158,7 @@ VALUES ('Contrat CDI Developpeur', '2023-01-01', '2024-01-01', 20.00, 5, 25, 8.0
        ('Contrat CDD Designer', '2023-02-01', '2023-08-01', 18.00, 5, 20, 7.5, 3, 2, 2),
        ('Contrat CDD Analyste', '2023-05-15', NULL, 22.00, 5, 30, 8.0, 4, 3, 2),
        ('Contrat d''essai Chef de Projet', '2023-06-01', NULL, 25.00, 4, 15, 7.0, 2, 4, 1),
-       ('Contrat CDI Support technique', '2024-01-01', NULL, 19.50, 5, 25, 7.5, 5, 5, 3);
+       ('Contrat CDI Support technique', '2023-01-01', NULL, 19.50, 5, 25, 7.5, 5, 5, 3);
 
 -- INSERT INTO entretien (date_creation, date_validation, note, motif, id_enfant, id_annonce, id_etat_entretien, id_talent)
 -- VALUES ('2023-02-15', '2023-02-20', 85, 'Entretien positif', NULL, 1, 4, 1),

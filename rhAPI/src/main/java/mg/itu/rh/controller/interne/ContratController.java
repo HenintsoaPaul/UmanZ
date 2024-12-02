@@ -7,6 +7,7 @@ import mg.itu.rh.other.POV;
 
 import java.util.List;
 
+import mg.itu.rh.repository.interne.ContratRepository;
 import mg.itu.rh.service.interne.ContratService;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,15 +15,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping( "/contrats" )
 public class ContratController {
     private final ContratService contratService;
+    private final ContratRepository contratRepository;
 
-    public ContratController( ContratService contratService ) {
+    public ContratController( ContratService contratService, ContratRepository contratRepository ) {
         this.contratService = contratService;
+        this.contratRepository = contratRepository;
     }
 
     @GetMapping
     @JsonView( POV.Public.class )
     public List<Contrat> findAll() {
-        return contratService.findAll();
+        return contratRepository.findAll();
     }
 
     @GetMapping( "/{id}" )

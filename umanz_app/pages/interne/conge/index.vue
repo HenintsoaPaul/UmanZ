@@ -31,7 +31,7 @@ async function validerFn(arr: any) {
     const cng: Conge = arr[0];
     const solde: number = arr[1];
 
-    if (solde < cng.nbJour) {
+    if (solde < cng.nbJour && cng.typeConge.idTypeConge !== 2) {
         console.error("Solde insuffisant");
         return;
     }
@@ -40,14 +40,17 @@ async function validerFn(arr: any) {
 }
 async function refuserFn(conge: Conge) {
     const motifRefus: string | undefined = conge.motifRefus;
-    if (motifRefus != undefined && motifRefus.length <= 0) {
+    if (motifRefus) {
         if (motifRefus.length > 0) {
             await refuserCongerFn(conge.idConge, motifRefus, apiUrl);
             refreshConges();
+            return;
         }
-        console.error("MotifRefus is required");
+        console.error("MotifRefus is too short");
         return;
     }
+    console.error("MotifRefus is required");
+    return;
 }
 </script>
 

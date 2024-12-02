@@ -13,8 +13,8 @@ public class MaxHeuresSuppDepasseException extends RuntimeException {
 
     @Override
     public String getMessage() {
-        return String.format("Le total des heures supplémentaires pour la semaine est de %.2f heures, " +
-                "ce qui dépasse la limite autorisée de %.2s heures. Il y a un excédent de %.2f heures",
-            totalHeuresSuppForWeek, MAX_HEURE_SUPP_HEBDOMADAIRE, excedant);
+        return String.format( "Le total des heures supplémentaires pour la semaine est de %.2f heures, " +
+                        "ce qui dépasse la limite autorisée de %.2s heures. Il y a un excédent de %.2f heures",
+                totalHeuresSuppForWeek, MAX_HEURE_SUPP_HEBDOMADAIRE, excedant );
     }
 }

@@ -13,6 +13,13 @@ const validerFn = () => { emit("valider", [props.conge, props.solde]); }
 const refuserFn = () => { emit("refuser", props.conge); }
 
 const isChangeable = computed(() => props.conge.dateValidation == null || props.conge.dateRefus == null);
+
+const canValidate = computed(() => {
+    if (props.conge.typeConge.idTypeConge === 2) return true;
+    else return props.conge.nbJour <= props.solde;
+})
+
+const canRefuse = computed(() => props.conge.motifRefus && props.conge.motifRefus.length > 0)
 </script>
 
 <template>
@@ -34,12 +41,12 @@ const isChangeable = computed(() => props.conge.dateValidation == null || props.
                     class="w-full max-w-md py-2 rounded-lg" />
 
                 <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                    @click="validerFn" :disabled="solde < conge.nbJour">
+                    @click="validerFn" :disabled="!canValidate">
                     Valider
                 </button>
 
                 <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2"
-                    @click="refuserFn" :disabled="conge.motifRefus == null || conge.motifRefus.length === 0">
+                    @click="refuserFn" :disabled="!canRefuse">
                     Refuser
                 </button>
             </template>

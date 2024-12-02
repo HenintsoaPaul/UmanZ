@@ -3,12 +3,12 @@ package mg.itu.rh.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import mg.itu.rh.dto.interne.DetailsFichePaieBruteDTO;
 import mg.itu.rh.dto.interne.FicheDTO;
-import mg.itu.rh.dto.talent.AuthDTO;
 import mg.itu.rh.dto.talent.TalentDTO;
 import mg.itu.rh.entity.interne.RenvoiRequest;
 import mg.itu.rh.entity.talent.Talent;
 import mg.itu.rh.service.interne.*;
 import mg.itu.rh.other.POV;
+
 import mg.itu.rh.service.talent.TalentService;
 
 import org.springframework.http.HttpStatus;
@@ -81,12 +81,6 @@ public class TalentController {
     @JsonView( POV.Public.class )
     public Talent findById( @PathVariable( "id" ) Long id ) {
         return talentService.findById( id );
-    }
-
-    @PostMapping( "/auth" )
-    @JsonView( POV.Auth.class )
-    public Talent authenticate( @RequestBody AuthDTO authDTO ) {
-        return talentService.findByEmailAndPassword( authDTO );
     }
 
     @PostMapping

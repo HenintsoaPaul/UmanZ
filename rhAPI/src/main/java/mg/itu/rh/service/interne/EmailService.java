@@ -2,6 +2,9 @@ package mg.itu.rh.service.interne;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+
 @Service
 public class EmailService {
 //    private final JavaMailSender javaMailSender;
