@@ -1,13 +1,11 @@
 <script setup>
 const router = useRouter();
-const idUserStr = computed( () => localStorage.getItem( "idUser" ) );
+const idUserStr = computed( () => localStorage.getItem( "umanz-idUser" ) );
 const loggedIn = ref( false );
 
-const idUser = ref(0);
 
 onMounted( () => {
   if ( idUserStr ) {
-    idUser.value = Number( idUserStr );
     loggedIn.value = true;
   } else {
     logout();
@@ -75,7 +73,7 @@ const navLinks = [
 ];
 
 const showProfile = () => {
-    router.push(`/talent/${idUser.value}`);
+    router.push(`/talent/${idUserStr.value}`);
 }
 
 const logout = () => {
