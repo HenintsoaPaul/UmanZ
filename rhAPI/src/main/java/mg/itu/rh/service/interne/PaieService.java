@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import mg.itu.rh.dto.interne.DetailsFichePaieBruteDTO;
 import mg.itu.rh.dto.interne.FicheDTO;
 import mg.itu.rh.dto.interne.HeureSupplementaireDTO;
+import mg.itu.rh.dto.interne.IrsaDTO;
 import mg.itu.rh.entity.interne.Contrat;
 import mg.itu.rh.entity.talent.Talent;
 import mg.itu.rh.repository.interne.ContratRepository;
@@ -225,6 +226,98 @@ public class PaieService {
 
         details.add(getRetenueCNaPS(salaireBrute));
         details.add(getRetenueSanitaire(salaireBrute));
+
+        double montantImposable = salaireBrute - details.stream().mapToDouble(DetailsFichePaieBruteDTO::getMontant).sum();
+        List<DetailsFichePaieBruteDTO> irsaDetails = getIrsaDTODetails(montantImposable);
+        details.addAll(irsaDetails);
+
+        DetailsFichePaieBruteDTO totalIrsaDetails = getTotalIrsaDetails(irsaDetails);
+        details.add(totalIrsaDetails);
+
+        double totalRetenue = totalIrsaDetails.getMontant();
+        DetailsFichePaieBruteDTO totalRetenueDetails = getTotalRetenue(totalRetenue + details.get(0).getMontant() + details.get(1).getMontant());
+        details.add(totalRetenueDetails);
+
+        details.add(getAutresIndemnite());
+
+        double netAPayer = salaireBrute - totalRetenueDetails.getMontant();
+        details.add(getNetAPayer(netAPayer));
+
+        return details;
+    }
+
+    private DetailsFichePaieBruteDTO getNetAPayer(double netAPayer) {
+        DetailsFichePaieBruteDTO netAPayerDetails = new DetailsFichePaieBruteDTO();
+
+        netAPayerDetails.setDesignation("Net à payer");
+        netAPayerDetails.setMontant(netAPayer);
+        netAPayerDetails.setSurligne(true);
+
+        return netAPayerDetails;
+    }
+
+    private DetailsFichePaieBruteDTO getAutresIndemnite() {
+        DetailsFichePaieBruteDTO autresIndemnite = new DetailsFichePaieBruteDTO();
+
+        autresIndemnite.setDesignation("Autres indemnités");
+        autresIndemnite.setMontant(0);
+        autresIndemnite.setSurligne(true);
+
+        return autresIndemnite;
+    }
+
+    private DetailsFichePaieBruteDTO getTotalRetenue(double totalRetenue) {
+        DetailsFichePaieBruteDTO totalRetenueDetails = new DetailsFichePaieBruteDTO();
+
+        totalRetenueDetails.setDesignation("Total retenue");
+        totalRetenueDetails.setMontant(totalRetenue);
+        totalRetenueDetails.setSurligne(true);
+
+        return totalRetenueDetails;
+    }
+
+    private DetailsFichePaieBruteDTO getTotalIrsaDetails(List<DetailsFichePaieBruteDTO> irsaDetails) {
+        DetailsFichePaieBruteDTO irsaDetail = new DetailsFichePaieBruteDTO();
+
+        irsaDetail.setDesignation("Total IRSA");
+        irsaDetail.setMontant(irsaDetails.stream().mapToDouble(DetailsFichePaieBruteDTO::getMontant).sum());
+        irsaDetail.setSurligne(true);
+
+        return irsaDetail;
+    }
+
+    public IrsaDTO[] calculateIrsaDTO(double imposable){
+        IrsaDTO[] IrsaDTO = new IrsaDTO[5];
+        IrsaDTO[0] = new IrsaDTO(0, 350000, 0);
+        IrsaDTO[1] = new IrsaDTO(IrsaDTO[0].getSuperieur(), 400000, 0.05);
+        IrsaDTO[2] = new IrsaDTO(IrsaDTO[1].getSuperieur(), 500000, 0.1);
+        IrsaDTO[3] = new IrsaDTO(IrsaDTO[2].getSuperieur(), 600000, 0.15);
+        IrsaDTO[4] = new IrsaDTO(IrsaDTO[3].getSuperieur(), Double.MAX_VALUE, 0.2);
+
+        for (IrsaDTO irsaDTO : IrsaDTO) {
+            if (imposable > irsaDTO.getSuperieur()) {
+                irsaDTO.setMontant((irsaDTO.getSuperieur() - irsaDTO.getInferieur()) * (irsaDTO.getTaux()));
+            } else {
+                irsaDTO.setMontant((imposable - irsaDTO.getInferieur()) * (irsaDTO.getTaux()));
+                break;
+            }
+        }
+
+        return IrsaDTO;
+    }
+
+    private List<DetailsFichePaieBruteDTO> getIrsaDTODetails(double montantImposable) {
+        List<DetailsFichePaieBruteDTO> details = new ArrayList<>();
+        
+        for (IrsaDTO irsa : calculateIrsaDTO(montantImposable)) {
+            DetailsFichePaieBruteDTO irsaDetails = new DetailsFichePaieBruteDTO();
+
+            irsaDetails.setDesignation("Tranche IRSA de " + irsa.getInferieur() + " à " + irsa.getSuperieur());
+            irsaDetails.setTaux(irsa.getTaux() * 100);
+            irsaDetails.setMontant(irsa.getMontant());
+
+            details.add(irsaDetails);
+        }
 
         return details;
     }
