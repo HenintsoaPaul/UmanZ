@@ -26,7 +26,7 @@ async function onSubmit() {
 
     loading.value = true;
     try {
-        const response = await $fetch(`${apiUrl}/formations`, {
+        const response = await $fetch(`${apiUrl}/absences`, {
             method: 'POST',
             body: toRaw(form)
         });
@@ -61,7 +61,7 @@ async function onSubmit() {
                 <UInput v-model="form.idContrat" type="number" required />
             </UFormGroup>
 
-            <UButton type="submit" :disabled="!isFormValid" :loading="loading">
+            <UButton type="submit" :loading="loading">
                 {{ loading ? 'En cours...' : 'Soumettre' }}
             </UButton>
 
