@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface HeureSupplementaireRepository extends JpaRepository<HeureSupplementaire, Long> {
 
-    @Query("SELECT new mg.itu.rh.dto.interne.HeureSupplementaireDTO(hs.tauxMajoration * c.salaireHoraire, SUM(hs.nbHeure)) " +
+    @Query("SELECT new mg.itu.rh.dto.interne.HeureSupplementaireDTO(hs.tauxMajoration, SUM(hs.nbHeure)) " +
         "FROM HeureSupplementaire hs " +
         "JOIN hs.contrat c " +
         "WHERE hs.contrat.idContrat   = :idContrat " +

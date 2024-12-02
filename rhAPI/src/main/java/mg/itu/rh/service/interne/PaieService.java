@@ -3,8 +3,8 @@ package mg.itu.rh.service.interne;
 import jakarta.transaction.Transactional;
 import mg.itu.rh.dto.interne.DetailsFichePaieBruteDTO;
 import mg.itu.rh.dto.interne.FicheDTO;
+import mg.itu.rh.dto.interne.HeureSupplementaireDTO;
 import mg.itu.rh.entity.interne.Contrat;
-import mg.itu.rh.entity.interne.HeureSupplementaire;
 import mg.itu.rh.entity.talent.Talent;
 import mg.itu.rh.repository.interne.ContratRepository;
 import mg.itu.rh.service.talent.TalentService;
@@ -138,17 +138,16 @@ public class PaieService {
         return primesAncienneteDetails;
     }
 
-    // TODO: fix with grouped majoration
     private List<DetailsFichePaieBruteDTO> getHeuresSupplementairesDetails(Long idContrat, int mois, int annee, int tauxHoraire) {
         List<DetailsFichePaieBruteDTO> heuresSupplementairesDetails = new ArrayList<>();
 
-        List<HeureSupplementaire> heureSupplementaires = heureSupplementaireService.getByContratAndMoisAndAnnee(idContrat, mois, annee);
-        for (HeureSupplementaire heureSupplementaire: heureSupplementaires) {
+        List<HeureSupplementaireDTO> heureSupplementaires = heureSupplementaireService.getByContratAndMoisAndAnnee(idContrat, mois, annee);
+        for (HeureSupplementaireDTO heureSupplementaire: heureSupplementaires) {
             DetailsFichePaieBruteDTO details = new DetailsFichePaieBruteDTO();
-            details.setDesignation("Heure supplementaires majorés à " + heureSupplementaire.getTauxMajoration() + "%");
-            details.setNombre(heureSupplementaire.getNbHeure() + " heure(s)");
-            details.setTaux(tauxHoraire + (tauxHoraire * heureSupplementaire.getTauxMajoration() / 100));
-            details.setMontant(details.getTaux() * heureSupplementaire.getNbHeure());
+            details.setDesignation("Heure supplementaires majorés à " + heureSupplementaire.getTaux() + "%");
+            details.setNombre(heureSupplementaire.getNbHeures() + " heure(s)");
+            details.setTaux(tauxHoraire + (tauxHoraire * heureSupplementaire.getTaux() / 100));
+            details.setMontant(details.getTaux() * heureSupplementaire.getNbHeures());
             heuresSupplementairesDetails.add(details);
         }
 

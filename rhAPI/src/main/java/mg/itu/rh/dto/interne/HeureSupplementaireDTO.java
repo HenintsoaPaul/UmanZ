@@ -8,8 +8,4 @@ import lombok.Data;
 public class HeureSupplementaireDTO {
     private double taux;
     private double nbHeures;
-
-    public double montant() {
-        return nbHeures * taux;
-    }
 }
