@@ -19,7 +19,7 @@ public class PaieController {
     }
 
     @GetMapping( "/talent/{idTalent}" )
-    @JsonView( POV.Public.class )
+    @JsonView( POV.Paie.class )
     public FicheDTO findFiche(
             @PathVariable( "idTalent" ) Long idTalent,
             @RequestParam( name = "annee" ) int annee,
@@ -29,7 +29,7 @@ public class PaieController {
     }
 
     @GetMapping
-    @JsonView( POV.Public.class )
+    @JsonView( POV.Paie.class )
     public List<FicheDTO> findFichesOnDate(
             @RequestParam( name = "year" ) int year,
             @RequestParam( name = "month" ) int month

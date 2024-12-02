@@ -17,47 +17,49 @@ public class FicheDTO {
 
     @Setter
     private LocalDate date;
-    private Talent talent;
     private Contrat contratEmbauche;
     private Contrat contratActuel;
 
-    @JsonView( { POV.Public.class } )
+    @JsonView( { POV.Paie.class } )
+    private Talent talent;
+
+    @JsonView( { POV.Paie.class } )
     private String nomPrenom;
 
-    @JsonView( { POV.Public.class } )
+    @JsonView( { POV.Paie.class } )
     private Long matricule;
 
-    @JsonView( { POV.Public.class } )
+    @JsonView( { POV.Paie.class } )
     private String fonction;
 
-    @JsonView( { POV.Public.class } )
+    @JsonView( { POV.Paie.class } )
     private LocalDate dateEmbauche;
 
-    @JsonView( { POV.Public.class } )
+    @JsonView( { POV.Paie.class } )
     private String anciennete;
 
-    @JsonView( { POV.Public.class } )
+    @JsonView( { POV.Paie.class } )
     private String classification;
 
-    @JsonView( { POV.Public.class } )
+    @JsonView( { POV.Paie.class } )
     private String idCnaps;
 
-    @JsonView( { POV.Public.class } )
+    @JsonView( { POV.Paie.class } )
     private double salaire;
 
-    @JsonView( { POV.Public.class } )
+    @JsonView( { POV.Paie.class } )
     private double tauxJournalier;
 
-    @JsonView( { POV.Public.class } )
+    @JsonView( { POV.Paie.class } )
     private double tauxHoraire;
 
-    @JsonView( { POV.Public.class } )
+    @JsonView( { POV.Paie.class } )
     private double indice;
 
-    @JsonView( { POV.Public.class } )
+    @JsonView( { POV.Paie.class } )
     private double retenueCnaps;
 
-    @JsonView( { POV.Public.class } )
+    @JsonView( { POV.Paie.class } )
     private double retenueSanitaire;
 
     protected void setNomPrenom() {

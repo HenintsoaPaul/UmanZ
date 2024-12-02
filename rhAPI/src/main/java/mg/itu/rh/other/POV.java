@@ -6,4 +6,5 @@ public class POV {
     public class Full extends Public{}
     public class Auth{}
     public class Conge{}
+    public class Paie{}
 }
