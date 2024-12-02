@@ -224,3 +224,8 @@ export interface PaysLipsDetails {
     montant: number;
     nombre: number;
 }
+
+export interface PaysLipsBody {
+    brute: PaysLipsDetails[];
+    retenue: PaysLipsDetails[];
+}

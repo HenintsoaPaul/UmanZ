@@ -1,9 +1,9 @@
 <script setup lang="ts">
 
-import type {PaysLipsDetails} from "~/types";
+import type { PaysLipsBody } from "~/types";
 
-const props = defineProps<{
-    paysLipsBrutDetails: PaysLipsDetails[];
+defineProps<{
+    paysLipsBrutDetails?: PaysLipsBody;
 }>();
 
 const headers = [
@@ -27,20 +27,6 @@ interface rowIrsa {
     surligne: boolean;
 }
 
-const apiUrl = useRuntimeConfig().public.apiUrl;
-
-const { data: dataIRSA } = useFetch<PaysLipsDetails[]>(`${apiUrl}/talents/fiche-paie-retenue`, {
-    query: {
-        salaireBrute: props.paysLipsBrutDetails.find<PaysLipsDetails>((el) => {
-            return el.designation === "Salaire brute";
-        })?.montant
-    },
-});
-
-console.log(props.paysLipsBrutDetails.find<PaysLipsDetails>((el) => {
-    return el.designation === "Salaire brute";
-}, "Here");
-
 const highlightedClasses = (item: rowIrsa) => ({
   'bg-blue-500': item.surligne,
   'text-white': item.surligne,
@@ -50,11 +36,11 @@ const highlightedClasses = (item: rowIrsa) => ({
 
 <template>
     <div class="px-5">
-        <UTable :columns="headers" :rows="paysLipsBrutDetails" />
+        <UTable :columns="headers" :rows="paysLipsBrutDetails?.brute" />
 
         <br>
 
-        <UTable :columns="headersIRSA" :rows="dataIRSA ?? []">
+        <UTable :columns="headersIRSA" :rows="paysLipsBrutDetails?.retenue">
             <template #default="{ item }">
                 <tr :class="highlightedClasses(item)"></tr>
             </template>

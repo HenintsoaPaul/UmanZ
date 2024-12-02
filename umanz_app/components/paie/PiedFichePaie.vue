@@ -4,14 +4,14 @@ const data = [
         label: "Avantages en nature",
         value: ""
     },
-    {
-        label: "Déductions IRSA",
-        value: ""
-    },
-    {
-        label: "Montant imposable",
-        value: 4022575.00
-    },
+    // {
+    //     label: "Déductions IRSA",
+    //     value: ""
+    // },
+    // {
+    //     label: "Montant imposable",
+    //     value: 4022575.00
+    // },
 ];
 </script>
 

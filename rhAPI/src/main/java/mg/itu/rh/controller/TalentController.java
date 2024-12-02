@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -127,12 +129,20 @@ public class TalentController {
     }
 
     @GetMapping("/{idTalent}/fiche-paie-brute")
-    public List<DetailsFichePaieBruteDTO> findDetailsFichePaieBrute(@PathVariable(name = "idTalent") Long idTalent, @RequestParam(name = "annee") int annee, @RequestParam(name = "mois") int mois) {
-        return paieService.findDetailsFichePaieBrute(annee, mois, idTalent);
-    }
+    public HashMap<String, List<DetailsFichePaieBruteDTO>> findDetailsFichePaieBrute(@PathVariable(name = "idTalent") Long idTalent, @RequestParam(name = "annee") int annee, @RequestParam(name = "mois") int mois) {
+        HashMap<String, List<DetailsFichePaieBruteDTO>> details = new HashMap<>();
 
-    @GetMapping("/fiche-paie-retenue")
-    public List<DetailsFichePaieBruteDTO> findDetailsFichePaieRetenue(@RequestParam(name = "salaireBrute") double salaireBrute) {
-        return paieService.findDetailsRetenue(salaireBrute);
+        List<DetailsFichePaieBruteDTO> detailsBrute = paieService.findDetailsFichePaieBrute(annee, mois, idTalent);
+        details.put("brute", detailsBrute);
+
+        if (!detailsBrute.isEmpty()) { // Ensure the list is not empty to avoid IndexOutOfBoundsException
+            double salaireBrute = detailsBrute.get(detailsBrute.size() - 1).getMontant();
+            details.put("retenue", paieService.findDetailsRetenue(salaireBrute));
+        } else {
+            // Handle the case where detailsBrute is empty
+            details.put("retenue", new ArrayList<>()); // Empty list as a placeholder
+        }
+
+        return details;
     }
 }
