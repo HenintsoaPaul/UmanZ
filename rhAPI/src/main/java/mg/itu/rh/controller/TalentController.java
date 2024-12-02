@@ -7,6 +7,8 @@ import mg.itu.rh.entity.interne.RenvoiRequest;
 import mg.itu.rh.entity.talent.Talent;
 import mg.itu.rh.service.interne.*;
 import mg.itu.rh.other.POV;
+import java.util.Map;
+import java.util.HashMap;
 
 import mg.itu.rh.service.talent.TalentService;
 
@@ -56,6 +58,28 @@ public class TalentController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                  .body("Erreur lors de l'envoi de l'email : " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/sendDossier")
+    @JsonView( POV.Public.class )
+    public ResponseEntity<Map<String, String>> sendEmailDossier(@RequestBody Map<String, String> requestData) {
+        Map<String, String> response = new HashMap<>();
+        String email = requestData.get("email");
+        String name = requestData.get("name");
+
+        if (email == null || name == null) {
+            response.put("message", "Paramètre manquant");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        try {
+            emailService.sendEmailWithAttachments(email, name);
+            response.put("message", "Email envoyé avec succès à " + email);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("message", "Erreur lors de l'envoi de l'email: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
