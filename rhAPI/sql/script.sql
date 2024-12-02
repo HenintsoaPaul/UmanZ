@@ -18,3 +18,7 @@ SELECT * FROM chat
 WHERE LOWER('Comment se déroule le processus de recrutement')
           LIKE '%' || LOWER(mot_cle) || '%'
 LIMIT 1;
+
+SELECT c FROM Contrat c join c.talent t 
+WHERE c.idContrat NOT IN (SELECT r.contrat.idContrat FROM 
+Rupture r join r.contrat) and t.idTalent=:idTalent and c.dateFin > CURRENT_DATE

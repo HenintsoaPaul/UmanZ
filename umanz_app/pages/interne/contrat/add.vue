@@ -7,7 +7,7 @@ const idEntretien: number = Number(route.query.entretien);
 
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const { data: entretien } = useFetch<Entretien>(`${apiUrl}/entretien/${idEntretien}`);
-const { data: typeContrats } = useFetch<TypeContrat[]>(`${apiUrl}/type_contrat`);
+const { data: typeContrats } = useFetch<TypeContrat[]>(`${apiUrl}/type_contrats`);
 
 const form = reactive<{
     dateDebut: string;
@@ -40,7 +40,7 @@ const onSubmit = async () => {
         };
         console.log(toRaw(formKdj));
 
-        const response = await $fetch(`${apiUrl}/contrat`, {
+        const response = await $fetch(`${apiUrl}/contrats`, {
             method: 'POST',
             body: toRaw(formKdj)
         });

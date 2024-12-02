@@ -1,8 +1,25 @@
 package mg.itu.rh.controller;
 
+import java.util.List;
+
+import org.springframework.data.repository.query.Param;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.annotation.JsonView;
+
+import mg.itu.rh.dto.talent.TalentDTO;
+import mg.itu.rh.entity.talent.Talent;
+import mg.itu.rh.other.POV;
+import mg.itu.rh.service.talent.TalentService;
+
 import com.fasterxml.jackson.annotation.JsonView;
 import mg.itu.rh.dto.talent.TalentDTO;
-import mg.itu.rh.entity.interne.Poste;
 import mg.itu.rh.entity.interne.RenvoiRequest;
 import mg.itu.rh.entity.talent.Talent;
 import mg.itu.rh.service.interne.*;
@@ -10,8 +27,6 @@ import mg.itu.rh.other.POV;
 
 import mg.itu.rh.service.talent.TalentService;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +48,20 @@ public class TalentController {
     private PromotionService promotionService;
 
     public TalentController( TalentService talentService ) {
+
+      private final TalentService talentService;
+    private final ContratService contratService;
+
+    public TalentController(
+            TalentService talentService,
+            ContratService contratService
+//            EmailService emailService,
+//            PromotionService promotionService
+    ) {
         this.talentService = talentService;
+        this.contratService = contratService;
+//        this.emailService = emailService;
+//        this.promotionService = promotionService;
     }
 
     @PostMapping("/ruptureEmail")
@@ -65,34 +93,34 @@ public class TalentController {
         return talentService.findAll();
     }
 
-    @GetMapping("/by-category/{idCategories}")
-    @JsonView( POV.Public.class )
-    public ResponseEntity<List<Talent>> getEmployeesByCategory(@PathVariable Long idCategories) {
-        List<Talent> employees = talentService.getEmployeesByCategory(idCategories);
-        if (employees.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(employees);
-    }
+//    @GetMapping("/by-category/{idCategories}")
+//    @JsonView( POV.Public.class )
+//    public ResponseEntity<List<Talent>> getEmployeesByCategory(@PathVariable Long idCategories) {
+//        List<Talent> employees = talentService.getEmployeesByCategory(idCategories);
+//        if (employees.isEmpty()) {
+//            return ResponseEntity.noContent().build();
+//        }
+//        return ResponseEntity.ok(employees);
+//    }
 
-    @GetMapping("/{employeeId}/promotions")
-    @JsonView( POV.Public.class )
-    public ResponseEntity<List<Poste>> getPossiblePromotions(@PathVariable Integer employeeId) {
-        List<Poste> promotions = promotionService.getPromotionsForEmployee(employeeId);
-        return ResponseEntity.ok(promotions);
-    }
+//    @GetMapping("/{employeeId}/promotions")
+//    @JsonView( POV.Public.class )
+//    public ResponseEntity<List<Poste>> getPossiblePromotions(@PathVariable Integer employeeId) {
+//        List<Poste> promotions = promotionService.getPromotionsForEmployee(employeeId);
+//        return ResponseEntity.ok(promotions);
+//    }
 
-    @PostMapping("/send-renvoi-email")
+    @PostMapping( "/send-renvoi-email" )
     @JsonView( POV.Public.class )
-    public ResponseEntity<String> sendRenvoiEmail(@RequestBody RenvoiRequest renvoiRequest) {
+    public ResponseEntity<String> sendRenvoiEmail( @RequestBody RenvoiRequest renvoiRequest ) {
         try {
             String subject = "Motif de Renvoi";
             String body = "<h1>Bonjour,</h1><p>Motif du renvoi : " + renvoiRequest.getMotif() + "</p>";
 
-            emailService.sendEmail(renvoiRequest.getEmail(), subject, body);
-            return ResponseEntity.ok("Email envoyé avec succès.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de l'envoi de l'email : " + e.getMessage());
+//            emailService.sendEmail(renvoiRequest.getEmail(), subject, body);
+            return ResponseEntity.ok( "Email envoyé avec succès." );
+        } catch ( Exception e ) {
+            return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR ).body( "Erreur lors de l'envoi de l'email : " + e.getMessage() );
         }
     }
 
@@ -100,12 +128,6 @@ public class TalentController {
     @JsonView( POV.Public.class )
     public Talent findById( @PathVariable( "id" ) Long id ) {
         return talentService.findById( id );
-    }
-
-    @GetMapping( "/users" )
-    @JsonView( POV.Public.class )
-    public Talent login( @Param( "email" ) String email, @Param( "password" ) String password ) {
-        return talentService.findByEmailAndPassword( email, password );
     }
 
     @PostMapping

@@ -13,7 +13,7 @@ import mg.itu.rh.entity.interne.TypeContrat;
 
 
 @RestController
-@RequestMapping( "/type_contrat" )
+@RequestMapping( "/type_contrats" )
 public class TypeContratController {
     private final TypeContratRepository typeContratRepository;
 
