@@ -27,10 +27,10 @@ public class Resultat {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_talent")
-    @JsonView({POV.Question.class})
     private Talent talent;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonView({POV.Question.class})
     @JoinColumn(name = "id_domaine")
     private Domaine domaine;
 

@@ -17,6 +17,7 @@ export interface Talent {
     idTalent: number,
     nom: string,
     prenom: string,
+    nomPrenom?: string,
     mail: string,
     password: string,
     isAdmin: boolean,
@@ -49,14 +50,6 @@ export interface Annonce {
     dateRupture: string | null,
     experiencePostes: ExperiencePoste[],
     competenceAnnonces: CompetenceAnnonce[]
-}
-
-
-export interface Absence {
-    idAbsence: number,
-    motif?: string,
-    dateAbsence: string,
-    idContrat: number,
 }
 
 export interface Poste {

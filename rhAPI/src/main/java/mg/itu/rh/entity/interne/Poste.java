@@ -27,11 +27,11 @@ public class Poste {
     private Long idPoste;
 
     @Column( name = "nom_poste" )
-    @JsonView( { POV.Public.class, POV.Conge.class } )
+    @JsonView( { POV.Public.class, POV.Conge.class, POV.Emp.class } )
     private String nomPoste;
 
     @Column( name = "description_poste" )
-    @JsonView( { POV.Public.class } )
+    @JsonView( { POV.Public.class, POV.Emp.class } )
     private String description;
 
     @OneToMany( mappedBy = "poste", cascade = CascadeType.ALL, fetch = FetchType.LAZY )

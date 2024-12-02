@@ -1,9 +1,19 @@
 <script setup lang="ts">
 import type { Talent } from '~/types';
 
-const props = defineProps<{
+defineProps<{
     talent: Talent;
 }>();
+
+const idContrat = computed(() => {
+    const sstr = localStorage.getItem("umanz-idContrat");
+    return sstr ? Number(sstr) : -1;
+});
+
+const demissionFn = () => {
+    console.log("demission");
+    // Routage vers formulaire demande de rupture
+}
 </script>
 
 <template>
@@ -15,6 +25,12 @@ const props = defineProps<{
             <p><strong>Email:</strong> {{ talent.mail }}</p>
             <p><strong>Admin:</strong> {{ talent.isAdmin ? 'Yes' : 'No' }}</p>
         </div>
+
+        <template v-if="idContrat > -1">
+            <button @click="demissionFn" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                Demission
+            </button>
+        </template>
     </div>
 </template>
 
