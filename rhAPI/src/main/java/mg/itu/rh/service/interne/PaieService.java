@@ -1,6 +1,7 @@
 package mg.itu.rh.service.interne;
 
 import jakarta.transaction.Transactional;
+import mg.itu.rh.dto.interne.DetailsFichePaieBruteDTO;
 import mg.itu.rh.dto.interne.FicheDTO;
 import mg.itu.rh.entity.interne.Contrat;
 import mg.itu.rh.entity.talent.Talent;
@@ -17,10 +18,12 @@ public class PaieService {
 
     private final ContratRepository contratRepository;
     private final TalentService talentService;
+    private final AbsenceService absenceService;
 
-    public PaieService( ContratRepository contratRepository, TalentService talentService ) {
+    public PaieService(ContratRepository contratRepository, TalentService talentService, AbsenceService absenceService) {
         this.contratRepository = contratRepository;
         this.talentService = talentService;
+        this.absenceService = absenceService;
     }
 
     private LocalDate getLastDateOfMonth( int month, int year ) {
@@ -59,5 +62,44 @@ public class PaieService {
             fichePaies.add( this.findFiche( lastDayOfMonth, c.getTalent().getIdTalent() ) );
         }
         return fichePaies;
+    }
+
+    public List<DetailsFichePaieBruteDTO> findDetailsFichePaieBrute(int annee, int mois, Long idTalent) {
+        List<DetailsFichePaieBruteDTO> details = new ArrayList<>();
+
+        double nbHeureMois=173.33;
+        double nbHeure=24.0;
+        LocalDate dateActuel=LocalDate.of(annee,mois+1,1).minusDays(1);
+        Contrat contratActuel=contratRepository.findContratByDateTalent(dateActuel,idTalent).orElseThrow(()->new RuntimeException("Cette personne n'est pas un employe la date du "+dateActuel));
+        int tauxJournalier = (int)(contratActuel.getSalaireHoraire()*nbHeure);
+        double tauxMensuel = contratActuel.getSalaireHoraire()*nbHeureMois;
+
+        details.add(getSalaireBaseDetails(tauxJournalier, tauxMensuel));
+        details.add(getAbsenceDeductibleDetails(contratActuel.getIdContrat(), mois, annee, tauxJournalier));
+
+        return details;
+    }
+
+    private DetailsFichePaieBruteDTO getSalaireBaseDetails(int tauxJournalier, double tauxMensuel) {
+
+        DetailsFichePaieBruteDTO salaireDetails = new DetailsFichePaieBruteDTO();
+        salaireDetails.setDesignation("Salaire");
+        salaireDetails.setTaux(tauxJournalier);
+        salaireDetails.setMontant(tauxMensuel);
+        salaireDetails.setNombre("1 mois");
+
+        return salaireDetails;
+    }
+
+    private DetailsFichePaieBruteDTO getAbsenceDeductibleDetails(Long idContrat, int mois, int annee, int tauxJournalier) {
+        DetailsFichePaieBruteDTO absenceDetails = new DetailsFichePaieBruteDTO();
+
+        long absenceCount = absenceService.countByContratAndMoisAndAnnee(idContrat, mois, annee);
+        absenceDetails.setDesignation("Absence déductible");
+        absenceDetails.setTaux(tauxJournalier);
+        absenceDetails.setNombre(absenceCount + " jour(s)");
+        absenceDetails.setMontant(absenceCount * tauxJournalier);
+
+        return absenceDetails;
     }
 }

@@ -22,6 +22,7 @@ import java.util.List;
 public class TalentController {
     private final TalentService talentService;
     private final ContratService contratService;
+    private final PaieService paieService;
 
     // @Autowired
     // private final EmailService emailService;
@@ -30,14 +31,15 @@ public class TalentController {
 
     public TalentController(
             TalentService talentService,
-            ContratService contratService
+            ContratService contratService,
 //            EmailService emailService,
 //            PromotionService promotionService
-    ) {
+            PaieService paieService) {
         this.talentService = talentService;
         this.contratService = contratService;
 //        this.emailService = emailService;
 //        this.promotionService = promotionService;
+        this.paieService = paieService;
     }
 
     @GetMapping
@@ -126,6 +128,6 @@ public class TalentController {
 
     @GetMapping( "/{idTalent}/fiche-paie-brute" )
     public List<DetailsFichePaieBruteDTO> findDetailsFichePaieBrute(@PathVariable( name = "idTalent" ) Long idTalent, @RequestParam( name = "annee" ) int annee, @RequestParam( name = "mois" ) int mois ) {
-        return contratService.findDetailsFichePaieBrute( annee, mois, idTalent );
+        return paieService.findDetailsFichePaieBrute( annee, mois, idTalent );
     }
 }
