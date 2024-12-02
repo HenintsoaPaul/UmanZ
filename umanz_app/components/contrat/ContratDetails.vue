@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineProps } from 'vue';
-import type { Contrat } from '~/types';
+import type { Contrat } from '~/types/interne/contrat';
 
 const props = defineProps<{
     apiUrl: string;

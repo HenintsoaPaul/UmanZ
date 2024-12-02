@@ -66,7 +66,7 @@ public class Contrat {
 
     @ManyToOne( fetch = FetchType.LAZY )
     @JoinColumn( name = "id_poste" )
-    @JsonView( { POV.Public.class, POV.Conge.class } )
+    @JsonView( { POV.Public.class, POV.Conge.class, POV.Emp.class } )
     private Poste poste;
 
     public Contrat( ContratDTO contratDTO ) {
