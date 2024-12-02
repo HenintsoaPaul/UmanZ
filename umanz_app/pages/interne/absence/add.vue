@@ -1,84 +1,72 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import axios from 'axios';
-import type { Absence, Contrat } from '~/types';
+import { z } from 'zod'
 
+const schema = z.object({
+    motif: z.string().min(1, "Motif d'absence obligatoire"),
+    dateAbsence: z.string().date('Date Absence incorrect'),
+});
 
-// Data
-const form = ref<Absence>({
-    idAbsence: 0,
+const form = reactive({
     motif: '',
-    dateAbsence: new Date().toString(),
-    idContrat: 0
+    dateAbsence: '',
+    idContrat: ''
 });
 
-const contrats = ref<Contrat[]>([]); // État réactif pour stocker les contrats
+const errorMessage = ref('');
+const successMessage = ref('');
+const loading = ref(false);
 
-// Charger les contrats depuis l'API
-const loadContrats = async () => {
-    try {
-        const response = await axios.get('http://localhost:911/contrat');
-        if (response.status === 200) {
-            contrats.value = response.data;
-        } else {
-            console.error('Erreur lors de la récupération des contrats', response.data);
-        }
-    } catch (error) {
-        console.error('Erreur lors de la requête API:', error);
+const apiUrl = useRuntimeConfig().public.apiUrl as string;
+async function onSubmit() {
+    const result = schema.safeParse({ ...form });
+    if (!result.success) {
+        errorMessage.value = result.error.errors.map(err => err.message).join(', ');
+        return;
     }
-};
 
-onMounted(() => {
-    loadContrats();
-});
-
-// Method
-const submitForm = async () => {
+    loading.value = true;
     try {
-        console.log(toRaw(form.value));
+        const response = await $fetch(`${apiUrl}/formations`, {
+            method: 'POST',
+            body: toRaw(form)
+        });
 
-        const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
-        console.log(apiUrl);
-
-        const response = await axios.post(`${apiUrl}/absences`, form.value);
-        console.log('Form submitted successfully:', response.data);
+        console.log('Form submitted successfully:', response);
+        errorMessage.value = '';
+        successMessage.value = 'Le formulaire a été soumis avec succès.';
     } catch (error) {
         console.error('Error submitting form:', error);
+        errorMessage.value = 'Une erreur s\'est produite lors de la soumission du formulaire.';
+        successMessage.value = '';
+    } finally {
+        loading.value = false;
     }
-};
+}
 </script>
 
 <template>
-    <div class="absence-form">
-        <h1>Ajouter Absence</h1>
+    <div class="max-w-3xl mx-auto p-6 border border-white rounded-lg shadow-md">
+        <h1 class="text-3xl font-bold mb-6">Ajouter Absence</h1>
 
-        <form @submit.prevent="submitForm">
-            <!-- Motif -->
-            <div class="form-group">
-                <label for="motif">Motif:</label>
-                <input type="text" id="motif" v-model="form.motif" />
-            </div>
+        <UForm :schema="schema" :state="form" class="space-y-4" @submit="onSubmit">
+            <UFormGroup label="Motif" name="motif">
+                <UInput v-model="form.motif" />
+            </UFormGroup>
 
-            <!-- Date Absence -->
-            <div class="form-group">
-                <label for="date_absence">Date d'Absence:</label>
-                <input type="date" id="date_absence" v-model="form.dateAbsence" required />
-            </div>
+            <UFormGroup label="Date d'absence" name="dateAbsence">
+                <UInput v-model="form.dateAbsence" type="date" required />
+            </UFormGroup>
 
-            <!-- Contrat -->
-            <div class="mb-4">
-                <label for="id_contrat" class="block text-gray-700">Contrat</label>
-                <select v-model="form.idContrat" id="id_contrat"
-                    class="w-full p-2 border border-gray-300 rounded mt-1">
-                    <option value="" disabled>Choisir un contrat</option>
-                    <option v-for="contrat in contrats" :key="contrat.idContrat" :value="contrat.idContrat">
-                        {{ contrat.talent.nom }} - {{ contrat.talent.prenom }}
-                    </option>
-                </select>
-            </div>
+            <UFormGroup label="ID Contrat" name="idContrat">
+                <UInput v-model="form.idContrat" type="number" required />
+            </UFormGroup>
 
-            <button type="submit"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Soumettre</button>
-        </form>
+            <UButton type="submit" :disabled="!isFormValid" :loading="loading">
+                {{ loading ? 'En cours...' : 'Soumettre' }}
+            </UButton>
+
+            <p v-if="errorMessage" class="text-red-500">{{ errorMessage }}</p>
+            <p v-if="successMessage" class="text-green-500">{{ successMessage }}</p>
+        </UForm>
     </div>
 </template>

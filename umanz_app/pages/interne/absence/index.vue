@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Absence } from '~/types';
+import type { Absence } from '~/types/interne/absence';
 
 const headers = [
     { key: 'idAbsence', label: 'ID', sortable: true },
