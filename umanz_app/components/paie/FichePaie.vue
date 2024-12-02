@@ -15,7 +15,7 @@ const { data: paysLipsHeader } = useFetch<PaysLipsHeader>(`${apiUrl}/talents/${i
     query: { annee: year, mois: month },
 });
 
-const { data: paysLipsBrutDetails } = useFetch<PaysLipsDetails>(`${apiUrl}/talents/${idUser}/fiche-paie-brute`, {
+const { data: paysLipsBrutDetails } = useFetch<PaysLipsDetails[]>(`${apiUrl}/talents/${idUser}/fiche-paie-brute`, {
     query: { annee: year, mois: month },
 });
 
@@ -24,7 +24,7 @@ const { data: paysLipsBrutDetails } = useFetch<PaysLipsDetails>(`${apiUrl}/talen
 <template>
     <TeteFichePaie :pays-lips-header="paysLipsHeader" />
 
-    <CorpsFichePaie :pays-lips-brut-details="paysLipsBrutDetails" />
+    <CorpsFichePaie :pays-lips-brut-details="paysLipsBrutDetails ?? []" />
 
     <PiedFichePaie />
 </template>
