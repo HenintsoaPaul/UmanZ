@@ -5,10 +5,12 @@ import mg.itu.rh.dto.interne.RuptureDTO;
 import mg.itu.rh.dto.rupture.DemissionRequest;
 import mg.itu.rh.dto.rupture.RenvoiRequest;
 import mg.itu.rh.dto.rupture.RetraiteRequest;
+import mg.itu.rh.entity.interne.Contrat;
 import mg.itu.rh.entity.interne.Rupture;
 import mg.itu.rh.repository.interne.RuptureRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -73,7 +75,13 @@ public class RuptureService {
         return this.ruptureRepository.findAllPendingRuptures();
     }
 
-    public Rupture findAllPendingRupturesOfEmp( Long idContrat ) {
-        return this.ruptureRepository.findAllPendingRupturesOfEmp( idContrat );
+    public Rupture findPendingRenvoiOfEmp( Long idContrat ) {
+        return this.ruptureRepository.findPendingRenvoiOfEmp( idContrat );
+    }
+
+    public Rupture validate( Long idContrat, String dateValidation ) {
+        Rupture r = ruptureRepository.findRupturesByIdContrat( idContrat );
+        r.setDateRuptureValidation( LocalDate.parse( dateValidation ) );
+        return ruptureRepository.save( r );
     }
 }

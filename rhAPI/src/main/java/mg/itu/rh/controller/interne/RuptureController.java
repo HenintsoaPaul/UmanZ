@@ -11,6 +11,8 @@ import mg.itu.rh.entity.interne.Rupture;
 import mg.itu.rh.other.POV;
 import mg.itu.rh.service.interne.EmailService;
 import mg.itu.rh.service.interne.RuptureService;
+import org.hibernate.annotations.Parameter;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -96,6 +98,12 @@ public class RuptureController {
         return ruptureService.save( ruptureDTO );
     }
 
+    @PostMapping( "/validate/{idContrat}" )
+    @JsonView( POV.Public.class )
+    public Rupture validate( @PathVariable( "idContrat" ) Long idContrat, @RequestParam String dateValidation ) {
+        return ruptureService.validate( idContrat, dateValidation );
+    }
+
     @GetMapping( "/pendings" )
     @JsonView( POV.Public.class )
     public List<Rupture> findAllPendingRuptures() {
@@ -104,7 +112,7 @@ public class RuptureController {
 
     @GetMapping( "/pendings/{idContrat}" )
     @JsonView( POV.Public.class )
-    public Rupture findAllPendingRupturesOfEmp( @PathVariable Long idContrat ) {
-        return ruptureService.findAllPendingRupturesOfEmp( idContrat );
+    public Rupture findPendingRenvoiOfEmp( @PathVariable Long idContrat ) {
+        return ruptureService.findPendingRenvoiOfEmp( idContrat );
     }
 }
