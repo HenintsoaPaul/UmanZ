@@ -28,7 +28,7 @@ CREATE TABLE type_contrat(
 CREATE TABLE formation(
                           id_formation SERIAL,
                           nom_formation VARCHAR(50)  NOT NULL,
-                          date_debut DATE NOT NULL,
+                         date_debut DATE NOT NULL,
                           date_fin DATE NOT NULL,
                           est_fini BOOLEAN,
                           PRIMARY KEY(id_formation)
