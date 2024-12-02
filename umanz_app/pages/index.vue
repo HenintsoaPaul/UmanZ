@@ -21,7 +21,7 @@ const formState = reactive({
 });
 
 const router = useRouter();
-const { authenticate } = useAuth();
+const { authenticate, saveUser } = useAuth();
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
     const isValid = schema.safeParse(event.data).success;
@@ -31,20 +31,13 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         const userPassword = formState.password;
 
         const apiUrl = useRuntimeConfig().public.apiUrl;
-        const user = await authenticate(userEmail, userPassword, `${apiUrl}/talents/users`);
-
+        const user = await authenticate(userEmail, userPassword, apiUrl);
 
         if (user) {
-            if (user.mail === userEmail || user.password === userPassword) {
-                localStorage.setItem('idUser', user.idTalent.toString());
-                localStorage.setItem('emailUser', user.mail.toString());
-                localStorage.setItem('isAdmin', user.isAdmin.toString());
-                router.push('/Home');
-            } else {
-                formState.error = 'Email ou Mot de Passe incorrecte'
-            }
+            saveUser(user);
+            router.push('/Home');
         } else {
-            formState.error = 'Utilisateur inconnu'
+            formState.error = 'Email ou Mot de passe inconnu'
         }
     }
 }
@@ -65,14 +58,19 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                         class="w-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </UFormGroup>
 
+                <p v-if="formState.error" class="text-red-500 text-center mt-4">{{ formState.error }}</p>
+
                 <div class="w-full flex justify-center">
                     <UButton type="submit"
                         class="w-1/2 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300 flex justify-center">
-                        Soumettre
+                        Me connecter
                     </UButton>
                 </div>
 
-                <p v-if="formState.error" class="text-red-500 text-center mt-4">{{ formState.error }}</p>
+                <div class="text-sm mt-4">
+                    Vous n'avez pas encore de compte ?
+                    <NuxtLink class="text-green-400" to="/register">Inscrivez-vous ici</NuxtLink>
+                </div>
             </UForm>
         </div>
     </div>

@@ -7,22 +7,31 @@ import mg.itu.rh.other.POV;
 
 import java.util.List;
 
+import mg.itu.rh.repository.interne.ContratRepository;
 import mg.itu.rh.service.interne.ContratService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping( "/contrat" )
+@RequestMapping( "/contrats" )
 public class ContratController {
     private final ContratService contratService;
+    private final ContratRepository contratRepository;
 
-    public ContratController( ContratService contratService ) {
+    public ContratController( ContratService contratService, ContratRepository contratRepository ) {
         this.contratService = contratService;
+        this.contratRepository = contratRepository;
     }
 
     @GetMapping
     @JsonView( POV.Public.class )
     public List<Contrat> findAll() {
-        return contratService.findAll();
+        return contratRepository.findAll();
+    }
+
+    @GetMapping( "/now" )
+    @JsonView( POV.Emp.class )
+    public List<Contrat> findAllEmpNow() {
+        return contratService.findAllEmpNow();
     }
 
     @GetMapping( "/{id}" )
@@ -31,20 +40,6 @@ public class ContratController {
         return contratService.findById( id );
     }
 
-    /*
-     * {
-     *       "contrat":"Contrat mahafinaritra",
-     *       "dateDebut":"2025-01-01",
-     *       "dateFin":"2025-12-12",
-     *       "salaireHoraire":125000,
-     *       "nbJourSemaine":5,
-     *       "nbJourCongeAn":20,
-     *       "nbHeureJour":8,
-     *       "idPoste":11,
-     *       "idTalent":4,
-     *       "idTypeContrat":3
-     * }
-     * */
     @PostMapping
     @JsonView( POV.Public.class )
     public Contrat save( @RequestBody ContratDTO contratDTO ) {

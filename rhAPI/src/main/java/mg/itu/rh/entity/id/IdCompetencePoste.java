@@ -15,7 +15,7 @@ import java.io.Serializable;
 public class IdCompetencePoste implements Serializable {
     @Column(name = "id_competence")
     private Long idCompetence;
-    @Column(name = "id_annonce")
+    @Column(name = "id_poste")
     private Long idPoste;
 
     public IdCompetencePoste(Long idCompetence, Long idPoste) {

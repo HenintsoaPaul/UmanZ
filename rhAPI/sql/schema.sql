@@ -1,18 +1,3 @@
-CREATE TABLE categories (
-    id_categories SERIAL PRIMARY KEY ,
-    nom VARCHAR(50),
-    description TEXT
-);
-
-CREATE TABLE categories_position (
-    id_poste INTEGER,      
-    id_categories INTEGER,
-    point_categorie INTEGER,
-    PRIMARY KEY (id_poste, id_categories), -- Clé primaire composite
-    FOREIGN KEY (id_poste) REFERENCES poste(id_poste),
-    FOREIGN KEY (id_categories) REFERENCES categories(id_categories)
-);
-
 CREATE TABLE talent(
                        id_talent SERIAL,
                        nom VARCHAR(50)  NOT NULL,
@@ -20,7 +5,10 @@ CREATE TABLE talent(
                        mail VARCHAR(50)  NOT NULL,
                        password VARCHAR(255) ,
                        is_admin BOOLEAN NOT NULL,
-                       PRIMARY KEY(id_talent)
+                       date_naissance DATE NOT NULL,
+                       id_cnaps VARCHAR(50)  NOT NULL,
+                       PRIMARY KEY(id_talent),
+                       UNIQUE(id_cnaps)
 );
 
 CREATE TABLE etat_entretien(
@@ -42,6 +30,7 @@ CREATE TABLE formation(
                           nom_formation VARCHAR(50)  NOT NULL,
                          date_debut DATE NOT NULL,
                           date_fin DATE NOT NULL,
+                          est_fini BOOLEAN,
                           PRIMARY KEY(id_formation)
 );
 
@@ -238,6 +227,18 @@ CREATE TABLE justificatif(
                              FOREIGN KEY(id_type_justificatif) REFERENCES type_justificatif(id_type_justificatif)
 );
 
+CREATE TABLE heure_supplementaire(
+                                     id SERIAL,
+                                     motif TEXT,
+                                     date_heure_debut TIMESTAMP NOT NULL,
+                                     date_heure_creation TIMESTAMP NOT NULL,
+                                     nb_heure NUMERIC(5,2)   NOT NULL,
+                                     taux_majoration NUMERIC(5,2)   NOT NULL,
+                                     id_contrat INTEGER NOT NULL,
+                                     PRIMARY KEY(id),
+                                     FOREIGN KEY(id_contrat) REFERENCES contrat(id_contrat)
+);
+
 CREATE TABLE entretien(
                           id_entretien SERIAL,
                           date_creation DATE NOT NULL,
@@ -371,8 +372,7 @@ CREATE TABLE competence_poste(
                                  FOREIGN KEY(id_poste) REFERENCES poste(id_poste)
 );
 
-CREATE TABLE candidat_historique
-(
+CREATE TABLE candidat_historique(
     id_candidat_histo SERIAL PRIMARY KEY,
     id_talent         INTEGER,
     action            VARCHAR(255),
@@ -380,4 +380,3 @@ CREATE TABLE candidat_historique
     date_action       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_talent FOREIGN KEY (id_talent) REFERENCES Talent (id_talent) ON DELETE CASCADE
 );
-

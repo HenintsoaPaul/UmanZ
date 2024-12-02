@@ -3,56 +3,79 @@ package mg.itu.rh.controller.interne;
 import com.fasterxml.jackson.annotation.JsonView;
 import mg.itu.rh.dto.interne.CongeDTO;
 import mg.itu.rh.dto.interne.CongeTalentDTO;
+import mg.itu.rh.dto.interne.PendingCongeDTO;
 import mg.itu.rh.entity.interne.Conge;
+import mg.itu.rh.exception.interne.CongeException;
 import mg.itu.rh.other.POV;
+import mg.itu.rh.repository.interne.CongeRepository;
 import mg.itu.rh.service.interne.CongeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/conge")
+@RequestMapping( "/conges" )
 public class CongeController {
-    @Autowired
-    private CongeService congeService;
+    private final CongeRepository congeRepository;
+    private final CongeService congeService;
+
+    public CongeController( CongeRepository congeRepository, CongeService congeService ) {
+        this.congeRepository = congeRepository;
+        this.congeService = congeService;
+    }
 
     @GetMapping
-    @JsonView(POV.Full.class)
-    public List<CongeTalentDTO> findALl(){
-        return  congeService.findAllValide();
+    @JsonView( POV.Conge.class )
+    public List<Conge> findAll() {
+        return congeRepository.findAll();
     }
 
-    @GetMapping("/non_valide")
-    @JsonView(POV.Full.class)
-    public List<CongeTalentDTO> findALlNonValide(){
-        return  congeService.findAllNonValide();
+//    @GetMapping( "/validated" )
+//    @JsonView( POV.Full.class )
+//    public List<CongeTalentDTO> findAllValide() {
+//        return congeService.findAllValide();
+//    }
+//
+//    @GetMapping( "/refused" )
+//    @JsonView( POV.Full.class )
+//    public List<CongeTalentDTO> findALlNonValide() {
+//        return congeService.findAllNonValide();
+//    }
+//
+//    @GetMapping( "/talent/{id}" )
+//    @JsonView( POV.Public.class )
+//    public List<Conge> getCongeByTalent( @PathVariable( "id" ) Long id ) {
+//        return congeService.findCongeByIdTalent( id );
+//    }
+
+    @JsonView( POV.Public.class )
+    @PostMapping( "/demandes" )
+    public Conge saveDemande( @RequestBody CongeDTO congeDTO ) {
+        return congeService.saveDemandeConge( congeDTO );
     }
 
-    @GetMapping("/validate/{idConge}")
-    @JsonView(POV.Full.class)
-    public Conge validate(@PathVariable("idConge") Long idConge){
-        return congeService.validate(idConge);
+    @GetMapping( "/needs-validation" )
+    @JsonView( POV.Conge.class )
+    public List<PendingCongeDTO> findAllCongeNeedsValidation() {
+        return congeService.findAllCongeNeedsValidation();
     }
 
-    @GetMapping("/talent/{id}")
-    @JsonView(POV.Public.class)
-    public List<Conge> getCongeByTalent(@PathVariable("id") Long id){
-        return congeService.findCongeByIdTalent(id);
+    @PutMapping( "/validate/{idConge}" )
+    @JsonView( POV.Conge.class )
+    public Conge validate( @PathVariable( "idConge" ) Long idConge )
+            throws CongeException {
+        return congeService.validate( idConge );
     }
 
-    /* *
-     *   {
-     *       "idTalent":5,
-     *       "nbJour":3,
-     *       "dateDebut":"2024-10-10",
-     *       "motif":"Repos kely fa valaka be"
-     *   }
-     * */
-    @JsonView(POV.Public.class)
-    @PostMapping
-    public Conge save(@RequestBody CongeDTO congeDTO)throws Exception{
-        return congeService.save(congeDTO);
+    @PutMapping( "/refuse/{idConge}" )
+    @JsonView( POV.Conge.class )
+    public Conge refuse( @PathVariable( "idConge" ) Long idConge, @RequestBody String motifRefus ) {
+        return congeService.refuse( idConge, motifRefus );
     }
 
+    @GetMapping( "/taken-by/{idContrat}" )
+    @JsonView( POV.Conge.class )
+    public List<Conge> findAllTakenByContrat( @PathVariable( "idContrat" ) Long idContrat ) {
+        return congeService.findAllTakenByContrat( idContrat );
+    }
 }

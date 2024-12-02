@@ -1,19 +1,32 @@
-import axios from "axios";
-import type { Talent } from "~/types";
+import type { AuthDTO } from "~/types/auth";
 
 export function useAuth() {
-    const authenticate = async (email: string, password: string, url: string): Promise<Talent | null> => {
+    const authenticate = async (email: string, password: string, apiUrl: string): Promise<AuthDTO> => {
         try {
-            const response = await axios.get<Talent>(url, {
-                params: { email, password }
+            const response = await $fetch<AuthDTO>(`${apiUrl}/auth`, {
+                method: 'POST',
+                body: {
+                    email: email,
+                    password: password
+                }
             });
-
-            return response.data;
-        } catch (err) {
-            console.error('Erreur lors de l\'authentication de l\'utilisateur:', err);
-            return null;
+            // console.log('Authentication data sent successfully', response);
+            return response;
+        } catch (error) {
+            console.error('Failed to send Authentication data', error);
+            throw error;
         }
     }
 
-    return { authenticate };
+    const saveUser = (authDto: AuthDTO): void => {
+        localStorage.setItem('umanz-idUser', authDto.idTalent.toString());
+        localStorage.setItem('umanz-emailUser', authDto.email.toString());
+        localStorage.setItem('umanz-isAdmin', authDto.admin.toString());
+        localStorage.setItem('umanz-idContrat', authDto.idContrat?.toString() || '');
+    }
+
+    return { 
+        authenticate,
+        saveUser
+     };
 }

@@ -26,5 +26,6 @@ public class CompetencePoste {
     private Poste poste;
 
     @JsonView( { POV.Public.class } )
+    @Column( name = "point_requis")
     private int point;
 }
