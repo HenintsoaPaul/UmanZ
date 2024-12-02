@@ -2,7 +2,7 @@ package mg.itu.rh.controller;
 
 import java.util.List;
 
-import org.springframework.data.repository.query.Param;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,72 +18,41 @@ import mg.itu.rh.entity.talent.Talent;
 import mg.itu.rh.other.POV;
 import mg.itu.rh.service.talent.TalentService;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import mg.itu.rh.dto.talent.TalentDTO;
 import mg.itu.rh.entity.interne.RenvoiRequest;
-import mg.itu.rh.entity.talent.Talent;
 import mg.itu.rh.service.interne.*;
-import mg.itu.rh.other.POV;
-
-import mg.itu.rh.service.talent.TalentService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
+@RequiredArgsConstructor
 @RestController
 @RequestMapping( "/talents" )
 public class TalentController {
     private TalentService talentService;
-
-    @Autowired
     private EmailService emailService;
-
-    @Autowired
     private ContratService contratService;
-
-    @Autowired
     private PromotionService promotionService;
 
-    public TalentController( TalentService talentService ) {
-
-      private final TalentService talentService;
-    private final ContratService contratService;
-
-    public TalentController(
-            TalentService talentService,
-            ContratService contratService
-//            EmailService emailService,
-//            PromotionService promotionService
-    ) {
-        this.talentService = talentService;
-        this.contratService = contratService;
-//        this.emailService = emailService;
-//        this.promotionService = promotionService;
-    }
-
-    @PostMapping("/ruptureEmail")
-    public ResponseEntity<String> ruptureEmail(@RequestBody RenvoiRequest renvoiRequest) {
-        System.out.println("Motif: " + renvoiRequest.getMotif());
-        System.out.println("Date: " + renvoiRequest.getDate());
+    @PostMapping( "/ruptureEmail" )
+    public ResponseEntity<String> ruptureEmail( @RequestBody RenvoiRequest renvoiRequest ) {
+        System.out.println( "Motif: " + renvoiRequest.getMotif() );
+        System.out.println( "Date: " + renvoiRequest.getDate() );
         try {
             String toEmail = "gestionsender@gmail.com";
             String subject = "Nouvelle demande de rupture";
             String body = String.format(
-                "<h1>Demande de rupture</h1>" +
-                "<p><strong>Motif :</strong> %s</p>" +
-                "<p><strong>Date :</strong> %s</p>" ,
-                renvoiRequest.getMotif(),
-                renvoiRequest.getDate()
+                    "<h1>Demande de rupture</h1>" +
+                            "<p><strong>Motif :</strong> %s</p>" +
+                            "<p><strong>Date :</strong> %s</p>",
+                    renvoiRequest.getMotif(),
+                    renvoiRequest.getDate()
             );
 
-            emailService.sendEmail(toEmail, subject, body);
-            return ResponseEntity.ok("Email envoyé avec succès.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body("Erreur lors de l'envoi de l'email : " + e.getMessage());
+            emailService.sendEmail( toEmail, subject, body );
+            return ResponseEntity.ok( "Email envoyé avec succès." );
+        } catch ( Exception e ) {
+            return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR )
+                    .body( "Erreur lors de l'envoi de l'email : " + e.getMessage() );
         }
     }
 
