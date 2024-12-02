@@ -64,6 +64,12 @@ const navLinks = [
       { label: "Faire une évaluation", link: "/talent/evaluation/domaine" }
     ]
   },
+    {
+        label: "Paie",
+        children: [
+            { label: "Etat de paie", link: "/interne/paie" },
+        ]
+    },
   {
     label: "Chat",
     children: [

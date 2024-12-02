@@ -199,3 +199,31 @@ export interface EvaluationNote {
     dateEvaluation?: string,
     evaluations?: QuestionEvaluationNote[]
 }
+
+export interface PaysLipsHeader {
+    nomPrenom: string;
+    matricule: number,
+    fonction: string;
+    dateEmbauche: string;
+    anciennete: string;
+    classification: string;
+    idCnaps: string;
+    salaire: number;
+    tauxJournalier: number;
+    tauxHoraire: number;
+    indice: number;
+    retenueCnaps: number;
+    retenueSanitaire: number;
+}
+
+export interface PaysLipsDetails {
+    designation: string;
+    taux: number;
+    montant: number;
+    nombre: number;
+}
+
+export interface PaysLipsBody {
+    brute: PaysLipsDetails[];
+    retenue: PaysLipsDetails[];
+}
