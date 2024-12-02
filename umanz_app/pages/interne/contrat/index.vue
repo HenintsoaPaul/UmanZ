@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Contrat } from '~/types';
+import type { Contrat } from '~/types/interne/contrat';
 
 const { promotionFn, expulsionFn, demissionFn } = useContratActions();
 const currency = useRuntimeConfig().public.currency as string;
