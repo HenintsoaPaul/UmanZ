@@ -30,7 +30,8 @@ public class AbsenceService {
         absence.setDateAbsence(absenceDTO.getDateAbsence());
 
         Long idTalent = absenceDTO.getIdTalent();
-        Contrat contrat = contratService.findActualContratByIdTalent(idTalent);
+        Contrat contrat = contratService.findActualContratByIdTalent(idTalent)
+                .orElseThrow(() -> new RuntimeException("Aucun contrat associé au talent : " + idTalent));
         absence.setContrat(contrat);
 
         // Contrat contrat = contratService.findById(absenceDTO.getIdContrat());
