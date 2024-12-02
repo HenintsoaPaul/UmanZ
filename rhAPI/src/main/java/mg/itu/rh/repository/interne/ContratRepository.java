@@ -14,7 +14,11 @@ import mg.itu.rh.entity.interne.Contrat;
 @Repository
 public interface ContratRepository extends JpaRepository<Contrat, Long> {
 
-    @Query( "SELECT c FROM Contrat c join c.talent t WHERE c.idContrat NOT IN (SELECT r.contrat.idContrat FROM Rupture r join r.contrat) and t.idTalent=:idTalent and c.dateFin > CURRENT_DATE" )
+    @Query( "SELECT c " +
+            "FROM Contrat c join c.talent t " +
+            "WHERE c.idContrat NOT IN (SELECT r.contrat.idContrat FROM Rupture r join r.contrat) " +
+            "   and t.idTalent=:idTalent " +
+            "   and (c.dateFin > CURRENT_DATE or c.dateFin is null)" )
     Optional<Contrat> findActualContratByIdTalent( @Param( "idTalent" ) Long idTalent );
 
     //select * from contrat where date_debut in (select min(date_debut) from contrat where id_talent=1)
