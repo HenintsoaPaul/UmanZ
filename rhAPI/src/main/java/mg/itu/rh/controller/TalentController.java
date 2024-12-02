@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import mg.itu.rh.dto.interne.DetailsFichePaieBruteDTO;
 import mg.itu.rh.dto.interne.FicheDTO;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,35 +28,16 @@ import mg.itu.rh.service.interne.*;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping( "/talents" )
 public class TalentController {
-    private final PaieService paieService;
+    private PaieService paieService;
     private TalentService talentService;
     private EmailService emailService;
     private ContratService contratService;
     private PromotionService promotionService;
-
-    public TalentController(
-            TalentService talentService,
-            ContratService contratService,
-            EmailService emailService,
-            PromotionService promotionService,
-            PaieService paieService) {
-        this.talentService = talentService;
-        this.contratService = contratService;
-//        this.emailService = emailService;
-//        this.promotionService = promotionService;
-        this.paieService = paieService;
-    }
-
-    @GetMapping
-    @JsonView( POV.Public.class )
-    public List<Talent> findAll() {
-        return talentService.findAll();
-    }
 
     @PostMapping( "/ruptureEmail" )
     public ResponseEntity<String> ruptureEmail( @RequestBody RenvoiRequest renvoiRequest ) {
@@ -77,6 +60,12 @@ public class TalentController {
             return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR )
                     .body( "Erreur lors de l'envoi de l'email : " + e.getMessage() );
         }
+    }
+
+    @GetMapping
+    @JsonView( POV.Public.class )
+    public List<Talent> findAll() {
+        return talentService.findAll();
     }
 
 //    @GetMapping("/by-category/{idCategories}")
