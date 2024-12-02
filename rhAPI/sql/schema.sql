@@ -241,7 +241,7 @@ CREATE TABLE heure_supplementaire(
                                      id SERIAL,
                                      motif TEXT,
                                      date_heure_debut TIMESTAMP NOT NULL,
-                                     date_heure_creation TIMESTAMP NOT NULL,
+                                     date_heure_creation TIMESTAMP NOT NULL default now(),
                                      nb_heure NUMERIC(5,2)   NOT NULL,
                                      taux_majoration NUMERIC(5,2)   NOT NULL,
                                      id_contrat INTEGER NOT NULL,

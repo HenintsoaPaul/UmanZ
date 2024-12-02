@@ -33,6 +33,10 @@ public class ContratService {
         return contratRepository.findActualContratByIdTalent( idTalent );
     }
 
+    public List<Contrat> findAllContratNow(){
+        return contratRepository.findAllContratEnCoursOnDate(LocalDate.now());
+    }
+
     public Contrat findById( Long idContrat ) {
         return contratRepository.findById( idContrat ).orElseThrow( () -> new RuntimeException( "Contrat non reconnue" ) );
     }
