@@ -65,11 +65,7 @@ async function onSubmit() {
             </UFormGroup>
 
             <UFormGroup label="Employe" name="idContrat">
-                <USelect v-model="form.idContrat">
-                    <option v-for="contrat in contrats" :key="contrat.idContrat" :value="contrat.idContrat">
-                        {{ contrat.talent.nom + " " + contrat.talent.prenom }}
-                    </option>
-                </USelect>
+                <UInput v-model="form.idContrat" type="number" required />
             </UFormGroup>
 
             <UButton type="submit" :loading="loading">

@@ -2,6 +2,7 @@ package mg.itu.rh.controller;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +25,7 @@ import mg.itu.rh.service.interne.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @RestController
 @RequestMapping( "/talents" )
 public class TalentController {
