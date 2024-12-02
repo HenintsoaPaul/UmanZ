@@ -20,11 +20,7 @@ CREATE TABLE talent(
                        mail VARCHAR(50)  NOT NULL,
                        password VARCHAR(255) ,
                        is_admin BOOLEAN NOT NULL,
-                       id_poste INTEGER,
-                       id_categories INTEGER,
-                       date_of_hire DATE,
-                       PRIMARY KEY(id_talent),
-                       FOREIGN KEY (id_poste, id_categories) REFERENCES categories_position (id_poste, id_categories)
+                       PRIMARY KEY(id_talent)
 );
 
 CREATE TABLE etat_entretien(
@@ -44,7 +40,7 @@ CREATE TABLE type_contrat(
 CREATE TABLE formation(
                           id_formation SERIAL,
                           nom_formation VARCHAR(50)  NOT NULL,
-                          date_debut DATE NOT NULL,
+                         date_debut DATE NOT NULL,
                           date_fin DATE NOT NULL,
                           PRIMARY KEY(id_formation)
 );
@@ -145,10 +141,7 @@ CREATE TABLE poste(
                       PRIMARY KEY(id_poste),
                       FOREIGN KEY(id_type_poste) REFERENCES type_poste(id_type_poste)
 );
-ALTER TABLE poste
-ADD COLUMN type_poste VARCHAR(255);
 
-id_type_poste
 CREATE TABLE contrat(
                         id_contrat SERIAL,
                         contrat VARCHAR(100)  NOT NULL,

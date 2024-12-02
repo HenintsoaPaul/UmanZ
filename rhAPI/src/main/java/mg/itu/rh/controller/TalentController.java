@@ -27,10 +27,36 @@ public class TalentController {
     private EmailService emailService;
 
     @Autowired
+    private ContratService contratService;
+
+    @Autowired
     private PromotionService promotionService;
 
     public TalentController( TalentService talentService ) {
         this.talentService = talentService;
+    }
+
+    @PostMapping("/ruptureEmail")
+    public ResponseEntity<String> ruptureEmail(@RequestBody RenvoiRequest renvoiRequest) {
+        System.out.println("Motif: " + renvoiRequest.getMotif());
+        System.out.println("Date: " + renvoiRequest.getDate());
+        try {
+            String toEmail = "gestionsender@gmail.com";
+            String subject = "Nouvelle demande de rupture";
+            String body = String.format(
+                "<h1>Demande de rupture</h1>" +
+                "<p><strong>Motif :</strong> %s</p>" +
+                "<p><strong>Date :</strong> %s</p>" ,
+                renvoiRequest.getMotif(),
+                renvoiRequest.getDate()
+            );
+
+            emailService.sendEmail(toEmail, subject, body);
+            return ResponseEntity.ok("Email envoyé avec succès.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body("Erreur lors de l'envoi de l'email : " + e.getMessage());
+        }
     }
 
     @GetMapping

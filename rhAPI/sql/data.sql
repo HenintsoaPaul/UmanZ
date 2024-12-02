@@ -26,12 +26,6 @@ VALUES ('Malagasy'),
        ('Allemand'),
        ('Mandarin');
 
-INSERT INTO niveau_diplome(nom_niveau_diplome, niveau_diplome)
-VALUES ('Baccalaureat', 1),
-       ('Licence', 2),
-       ('Master', 3),
-       ('Doctorat', 4);
-
 INSERT INTO diplome(nom_diplome, id_niveau_diplome)
 VALUES ('Serie C', 1),
        ('Serie D', 1),
@@ -117,13 +111,6 @@ VALUES ('Ouvrier', 1),
        ('Cadre', 4),
        ('Dirigeant', 5);
 
-INSERT INTO poste (nom_poste, description_poste, id_type_poste)
-VALUES ('Developpeur', 'Responsable du developpement des applications', 2),
-       ('Chef de projet', 'Gestion et coordination des projets', 4),
-       ('Designer', 'Creation des interfaces graphiques et visuels', 2),
-       ('Analyste', 'Analyse des besoins fonctionnels et techniques', 3),
-       ('Support technique', 'Assistance et resolution des problemes techniques', 3);
-
 INSERT INTO annonce (date_annonce, entreprise, date_expiration, id_poste)
 VALUES ('2024-01-01', 'Tech Corp', '2025-03-01', 1),
        ('2024-02-15', 'Tech Corp', '2025-04-15', 3),
@@ -165,13 +152,6 @@ VALUES ('2024-01-01', 'Fin de contrat', 1, 1),
        ('2023-08-01', 'Fin de CDD', 1, 2),
        ('2023-10-01', 'Licenciement', 3, 3);
 
-INSERT INTO poste (nom_poste, description_poste, id_type_poste)
-VALUES ('Ingenieur DevOps', 'Assurer le deploiement et l''integration continue des applications', 3),
-       ('Data Scientist', 'Analyser et interpreter des donnees complexes pour guider les decisions strategiques', 3),
-       ('Responsable RH', 'Gestion des ressources humaines et developpement du personnel', 4),
-       ('Consultant', 'Conseiller les entreprises dans leur strategie de croissance', 4),
-       ('Developpeur Frontend', 'Developpement de l''interface utilisateur des applications web', 2),
-       ('Architecte Logiciel', 'Conception et gestion de l''architecture des systemes informatiques', 3);
 
 INSERT INTO annonce (date_annonce, entreprise, date_expiration, id_poste)
 VALUES ('2024-10-15', 'Innovative Solutions', '2025-01-15', 6),
@@ -568,14 +548,6 @@ INSERT INTO categories (nom, description) VALUES
 ('Cadres', 'Catégorie pour les managers et responsables d''équipes ou de projets'),
 ('Dirigeants', 'Catégorie pour les cadres supérieurs et décideurs stratégiques');
 
--- Insertion des types de postes
-INSERT INTO type_poste (nom_type_poste, rang_type_poste) VALUES
-('Ouvrier', 1),
-('Administratif', 2),
-('Technicien', 3),
-('Responsable', 4),
-('Cadre', 5);
-
 INSERT INTO poste (nom_poste, description_poste, id_type_poste) VALUES
 ('Manutentionnaire', 'Poste d''execution pour les taches physiques et manuelles', 1),  -- Ouvrier
 ('Assistant Administratif', 'Poste administratif pour le soutien de bureau', 2),  -- Administratif
@@ -601,19 +573,12 @@ INSERT INTO niveau_diplome (niveau_diplome, nom_niveau_diplome) VALUES
 
 -- Insertion des diplômes avec leur niveau
 INSERT INTO diplome (nom_diplome, id_niveau_diplome) VALUES
-('Baccalaureat', 6), 
-('BTS Maintenance Industrielle', 7),  
-('Licence en Gestion', 8),  
-('Master en Management', 9),  
-('Doctorat en Sciences', 10),  
-('MBA', 11);  
-
-INSERT INTO talent (nom, prenom, mail, password, is_admin, id_poste, id_categories, date_of_hire) VALUES
-('Jean', 'Dupont', 'jean.dupont@example.com', 'password123', false, 1, 1, '2020-06-15'),  -- Manutentionnaire (Ouvriers)
-('Marie', 'Martin', 'marie.martin@example.com', 'password123', false, 2, 2, '2018-09-01'),  -- Assistant Administratif (Employes)
-('Paul', 'Lemoine', 'paul.lemoine@example.com', 'password123', false, 3, 3, '2017-04-23'),  -- Technicien de Maintenance (Techniciens et agents de maitrise)
-('Claire', 'Lefevre', 'claire.lefevre@example.com', 'password123', false, 4, 4, '2015-11-01'),  -- Responsable d'Equipe (Cadres)
-('Bernard', 'Roy', 'bernard.roy@example.com', 'password123', true, 5, 5, '2010-03-12');  -- Directeur General (Dirigeants)
+('Baccalaureat', 1), 
+('BTS Maintenance Industrielle', 2),  
+('Licence en Gestion', 3),  
+('Master en Management', 4),  
+('Doctorat en Sciences', 5),  
+('MBA', 6);  
 
 -- Insertion de talents et liaisons avec leurs diplômes
 INSERT INTO talent_diplome (id_talent, id_diplome) VALUES
@@ -638,3 +603,12 @@ INSERT INTO talent_competence (id_talent, id_competence, point) VALUES
 (3, 3, 90),  
 (4, 4, 85),  
 (5, 5, 95);  
+
+-- Insertion des données pour la table contrat
+INSERT INTO contrat (contrat, date_debut, date_fin, salaire_horaire, nb_jour_semaine, nb_jour_conge_an, nb_heure_jour, id_poste, id_talent, id_type_contrat)
+VALUES 
+('Contrat CDI Développeur', '2024-01-01', '2025-01-01', 25.50, 5, 25, 8, 1, 1, 1),
+('Contrat CDD Chef de projet', '2024-03-01', '2024-12-31', 30.00, 5, 20, 7, 2, 2, 2), 
+('Contrat CDI Designer', '2024-05-01', NULL, 22.00, 4, 22, 8, 3, 3, 1), 
+('Contrat CDI Analyste', '2024-07-01', '2025-06-30', 28.00, 5, 30, 7, 4, 4, 1), 
+('Contrat CDD Support technique', '2024-09-01', '2025-02-28', 20.00, 5, 20, 8, 5, 5, 2); 
