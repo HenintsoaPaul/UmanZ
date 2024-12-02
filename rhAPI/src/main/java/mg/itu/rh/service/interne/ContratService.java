@@ -2,11 +2,13 @@ package mg.itu.rh.service.interne;
 
 import jakarta.transaction.Transactional;
 import mg.itu.rh.dto.interne.ContratDTO;
+import mg.itu.rh.dto.interne.DetailsFichePaieBruteDTO;
 import mg.itu.rh.dto.interne.FicheDTO;
 import mg.itu.rh.entity.interne.Contrat;
 import mg.itu.rh.entity.interne.TypeContrat;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,5 +70,37 @@ public class ContratService {
 
     public List<Contrat> findAll() {
         return contratRepository.findAll();
+    }
+
+    public List<DetailsFichePaieBruteDTO> findDetailsFichePaieBrute(int annee, int mois, Long idTalent) {
+        List<DetailsFichePaieBruteDTO> details = new ArrayList<>();
+
+        double nbHeureMois=173.33;
+        double nbHeure=24.0;
+        LocalDate dateActuel=LocalDate.of(annee,mois+1,1).minusDays(1);
+        Contrat contratActuel=contratRepository.findContratByDateTalent(dateActuel,idTalent).orElseThrow(()->new RuntimeException("Cette personne n'est pas un employe la date du "+dateActuel));
+        int tauxJournalier = (int)(contratActuel.getSalaireHoraire()*nbHeure);
+        double tauxMensuel = contratActuel.getSalaireHoraire()*nbHeureMois;
+
+        details.add(getSalaireBaseDetails(tauxJournalier, tauxMensuel));
+
+        return details;
+    }
+
+    private DetailsFichePaieBruteDTO getSalaireBaseDetails(int tauxJournalier, double tauxMensuel) {
+
+        DetailsFichePaieBruteDTO salaireDetails = new DetailsFichePaieBruteDTO();
+        salaireDetails.setDesignation("Salaire");
+        salaireDetails.setTaux(tauxJournalier);
+        salaireDetails.setMontant(tauxMensuel);
+        salaireDetails.setNombre("1 mois");
+
+        return salaireDetails;
+    }
+
+    private DetailsFichePaieBruteDTO getAbsenceDeductibleDetails() {
+        DetailsFichePaieBruteDTO absenceDetails = new DetailsFichePaieBruteDTO();
+
+        return absenceDetails;
     }
 }

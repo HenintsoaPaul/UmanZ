@@ -11,7 +11,7 @@ const month = 11;
 
 const apiUrl = useRuntimeConfig().public.apiUrl;
 
-const { data: paysLipsHeader } = useFetch<PaysLipsHeader>(`${apiUrl}/talents/${idUser}/fiche-paie`, {
+const { data: paysLipsHeader } = useFetch<PaysLipsHeader>(`${apiUrl}/talents/${idUser}/fiche-paie-tete`, {
     query: { annee: year, mois: month },
 });
 

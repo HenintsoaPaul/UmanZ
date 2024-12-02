@@ -1,6 +1,7 @@
 package mg.itu.rh.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import mg.itu.rh.dto.interne.DetailsFichePaieBruteDTO;
 import mg.itu.rh.dto.interne.FicheDTO;
 import mg.itu.rh.dto.talent.AuthDTO;
 import mg.itu.rh.dto.talent.TalentDTO;
@@ -123,9 +124,14 @@ public class TalentController {
             "indice": 141
      }
     * */
-    @GetMapping( "/{idTalent}/fiche-paie" )
+    @GetMapping( "/{idTalent}/fiche-paie-tete" )
     @JsonView( POV.Public.class )
     public FicheDTO findFiche( @PathVariable( name = "idTalent" ) Long idTalent, @RequestParam( name = "annee" ) int annee, @RequestParam( name = "mois" ) int mois ) {
         return contratService.findFiche( annee, mois, idTalent );
+    }
+
+    @GetMapping( "/{idTalent}/fiche-paie-brute" )
+    public List<DetailsFichePaieBruteDTO> findDetailsFichePaieBrute(@PathVariable( name = "idTalent" ) Long idTalent, @RequestParam( name = "annee" ) int annee, @RequestParam( name = "mois" ) int mois ) {
+        return contratService.findDetailsFichePaieBrute( annee, mois, idTalent );
     }
 }

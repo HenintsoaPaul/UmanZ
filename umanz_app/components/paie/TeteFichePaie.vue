@@ -3,7 +3,7 @@
 import type { PaysLipsHeader } from '~/types';
 
 defineProps<{
-    paysLipsHeader: PaysLipsHeader
+    paysLipsHeader: PaysLipsHeader | null
 }>();
 
 </script>
