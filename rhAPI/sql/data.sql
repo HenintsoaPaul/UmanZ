@@ -72,13 +72,13 @@ VALUES ('Communication', 2),
        ('Gestion de projet', 1),
        ('Design', 1);
 
-INSERT INTO talent (nom, prenom, mail, password, is_admin,id_cnaps)
-VALUES ('Dupont', 'Jean', 'jean.dupont@example.com', 'password1', true,'CNP1234'),
-       ('Martin', 'Alice', 'alice.martin@example.com', 'password2', false,'CNP1564'),
-       ('Petit', 'Louis', 'louis.petit@example.com', 'password3', false,'CNP34613'),
-       ('Durand', 'Emma', 'emma.durand@example.com', 'password4', false,'CNP32684'),
-       ('Leroy', 'Paul', 'paul.leroy@example.com', 'password5', false,'CNP354632'),
-       ('Dupont', 'Jean', 'recipientgestion@gmail.com', 'recepgestion', true,'CNP48962');
+INSERT INTO talent (nom, prenom, mail, password, is_admin, date_naissance, id_cnaps)
+VALUES ('Dupont', 'Jean', 'jean.dupont@example.com', 'password1', true, '1985-04-12', 'CNP1234'),
+       ('Martin', 'Alice', 'alice.martin@example.com', 'password2', false, '1990-07-25', 'CNP1564'),
+       ('Petit', 'Louis', 'louis.petit@example.com', 'password3', false, '1988-11-15', 'CNP34613'),
+       ('Durand', 'Emma', 'emma.durand@example.com', 'password4', false, '1995-03-08', 'CNP32684'),
+       ('Leroy', 'Paul', 'paul.leroy@example.com', 'password5', false, '1992-01-30', 'CNP354632'),
+       ('Dupont', 'Jean', 'recipientgestion@gmail.com', 'recepgestion', true, '1985-04-12', 'CNP48962');
 
 insert into talent_langue(id_talent, id_langue, id_niveau_langue)
 VALUES (1, 1, 3),

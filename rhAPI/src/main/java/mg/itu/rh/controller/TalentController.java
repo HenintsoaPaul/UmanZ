@@ -1,28 +1,18 @@
 package mg.itu.rh.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import mg.itu.rh.dto.interne.FicheDTO;
 import mg.itu.rh.dto.talent.TalentDTO;
 import mg.itu.rh.entity.interne.RenvoiRequest;
 import mg.itu.rh.entity.talent.Talent;
 import mg.itu.rh.service.interne.*;
 import mg.itu.rh.other.POV;
-import mg.itu.rh.service.interne.ContratService;
 import mg.itu.rh.service.talent.TalentService;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping( "/talents" )
@@ -35,7 +25,6 @@ public class TalentController {
             ContratService contratService
 //            EmailService emailService,
 //            PromotionService promotionService
-
     ) {
         this.talentService = talentService;
         this.contratService = contratService;

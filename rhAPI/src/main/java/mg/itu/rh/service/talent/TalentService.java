@@ -1,6 +1,7 @@
 package mg.itu.rh.service.talent;
 
 import jakarta.transaction.Transactional;
+import mg.itu.rh.dto.talent.AuthDTO;
 import mg.itu.rh.dto.talent.TalentDTO;
 import mg.itu.rh.entity.talent.Talent;
 
@@ -40,16 +41,23 @@ public class TalentService {
         return talentRepository.findAll();
     }
 
+    public Talent findByEmailAndPassword( AuthDTO authDTO ) {
+        String email = authDTO.getEmail(), pwd = authDTO.getPassword();
+        return talentRepository.findByEmailAndPassword( email, pwd ).orElse( null );
+    }
+
     @Transactional
     public Talent save( TalentDTO talentDTO ) {
         Talent t = new Talent( talentDTO );
         t = this.save( t );
         // set liaisons
-        experienceTalentService.saveAllFromDTO( talentDTO.getExperiences(), t );
-        competenceTalentService.saveAllFromDTO( talentDTO.getCompetences(), t );
+        if ( talentDTO.getExperiences() != null )
+            experienceTalentService.saveAllFromDTO( talentDTO.getExperiences(), t );
+        if ( talentDTO.getCompetences() != null )
+            competenceTalentService.saveAllFromDTO( talentDTO.getCompetences(), t );
 
-        talentDiplomeService.saveAll( talentDTO.getDiplomes(), t );
-        talentLangueService.saveAll( talentDTO.getLangues(), t );
+        if ( talentDTO.getDiplomes() != null ) talentDiplomeService.saveAll( talentDTO.getDiplomes(), t );
+        if ( talentDTO.getLangues() != null ) talentLangueService.saveAll( talentDTO.getLangues(), t );
         return t;
     }
 
