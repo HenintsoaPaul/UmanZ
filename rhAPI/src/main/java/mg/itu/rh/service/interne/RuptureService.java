@@ -9,6 +9,8 @@ import mg.itu.rh.entity.interne.Rupture;
 import mg.itu.rh.repository.interne.RuptureRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RuptureService {
     private final RuptureRepository ruptureRepository;
@@ -65,5 +67,13 @@ public class RuptureService {
         rupture.setTypeRupture( typeRuptureService.findById( idTypeRupture ) );
 
         return ruptureRepository.save( rupture );
+    }
+
+    public List<Rupture> findAllPendingRuptures() {
+        return this.ruptureRepository.findAllPendingRuptures();
+    }
+
+    public Rupture findAllPendingRupturesOfEmp( Long idContrat ) {
+        return this.ruptureRepository.findAllPendingRupturesOfEmp( idContrat );
     }
 }

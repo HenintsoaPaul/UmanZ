@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @AllArgsConstructor
@@ -93,5 +94,17 @@ public class RuptureController {
     public Rupture save( @RequestBody RuptureDTO ruptureDTO )
             throws Exception {
         return ruptureService.save( ruptureDTO );
+    }
+
+    @GetMapping( "/pendings" )
+    @JsonView( POV.Public.class )
+    public List<Rupture> findAllPendingRuptures() {
+        return ruptureService.findAllPendingRuptures();
+    }
+
+    @GetMapping( "/pendings/{idContrat}" )
+    @JsonView( POV.Public.class )
+    public Rupture findAllPendingRupturesOfEmp( @PathVariable Long idContrat ) {
+        return ruptureService.findAllPendingRupturesOfEmp( idContrat );
     }
 }
