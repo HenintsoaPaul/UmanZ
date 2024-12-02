@@ -9,5 +9,6 @@ public class DetailsFichePaieBruteDTO {
     private double taux;
     private double montant;
     private String nombre;
+    private boolean surligne = false;
 
 }

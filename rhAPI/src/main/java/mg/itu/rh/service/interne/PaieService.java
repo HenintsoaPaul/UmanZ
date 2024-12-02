@@ -219,4 +219,23 @@ public class PaieService {
 
         return salaireBruteDetails;
     }
+
+    public List<DetailsFichePaieBruteDTO> findDetailsRetenue(double salaireBrute) {
+        List<DetailsFichePaieBruteDTO> details = new ArrayList<>();
+
+        details.add(getRetenueCNaPS(salaireBrute));
+
+        return details;
+    }
+
+    private DetailsFichePaieBruteDTO getRetenueCNaPS(double salaireBrute) {
+        DetailsFichePaieBruteDTO retenueCNaPS = new DetailsFichePaieBruteDTO();
+
+        double retenue = salaireBrute * 1 / 100;
+
+        retenueCNaPS.setDesignation("Retenue CNaPS 1%");
+        retenueCNaPS.setMontant(retenue > 20000 ? 20000 : retenue);
+
+        return retenueCNaPS;
+    }
 }

@@ -43,7 +43,7 @@ public class TalentController {
     }
 
     @GetMapping
-    @JsonView( POV.Public.class )
+    @JsonView(POV.Public.class)
     public List<Talent> findAll() {
         return talentService.findAll();
     }
@@ -65,42 +65,42 @@ public class TalentController {
 //        return ResponseEntity.ok(promotions);
 //    }
 
-    @PostMapping( "/send-renvoi-email" )
-    @JsonView( POV.Public.class )
-    public ResponseEntity<String> sendRenvoiEmail( @RequestBody RenvoiRequest renvoiRequest ) {
+    @PostMapping("/send-renvoi-email")
+    @JsonView(POV.Public.class)
+    public ResponseEntity<String> sendRenvoiEmail(@RequestBody RenvoiRequest renvoiRequest) {
         try {
             String subject = "Motif de Renvoi";
             String body = "<h1>Bonjour,</h1><p>Motif du renvoi : " + renvoiRequest.getMotif() + "</p>";
 
 //            emailService.sendEmail(renvoiRequest.getEmail(), subject, body);
-            return ResponseEntity.ok( "Email envoyé avec succès." );
-        } catch ( Exception e ) {
-            return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR ).body( "Erreur lors de l'envoi de l'email : " + e.getMessage() );
+            return ResponseEntity.ok("Email envoyé avec succès.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de l'envoi de l'email : " + e.getMessage());
         }
     }
 
-    @GetMapping( "/{id}" )
-    @JsonView( POV.Public.class )
-    public Talent findById( @PathVariable( "id" ) Long id ) {
-        return talentService.findById( id );
+    @GetMapping("/{id}")
+    @JsonView(POV.Public.class)
+    public Talent findById(@PathVariable("id") Long id) {
+        return talentService.findById(id);
     }
 
     @PostMapping
-    @JsonView( POV.Public.class )
-    public Talent create( @RequestBody TalentDTO talentDTO ) {
-        return talentService.save( talentDTO );
+    @JsonView(POV.Public.class)
+    public Talent create(@RequestBody TalentDTO talentDTO) {
+        return talentService.save(talentDTO);
     }
 
-    @PostMapping( "/entretien" )
-    @JsonView( POV.Public.class )
-    public String prendreEntretien( @RequestParam String email ) {
-        talentService.prendreEntretien( email );
+    @PostMapping("/entretien")
+    @JsonView(POV.Public.class)
+    public String prendreEntretien(@RequestParam String email) {
+        talentService.prendreEntretien(email);
         return "Entretien pris et notification envoyée à " + email;
     }
 
-    @PostMapping( "/rejet" )
-    public String rejeterCandidat( @RequestParam String email ) {
-        talentService.rejetCandidat( email );
+    @PostMapping("/rejet")
+    public String rejeterCandidat(@RequestParam String email) {
+        talentService.rejetCandidat(email);
         return "Candidat rejeté et notification envoyée à " + email;
     }
 
@@ -120,14 +120,19 @@ public class TalentController {
             "indice": 141
      }
     * */
-    @GetMapping( "/{idTalent}/fiche-paie-tete" )
-    @JsonView( POV.Paie.class )
-    public FicheDTO findFiche( @PathVariable( name = "idTalent" ) Long idTalent, @RequestParam( name = "annee" ) int annee, @RequestParam( name = "mois" ) int mois ) {
-        return contratService.findFiche( annee, mois, idTalent );
+    @GetMapping("/{idTalent}/fiche-paie-tete")
+    @JsonView(POV.Paie.class)
+    public FicheDTO findFiche(@PathVariable(name = "idTalent") Long idTalent, @RequestParam(name = "annee") int annee, @RequestParam(name = "mois") int mois) {
+        return contratService.findFiche(annee, mois, idTalent);
     }
 
-    @GetMapping( "/{idTalent}/fiche-paie-brute" )
-    public List<DetailsFichePaieBruteDTO> findDetailsFichePaieBrute(@PathVariable( name = "idTalent" ) Long idTalent, @RequestParam( name = "annee" ) int annee, @RequestParam( name = "mois" ) int mois ) {
-        return paieService.findDetailsFichePaieBrute( annee, mois, idTalent );
+    @GetMapping("/{idTalent}/fiche-paie-brute")
+    public List<DetailsFichePaieBruteDTO> findDetailsFichePaieBrute(@PathVariable(name = "idTalent") Long idTalent, @RequestParam(name = "annee") int annee, @RequestParam(name = "mois") int mois) {
+        return paieService.findDetailsFichePaieBrute(annee, mois, idTalent);
+    }
+
+    @GetMapping("/fiche-paie-retenue")
+    public List<DetailsFichePaieBruteDTO> findDetailsFichePaieRetenue(@RequestParam(name = "salaireBrute") double salaireBrute) {
+        return paieService.findDetailsRetenue(salaireBrute);
     }
 }
