@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import mg.itu.rh.dto.interne.DetailsFichePaieBruteDTO;
 import mg.itu.rh.dto.interne.FicheDTO;
 import mg.itu.rh.entity.interne.Contrat;
+import mg.itu.rh.entity.interne.HeureSupplementaire;
 import mg.itu.rh.entity.talent.Talent;
 import mg.itu.rh.repository.interne.ContratRepository;
 import mg.itu.rh.service.talent.TalentService;
@@ -19,11 +20,13 @@ public class PaieService {
     private final ContratRepository contratRepository;
     private final TalentService talentService;
     private final AbsenceService absenceService;
+    private final HeureSupplementaireService heureSupplementaireService;
 
-    public PaieService(ContratRepository contratRepository, TalentService talentService, AbsenceService absenceService) {
+    public PaieService(ContratRepository contratRepository, TalentService talentService, AbsenceService absenceService, HeureSupplementaireService heureSupplementaireService) {
         this.contratRepository = contratRepository;
         this.talentService = talentService;
         this.absenceService = absenceService;
+        this.heureSupplementaireService = heureSupplementaireService;
     }
 
     private LocalDate getLastDateOfMonth( int month, int year ) {
@@ -71,6 +74,7 @@ public class PaieService {
         double nbHeure=24.0;
         LocalDate dateActuel=LocalDate.of(annee,mois+1,1).minusDays(1);
         Contrat contratActuel=contratRepository.findContratByDateTalent(dateActuel,idTalent).orElseThrow(()->new RuntimeException("Cette personne n'est pas un employe la date du "+dateActuel));
+        int tauxHoraire = ( int ) contratActuel.getSalaireHoraire();
         int tauxJournalier = (int)(contratActuel.getSalaireHoraire()*nbHeure);
         double tauxMensuel = contratActuel.getSalaireHoraire()*nbHeureMois;
 
@@ -78,7 +82,7 @@ public class PaieService {
         details.add(getAbsenceDeductibleDetails(contratActuel.getIdContrat(), mois, annee, tauxJournalier));
         details.add(getPrimesRendementDetails());
         details.add(getPrimesAncienneteDetails());
-        // TODO: add extra hours details
+        details.addAll(getHeuresSupplementairesDetails(contratActuel.getIdContrat(), mois, annee, tauxHoraire));
         details.add(getPrimesDiversesDetails());
         details.add(getRappelsDetails());
         details.add(getDroitsCongeDetails());
@@ -132,6 +136,23 @@ public class PaieService {
         primesAncienneteDetails.setNombre("");
 
         return primesAncienneteDetails;
+    }
+
+    // TODO: fix with grouped majoration
+    private List<DetailsFichePaieBruteDTO> getHeuresSupplementairesDetails(Long idContrat, int mois, int annee, int tauxHoraire) {
+        List<DetailsFichePaieBruteDTO> heuresSupplementairesDetails = new ArrayList<>();
+
+        List<HeureSupplementaire> heureSupplementaires = heureSupplementaireService.getByContratAndMoisAndAnnee(idContrat, mois, annee);
+        for (HeureSupplementaire heureSupplementaire: heureSupplementaires) {
+            DetailsFichePaieBruteDTO details = new DetailsFichePaieBruteDTO();
+            details.setDesignation("Heure supplementaires majorés à " + heureSupplementaire.getTauxMajoration() + "%");
+            details.setNombre(heureSupplementaire.getNbHeure() + " heure(s)");
+            details.setTaux(tauxHoraire + (tauxHoraire * heureSupplementaire.getTauxMajoration() / 100));
+            details.setMontant(details.getTaux() * heureSupplementaire.getNbHeure());
+            heuresSupplementairesDetails.add(details);
+        }
+
+        return heuresSupplementairesDetails;
     }
 
     private DetailsFichePaieBruteDTO getPrimesDiversesDetails() {

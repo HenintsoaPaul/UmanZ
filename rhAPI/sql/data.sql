@@ -154,7 +154,7 @@ VALUES ('Fin de contrat'),
 
 INSERT INTO contrat (contrat, date_debut, date_fin, salaire_horaire, nb_jour_semaine, nb_jour_conge_an, nb_heure_jour,
                      id_poste, id_talent, id_type_contrat)
-VALUES ('Contrat CDI Developpeur', '2023-01-01', '2024-01-01', 20.00, 5, 25, 8.0, 1, 1, 3),
+VALUES ('Contrat CDI Developpeur', '2023-01-01', NULL, 20.00, 5, 25, 8.0, 1, 1, 3),
        ('Contrat CDD Designer', '2023-02-01', '2023-08-01', 18.00, 5, 20, 7.5, 3, 2, 2),
        ('Contrat CDD Analyste', '2023-05-15', NULL, 22.00, 5, 30, 8.0, 4, 3, 2),
        ('Contrat d''essai Chef de Projet', '2023-06-01', NULL, 25.00, 4, 15, 7.0, 2, 4, 1),
@@ -168,8 +168,7 @@ VALUES ('Contrat CDI Developpeur', '2023-01-01', '2024-01-01', 20.00, 5, 25, 8.0
 --        ('2023-06-01', NULL, NULL, 'Annulation', 2, 5, 6, 5);
 
 INSERT INTO rupture (date_rupture, motif, id_type_rupture, id_contrat)
-VALUES ('2024-01-01', 'Fin de contrat', 1, 1),
-       ('2023-08-01', 'Fin de CDD', 1, 2),
+VALUES ('2023-08-01', 'Fin de CDD', 1, 2),
        ('2023-10-01', 'Licenciement', 3, 3);
 
 INSERT INTO poste (nom_poste, description_poste, id_type_poste)
@@ -576,3 +575,8 @@ VALUES
 ('Elle implique les collaborateurs dans les decisions.', 5.0, 30),
 ('Elle ameliore la satisfaction des employes.', 4.5, 30),
 ('Elle favorise un environnement de travail collaboratif.', 4.0, 30);
+
+INSERT INTO heure_supplementaire(motif, date_heure_debut, date_heure_creation, nb_heure, taux_majoration, id_contrat)
+VALUES ('Remplacement', '2024-11-02 08:00:00', '2024-11-01 17:00:00', 3, 30, 1),
+       ('Remplacement', '2024-11-10 17:00:00', '2024-11-05 17:00:00', 5, 30, 1),
+       ('Remplacement', '2024-11-10 17:00:00', '2024-11-08 17:00:00', 2, 50, 1);
