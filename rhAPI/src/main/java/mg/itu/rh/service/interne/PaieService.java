@@ -76,6 +76,8 @@ public class PaieService {
 
         details.add(getSalaireBaseDetails(tauxJournalier, tauxMensuel));
         details.add(getAbsenceDeductibleDetails(contratActuel.getIdContrat(), mois, annee, tauxJournalier));
+        details.add(getPrimeRendementDetails());
+        details.add(getPrimeAncienneteDetails());
 
         return details;
     }
@@ -101,5 +103,27 @@ public class PaieService {
         absenceDetails.setMontant(absenceCount * tauxJournalier);
 
         return absenceDetails;
+    }
+
+    private DetailsFichePaieBruteDTO getPrimeRendementDetails() {
+        DetailsFichePaieBruteDTO primeRendementDetails = new DetailsFichePaieBruteDTO();
+
+        primeRendementDetails.setDesignation("Primes de rendement");
+        primeRendementDetails.setTaux(0);
+        primeRendementDetails.setMontant(0);
+        primeRendementDetails.setNombre("");
+
+        return primeRendementDetails;
+    }
+
+    private DetailsFichePaieBruteDTO getPrimeAncienneteDetails() {
+        DetailsFichePaieBruteDTO primeRendementDetails = new DetailsFichePaieBruteDTO();
+
+        primeRendementDetails.setDesignation("Primes d'ancienneté");
+        primeRendementDetails.setTaux(0);
+        primeRendementDetails.setMontant(0);
+        primeRendementDetails.setNombre("");
+
+        return primeRendementDetails;
     }
 }
