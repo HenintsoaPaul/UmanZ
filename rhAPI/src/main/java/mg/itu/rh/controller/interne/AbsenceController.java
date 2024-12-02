@@ -30,7 +30,7 @@ public class AbsenceController {
         return absenceService.findAll();
     }
 
-    @PostMapping( "/save" )
+    @PostMapping
     @JsonView( POV.Public.class )
     public Absence saveAbsence( @RequestBody AbsenceDTO absenceDTO )
             throws ContratException {

@@ -31,13 +31,11 @@ public class AbsenceService {
         absence.setMotif( absenceDTO.getMotif() );
         absence.setDateAbsence( absenceDTO.getDateAbsence() );
 
-        Long idTalent = absenceDTO.getIdTalent();
-        Contrat contrat = contratService.findActualContratByIdTalent( idTalent )
-                .orElseThrow( () -> new ContratException( "contrat not found" ) );
+        Contrat contrat = contratService.findById( absenceDTO.getIdContrat() );
+//        Long idTalent = contrat.getTalent().getIdTalent();
+//        Contrat contrat = contratService.findActualContratByIdTalent( idTalent )
+//                .orElseThrow( () -> new ContratException( "contrat not found" ) );
         absence.setContrat( contrat );
-
-        // Contrat contrat = contratService.findById(absenceDTO.getIdContrat());
-        // absence.setContrat(contrat);
 
         return absenceRepository.save( absence );
     }

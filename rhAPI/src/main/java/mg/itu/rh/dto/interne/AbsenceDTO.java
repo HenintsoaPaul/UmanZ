@@ -8,5 +8,5 @@ import lombok.Data;
 public class AbsenceDTO {
     private String motif;
     private LocalDate dateAbsence;
-    private Long idTalent;
+    private Long idContrat;
 }
