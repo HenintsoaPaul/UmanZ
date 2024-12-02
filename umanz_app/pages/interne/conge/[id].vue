@@ -25,53 +25,28 @@ const expand = ref({
     openedRows: [],
     row: {}
 });
-
-
-// ======= solde =========
-const soldesConges = [
-    {
-        typeConge: { nomTypeConge: 'Paid Leave' },
-        soldeConge: 10
-    },
-    {
-        typeConge: { nomTypeConge: 'Sick Leave' },
-        soldeConge: 5
-    },
-    {
-        typeConge: { nomTypeConge: 'Maternity Leave' },
-        soldeConge: 20
-    }
-];
 </script>
 
 <template>
     <div class="container mx-auto">
 
         <div v-if="conges">
-            <div class="container mx-auto">
-                <h1 class="text-3xl font-bold mb-4 text-center">Liste des Congés Pris par le contrat {{ idContrat }}
-                </h1>
-
-                <div class="flex justify-center mb-4">
-                    <UInput v-model="q" placeholder="Filtrer les congés..."
-                        class="w-full max-w-md px-4 py-2 rounded-lg" />
-                </div>
-
-                <UTable :columns="headers" :rows="filteredConges ?? []" v-model:expand="expand">
-                    <template #expand="{ row }">
-                        <div class="p-4">
-                            <p>Hello</p>
-                        </div>
-                    </template>
-                </UTable>
-            </div>
+            <h1 class="text-3xl font-bold mb-4 text-center">Liste des Congés Pris par le contrat {{ idContrat }}</h1>
 
             <div class="flex gap-4">
-                <SoldeConge :soldesConges="soldesConges" />
+                <div class="w-1/4">
+                    <client-only>
+                        <CalendarConge :conges="conges" />
+                    </client-only>
+                </div>
+                <div class="w-3/4">
+                    <div class="flex justify-center mb-4">
+                        <UInput v-model="q" placeholder="Filtrer les congés..."
+                            class="w-full max-w-md px-4 py-2 rounded-lg" />
+                    </div>
 
-                <client-only>
-                    <CalendarConge :conges="conges" />
-                </client-only>
+                    <UTable :columns="headers" :rows="filteredConges ?? []" />
+                </div>
             </div>
         </div>
         <div v-else>
