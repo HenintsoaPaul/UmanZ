@@ -26,6 +26,12 @@ VALUES ('Malagasy'),
        ('Allemand'),
        ('Mandarin');
 
+INSERT INTO niveau_diplome(nom_niveau_diplome, niveau_diplome)
+VALUES ('Baccalaureat', 1),
+       ('Licence', 2),
+       ('Master', 3),
+       ('Doctorat', 4);
+
 INSERT INTO diplome(nom_diplome, id_niveau_diplome)
 VALUES ('Serie C', 1),
        ('Serie D', 1),
