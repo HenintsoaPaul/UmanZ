@@ -5,12 +5,12 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table( name = "heure_supplementaire" )
 public class HeureSupplementaire {
     @Id
     private long id;

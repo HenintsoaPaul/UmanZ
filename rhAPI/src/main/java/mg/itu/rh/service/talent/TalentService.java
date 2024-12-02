@@ -41,11 +41,6 @@ public class TalentService {
         return talentRepository.findAll();
     }
 
-    public Talent findByEmailAndPassword( AuthDTO authDTO ) {
-        String email = authDTO.getEmail(), pwd = authDTO.getPassword();
-        return talentRepository.findByEmailAndPassword( email, pwd ).orElse( null );
-    }
-
     @Transactional
     public Talent save( TalentDTO talentDTO ) {
         Talent t = new Talent( talentDTO );
