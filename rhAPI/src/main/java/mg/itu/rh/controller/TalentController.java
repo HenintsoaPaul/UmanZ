@@ -7,6 +7,7 @@ import mg.itu.rh.entity.interne.RenvoiRequest;
 import mg.itu.rh.entity.talent.Talent;
 import mg.itu.rh.service.interne.*;
 import mg.itu.rh.other.POV;
+
 import mg.itu.rh.service.talent.TalentService;
 
 import org.springframework.beans.factory.annotation.Autowired;
