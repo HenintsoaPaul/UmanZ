@@ -224,8 +224,18 @@ public class PaieService {
         List<DetailsFichePaieBruteDTO> details = new ArrayList<>();
 
         details.add(getRetenueCNaPS(salaireBrute));
+        details.add(getRetenueSanitaire(salaireBrute));
 
         return details;
+    }
+
+    private DetailsFichePaieBruteDTO getRetenueSanitaire(double salaireBrute) {
+        DetailsFichePaieBruteDTO retenueSanitaire = new DetailsFichePaieBruteDTO();
+
+        retenueSanitaire.setDesignation("Retenue sanitaire");
+        retenueSanitaire.setMontant(salaireBrute * 1 / 100);
+
+        return retenueSanitaire;
     }
 
     private DetailsFichePaieBruteDTO getRetenueCNaPS(double salaireBrute) {
