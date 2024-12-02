@@ -38,7 +38,7 @@ onMounted(() => {
 <template>
   <div class="min-h-screen flex items-center justify-center font-mono">
     <div class="border border-slate-50 p-8 rounded-lg shadow-md w-full max-w-md">
-        <h1>Evaluation de projet</h1>
+        <h1>Choisissez une domaine</h1>
         <div v-for="domaine in domaines" :key="domaine.idDomaine">
             <a :href="`${domaine.idDomaine}`">{{ domaine.domaine }}</a>
         </div>

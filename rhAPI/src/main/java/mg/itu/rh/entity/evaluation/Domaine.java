@@ -11,9 +11,9 @@ public class Domaine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_domaine")
-    @JsonView({POV.Public.class})
+    @JsonView({POV.Public.class,POV.Question.class})
     private Long idDomaine;
 
-    @JsonView({POV.Public.class})
+    @JsonView({POV.Public.class,POV.Question.class})
     private String domaine;
 }
