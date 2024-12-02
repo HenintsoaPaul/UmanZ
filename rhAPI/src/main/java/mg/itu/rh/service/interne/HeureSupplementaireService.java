@@ -22,56 +22,56 @@ public class HeureSupplementaireService {
 
     private final HeureSupplementaireRepository heureSupplementaireRepository;
     private final JourFerieService jourFerieService;
-    private final ContratService   contratService;
+    private final ContratService contratService;
 
-    public List<HeureSupplementaire> getByContratAndMois(Long idContrat, int mois) {
-        return heureSupplementaireRepository.findByContratAndMois(idContrat, mois);
+    public List<HeureSupplementaire> getByContratAndMois( Long idContrat, int mois ) {
+        return heureSupplementaireRepository.findByContratAndMois( idContrat, mois );
     }
 
     @Transactional
-    public Double getTotalHeuresForWeekByContrat(Long idContrat, LocalDateTime dateHeureDebut) {
-        return heureSupplementaireRepository.findTotalHeuresForWeekByContrat(idContrat, dateHeureDebut);
+    public Double getTotalHeuresForWeekByContrat( Long idContrat, LocalDateTime dateHeureDebut ) {
+        return heureSupplementaireRepository.findTotalHeuresForWeekByContrat( idContrat, dateHeureDebut );
     }
 
     @Transactional
-    public void save(HeureSupplementaireRequest heureSupplementaireRequest)
-        throws MaxHeuresSuppDepasseException {
+    public void save( HeureSupplementaireRequest heureSupplementaireRequest )
+            throws MaxHeuresSuppDepasseException {
         LocalDateTime dateHeureDebut = heureSupplementaireRequest.getDateHeureDebut();
 
-        Contrat contrat = contratService.findById(heureSupplementaireRequest.getIdContrat());
-        Double totalHeuresSuppForWeek = heureSupplementaireRepository.findTotalHeuresForWeekByContrat(contrat.getIdContrat(), dateHeureDebut);
-        if (totalHeuresSuppForWeek == MAX_HEURE_SUPP_HEBDOMADAIRE) return;
+        Contrat contrat = contratService.findById( heureSupplementaireRequest.getIdContrat() );
+        Double totalHeuresSuppForWeek = heureSupplementaireRepository.findTotalHeuresForWeekByContrat( contrat.getIdContrat(), dateHeureDebut );
+        if ( totalHeuresSuppForWeek == MAX_HEURE_SUPP_HEBDOMADAIRE ) return;
 
-        double nbHeure  = heureSupplementaireRequest.getNbHeure();
+        double nbHeure = heureSupplementaireRequest.getNbHeure();
         double excedant = totalHeuresSuppForWeek + nbHeure - MAX_HEURE_SUPP_HEBDOMADAIRE;
 
-        if (dateHeureDebut.isAfter(LocalDateTime.now()) && excedant > 0)
-            throw new MaxHeuresSuppDepasseException(totalHeuresSuppForWeek, excedant);
-        if (excedant > 0) nbHeure = MAX_HEURE_SUPP_HEBDOMADAIRE - totalHeuresSuppForWeek;
+        if ( dateHeureDebut.isAfter( LocalDateTime.now() ) && excedant > 0 )
+            throw new MaxHeuresSuppDepasseException( totalHeuresSuppForWeek, excedant );
+        if ( excedant > 0 ) nbHeure = MAX_HEURE_SUPP_HEBDOMADAIRE - totalHeuresSuppForWeek;
 
         HeureSupplementaire heureSupplementaire = HeureSupplementaire.builder()
-            .motif(heureSupplementaireRequest.getMotif())
-            .dateHeureDebut(dateHeureDebut)
-            .nbHeure(nbHeure)
-            .tauxMajoration(getTauxMajoration(dateHeureDebut, totalHeuresSuppForWeek,
-                jourFerieService.getAllForYear(dateHeureDebut.getYear())))
-            .contrat(contrat)
-            .build();
+                .motif( heureSupplementaireRequest.getMotif() )
+                .dateHeureDebut( dateHeureDebut )
+                .nbHeure( nbHeure )
+                .tauxMajoration( getTauxMajoration( dateHeureDebut, totalHeuresSuppForWeek,
+                        jourFerieService.getAllForYear( dateHeureDebut.getYear() ) ) )
+                .contrat( contrat )
+                .build();
 
-        heureSupplementaireRepository.save(heureSupplementaire);
+        heureSupplementaireRepository.save( heureSupplementaire );
     }
 
     private double getTauxMajoration(
-        LocalDateTime dateHeureDebut, double totalHeuresSuppForWeekActuel, List<LocalDate> joursFeries
+            LocalDateTime dateHeureDebut, double totalHeuresSuppForWeekActuel, List<LocalDate> joursFeries
     ) {
         double taux = 0.0;
 
-        if (dateHeureDebut.getDayOfWeek() == DayOfWeek.SUNDAY)  taux = 1.4;
-        if (joursFeries.contains(dateHeureDebut.toLocalDate())) taux = 2;
+        if ( dateHeureDebut.getDayOfWeek() == DayOfWeek.SUNDAY ) taux = 1.4;
+        if ( joursFeries.contains( dateHeureDebut.toLocalDate() ) ) taux = 2;
 
-        if (taux == 0) {
-            if (totalHeuresSuppForWeekActuel <= 8)
-                 taux = 1.3;
+        if ( taux == 0 ) {
+            if ( totalHeuresSuppForWeekActuel <= 8 )
+                taux = 1.3;
             else taux = 1.5;
         }
 

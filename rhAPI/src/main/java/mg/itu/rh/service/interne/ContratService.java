@@ -4,7 +4,6 @@ import mg.itu.rh.dto.interne.ContratDTO;
 import mg.itu.rh.entity.interne.Contrat;
 import mg.itu.rh.entity.interne.TypeContrat;
 
-import java.util.List;
 import java.util.Optional;
 
 import mg.itu.rh.repository.interne.ContratRepository;
@@ -51,9 +50,5 @@ public class ContratService {
         contrat.setTypeContrat( tc );
         contrat.setContrat( tc.getTypeContrat() ); // nom_contrat io ;>
         return this.save( contrat );
-    }
-
-    public List<Contrat> findAll() {
-        return contratRepository.findAll();
     }
 }

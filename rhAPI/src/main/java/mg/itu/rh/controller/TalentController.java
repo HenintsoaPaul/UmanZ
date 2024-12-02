@@ -1,10 +1,10 @@
 package mg.itu.rh.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import mg.itu.rh.dto.talent.AuthDTO;
 import mg.itu.rh.dto.talent.TalentDTO;
 import mg.itu.rh.entity.interne.RenvoiRequest;
 import mg.itu.rh.entity.talent.Talent;
+import mg.itu.rh.service.interne.*;
 import mg.itu.rh.other.POV;
 import mg.itu.rh.service.talent.TalentService;
 
@@ -18,18 +18,16 @@ import java.util.List;
 @RequestMapping( "/talents" )
 public class TalentController {
     private final TalentService talentService;
-
-    // @Autowired
-    // private final EmailService emailService;
-
-    // private final PromotionService promotionService;
+    private final ContratService contratService;
 
     public TalentController(
-            TalentService talentService
+            TalentService talentService,
+            ContratService contratService
 //            EmailService emailService,
 //            PromotionService promotionService
     ) {
         this.talentService = talentService;
+        this.contratService = contratService;
 //        this.emailService = emailService;
 //        this.promotionService = promotionService;
     }
@@ -57,17 +55,17 @@ public class TalentController {
 //        return ResponseEntity.ok(promotions);
 //    }
 
-    @PostMapping("/send-renvoi-email")
+    @PostMapping( "/send-renvoi-email" )
     @JsonView( POV.Public.class )
-    public ResponseEntity<String> sendRenvoiEmail(@RequestBody RenvoiRequest renvoiRequest) {
+    public ResponseEntity<String> sendRenvoiEmail( @RequestBody RenvoiRequest renvoiRequest ) {
         try {
             String subject = "Motif de Renvoi";
             String body = "<h1>Bonjour,</h1><p>Motif du renvoi : " + renvoiRequest.getMotif() + "</p>";
 
 //            emailService.sendEmail(renvoiRequest.getEmail(), subject, body);
-            return ResponseEntity.ok("Email envoyé avec succès.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de l'envoi de l'email : " + e.getMessage());
+            return ResponseEntity.ok( "Email envoyé avec succès." );
+        } catch ( Exception e ) {
+            return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR ).body( "Erreur lors de l'envoi de l'email : " + e.getMessage() );
         }
     }
 
@@ -77,12 +75,6 @@ public class TalentController {
         return talentService.findById( id );
     }
 
-    @PostMapping( "/auth" )
-    @JsonView( POV.Auth.class )
-    public Talent authenticate( @RequestBody AuthDTO authDTO ) {
-        return talentService.findByEmailAndPassword( authDTO );
-    }
-
     @PostMapping
     @JsonView( POV.Public.class )
     public Talent create( @RequestBody TalentDTO talentDTO ) {
@@ -90,6 +82,7 @@ public class TalentController {
     }
 
     @PostMapping( "/entretien" )
+    @JsonView( POV.Public.class )
     public String prendreEntretien( @RequestParam String email ) {
         talentService.prendreEntretien( email );
         return "Entretien pris et notification envoyée à " + email;

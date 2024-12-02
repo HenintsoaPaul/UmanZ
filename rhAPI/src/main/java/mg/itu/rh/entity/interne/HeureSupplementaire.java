@@ -5,22 +5,22 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table( name = "heure_supplementaire" )
 public class HeureSupplementaire {
     @Id
     private long id;
 
     private String motif;
 
-    @Column(nullable = false)
+    @Column( nullable = false )
     private LocalDateTime dateHeureDebut;
 
-    @Column(nullable = false)
+    @Column( nullable = false )
     private LocalDateTime dateHeureCreation;
 
     private double nbHeure;
@@ -28,7 +28,7 @@ public class HeureSupplementaire {
     private double tauxMajoration;
 
     @ManyToOne
-    @JoinColumn(nullable = false, name = "id_contrat")
+    @JoinColumn( nullable = false, name = "id_contrat" )
     private Contrat contrat;
 
     public double montant() {

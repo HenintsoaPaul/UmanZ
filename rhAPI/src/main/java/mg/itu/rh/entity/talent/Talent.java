@@ -2,6 +2,7 @@ package mg.itu.rh.entity.talent;
 
 import java.time.LocalDate;
 import java.util.*;
+
 import com.fasterxml.jackson.annotation.JsonView;
 
 import jakarta.persistence.*;
@@ -18,7 +19,7 @@ public class Talent {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "id_talent" )
-    @JsonView( { POV.Public.class, POV.Question.class, POV.Auth.class, POV.Conge.class } )
+    @JsonView( { POV.Public.class, POV.Question.class, POV.Auth.class, POV.Conge.class, POV.Paie.class } )
     private Long idTalent;
 
     @JsonView( { POV.Public.class, POV.Question.class, POV.Conge.class } )
@@ -27,6 +28,10 @@ public class Talent {
     @JsonView( { POV.Public.class, POV.Question.class, POV.Conge.class } )
     private String prenom;
 
+    @JsonView( { POV.Public.class, POV.Question.class } )
+    @Column( name = "id_cnaps" )
+    private String idCnaps;
+
     @JsonView( { POV.Public.class, POV.Auth.class } )
     private String mail;
 
@@ -34,7 +39,7 @@ public class Talent {
     @JsonView( { POV.Public.class } )
     private String password;
 
-    @Column( name = "date_naissance")
+    @Column( name = "date_naissance" )
     @JsonView( { POV.Public.class } )
     private LocalDate dateNaissance;
 
@@ -84,9 +89,8 @@ public class Talent {
         this.setPrenom( talentDTO.getPrenom() );
         this.setMail( talentDTO.getMail() );
         this.setPassword( talentDTO.getPassword() );
-        this.setDateNaissance( talentDTO.getDateNaissance() );
         this.setAdmin( talentDTO.isAdmin() );
+        this.setDateNaissance( talentDTO.getDateNaissance() );
+        this.setIdCnaps( talentDTO.getIdCnaps() );
     }
 }
-
-

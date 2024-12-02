@@ -5,8 +5,7 @@ definePageMeta({
 
 import { z } from 'zod'
 import { reactive, ref, computed } from 'vue'
-import type { FormConge } from '~/types/interne/dto';
-import type { TypeConge } from '~/types/interne/conge';
+import type { FormConge, TypeConge } from '~/types/interne/conge';
 
 const idContrat = computed(() => localStorage.getItem("umanz-idContrat"));
 const { demanderCongerFn, validateJustificatif } = useCongeActions();

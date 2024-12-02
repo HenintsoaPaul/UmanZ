@@ -65,7 +65,6 @@ VALUES ('Cloud Computing', 1),
        ('Docker', 1),
        ('Kubernetes', 1);
 
-
 INSERT INTO competence (competence, id_type_competence)
 VALUES ('Communication', 2),
        ('Leadership', 2),
@@ -73,14 +72,13 @@ VALUES ('Communication', 2),
        ('Gestion de projet', 1),
        ('Design', 1);
 
-INSERT INTO talent (nom, prenom, mail, password, is_admin, date_naissance)
-VALUES ('Dupont', 'Jean', 'jean.dupont@example.com', 'password1', true, '1985-04-12'),
-       ('Martin', 'Alice', 'alice.martin@example.com', 'password2', false, '1990-07-25'),
-       ('Petit', 'Louis', 'louis.petit@example.com', 'password3', false, '1988-11-15'),
-       ('Durand', 'Emma', 'emma.durand@example.com', 'password4', false, '1995-03-08'),
-       ('Leroy', 'Paul', 'paul.leroy@example.com', 'password5', false, '1992-01-30'),
-       ('Dupont', 'Jean', 'recipientgestion@gmail.com', 'recepgestion', true, '1985-04-12');
-
+INSERT INTO talent (nom, prenom, mail, password, is_admin, date_naissance, id_cnaps)
+VALUES ('Dupont', 'Jean', 'jean.dupont@example.com', 'password1', true, '1985-04-12', 'CNP1234'),
+       ('Martin', 'Alice', 'alice.martin@example.com', 'password2', false, '1990-07-25', 'CNP1564'),
+       ('Petit', 'Louis', 'louis.petit@example.com', 'password3', false, '1988-11-15', 'CNP34613'),
+       ('Durand', 'Emma', 'emma.durand@example.com', 'password4', false, '1995-03-08', 'CNP32684'),
+       ('Leroy', 'Paul', 'paul.leroy@example.com', 'password5', false, '1992-01-30', 'CNP354632'),
+       ('Dupont', 'Jean', 'recipientgestion@gmail.com', 'recepgestion', true, '1985-04-12', 'CNP48962');
 
 insert into talent_langue(id_talent, id_langue, id_niveau_langue)
 VALUES (1, 1, 3),
@@ -286,7 +284,16 @@ VALUES (10, 5, 3);
 
 -- Architecte Logiciel (poste 11)
 INSERT INTO experience_poste (id_poste, id_annonce, ans)
-VALUES (11, 6, 6); -- 6 ans d'experience en architecture logicielle
+VALUES (11, 6, 6);
+-- 6 ans d'experience en architecture logicielle
+
+INSERT INTO type_justificatif (nom_type_justificatif)
+VALUES ('Certificat Medical'),
+       ('Certificat maternite');
+
+INSERT INTO justificatif (date_justificatif, image_justificatif, id_type_justificatif)
+VALUES ('2024-01-01', '/img/fuf.png', 1),
+       ('2024-01-01', '/img/fuf.png', 2);
 
 INSERT INTO type_conge(nom_type_conge)
 VALUES ('Annuel'),

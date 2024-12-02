@@ -6,7 +6,9 @@ CREATE TABLE talent(
                        password VARCHAR(255) ,
                        is_admin BOOLEAN NOT NULL,
                        date_naissance DATE NOT NULL,
-                       PRIMARY KEY(id_talent)
+                       id_cnaps VARCHAR(50)  NOT NULL,
+                       PRIMARY KEY(id_talent),
+                       UNIQUE(id_cnaps)
 );
 
 CREATE TABLE etat_entretien(
@@ -28,6 +30,7 @@ CREATE TABLE formation(
                           nom_formation VARCHAR(50)  NOT NULL,
                           date_debut DATE NOT NULL,
                           date_fin DATE NOT NULL,
+                          est_fini BOOLEAN,
                           PRIMARY KEY(id_formation)
 );
 
@@ -367,4 +370,13 @@ CREATE TABLE competence_poste(
                                  PRIMARY KEY(id_competence, id_poste),
                                  FOREIGN KEY(id_competence) REFERENCES competence(id_competence),
                                  FOREIGN KEY(id_poste) REFERENCES poste(id_poste)
+);
+
+CREATE TABLE candidat_historique(
+    id_candidat_histo SERIAL PRIMARY KEY,
+    id_talent         INTEGER,
+    action            VARCHAR(255),
+    description       VARCHAR(255),
+    date_action       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_talent FOREIGN KEY (id_talent) REFERENCES Talent (id_talent) ON DELETE CASCADE
 );

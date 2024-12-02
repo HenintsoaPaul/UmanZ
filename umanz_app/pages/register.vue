@@ -14,6 +14,7 @@ const schema = z.object({
     prenom: z.string(),
     mail: z.string().email('Email invalide'),
     dateNaissance: z.string().date(),
+    idCnaps: z.string(),
     password: z.string().min(8, 'Must be at least 8 characters'),
     password2: z.string().min(8, 'Must be at least 8 characters'),
 });
@@ -22,6 +23,7 @@ const formState = reactive({
     prenom: undefined,
     mail: undefined,
     dateNaissance: undefined,
+    idCnaps: undefined,
     password: undefined,
     password2: undefined,
     error: ''
@@ -93,6 +95,10 @@ async function onSubmit() {
                         v-model="formState.dateNaissance"
                         type="date"
                     />
+                </UFormGroup>
+
+                <UFormGroup label="Numéro CNaPS" name="numero-cnaps">
+                    <UInput v-model="formState.idCnaps"/>
                 </UFormGroup>
 
                 <UFormGroup label="Mot de passe" name="password">
