@@ -5,7 +5,10 @@ CREATE TABLE talent(
                        mail VARCHAR(50)  NOT NULL,
                        password VARCHAR(255) ,
                        is_admin BOOLEAN NOT NULL,
-                       PRIMARY KEY(id_talent)
+                       date_naissance DATE NOT NULL,
+                       id_cnaps VARCHAR(50)  NOT NULL,
+                       PRIMARY KEY(id_talent),
+                       UNIQUE(id_cnaps)
 );
 
 CREATE TABLE etat_entretien(
@@ -27,6 +30,7 @@ CREATE TABLE formation(
                           nom_formation VARCHAR(50)  NOT NULL,
                           date_debut DATE NOT NULL,
                           date_fin DATE NOT NULL,
+                          est_fini BOOLEAN,
                           PRIMARY KEY(id_formation)
 );
 
@@ -223,6 +227,18 @@ CREATE TABLE justificatif(
                              FOREIGN KEY(id_type_justificatif) REFERENCES type_justificatif(id_type_justificatif)
 );
 
+CREATE TABLE heure_supplementaire(
+                                     id SERIAL,
+                                     motif TEXT,
+                                     date_heure_debut TIMESTAMP NOT NULL,
+                                     date_heure_creation TIMESTAMP NOT NULL,
+                                     nb_heure NUMERIC(5,2)   NOT NULL,
+                                     taux_majoration NUMERIC(5,2)   NOT NULL,
+                                     id_contrat INTEGER NOT NULL,
+                                     PRIMARY KEY(id),
+                                     FOREIGN KEY(id_contrat) REFERENCES contrat(id_contrat)
+);
+
 CREATE TABLE entretien(
                           id_entretien SERIAL,
                           date_creation DATE NOT NULL,
@@ -356,8 +372,7 @@ CREATE TABLE competence_poste(
                                  FOREIGN KEY(id_poste) REFERENCES poste(id_poste)
 );
 
-CREATE TABLE candidat_historique
-(
+CREATE TABLE candidat_historique(
     id_candidat_histo SERIAL PRIMARY KEY,
     id_talent         INTEGER,
     action            VARCHAR(255),

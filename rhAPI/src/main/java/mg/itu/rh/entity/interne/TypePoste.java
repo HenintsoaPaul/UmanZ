@@ -1,4 +1,4 @@
-package mg.itu.rh.entity;
+package mg.itu.rh.entity.interne;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -16,5 +16,5 @@ public class TypePoste {
     String typePoste;
 
     @Column(name = "rang_type_poste")
-    int rangTypePoste;
+    int rang;
 }

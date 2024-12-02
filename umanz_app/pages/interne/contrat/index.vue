@@ -4,7 +4,7 @@ import type { Contrat } from '~/types';
 const { promotionFn, expulsionFn, demissionFn } = useContratActions();
 const currency = useRuntimeConfig().public.currency as string;
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
-const { data: contrats } = useFetch<Contrat[]>(`${apiUrl}/contrat`);
+const { data: contrats } = useFetch<Contrat[]>(`${apiUrl}/contrats`);
 
 const headers = [
     {

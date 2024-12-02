@@ -1,7 +1,6 @@
 package mg.itu.rh.service.recrutement;
 
 import jakarta.transaction.Transactional;
-import mg.itu.rh.entity.Poste;
 import mg.itu.rh.entity.recrutement.Annonce;
 import mg.itu.rh.entity.recrutement.Compatibilite;
 import mg.itu.rh.entity.talent.Talent;

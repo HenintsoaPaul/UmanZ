@@ -65,7 +65,6 @@ VALUES ('Cloud Computing', 1),
        ('Docker', 1),
        ('Kubernetes', 1);
 
-
 INSERT INTO competence (competence, id_type_competence)
 VALUES ('Communication', 2),
        ('Leadership', 2),
@@ -73,13 +72,13 @@ VALUES ('Communication', 2),
        ('Gestion de projet', 1),
        ('Design', 1);
 
-INSERT INTO talent (nom, prenom, mail, password, is_admin)
-VALUES ('Dupont', 'Jean', 'jean.dupont@example.com', 'password1', true),
-       ('Martin', 'Alice', 'alice.martin@example.com', 'password2', false),
-       ('Petit', 'Louis', 'louis.petit@example.com', 'password3', false),
-       ('Durand', 'Emma', 'emma.durand@example.com', 'password4', false),
-       ('Leroy', 'Paul', 'paul.leroy@example.com', 'password5', false),
-       ('Dupont', 'Jean', 'recipientgestion@gmail.com', 'recepgestion', true);
+INSERT INTO talent (nom, prenom, mail, password, is_admin, date_naissance, id_cnaps)
+VALUES ('Dupont', 'Jean', 'jean.dupont@example.com', 'password1', true, '1985-04-12', 'CNP1234'),
+       ('Martin', 'Alice', 'alice.martin@example.com', 'password2', false, '1990-07-25', 'CNP1564'),
+       ('Petit', 'Louis', 'louis.petit@example.com', 'password3', false, '1988-11-15', 'CNP34613'),
+       ('Durand', 'Emma', 'emma.durand@example.com', 'password4', false, '1995-03-08', 'CNP32684'),
+       ('Leroy', 'Paul', 'paul.leroy@example.com', 'password5', false, '1992-01-30', 'CNP354632'),
+       ('Dupont', 'Jean', 'recipientgestion@gmail.com', 'recepgestion', true, '1985-04-12', 'CNP48962');
 
 insert into talent_langue(id_talent, id_langue, id_niveau_langue)
 VALUES (1, 1, 3),
@@ -112,17 +111,25 @@ VALUES (1, 1),
 
 INSERT INTO type_poste(nom_type_poste, rang_type_poste)
 VALUES ('Ouvrier', 1),
-       ('Employé', 2),
-       ('Technicien et/ou Agent de Maîtrise', 3),
+       ('Employe', 2),
+       ('Technicien', 3),
+       ('Agent de Maitrise', 3),
        ('Cadre', 4),
-       ('Dirigeant', 5);
+       ('Dirigeant', 5),
+       ('Hors-Cadre', 6);
 
 INSERT INTO poste (nom_poste, description_poste, id_type_poste)
 VALUES ('Developpeur', 'Responsable du developpement des applications', 2),
-       ('Chef de projet', 'Gestion et coordination des projets', 4),
+       ('Chef de projet', 'Gestion et coordination des projets', 6),
        ('Designer', 'Creation des interfaces graphiques et visuels', 2),
        ('Analyste', 'Analyse des besoins fonctionnels et techniques', 3),
-       ('Support technique', 'Assistance et resolution des problemes techniques', 3);
+       ('Support technique', 'Assistance et resolution des problemes techniques', 1),
+       ('Ingenieur DevOps', 'Assurer le deploiement et l''integration continue des applications', 3),
+       ('Data Scientist', 'Analyser et interpreter des donnees complexes pour guider les decisions strategiques', 3),
+       ('Responsable RH', 'Gestion des ressources humaines et developpement du personnel', 7),
+       ('Consultant', 'Conseiller les entreprises dans leur strategie de croissance', 7),
+       ('Developpeur Frontend', 'Developpement de l''interface utilisateur des applications web', 3),
+       ('Architecte Logiciel', 'Conception et gestion de l''architecture des systemes informatiques', 4);;
 
 INSERT INTO annonce (date_annonce, entreprise, date_expiration, id_poste)
 VALUES ('2024-01-01', 'Tech Corp', '2025-03-01', 1),
@@ -151,7 +158,7 @@ VALUES ('Contrat CDI Developpeur', '2023-01-01', '2024-01-01', 20.00, 5, 25, 8.0
        ('Contrat CDD Designer', '2023-02-01', '2023-08-01', 18.00, 5, 20, 7.5, 3, 2, 2),
        ('Contrat CDD Analyste', '2023-05-15', NULL, 22.00, 5, 30, 8.0, 4, 3, 2),
        ('Contrat d''essai Chef de Projet', '2023-06-01', NULL, 25.00, 4, 15, 7.0, 2, 4, 1),
-       ('Contrat CDI Support technique', '2024-01-01', NULL, 19.50, 5, 25, 7.5, 5, 5, 3);
+       ('Contrat CDI Support technique', '2023-01-01', NULL, 19.50, 5, 25, 7.5, 5, 5, 3);
 
 -- INSERT INTO entretien (date_creation, date_validation, note, motif, id_enfant, id_annonce, id_etat_entretien, id_talent)
 -- VALUES ('2023-02-15', '2023-02-20', 85, 'Entretien positif', NULL, 1, 4, 1),
@@ -277,11 +284,20 @@ VALUES (10, 5, 3);
 
 -- Architecte Logiciel (poste 11)
 INSERT INTO experience_poste (id_poste, id_annonce, ans)
-VALUES (11, 6, 6); -- 6 ans d'experience en architecture logicielle
+VALUES (11, 6, 6);
+-- 6 ans d'experience en architecture logicielle
+
+INSERT INTO type_justificatif (nom_type_justificatif)
+VALUES ('Certificat Medical'),
+       ('Certificat maternite');
+
+INSERT INTO justificatif (date_justificatif, image_justificatif, id_type_justificatif)
+VALUES ('2024-01-01', '/img/fuf.png', 1),
+       ('2024-01-01', '/img/fuf.png', 2);
 
 INSERT INTO type_conge(nom_type_conge)
 VALUES ('Annuel'),
-       ('Médical'),
+       ('Medical'),
        ('Evènement spécial');
 
 INSERT INTO conge (date_debut, date_validation, nb_jour, motif, id_contrat, id_type_conge)
