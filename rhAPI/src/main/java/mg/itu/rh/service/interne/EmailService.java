@@ -1,6 +1,18 @@
 package mg.itu.rh.service.interne;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import jakarta.mail.MessagingException;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import jakarta.mail.internet.MimeMessage;
+import mg.itu.rh.entity.interne.RenvoiRequest;
+
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

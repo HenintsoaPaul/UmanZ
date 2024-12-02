@@ -26,12 +26,6 @@ VALUES ('Malagasy'),
        ('Allemand'),
        ('Mandarin');
 
-INSERT INTO niveau_diplome(nom_niveau_diplome, niveau_diplome)
-VALUES ('Baccalaureat', 1),
-       ('Licence', 2),
-       ('Master', 3),
-       ('Doctorat', 4);
-
 INSERT INTO diplome(nom_diplome, id_niveau_diplome)
 VALUES ('Serie C', 1),
        ('Serie D', 1),
@@ -172,13 +166,6 @@ VALUES ('2024-01-01', 'Fin de contrat', 1, 1),
        ('2023-08-01', 'Fin de CDD', 1, 2),
        ('2023-10-01', 'Licenciement', 3, 3);
 
-INSERT INTO poste (nom_poste, description_poste, id_type_poste)
-VALUES ('Ingenieur DevOps', 'Assurer le deploiement et l''integration continue des applications', 3),
-       ('Data Scientist', 'Analyser et interpreter des donnees complexes pour guider les decisions strategiques', 3),
-       ('Responsable RH', 'Gestion des ressources humaines et developpement du personnel', 4),
-       ('Consultant', 'Conseiller les entreprises dans leur strategie de croissance', 4),
-       ('Developpeur Frontend', 'Developpement de l''interface utilisateur des applications web', 2),
-       ('Architecte Logiciel', 'Conception et gestion de l''architecture des systemes informatiques', 3);
 
 INSERT INTO annonce (date_annonce, entreprise, date_expiration, id_poste)
 VALUES ('2024-10-15', 'Innovative Solutions', '2025-01-15', 6),
