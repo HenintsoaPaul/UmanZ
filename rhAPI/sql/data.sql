@@ -112,16 +112,24 @@ VALUES (1, 1),
 INSERT INTO type_poste(nom_type_poste, rang_type_poste)
 VALUES ('Ouvrier', 1),
        ('Employe', 2),
-       ('Technicien et/ou Agent de Maîtrise', 3),
+       ('Technicien', 3),
+       ('Agent de Maitrise', 3),
        ('Cadre', 4),
-       ('Dirigeant', 5);
+       ('Dirigeant', 5),
+       ('Hors-Cadre', 6);
 
 INSERT INTO poste (nom_poste, description_poste, id_type_poste)
 VALUES ('Developpeur', 'Responsable du developpement des applications', 2),
-       ('Chef de projet', 'Gestion et coordination des projets', 4),
+       ('Chef de projet', 'Gestion et coordination des projets', 6),
        ('Designer', 'Creation des interfaces graphiques et visuels', 2),
        ('Analyste', 'Analyse des besoins fonctionnels et techniques', 3),
-       ('Support technique', 'Assistance et resolution des problemes techniques', 3);
+       ('Support technique', 'Assistance et resolution des problemes techniques', 1),
+       ('Ingenieur DevOps', 'Assurer le deploiement et l''integration continue des applications', 3),
+       ('Data Scientist', 'Analyser et interpreter des donnees complexes pour guider les decisions strategiques', 3),
+       ('Responsable RH', 'Gestion des ressources humaines et developpement du personnel', 7),
+       ('Consultant', 'Conseiller les entreprises dans leur strategie de croissance', 7),
+       ('Developpeur Frontend', 'Developpement de l''interface utilisateur des applications web', 3),
+       ('Architecte Logiciel', 'Conception et gestion de l''architecture des systemes informatiques', 4);;
 
 INSERT INTO annonce (date_annonce, entreprise, date_expiration, id_poste)
 VALUES ('2024-01-01', 'Tech Corp', '2025-03-01', 1),

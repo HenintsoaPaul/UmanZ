@@ -9,11 +9,11 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>mg.itu</groupId>
-	<artifactId>matelas</artifactId>
+	<artifactId>rh</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>matelas</name>
-	<description>matelas</description>
+	<name>rh</name>
+	<description>rh API</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -75,7 +75,10 @@
 			<artifactId>javax.mail-api</artifactId>
 			<version>1.6.2</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.github.ben-manes.caffeine</groupId>
+			<artifactId>caffeine</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

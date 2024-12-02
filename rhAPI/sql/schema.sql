@@ -5,6 +5,7 @@ CREATE TABLE talent(
                        mail VARCHAR(50)  NOT NULL,
                        password VARCHAR(255) ,
                        is_admin BOOLEAN NOT NULL,
+                       date_naissance DATE NOT NULL,
                        id_cnaps VARCHAR(50)  NOT NULL,
                        PRIMARY KEY(id_talent),
                        UNIQUE(id_cnaps)
@@ -199,7 +200,7 @@ CREATE TABLE question(
 
 CREATE TABLE reponse(
                         id_reponse SERIAL,
-                        reponse TEXT  NOT NULL,
+                        reponse TEXT NOT NULL,
                         note NUMERIC(15,2)   NOT NULL,
                         id_question INTEGER NOT NULL,
                         PRIMARY KEY(id_reponse),
@@ -224,6 +225,18 @@ CREATE TABLE justificatif(
                              id_type_justificatif INTEGER NOT NULL,
                              PRIMARY KEY(id_justificatif),
                              FOREIGN KEY(id_type_justificatif) REFERENCES type_justificatif(id_type_justificatif)
+);
+
+CREATE TABLE heure_supplementaire(
+                                     id SERIAL,
+                                     motif TEXT,
+                                     date_heure_debut TIMESTAMP NOT NULL,
+                                     date_heure_creation TIMESTAMP NOT NULL,
+                                     nb_heure NUMERIC(5,2)   NOT NULL,
+                                     taux_majoration NUMERIC(5,2)   NOT NULL,
+                                     id_contrat INTEGER NOT NULL,
+                                     PRIMARY KEY(id),
+                                     FOREIGN KEY(id_contrat) REFERENCES contrat(id_contrat)
 );
 
 CREATE TABLE entretien(
