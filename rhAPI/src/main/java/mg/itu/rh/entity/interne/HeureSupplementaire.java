@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Table( name = "heure_supplementaire" )
 public class HeureSupplementaire {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String motif;

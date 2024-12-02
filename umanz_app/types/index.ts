@@ -91,6 +91,11 @@ export interface Rupture {
     idContrat: number
 }
 
+export interface Contrat {
+    idContrat: number,
+    talent: Talent
+}
+
 export interface TypeContrat {
     idTypeContrat: number,
     typeContrat: string,

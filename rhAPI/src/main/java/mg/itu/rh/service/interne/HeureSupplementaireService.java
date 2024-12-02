@@ -38,9 +38,11 @@ public class HeureSupplementaireService {
             throws MaxHeuresSuppDepasseException {
         LocalDateTime dateHeureDebut = heureSupplementaireRequest.getDateHeureDebut();
 
+
         Contrat contrat = contratService.findById( heureSupplementaireRequest.getIdContrat() );
         Double totalHeuresSuppForWeek = heureSupplementaireRepository.findTotalHeuresForWeekByContrat( contrat.getIdContrat(), dateHeureDebut );
-        if ( totalHeuresSuppForWeek == MAX_HEURE_SUPP_HEBDOMADAIRE ) return;
+        if ( totalHeuresSuppForWeek >= MAX_HEURE_SUPP_HEBDOMADAIRE )
+            throw new RuntimeException("Maximum d'heures supp atteint");
 
         double nbHeure = heureSupplementaireRequest.getNbHeure();
         double excedant = totalHeuresSuppForWeek + nbHeure - MAX_HEURE_SUPP_HEBDOMADAIRE;
@@ -52,6 +54,7 @@ public class HeureSupplementaireService {
         HeureSupplementaire heureSupplementaire = HeureSupplementaire.builder()
                 .motif( heureSupplementaireRequest.getMotif() )
                 .dateHeureDebut( dateHeureDebut )
+                .dateHeureCreation(LocalDateTime.now())
                 .nbHeure( nbHeure )
                 .tauxMajoration( getTauxMajoration( dateHeureDebut, totalHeuresSuppForWeek,
                         jourFerieService.getAllForYear( dateHeureDebut.getYear() ) ) )
