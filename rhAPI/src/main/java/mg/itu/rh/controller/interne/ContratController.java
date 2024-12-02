@@ -28,6 +28,12 @@ public class ContratController {
         return contratRepository.findAll();
     }
 
+    @GetMapping( "/now" )
+    @JsonView( POV.Emp.class )
+    public List<Contrat> findAllEmpNow() {
+        return contratService.findAllEmpNow();
+    }
+
     @GetMapping( "/{id}" )
     @JsonView( POV.Public.class )
     public Contrat findById( @PathVariable( "id" ) Long id ) {
