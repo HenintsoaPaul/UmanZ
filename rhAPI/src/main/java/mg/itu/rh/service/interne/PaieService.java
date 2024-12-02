@@ -84,6 +84,7 @@ public class PaieService {
         details.add(getDroitsCongeDetails());
         details.add(getDroitsPreavisDetails());
         details.add(getIndemniteLicenciementDetails());
+        details.add(getSalaireBruteDetails(tauxMensuel, details));
 
         return details;
     }
@@ -186,5 +187,16 @@ public class PaieService {
         indemniteDetails.setNombre("");
 
         return indemniteDetails;
+    }
+
+    private DetailsFichePaieBruteDTO getSalaireBruteDetails(double tauxMensuel, List<DetailsFichePaieBruteDTO> previousDetails) {
+        DetailsFichePaieBruteDTO salaireBruteDetails = new DetailsFichePaieBruteDTO();
+
+        double previousDetailsAmount = previousDetails.stream().mapToDouble(DetailsFichePaieBruteDTO::getMontant).sum();
+
+        salaireBruteDetails.setDesignation("Salaire Brute");
+        salaireBruteDetails.setMontant(tauxMensuel + previousDetailsAmount);
+
+        return salaireBruteDetails;
     }
 }
