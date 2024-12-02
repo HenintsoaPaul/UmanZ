@@ -39,4 +39,10 @@ public class ContratController {
     public Contrat save( @RequestBody ContratDTO contratDTO ) {
         return contratService.save( contratDTO );
     }
+
+    @GetMapping("/now")
+    @JsonView(POV.Public.class)
+    public List<Contrat> findContrat(){
+        return contratService.findAllContratNow();
+    }
 }

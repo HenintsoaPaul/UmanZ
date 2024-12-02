@@ -4,6 +4,8 @@ import mg.itu.rh.dto.interne.ContratDTO;
 import mg.itu.rh.entity.interne.Contrat;
 import mg.itu.rh.entity.interne.TypeContrat;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import mg.itu.rh.repository.interne.ContratRepository;
@@ -29,6 +31,10 @@ public class ContratService {
 
     public Optional<Contrat> findActualContratByIdTalent( Long idTalent ) {
         return contratRepository.findActualContratByIdTalent( idTalent );
+    }
+
+    public List<Contrat> findAllContratNow(){
+        return contratRepository.findAllContratEnCoursOnDate(LocalDate.now());
     }
 
     public Contrat findById( Long idContrat ) {
