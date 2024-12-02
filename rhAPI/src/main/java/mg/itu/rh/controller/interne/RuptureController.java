@@ -11,8 +11,6 @@ import mg.itu.rh.entity.interne.Rupture;
 import mg.itu.rh.other.POV;
 import mg.itu.rh.service.interne.EmailService;
 import mg.itu.rh.service.interne.RuptureService;
-import org.hibernate.annotations.Parameter;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

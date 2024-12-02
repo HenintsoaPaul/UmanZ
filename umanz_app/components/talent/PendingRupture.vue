@@ -49,13 +49,34 @@ const demissionFn = async () => {
     }
 }
 
+const retraiteFn = async () => {
+    isLoading.value = true;
+    console.log("Redirection vers form validation demission");
+
+    const payLoad = {
+        motif: motif, date: daty, idContrat: props.idContrat
+    }
+
+    try {
+        const response = $fetch<Rupture>(`${props.apiUrl}/ruptures/retraite`, {
+            method: 'POST',
+            body: payLoad,
+        });
+        console.log('Demission request sent successfully', response);
+    }
+    catch (error) {
+        console.error('Failed to send demission request', error);
+    } finally {
+        isLoading.value = false;
+    }
+}
+
 const validerFn = async () => {
     isLoading.value = true;
 
     const payLoad = {
         dateValidation: daty
     }
-    console.log(payLoad);
 
     try {
         const response = $fetch<Rupture>(`${props.apiUrl}/ruptures/validate/${props.idContrat}`, {

@@ -5,6 +5,7 @@ definePageMeta({
 
 import { ref } from 'vue';
 import RuptureExpend from '~/components/contrat/rupture/RuptureExpend.vue';
+import type { Rupture } from '~/types';
 import type { Contrat } from '~/types/interne/contrat';
 
 const headers = [
@@ -23,13 +24,32 @@ const expand = ref({
     row: {}
 });
 
-async function licencierEmp() {
-    console.log("licencier");
+async function licencierEmp(contrat: Contrat) {
+    console.log("licencier ... \ntokony misy redirection vers le form");
+    
+    const payLoad = {
+        idContrat: contrat.idContrat,
+        motif: "fuf",
+        date: new Date(),
+        email: "henintsoapaul@gmail.com"
+    }
 
+    try {
+        const response = $fetch<Rupture>(`${apiUrl}/ruptures/renvoi`, {
+            method: 'POST',
+            body: payLoad,
+        });
+        console.log('Renvoi request sent successfully', response);
+    }
+    catch (error) {
+        console.error('Failed to send Renvoi request', error);
+    }
 }
-async function retraireEmp() {
-    console.log("retraite");
 
+async function goToCvEmp(contrat: Contrat) {
+    console.log("cv");
+    const router = useRouter();
+    router.push(`/talent/${contrat.talent.idTalent}`);
 }
 </script>
 
@@ -44,7 +64,7 @@ async function retraireEmp() {
         <UTable :columns="headers" :rows="filteredContrats ?? []" v-model:expand="expand">
             <template #expand="{ row }">
                 <div class="p-4">
-                    <RuptureExpend :contrat="row" @licencier="licencierEmp" @retraite="retraireEmp" />
+                    <RuptureExpend :contrat="row" @licencier="licencierEmp" @cv="goToCvEmp" />
                 </div>
             </template>
         </UTable>
