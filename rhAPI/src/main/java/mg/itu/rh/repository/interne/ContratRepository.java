@@ -26,9 +26,12 @@ public interface ContratRepository extends JpaRepository<Contrat, Long> {
     Optional<Contrat> findActualContratByIdTalent( @Param( "idTalent" ) Long idTalent );
 
     //select * from contrat where date_debut in (select min(date_debut) from contrat where id_talent=1)
-    @Query( "select c " +
-            "from Contrat c " +
-            "where c.dateDebut in (select min(c.dateDebut) from Contrat c where c.talent.idTalent=:idTalent)" )
+    @Query( """
+            select c
+            from Contrat c
+            where c.dateDebut in (select min(c.dateDebut) from Contrat c where c.talent.idTalent=:idTalent)
+                and c.talent.idTalent = :idTalent
+    """)
     Optional<Contrat> findContratEmbauche( @Param( "idTalent" ) Long idTalent );
 
     @Query( "select c " +
