@@ -35,7 +35,11 @@ public interface ContratRepository extends JpaRepository<Contrat, Long> {
             "from Contrat c " +
             "where c.dateDebut <= :date " +
             "   and (:date <= c.dateFin or c.dateFin is null) " +
-            "   and not c.idContrat in (select r.contrat.idContrat from Rupture r where r.dateRupture < :date) " +
+            "   AND c.idContrat NOT IN " +
+            "       (SELECT r.contrat.idContrat " +
+            "           FROM Rupture r " +
+            "           WHERE r.dateRuptureValidation is not null" +
+            "               and r.dateRuptureValidation <= :date ) " +
             "   and c.talent.idTalent=:idTalent" )
     Optional<Contrat> findContratByDateTalent( @Param( "date" ) LocalDate date, @Param( "idTalent" ) Long idTalent );
 
@@ -43,6 +47,10 @@ public interface ContratRepository extends JpaRepository<Contrat, Long> {
             "FROM Contrat c " +
             "WHERE c.dateDebut <= :date " +
             "   AND (:date <= c.dateFin or c.dateFin is null) " +
-            "   AND not c.idContrat in (SELECT r.contrat.idContrat FROM Rupture r WHERE r.dateRupture <= :date)" )
+            "   AND c.idContrat NOT IN " +
+            "       (SELECT r.contrat.idContrat " +
+            "           FROM Rupture r " +
+            "           WHERE r.dateRuptureValidation is not null" +
+            "               and r.dateRuptureValidation <= :date ) " )
     List<Contrat> findAllContratEnCoursOnDate( @Param( "date" ) LocalDate date );
 }
