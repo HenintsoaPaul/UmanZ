@@ -46,29 +46,38 @@ const expand = ref({
     openedRows: [],
     row: {}
 });
+
+const constructDetailsUrl = (row : EtatPaie) => {
+    if (date.value) {
+        const [year, month] = date.value.split('-');
+        return `/interne/paie/${row.talent.idTalent}?month=${month}&year=${year}`;
+    }
+    return '';
+}
+
 </script>
 
 <template>
     <div class="container px-auto py-auto border border-white rounded-md">
-        <form>
+        <form @submit.prevent="onSubmit">
             <label for="date" class="text-lg font-medium">Date (Année-Mois):</label>
 
             <input type="month" id="date" v-model="date" class="border border-gray-300 rounded-md p-2" />
+
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Valider</button>
         </form>
 
-        <button @click="onSubmit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Valider</button>
+        <template v-if="etatPaies">
+            <UTable :headers="headers" :rows="etatPaies" v-model:expand="expand">
+                <template #expand="{ row }">
+                    <div class="p-4">
+                        <button class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+                                @click="$router.push(constructDetailsUrl(row))">
+                            Voir Details
+                        </button>
+                    </div>
+                </template>
+            </UTable>
+        </template>
     </div>
-
-    <template v-if="etatPaies">
-        <UTable :headers="headers" :rows="etatPaies" v-model:expand="expand">
-            <template #expand="{ row }">
-                <div class="p-4">
-                    <button class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
-                        @click="$router.push(`/interne/paie/${row.talent.idTalent}`)">
-                        Voir Details
-                    </button>
-                </div>
-            </template>
-        </UTable>
-    </template>
 </template>

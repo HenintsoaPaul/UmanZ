@@ -86,7 +86,7 @@ public class FicheDTO {
         Period period = Period.between( this.getContratEmbauche().getDateDebut(), this.getDate() );
         String value = "";
         if ( period.getYears() != 0 ) {
-            value += period.getYears() + " ans";
+            value += period.getYears() + " ans ";
         }
         if ( period.getMonths() != 0 ) {
             value += period.getMonths() + " mois";
