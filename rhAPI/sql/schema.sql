@@ -28,9 +28,8 @@ CREATE TABLE type_contrat(
 CREATE TABLE formation(
                           id_formation SERIAL,
                           nom_formation VARCHAR(50)  NOT NULL,
-                         date_debut DATE NOT NULL,
+                          date_debut DATE NOT NULL,
                           date_fin DATE NOT NULL,
-                          est_fini BOOLEAN,
                           PRIMARY KEY(id_formation)
 );
 
@@ -173,6 +172,7 @@ CREATE TABLE annonce(
 CREATE TABLE rupture(
                         id_rupture SERIAL,
                         date_rupture DATE NOT NULL,
+                        date_rupture_validation DATE,
                         motif VARCHAR(50) ,
                         id_type_rupture INTEGER NOT NULL,
                         id_contrat INTEGER NOT NULL,

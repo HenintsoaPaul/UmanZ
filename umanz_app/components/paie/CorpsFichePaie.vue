@@ -3,7 +3,7 @@
 import type { PaysLipsBody } from "~/types";
 
 defineProps<{
-    paysLipsBrutDetails?: PaysLipsBody;
+    paysLipsBrutDetails?: PaysLipsBody | null;
 }>();
 
 const headers = [

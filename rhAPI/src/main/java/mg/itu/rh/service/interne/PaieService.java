@@ -1,6 +1,7 @@
 package mg.itu.rh.service.interne;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import mg.itu.rh.dto.interne.DetailsFichePaieBruteDTO;
 import mg.itu.rh.dto.interne.FicheDTO;
 import mg.itu.rh.dto.interne.HeureSupplementaireDTO;
@@ -16,19 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PaieService {
-
     private final ContratRepository contratRepository;
     private final TalentService talentService;
     private final AbsenceService absenceService;
     private final HeureSupplementaireService heureSupplementaireService;
-
-    public PaieService(ContratRepository contratRepository, TalentService talentService, AbsenceService absenceService, HeureSupplementaireService heureSupplementaireService) {
-        this.contratRepository = contratRepository;
-        this.talentService = talentService;
-        this.absenceService = absenceService;
-        this.heureSupplementaireService = heureSupplementaireService;
-    }
 
     private LocalDate getLastDateOfMonth( int month, int year ) {
         int nextMonth = month + 1;
@@ -308,7 +302,7 @@ public class PaieService {
 
     private List<DetailsFichePaieBruteDTO> getIrsaDTODetails(double montantImposable) {
         List<DetailsFichePaieBruteDTO> details = new ArrayList<>();
-        
+
         for (IrsaDTO irsa : calculateIrsaDTO(montantImposable)) {
             DetailsFichePaieBruteDTO irsaDetails = new DetailsFichePaieBruteDTO();
 

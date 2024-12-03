@@ -5,6 +5,7 @@ definePageMeta({
 
 import { ref } from 'vue';
 import RuptureExpend from '~/components/contrat/rupture/RuptureExpend.vue';
+import type { Rupture } from '~/types';
 import type { Contrat } from '~/types/interne/contrat';
 
 const headers = [
@@ -23,13 +24,15 @@ const expand = ref({
     row: {}
 });
 
-async function licencierEmp() {
-    console.log("licencier");
+const router = useRouter();
 
+async function licencierEmp(contrat: Contrat) {
+    router.push(`/interne/rupture/${contrat.idContrat}`);
 }
-async function retraireEmp() {
-    console.log("retraite");
 
+async function goToCvEmp(contrat: Contrat) {
+    console.log("cv");
+    router.push(`/talent/${contrat.talent.idTalent}`);
 }
 </script>
 
@@ -44,7 +47,7 @@ async function retraireEmp() {
         <UTable :columns="headers" :rows="filteredContrats ?? []" v-model:expand="expand">
             <template #expand="{ row }">
                 <div class="p-4">
-                    <RuptureExpend :contrat="row" @licencier="licencierEmp" @retraite="retraireEmp" />
+                    <RuptureExpend :contrat="row" @licencier="licencierEmp" @cv="goToCvEmp" />
                 </div>
             </template>
         </UTable>
