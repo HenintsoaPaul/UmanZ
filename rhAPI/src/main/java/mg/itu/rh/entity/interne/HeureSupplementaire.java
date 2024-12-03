@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Table( name = "heure_supplementaire" )
 public class HeureSupplementaire {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String motif;
@@ -30,8 +31,4 @@ public class HeureSupplementaire {
     @ManyToOne
     @JoinColumn( nullable = false, name = "id_contrat" )
     private Contrat contrat;
-
-    public double montant() {
-        return tauxMajoration * contrat.getSalaireHoraire();
-    }
 }

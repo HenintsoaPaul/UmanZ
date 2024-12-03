@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AbsenceRepository extends JpaRepository<Absence, Long> {
 
-    @Query("SELECT COUNT(a) " +
+    @Query("SELECT COALESCE(COUNT(a), 0) " +
         "FROM Absence a " +
         "WHERE a.contrat.idContrat = :idContrat " +
         "   AND EXTRACT(MONTH FROM a.dateAbsence) = :mois " +

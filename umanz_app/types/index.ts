@@ -17,6 +17,7 @@ export interface Talent {
     idTalent: number,
     nom: string,
     prenom: string,
+    nomPrenom?: string,
     mail: string,
     password: string,
     isAdmin: boolean,
@@ -49,14 +50,6 @@ export interface Annonce {
     dateRupture: string | null,
     experiencePostes: ExperiencePoste[],
     competenceAnnonces: CompetenceAnnonce[]
-}
-
-
-export interface Absence {
-    idAbsence: number,
-    motif?: string,
-    dateAbsence: string,
-    idContrat: number,
 }
 
 export interface Poste {
@@ -102,6 +95,11 @@ export interface Rupture {
 export interface TypeRupture {
     idTypeRupture: number,
     typeRupture: string,
+}
+
+export interface Contrat {
+    idContrat: number,
+    talent: Talent
 }
 
 export interface TypeContrat {
@@ -206,4 +204,32 @@ export interface EvaluationNote {
     idTalent?: number,
     dateEvaluation?: string,
     evaluations?: QuestionEvaluationNote[]
+}
+
+export interface PaysLipsHeader {
+    nomPrenom: string;
+    matricule: number,
+    fonction: string;
+    dateEmbauche: string;
+    anciennete: string;
+    classification: string;
+    idCnaps: string;
+    salaire: number;
+    tauxJournalier: number;
+    tauxHoraire: number;
+    indice: number;
+    retenueCnaps: number;
+    retenueSanitaire: number;
+}
+
+export interface PaysLipsDetails {
+    designation: string;
+    taux: number;
+    montant: number;
+    nombre: number;
+}
+
+export interface PaysLipsBody {
+    brute: PaysLipsDetails[];
+    retenue: PaysLipsDetails[];
 }

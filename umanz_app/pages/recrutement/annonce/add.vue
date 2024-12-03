@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import type { Competence, CompetenceAnnonce, Diplome, DiplomeAvecNiveau, ExperiencePoste, Langue, LangueAvecNiveau, NiveauDiplome, NiveauLangue, Poste } from '~/types';
 
 definePageMeta({
-    middleware: ['auth']
+    middleware: ['auth-is-admin']
 })
 
 const apiUrl = useRuntimeConfig().public.apiUrl as string;

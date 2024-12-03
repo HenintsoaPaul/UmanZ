@@ -2,6 +2,7 @@ package mg.itu.rh.service.interne;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import mg.itu.rh.dto.interne.HeureSupplementaireDTO;
 import mg.itu.rh.entity.interne.Contrat;
 import mg.itu.rh.entity.interne.HeureSupplementaire;
 import mg.itu.rh.exception.MaxHeuresSuppDepasseException;
@@ -24,8 +25,8 @@ public class HeureSupplementaireService {
     private final JourFerieService jourFerieService;
     private final ContratService contratService;
 
-    public List<HeureSupplementaire> getByContratAndMois( Long idContrat, int mois ) {
-        return heureSupplementaireRepository.findByContratAndMois( idContrat, mois );
+    public List<HeureSupplementaireDTO> getByContratAndMoisAndAnnee(Long idContrat, int mois, int annee) {
+        return heureSupplementaireRepository.findSumHeuresAndMontantByContratAndMoisAndAnnee(idContrat, mois, annee);
     }
 
     @Transactional
@@ -38,9 +39,11 @@ public class HeureSupplementaireService {
             throws MaxHeuresSuppDepasseException {
         LocalDateTime dateHeureDebut = heureSupplementaireRequest.getDateHeureDebut();
 
+
         Contrat contrat = contratService.findById( heureSupplementaireRequest.getIdContrat() );
         Double totalHeuresSuppForWeek = heureSupplementaireRepository.findTotalHeuresForWeekByContrat( contrat.getIdContrat(), dateHeureDebut );
-        if ( totalHeuresSuppForWeek == MAX_HEURE_SUPP_HEBDOMADAIRE ) return;
+        if ( totalHeuresSuppForWeek >= MAX_HEURE_SUPP_HEBDOMADAIRE )
+            throw new RuntimeException("Maximum d'heures supp atteint");
 
         double nbHeure = heureSupplementaireRequest.getNbHeure();
         double excedant = totalHeuresSuppForWeek + nbHeure - MAX_HEURE_SUPP_HEBDOMADAIRE;
@@ -52,6 +55,7 @@ public class HeureSupplementaireService {
         HeureSupplementaire heureSupplementaire = HeureSupplementaire.builder()
                 .motif( heureSupplementaireRequest.getMotif() )
                 .dateHeureDebut( dateHeureDebut )
+                .dateHeureCreation(LocalDateTime.now())
                 .nbHeure( nbHeure )
                 .tauxMajoration( getTauxMajoration( dateHeureDebut, totalHeuresSuppForWeek,
                         jourFerieService.getAllForYear( dateHeureDebut.getYear() ) ) )
