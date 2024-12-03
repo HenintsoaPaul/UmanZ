@@ -24,31 +24,14 @@ const expand = ref({
     row: {}
 });
 
-async function licencierEmp(contrat: Contrat) {
-    console.log("licencier ... \ntokony misy redirection vers le form");
-    
-    const payLoad = {
-        idContrat: contrat.idContrat,
-        motif: "fuf",
-        date: new Date(),
-        email: "henintsoapaul@gmail.com"
-    }
+const router = useRouter();
 
-    try {
-        const response = $fetch<Rupture>(`${apiUrl}/ruptures/renvoi`, {
-            method: 'POST',
-            body: payLoad,
-        });
-        console.log('Renvoi request sent successfully', response);
-    }
-    catch (error) {
-        console.error('Failed to send Renvoi request', error);
-    }
+async function licencierEmp(contrat: Contrat) {
+    router.push(`/interne/rupture/${contrat.idContrat}`);
 }
 
 async function goToCvEmp(contrat: Contrat) {
     console.log("cv");
-    const router = useRouter();
     router.push(`/talent/${contrat.talent.idTalent}`);
 }
 </script>
