@@ -94,7 +94,7 @@ public class Talent {
         this.setIdCnaps( talentDTO.getIdCnaps() );
     }
 
-    @JsonView( { POV.Emp.class } )
+    @JsonView( { POV.Public.class,POV.Emp.class } )
     public String getNomPrenom() {
         return nom + " " + prenom;
     }
