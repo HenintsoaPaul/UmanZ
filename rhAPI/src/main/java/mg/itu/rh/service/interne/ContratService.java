@@ -4,7 +4,9 @@ import mg.itu.rh.dto.interne.ContratDTO;
 import mg.itu.rh.entity.interne.Contrat;
 import mg.itu.rh.entity.interne.TypeContrat;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import mg.itu.rh.repository.interne.ContratRepository;
 import mg.itu.rh.service.recrutement.EntretienService;
@@ -27,9 +29,8 @@ public class ContratService {
         this.entretienService = entretienService;
     }
 
-    public Contrat findActualContratByIdTalent( Long idTalent ) {
-        return contratRepository.findActualContratByIdTalent( idTalent )
-                .orElseThrow( () -> new RuntimeException( "Cette personne n'est pas un employe ou n'est plus un employe" ) );
+    public Optional<Contrat> findActualContratByIdTalent( Long idTalent ) {
+        return contratRepository.findActualContratByIdTalent( idTalent );
     }
 
     public Contrat findById( Long idContrat ) {
@@ -53,7 +54,7 @@ public class ContratService {
         return this.save( contrat );
     }
 
-    public List<Contrat> findAll() {
-        return contratRepository.findAll();
+    public List<Contrat> findAllEmpNow() {
+        return contratRepository.findAllContratEnCoursOnDate( LocalDate.now() );
     }
 }

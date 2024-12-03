@@ -8,8 +8,6 @@ import mg.itu.rh.service.recrutement.CompetencePosteService;
 import mg.itu.rh.service.recrutement.PosteLangueService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class PosteService {
     private final PosteRepository posteRepository;
@@ -29,9 +27,9 @@ public class PosteService {
                 .orElseThrow( () -> new RuntimeException( "Poste non reconnue" ) );
     }
 
-    public List<Poste> findAll() {
-        return posteRepository.findAllPostes();
-    }
+//    public List<Poste> findAll() {
+//        return posteRepository.findAllPostes();
+//    }
 
     public Poste save(Poste poste){
         return posteRepository.save(poste);

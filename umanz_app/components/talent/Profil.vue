@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Talent } from '~/types';
 
-const props = defineProps<{
+defineProps<{
     talent: Talent;
 }>();
 </script>

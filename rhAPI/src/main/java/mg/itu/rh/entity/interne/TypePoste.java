@@ -16,5 +16,5 @@ public class TypePoste {
     String typePoste;
 
     @Column(name = "rang_type_poste")
-    int rangTypePoste;
+    int rang;
 }
