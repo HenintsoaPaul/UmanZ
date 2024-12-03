@@ -57,9 +57,10 @@ public class RuptureController {
     @PostMapping( "/renvoi" )
     public ResponseEntity<String> renvoi( @RequestBody RenvoiRequest renvoiRequest ) {
         try {
-            ruptureService.saveRenvoi( renvoiRequest );
+            Rupture r = ruptureService.saveRenvoi( renvoiRequest );
+            String email = r.getContrat().getTalent().getMail();
 
-            emailService.writeEmail( renvoiRequest.getEmail(), renvoiRequest.getSubject(), renvoiRequest );
+            emailService.writeEmail( email, renvoiRequest.getSubject(), renvoiRequest );
             return ResponseEntity.ok( "Email envoyé avec succès." );
         } catch ( Exception e ) {
             return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR )
