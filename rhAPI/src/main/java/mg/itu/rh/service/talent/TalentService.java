@@ -34,7 +34,7 @@ public class TalentService {
 
     public Talent findById( Long id ) {
         return talentRepository.findById( id )
-                .orElseThrow( () -> new RuntimeException( "Talent not found" ) );
+                .orElseThrow( () -> new RuntimeException( "Talent introuvable : idTalent = " +  id) );
     }
 
     public List<Talent> findAll() {
