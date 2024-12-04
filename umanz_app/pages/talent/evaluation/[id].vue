@@ -25,6 +25,7 @@ interface FormState {
 }
 
 const route = useRoute();
+const router = useRouter();
 const domaineId = computed(() => route.params.id);
 const questions = ref<Question[]>([]);
 const formState = ref<FormState>({}); // État du formulaire
@@ -49,32 +50,28 @@ onMounted(() => {
 });
 
 async function handleSubmit() {
-    console.log(toRaw(formState.value));
-
     // Créer l'objet d'évaluation selon le format attendu
     const evaluationPayload = {
-        idTalent: Number(localStorage.getItem("umanz-idUser")), // Date au format YYYY-MM-DD
+        idTalent: Number(localStorage.getItem("umanz-idUser")),
         questionReponses: Object.entries(formState.value).map(([idQuestion, reponse]) => ({
             idQuestion: Number(idQuestion),
-            idReponse: reponse || "Je ne sais pas" // Valeur par défaut si aucune réponse
+            idReponse: reponse
         }))
     };
 
-    console.log(evaluationPayload);
+    try {
+        const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
+        const response = await axios.post(`${apiUrl}/resultat`, evaluationPayload);
 
-    // try {
-    //     const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
-    //     const response = await axios.post(`${apiUrl}/resultat`, evaluationPayload);
-    //
-    //     if (response.status === 200) {
-    //         console.log('Évaluation enregistrée avec succès:', response.data);
-    //         await router.push("resultat");
-    //     } else {
-    //         console.error('Erreur lors de l\'enregistrement de l\'évaluation', response.data);
-    //     }
-    // } catch (error) {
-    //     console.error('Erreur lors de la requête API:', error);
-    // }
+        if (response.status === 200) {
+            console.log('Évaluation enregistrée avec succès:', response.data);
+            await router.push("resultat");
+        } else {
+            console.error('Erreur lors de l\'enregistrement de l\'évaluation', response.data);
+        }
+    } catch (error) {
+        console.error('Erreur lors de la requête API:', error);
+    }
 }
 </script>
 
@@ -93,6 +90,7 @@ async function handleSubmit() {
                         <URadio
                             v-for="reponse of question.reponses"
                             :key="reponse.idReponse"
+                            :value="reponse.idReponse"
                             v-model="formState[question.idQuestion]"
                             :label="reponse.reponse"
                         ></URadio>
