@@ -30,6 +30,7 @@ CREATE TABLE formation(
                           nom_formation VARCHAR(50)  NOT NULL,
                           date_debut DATE NOT NULL,
                           date_fin DATE NOT NULL,
+                          est_fini BOOLEAN NOT NULL DEFAULT false,
                           PRIMARY KEY(id_formation)
 );
 
@@ -241,7 +242,7 @@ CREATE TABLE heure_supplementaire(
                                      id SERIAL,
                                      motif TEXT,
                                      date_heure_debut TIMESTAMP NOT NULL,
-                                     date_heure_creation TIMESTAMP NOT NULL default now(),
+                                     date_heure_creation TIMESTAMP NOT NULL DEFAULT NOW(),
                                      nb_heure NUMERIC(5,2)   NOT NULL,
                                      taux_majoration NUMERIC(5,2)   NOT NULL,
                                      id_contrat INTEGER NOT NULL,

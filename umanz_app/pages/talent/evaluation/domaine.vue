@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, toRaw } from 'vue';
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
 interface Domaine {
@@ -7,15 +7,9 @@ interface Domaine {
   domaine: string;         // Texte de la question
 }
 
-// Interface pour formState
-interface FormState {
-  [key: number]: string; // Permet d'indexer par numéro et de stocker une chaîne
-}
-
 const domaines = ref<Domaine[]>([]);
-const formState = ref<FormState>({}); // État du formulaire
 
-async function loadQuestions() {
+async function recupererDomaines() {
   try {
     const apiUrl: string = useRuntimeConfig().public.apiUrl as string;
     const response = await axios.get(`${apiUrl}/domaine`);
@@ -31,16 +25,23 @@ async function loadQuestions() {
 }
 
 onMounted(() => {
-  loadQuestions();
+  recupererDomaines();
 });
 </script>
 
 <template>
   <div class="min-h-screen flex items-center justify-center font-mono">
     <div class="border border-slate-50 p-8 rounded-lg shadow-md w-full max-w-md">
-        <h1>Choisissez une domaine</h1>
-        <div v-for="domaine in domaines" :key="domaine.idDomaine">
-            <a :href="`${domaine.idDomaine}`">{{ domaine.domaine }}</a>
+        <h1 class="text-2xl font-bold text-center mb-5">Choisissez une domaine</h1>
+        <div class="flex flex-col align-top space-y-4">
+            <ULink
+                class="bg-green-400 hover:bg-green-700 text-white font-bold text-center py-2 px-4 rounded"
+                v-for="domaine in domaines"
+                :key="domaine.idDomaine"
+                :to="`/talent/evaluation/${domaine.idDomaine}`"
+            >
+                {{ domaine.domaine }}
+            </ULink>
         </div>
     </div>
   </div>

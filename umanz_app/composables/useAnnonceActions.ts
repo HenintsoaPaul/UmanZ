@@ -9,11 +9,11 @@ export const useAnnonceActions = () => {
                         idAnnonce: idAnnonce
                     }
                 });
-                console.log('Candidature data sent successfully', response);
-                return 'Candidature data sent successfully';
+                console.log('Candidature envoyé avec succés.', response);
+                return 'Candidature envoyé avec succés.';
             } catch (error) {
-                console.error('Failed to send candidature data', error);
-                return 'Failed to send candidature data';
+                console.error('Une erreur est survenue lors de l\'envoi de la candidature.', error);
+                return "Une erreur est survenue lors de l'envoi de la candidature.";
             }
         } else {
             console.error('Utilisateur non connecté');

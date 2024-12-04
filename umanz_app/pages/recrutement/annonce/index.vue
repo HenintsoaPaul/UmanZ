@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { Annonce } from '~/types';
-import { ref, computed } from 'vue';
+import type {Annonce} from '~/types';
+import {computed, ref} from 'vue';
 
 const { canditerFn, headers } = useAnnonceActions();
-const idTalent = computed(() => localStorage.getItem('idUser') ?? "0");
+const idTalent = computed(() => localStorage.getItem('umanz-idUser') ?? "0");
 
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const { data: annonces } = useFetch<Annonce[]>(`${apiUrl}/annonce/disponible`);
@@ -17,8 +17,7 @@ const expand = ref({
 const message = ref('');
 
 const handleCandidater = async (idAnnonce: number) => {
-    const msg = await canditerFn(idAnnonce, idTalent.value, apiUrl);
-    message.value = msg;
+    message.value = await canditerFn(idAnnonce, idTalent.value, apiUrl);
 }
 
 const isAdmin = computed(() => localStorage.getItem("isAdmin") === 'true');
@@ -31,6 +30,10 @@ const isAdmin = computed(() => localStorage.getItem("isAdmin") === 'true');
         <div class="flex justify-center mb-4">
             <UInput v-model="q" placeholder="Filtrer les annonces..."
                 class="w-full max-w-md px-4 py-2  rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+
+        <div v-if="message" class="mt-4 p-4 bg-blue-100 text-blue-700 rounded">
+            {{ message }}
         </div>
 
         <div v-if="annonces">
@@ -65,10 +68,6 @@ const isAdmin = computed(() => localStorage.getItem("isAdmin") === 'true');
         </div>
         <div v-else>
             Loading Annonces...
-        </div>
-
-        <div v-if="message" class="mt-4 p-4 bg-blue-100 text-blue-700 rounded">
-            {{ message }}
         </div>
     </div>
 </template>
