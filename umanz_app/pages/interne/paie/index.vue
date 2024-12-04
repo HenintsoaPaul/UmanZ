@@ -58,8 +58,8 @@ const constructDetailsUrl = (row : EtatPaie) => {
 </script>
 
 <template>
-    <div class="container px-auto py-auto border border-white rounded-md">
-        <form @submit.prevent="onSubmit">
+    <div class="container mx-auto border border-white rounded-md">
+        <form class="p-3 flex space-x-3 items-center" @submit.prevent="onSubmit">
             <label for="date" class="text-lg font-medium">Date (Année-Mois):</label>
 
             <input type="month" id="date" v-model="date" class="border border-gray-300 rounded-md p-2" />
