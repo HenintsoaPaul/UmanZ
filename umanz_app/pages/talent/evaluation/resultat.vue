@@ -37,11 +37,7 @@ const headers = [
     }
 ];
 
-const { q, filteredRows: filteredContrats } = useFilteredRows(resultats);
-const expand = ref({
-    openedRows: [],
-    row: {}
-});
+const { q, filteredRows: filteredResultats } = useFilteredRows(resultats);
 </script>
 
 <template>
@@ -55,7 +51,7 @@ const expand = ref({
 
         <div v-if="resultats">
             <div v-if="resultats.length > 0">
-                <UTable :columns="headers" :rows="filteredContrats ?? []" v-model:expand="expand"
+                <UTable :columns="headers" :rows="filteredResultats ?? []"
                     class="w-full shadow-md rounded-lg overflow-hidden">
                 </UTable>
             </div>
