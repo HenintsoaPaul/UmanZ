@@ -5,12 +5,12 @@ definePageMeta({
 
 import { ref } from 'vue';
 import RuptureExpend from '~/components/contrat/rupture/RuptureExpend.vue';
-import type { Rupture } from '~/types';
 import type { Contrat } from '~/types/interne/contrat';
 
 const headers = [
     { key: 'idContrat', label: 'ID', sortable: true },
     { key: 'talent.nomPrenom', label: 'Nom et Prenoms' },
+    { key: 'poste.typePoste.typePoste', label: 'Catégorie' },
     { key: 'dateDebut', label: 'Date Debut', sortable: true },
     { key: 'dateFin', label: 'Date Fin', sortable: true },
 ];

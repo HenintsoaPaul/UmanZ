@@ -44,7 +44,7 @@ public class Poste {
 
     @ManyToOne( fetch = FetchType.LAZY )
     @JoinColumn( name = "id_type_poste" )
-    @JsonView( { POV.Public.class } )
+    @JsonView( { POV.Public.class, POV.Emp.class } )
     private TypePoste typePoste;
 
     @ManyToMany
