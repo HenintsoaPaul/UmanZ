@@ -15,8 +15,6 @@ interface Resultat {
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const { data: resultats } = useFetch<Resultat[]>(`${apiUrl}/resultat/talent/1`);
 
-console.log(resultats);
-
 const headers = [
     {
         key: 'idResultat',

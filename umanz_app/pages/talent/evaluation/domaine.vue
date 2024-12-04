@@ -32,9 +32,16 @@ onMounted(() => {
 <template>
   <div class="min-h-screen flex items-center justify-center font-mono">
     <div class="border border-slate-50 p-8 rounded-lg shadow-md w-full max-w-md">
-        <h1>Choisissez une domaine</h1>
-        <div v-for="domaine in domaines" :key="domaine.idDomaine">
-            <ULink :to="`${domaine.idDomaine}`">{{ domaine.domaine }}</ULink>
+        <h1 class="text-2xl font-bold text-center mb-5">Choisissez une domaine</h1>
+        <div class="flex flex-col align-top space-y-4">
+            <ULink
+                class="bg-green-400 hover:bg-green-700 text-white font-bold text-center py-2 px-4 rounded"
+                v-for="domaine in domaines"
+                :key="domaine.idDomaine"
+                :to="`/talent/evaluation/${domaine.idDomaine}`"
+            >
+                {{ domaine.domaine }}
+            </ULink>
         </div>
     </div>
   </div>
