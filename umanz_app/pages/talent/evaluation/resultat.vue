@@ -12,9 +12,6 @@ interface Resultat {
   domaine: Domaine;
 }
 
-// const idTalent=Number(localStorage.getItem("idUser"));
-const { promotionFn, expulsionFn, demissionFn } = useContratActions();
-const currency = useRuntimeConfig().public.currency as string;
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const { data: resultats } = useFetch<Resultat[]>(`${apiUrl}/resultat/talent/1`);
 
@@ -65,11 +62,11 @@ const expand = ref({
                 </UTable>
             </div>
             <div v-else>
-                Aucun contrats pour le moment ... 😅
+                Aucune évaluation pour le moment 😅
             </div>
         </div>
         <div v-else>
-            Loading Contrats...
+            Chargement des évaluations...
         </div>
     </div>
 </template>
