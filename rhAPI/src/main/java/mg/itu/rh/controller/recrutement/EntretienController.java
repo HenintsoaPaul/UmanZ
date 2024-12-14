@@ -42,10 +42,10 @@ public class EntretienController {
     /*
      * { "idTalent":3, "idAnnonce":1 }
      * */
-    @PostMapping( "/candiat" )
+    @PostMapping( "/candidats" )
     @JsonView( POV.Public.class )
-    private Entretien saveCandidat( @RequestBody EntretienCandidatureDTO entretienCandidat ) {
-        return entretienService.saveCandidat( entretienCandidat );
+    private Entretien saveCandidature( @RequestBody EntretienCandidatureDTO entretienCandidat ) {
+        return entretienService.saveCandidature( entretienCandidat );
     }
 
     @PostMapping( "/validate" )
