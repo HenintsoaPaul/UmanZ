@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface ResultatRepository extends JpaRepository<Resultat,Long> {
     @Query("select r from Resultat r where r.talent.idTalent=:idTalent")
-    public List<Resultat> findResultatTechniqueByIdTalent(@Param("idTalent") Long idTalent);
+    List<Resultat> findResultatTechniqueByIdTalent( @Param( "idTalent" ) Long idTalent );
 }

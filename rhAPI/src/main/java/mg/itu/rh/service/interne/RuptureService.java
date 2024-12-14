@@ -5,7 +5,6 @@ import mg.itu.rh.dto.interne.RuptureDTO;
 import mg.itu.rh.dto.rupture.DemissionRequest;
 import mg.itu.rh.dto.rupture.RenvoiRequest;
 import mg.itu.rh.dto.rupture.RetraiteRequest;
-import mg.itu.rh.entity.interne.Contrat;
 import mg.itu.rh.entity.interne.Rupture;
 import mg.itu.rh.repository.interne.RuptureRepository;
 import org.springframework.stereotype.Service;

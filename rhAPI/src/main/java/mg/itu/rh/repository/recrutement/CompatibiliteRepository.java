@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface CompatibiliteRepository extends JpaRepository<Compatibilite, IdTalentAnnonce> {
     @Query("select c from Compatibilite c join c.annonce a where c.talent.idTalent=:idTalent and a.dateRupture is null and a.dateExpiration > CURRENT_DATE")
-    public List<Compatibilite> findAllByIdTalentAnnonce(@Param("idTalent") Long idTalent);
+    List<Compatibilite> findAllByIdTalentAnnonce(@Param("idTalent") Long idTalent);
 }
