@@ -42,7 +42,7 @@ public class EntretienService {
         return entretienRepository.save( entretien );
     }
 
-    public Entretien saveCandidat( EntretienCandidatureDTO entretienDTO ) {
+    public Entretien saveCandidature( EntretienCandidatureDTO entretienDTO ) {
         Entretien entretien = new Entretien( entretienDTO );
         entretien.setTalent( talentService.findById( entretienDTO.getIdTalent() ) );
         entretien.setAnnonce( annonceService.findById( entretienDTO.getIdAnnonce() ) );

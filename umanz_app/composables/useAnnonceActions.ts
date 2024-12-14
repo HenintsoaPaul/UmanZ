@@ -2,7 +2,7 @@ export const useAnnonceActions = () => {
     const canditerFn = async (idAnnonce: number, idTalent: string, apiUrl: string): Promise<string> => {
         if (idTalent) {
             try {
-                const response = await $fetch(`${apiUrl}/entretien/candiat`, {
+                const response = await $fetch(`${apiUrl}/entretien/candidats`, {
                     method: 'POST',
                     body: {
                         idTalent: Number(idTalent),
