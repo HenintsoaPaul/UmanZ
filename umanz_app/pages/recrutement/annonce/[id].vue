@@ -8,8 +8,8 @@ const annonceId = computed(() => route.params.id);
 const url = computed(() => `${apiUrl}/annonce/${annonceId.value}`);
 
 const { data: annonce, error: annonceError } = useFetch<Annonce>(`${url.value}`);
-const { data: candidatsInterne, refresh: refreshInterne } = useFetch<Talent[]>(`${url.value}/candidats`);
-const { data: candidatsExterne, refresh: refreshExterne } = useFetch<Talent[]>(`${url.value}/candidats`);
+const { data: candidatsInterne, refresh: refreshInterne } = useFetch<Talent[]>(`${url.value}/candidats/interne`);
+const { data: candidatsExterne, refresh: refreshExterne } = useFetch<Talent[]>(`${url.value}/candidats/externe`);
 const { data: competences, error: competencesError } = useFetch<CompetenceAnnonce[]>(`${url.value}/competences`);
 const { data: experiences, error: experiencesError } = useFetch<ExperiencePoste[]>(`${url.value}/experiences`);
 
@@ -33,11 +33,6 @@ const expandExterne = ref({
     row: {}
 });
 
-const refreshCandidats = async () => {
-    await refreshInterne();
-    await refreshExterne();
-}
-
 const { validerFn: valider, refuserFn: refuser } = useAnnonceActions();
 
 const validerFn = async (talentId: number) => {
@@ -45,7 +40,7 @@ const validerFn = async (talentId: number) => {
         await valider(talentId, Number(annonceId.value), apiUrl);
         successMessage.value = 'Candidat validé avec succès';
         errorMessage.value = '';
-        await refreshCandidats();
+        await refreshInterne();
     } catch (error) {
         errorMessage.value = 'Erreur lors de la validation du candidat';
         successMessage.value = '';
@@ -58,7 +53,7 @@ const refuserFn = async (talentId: number) => {
         await refuser(talentId, Number(annonceId.value), apiUrl);
         successMessage.value = 'Candidat refusé avec succès';
         errorMessage.value = '';
-        await refreshCandidats()
+        await refreshExterne()
     } catch (error) {
         errorMessage.value = 'Erreur lors du refus du candidat';
         successMessage.value = '';
@@ -115,11 +110,11 @@ const isAdmin = computed(() => localStorage.getItem("umanz-isAdmin") === 'true')
                 </UTable>
             </div>
             <div v-else>
-                No CandidatsInterne
+                Aucun Candidats Interne pour le moment
             </div>
         </div>
         <div v-else>
-            Loading CandidatsInterne...
+            Chargement ...
         </div>
 
         <h1 class="text-3xl font-bold mb-6 text-center">Candidats Externe</h1>
@@ -147,11 +142,11 @@ const isAdmin = computed(() => localStorage.getItem("umanz-isAdmin") === 'true')
                 </UTable>
             </div>
             <div v-else>
-                No CandidatsExterne
+                Aucun Candidats Externe pour le moment
             </div>
         </div>
         <div v-else>
-            Loading CandidatsExterne...
+            Chargement ...
         </div>
 
         <div v-if="successMessage" class="text-green-500">
