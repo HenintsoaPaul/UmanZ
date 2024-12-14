@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 const router = useRouter();
 const idUserStr = computed( () => localStorage.getItem( "umanz-idUser" ) );
 const loggedIn = ref( false );
@@ -12,7 +12,17 @@ onMounted( () => {
   }
 } );
 
-const navLinks = [
+interface NavLinkChild {
+    label: string;
+    link: string;
+}
+
+interface NavLink {
+    label: string;
+    children: NavLinkChild[];
+}
+
+const navLinks : NavLink[] = [
   {
     label: "Annonces",
     children: [
@@ -96,8 +106,8 @@ const isAdmin = computed(() => {
     return bb ? Boolean(bb) : false;
 });
 
-const logout = () => {
-  router.push( "/" );
+const logout = async () => {
+  await router.push( "/" );
 };
 </script>
 
@@ -115,7 +125,7 @@ const logout = () => {
                         <li v-for="navLink in navLinks" class="relative group">
                               <p class="cursor-pointer">{{ navLink.label }}</p>
                               <ul
-                                    class="absolute z-index-50 left-0 mb-5 w-48 bg-white text-black rounded-lg shadow-lg group-hover:block hidden duration-300">
+                                    class="absolute z-50 left-0 mb-5 w-48 bg-white text-black rounded-lg shadow-lg group-hover:block hidden duration-300">
                                     <li v-for="sub in navLink.children">
                                           <router-link :to="sub.link" class="block px-4 py-2 hover:bg-gray-200 hover:rounded-lg z-index-50">
                                                 {{ sub.label }}
