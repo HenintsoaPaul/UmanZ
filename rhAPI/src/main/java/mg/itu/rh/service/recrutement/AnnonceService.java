@@ -25,6 +25,10 @@ public class AnnonceService {
         this.experiencePosteService = experiencePosteService;
     }
 
+    public List<Long> findAnnoncePostuledByTalent(Long idTalent){
+        return annonceRepository.findAnnoncePostuledByTalent(idTalent);
+    }
+
     public List<Annonce> findAnnonceAvailable(Long idTalent ) {
         return compatibiliteService.findAllDispoByIdTalent( idTalent );
     }
