@@ -13,10 +13,15 @@ const { data: entretien, error: entretienError, refresh: refreshEntretien } = us
 const successMessage = ref('');
 const errorMessage = ref('');
 
-const validerEntretien = async (entretien: Entretien) => {
-    if (entretien.note <= 0 || entretien.note >= 20) return;
-
+const validerEntretien = async (entretien: Entretien) => {    
     try {
+        if (entretien.note <= 0 || entretien.note >= 20) {
+            throw new Error("Note must be in range [0:20]");    
+        }
+        if (entretien.motif === "") {
+            throw new Error("Motif is undefined");    
+        }
+
         const response = await $fetch(`${apiUrl}/entretien/validate`, {
             method: 'POST',
             body: {
@@ -25,10 +30,14 @@ const validerEntretien = async (entretien: Entretien) => {
                 motif: entretien.motif
             }
         });
+        successMessage.value = 'Entretien validé avec succès';
+        errorMessage.value = '';
         console.log('Entretien validé:', response);
         await refreshEntretien();
     } catch (error) {
-        console.error('Erreur lors de la validation de l\' Entretien:', error);
+        errorMessage.value = 'Erreur lors du validation de l\'entretien';
+        successMessage.value = '';
+        console.error('Erreur lors du validation de l\'entretien:', error);
     }
 }
 
@@ -42,7 +51,6 @@ const refuserEntretien = async () => {
         });
         successMessage.value = 'Entretien refusé avec succès';
         errorMessage.value = '';
-
         console.log('Entretien refusé:', response);
     } catch (error) {
         errorMessage.value = 'Erreur lors du refus de l\'entretien';
