@@ -1,7 +1,8 @@
 <script setup lang="ts">
 definePageMeta({
     layout: 'blank',
-    middleware: 'logout'
+    middleware: 'logout',
+    key: 'login-page'
 });
 
 import { z } from 'zod'
@@ -42,7 +43,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 </script>
 
 <template>
-    <div class="min-h-screen flex items-center justify-center font-mono">
+    <div :key="$route.fullPath" class="min-h-screen flex items-center justify-center font-mono">
         <div class="border border-slate-50 p-8 rounded-lg shadow-md w-full max-w-md text-slate-500">
             <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
             <UForm :schema="schema" :state="formState" class="space-y-4" @submit="onSubmit">
