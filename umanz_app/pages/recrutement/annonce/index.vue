@@ -20,7 +20,7 @@ const handleCandidater = async (idAnnonce: number) => {
     message.value = await canditerFn(idAnnonce, idTalent.value, apiUrl);
 }
 
-const isAdmin = computed(() => localStorage.getItem("isAdmin") === 'true');
+const isAdmin = computed(() => localStorage.getItem("umanz-isAdmin") === 'true');
 </script>
 
 <template>
