@@ -67,6 +67,11 @@ public class AnnonceController {
         return annonceService.findAnnonceAvailable(id);
     }
 
+    @GetMapping("/postule/{idTalent}")
+    public List<Long> findAnnoncePostuledByTalent(@PathVariable("idTalent")Long idTalent){
+        return annonceService.findAnnoncePostuledByTalent(idTalent);
+    }
+
     @PostMapping()
     @JsonView( POV.Full.class )
     public Annonce save( @RequestBody AnnonceDTO annonceDTO ) {
