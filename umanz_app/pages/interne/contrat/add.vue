@@ -35,7 +35,6 @@ const onSubmit = async () => {
             idPoste: entretien.value?.annonce.poste.idPoste,
             idTalent: entretien.value?.talent.idTalent,
         };
-        console.log(toRaw(formKdj));
 
         const response = await $fetch(`${apiUrl}/contrats`, {
             method: 'POST',
