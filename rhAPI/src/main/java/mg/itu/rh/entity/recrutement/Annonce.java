@@ -41,6 +41,10 @@ public class Annonce {
     @JsonView({POV.Full.class})
     private List<ExperiencePoste> experiencePostes=new ArrayList<ExperiencePoste>();
 
+    @Transient
+    @JsonView({POV.Public.class})
+    private double pourcentage;
+
     public void addExperiencePoste(ExperiencePoste experiencePoste){
         this.experiencePostes.add(experiencePoste);
     }

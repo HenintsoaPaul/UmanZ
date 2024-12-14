@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import mg.itu.rh.entity.recrutement.Annonce;
 import mg.itu.rh.entity.recrutement.Compatibilite;
 import mg.itu.rh.entity.talent.Talent;
+import mg.itu.rh.repository.recrutement.AnnonceRepository;
 import mg.itu.rh.repository.recrutement.CompatibiliteRepository;
 import mg.itu.rh.service.talent.TalentService;
 import org.springframework.stereotype.Service;
@@ -17,9 +18,12 @@ public class CompatibiliteService {
 
     private final TalentService talentService;
 
-    public CompatibiliteService(CompatibiliteRepository compatibiliteRepository,TalentService talentService) {
+    private final AnnonceRepository annonceRepository;
+
+    public CompatibiliteService(CompatibiliteRepository compatibiliteRepository, TalentService talentService, AnnonceRepository annonceRepository) {
         this.compatibiliteRepository = compatibiliteRepository;
         this.talentService=talentService;
+        this.annonceRepository = annonceRepository;
     }
 
     @Transactional
@@ -32,7 +36,7 @@ public class CompatibiliteService {
         List<Talent> talents=talentService.findAll();
         List<Compatibilite> compatibilites=new ArrayList<Compatibilite>();
         for(int i=0;i<talents.size();i++){
-            Compatibilite compatibilite=new Compatibilite(annonce,talents.get(i));
+            Compatibilite compatibilite=new Compatibilite(annonce.getPoste(),talents.get(i));
             compatibilites.add(this.save(compatibilite));
         }
         return compatibilites;
@@ -40,11 +44,15 @@ public class CompatibiliteService {
 
     public List<Annonce> findAllDispoByIdTalent(Long idTalent){
         List<Compatibilite> compatibilites=compatibiliteRepository.findAllByIdTalentAnnonce(idTalent);
-        List<Annonce> annonces=new ArrayList<Annonce>();
+        List<Annonce> annoncesDispo=annonceRepository.findAnnonceAvailable();
         for (Compatibilite compatibilite:compatibilites) {
             compatibilite.setPourcentageAnnonce();
-            annonces.add(compatibilite.getAnnonce());
+            for (Annonce annonce:annoncesDispo){
+                if(annonce.getPoste().getIdPoste()==compatibilite.getPoste().getIdPoste()){
+                    annonce.setPourcentage(compatibilite.getPourcentage());
+                }
+            }
         }
-        return annonces;
+        return annoncesDispo;
     }
 }
