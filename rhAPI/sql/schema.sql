@@ -148,7 +148,6 @@ CREATE TABLE contrat(
                         date_fin DATE,
                         salaire_horaire NUMERIC(15,2)   NOT NULL,
                         nb_jour_semaine INTEGER NOT NULL,
-                        nb_jour_conge_an INTEGER NOT NULL,
                         nb_heure_jour NUMERIC(15,2)   NOT NULL,
                         id_poste INTEGER NOT NULL,
                         id_talent INTEGER NOT NULL,
