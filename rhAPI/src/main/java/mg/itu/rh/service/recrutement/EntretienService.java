@@ -51,8 +51,7 @@ public class EntretienService {
         return this.save( entretien );
     }
 
-    public Entretien save( EntretienCandidatureDTO entretienDTO )
-            throws Exception {
+    public Entretien save( EntretienCandidatureDTO entretienDTO ) {
         Entretien entretien = new Entretien( entretienDTO );
         entretien.setTalent( talentService.findById( entretienDTO.getIdTalent() ) );
         entretien.setAnnonce( annonceService.findById( entretienDTO.getIdAnnonce() ) );

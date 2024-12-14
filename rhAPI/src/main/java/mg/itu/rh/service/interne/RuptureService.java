@@ -24,8 +24,7 @@ public class RuptureService {
         this.typeRuptureService = typeRuptureService;
     }
 
-    public Rupture save( RuptureDTO ruptureDTO )
-            throws Exception {
+    public Rupture save( RuptureDTO ruptureDTO ) {
         Long idTypeRupture = ruptureDTO.getIdTypeRupture();
 
         Rupture rupture = new Rupture( ruptureDTO );
@@ -35,8 +34,7 @@ public class RuptureService {
         return ruptureRepository.save( rupture );
     }
 
-    public Rupture save( Rupture rupture )
-            throws Exception {
+    public Rupture save( Rupture rupture ) {
         return ruptureRepository.save( rupture );
     }
 
