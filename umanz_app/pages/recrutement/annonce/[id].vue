@@ -41,6 +41,7 @@ const validerFn = async (talentId: number) => {
         successMessage.value = 'Candidat validé avec succès';
         errorMessage.value = '';
         await refreshInterne();
+        await refreshExterne();
     } catch (error) {
         errorMessage.value = 'Erreur lors de la validation du candidat';
         successMessage.value = '';
@@ -53,7 +54,8 @@ const refuserFn = async (talentId: number) => {
         await refuser(talentId, Number(annonceId.value), apiUrl);
         successMessage.value = 'Candidat refusé avec succès';
         errorMessage.value = '';
-        await refreshExterne()
+        await refreshInterne();
+        await refreshExterne();
     } catch (error) {
         errorMessage.value = 'Erreur lors du refus du candidat';
         successMessage.value = '';
@@ -85,6 +87,13 @@ const isAdmin = computed(() => localStorage.getItem("umanz-isAdmin") === 'true')
 
         <br>
 
+        <div v-if="successMessage" class="text-green-500 text-center">
+            {{ successMessage }}
+        </div>
+        <div v-if="errorMessage" class="text-red-500 text-center">
+            {{ errorMessage }}
+        </div>
+
         <h1 class="text-3xl font-bold mb-6 text-center">Candidats Interne</h1>
         <div v-if="candidatsInterne">
             <div v-if="candidatsInterne.length > 0">
@@ -109,7 +118,7 @@ const isAdmin = computed(() => localStorage.getItem("umanz-isAdmin") === 'true')
                     </template>
                 </UTable>
             </div>
-            <div v-else>
+            <div v-else class="text-center mb-5">
                 Aucun Candidats Interne pour le moment
             </div>
         </div>
@@ -141,19 +150,12 @@ const isAdmin = computed(() => localStorage.getItem("umanz-isAdmin") === 'true')
                     </template>
                 </UTable>
             </div>
-            <div v-else>
+            <div v-else class="text-center mb-5">
                 Aucun Candidats Externe pour le moment
             </div>
         </div>
         <div v-else>
             Chargement ...
-        </div>
-
-        <div v-if="successMessage" class="text-green-500">
-            {{ successMessage }}
-        </div>
-        <div v-if="errorMessage" class="text-red-500">
-            {{ errorMessage }}
         </div>
     </div>
 </template>

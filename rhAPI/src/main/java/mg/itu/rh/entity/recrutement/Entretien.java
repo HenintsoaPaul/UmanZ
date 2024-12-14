@@ -16,7 +16,7 @@ public class Entretien {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_entretien")
-    @JsonView({POV.Public.class})
+    @JsonView({POV.Public.class, POV.CandidatureResponse.class})
     private Long idEntretien;
 
     @Column(name = "date_creation", nullable = false)
@@ -24,7 +24,7 @@ public class Entretien {
     private LocalDate dateCreation;
 
     @Column(name = "date_validation")
-    @JsonView({POV.Public.class})
+    @JsonView({POV.Public.class, POV.CandidatureResponse.class})
     private LocalDate dateValidation;
 
     @Column(name = "note")
@@ -37,7 +37,7 @@ public class Entretien {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_talent", nullable = false)
-    @JsonView({POV.Public.class})
+    @JsonView({POV.Public.class, POV.CandidatureResponse.class})
     private Talent talent;
 
     @ManyToOne(fetch = FetchType.LAZY)
