@@ -7,8 +7,8 @@ const idTalent = computed(() => localStorage.getItem('umanz-idUser') ?? "0");
 const isAdmin = computed(() => localStorage.getItem("isAdmin") === 'true');
 
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
-const { data: annonces, refresh } = useFetch<Annonce[]>(`${apiUrl}/annonce/disponible`);
-const { data: idAnnoncesPostules } = useFetch<number[]>(`${apiUrl}/annonce/postule/${idTalent.value}`);
+const { data: annonces } = useFetch<Annonce[]>(`${apiUrl}/annonce/disponible`);
+const { data: idAnnoncesPostules, refresh } = useFetch<number[]>(`${apiUrl}/annonce/postule/${idTalent.value}`);
 
 const estDejaPostule = (idAnnonce: number): boolean | undefined => {
     return idAnnoncesPostules.value?.includes(idAnnonce);
