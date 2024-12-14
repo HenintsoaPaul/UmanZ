@@ -1,20 +1,18 @@
 <script setup lang="ts">
 import { ref, reactive, toRaw } from 'vue';
-import type { Entretien, TypeContrat } from '~/types';
+import type { Entretien } from '~/types';
 
 const route = useRoute();
 const idEntretien: number = Number(route.query.entretien);
 
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const { data: entretien } = useFetch<Entretien>(`${apiUrl}/entretien/${idEntretien}`);
-const { data: typeContrats } = useFetch<TypeContrat[]>(`${apiUrl}/type_contrats`);
 
 const form = reactive<{
     dateDebut: string;
     dateFin: string;
     salaireHoraire: number;
     nbJourSemaine: number;
-    nbJourCongeAn: number;
     nbHeureJour: number;
     idTypeContrat: number;
 }>({
@@ -22,9 +20,8 @@ const form = reactive<{
     dateFin: '',
     salaireHoraire: 0,
     nbJourSemaine: 0,
-    nbJourCongeAn: 0,
     nbHeureJour: 0,
-    idTypeContrat: 0
+    idTypeContrat: 1 // Contrat d'essaie par defaut
 });
 
 const loading = ref(false);
@@ -38,7 +35,6 @@ const onSubmit = async () => {
             idPoste: entretien.value?.annonce.poste.idPoste,
             idTalent: entretien.value?.talent.idTalent,
         };
-        console.log(toRaw(formKdj));
 
         const response = await $fetch(`${apiUrl}/contrats`, {
             method: 'POST',
@@ -56,7 +52,7 @@ const onSubmit = async () => {
 <template>
     <div v-if="idEntretien">
         <div class="contrat-form max-w-3xl mx-auto p-6 border border-white rounded-lg shadow-md">
-            <h1 class="text-3xl font-bold mb-6">Ajouter Contrat</h1>
+            <h1 class="text-3xl font-bold mb-6">Ajouter nouveau Contrat d'Essaie</h1>
 
             <form @submit.prevent="onSubmit" class="space-y-6">
                 <!-- Info Entretien -->
@@ -70,19 +66,6 @@ const onSubmit = async () => {
                         <label for="poste" class="block text-sm font-medium">Poste:</label>
                         <input type="text" id="poste" :value="entretien?.annonce.poste.nomPoste" readonly
                             class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-                    </div>
-                </div>
-
-                <!-- Type Contrat -->
-                <div v-if="typeContrats">
-                    <div class="form-group">
-                        <label for="typeContrat" class="block text-sm font-medium">Type Contrat:</label>
-                        <select id="typeContrat" v-model="form.idTypeContrat" required
-                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                            <option v-for="(tp, i) in typeContrats" :key="i" :value="tp.idTypeContrat">
-                                {{ tp.typeContrat }}
-                            </option>
-                        </select>
                     </div>
                 </div>
 
@@ -112,12 +95,6 @@ const onSubmit = async () => {
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                         </div>
                         <div class="form-group">
-                            <label for="nbJourCongeAn" class="block text-sm font-medium">Nombre de Jours de Congé par
-                                An:</label>
-                            <input type="number" id="nbJourCongeAn" v-model="form.nbJourCongeAn" required
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-                        </div>
-                        <div class="form-group">
                             <label for="nbHeureJour" class="block text-sm font-medium">Nombre d'Heures par Jour:</label>
                             <input type="number" id="nbHeureJour" v-model="form.nbHeureJour" required
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
@@ -132,7 +109,7 @@ const onSubmit = async () => {
             </form>
         </div>
     </div>
-    <div v-else>
-        No idEntretien
+    <div v-else class="text-red">
+        Erreur lors de la recuperation de l' idEntretien
     </div>
 </template>

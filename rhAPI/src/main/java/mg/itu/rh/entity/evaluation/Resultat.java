@@ -51,7 +51,7 @@ public class Resultat {
         this.setNote(note/reponses.size());
     }
     protected void setDomaine(){
-        if(reponses.size()!=0){
+        if( !reponses.isEmpty() ){
             this.setDomaine(reponses.get(0).getQuestion().getDomaine());
         }
     }

@@ -1,7 +1,6 @@
 package mg.itu.rh.dto.interne;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import mg.itu.rh.entity.interne.Contrat;
@@ -92,7 +91,7 @@ public class FicheDTO {
             value += period.getMonths() + " mois";
         }
         if ( period.getDays() != 0 ) {
-            if ( value != "" ) {
+            if ( !value.isEmpty() ) {
                 value += " et ";
             }
             value += period.getDays() + " jours";

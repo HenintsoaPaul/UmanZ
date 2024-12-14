@@ -5,20 +5,20 @@ import jakarta.persistence.*;
 import lombok.Data;
 import mg.itu.rh.other.POV;
 
-@Entity
 @Data
+@Entity( name = "niveau_diplome" )
 public class NiveauDiplome {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id_niveau_diplome")
-    @JsonView({ POV.Public.class})
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @Column( name = "id_niveau_diplome" )
+    @JsonView( { POV.Public.class } )
     private Long idNiveauDiplome;
 
-    @Column(name = "niveau_diplome")
-    @JsonView({POV.Public.class})
+    @Column( name = "niveau_diplome" )
+    @JsonView( { POV.Public.class } )
     private int niveau;
 
-    @Column(name = "nom_niveau_diplome")
-    @JsonView({POV.Public.class})
+    @Column( name = "nom_niveau_diplome" )
+    @JsonView( { POV.Public.class } )
     private String niveauDiplome;
 }

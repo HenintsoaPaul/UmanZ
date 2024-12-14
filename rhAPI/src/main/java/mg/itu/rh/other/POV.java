@@ -8,4 +8,5 @@ public class POV {
     public class Conge{}
     public class Paie{}
     public class Emp{}
+    public class CandidatureResponse{}
 }

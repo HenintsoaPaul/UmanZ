@@ -87,7 +87,7 @@ const isValidSecond = computed(() => props.entretien.etatEntretien.idEtatEntreti
                         class="w-full max-w-md py-2 rounded-lg" />
 
                     <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                        @click="validerFn" :disabled="entretien.note <= 0" v-if="isChangeable">
+                        @click="validerFn" :disabled="!entretien.motif || entretien.motif.length <= 0 || entretien.note <= 0" v-if="isChangeable">
                         Valider
                     </button>
                 </template>

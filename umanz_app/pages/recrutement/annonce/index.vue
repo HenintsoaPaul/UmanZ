@@ -1,12 +1,18 @@
 <script setup lang="ts">
-import type {Annonce} from '~/types';
-import {computed, ref} from 'vue';
+import type { Annonce } from '~/types';
+import { computed } from 'vue';
 
 const { canditerFn, headers } = useAnnonceActions();
 const idTalent = computed(() => localStorage.getItem('umanz-idUser') ?? "0");
+const isAdmin = computed(() => localStorage.getItem("umanz-isAdmin") === 'true');
 
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const { data: annonces } = useFetch<Annonce[]>(`${apiUrl}/annonce/disponible`);
+const { data: idAnnoncesPostules, refresh } = useFetch<number[]>(`${apiUrl}/annonce/postule/${idTalent.value}`);
+
+const estDejaPostule = (idAnnonce: number): boolean | undefined => {
+    return idAnnoncesPostules.value?.includes(idAnnonce);
+};
 
 const { q, filteredRows: filteredAnnonces } = useFilteredRows(annonces);
 const expand = ref({
@@ -18,9 +24,8 @@ const message = ref('');
 
 const handleCandidater = async (idAnnonce: number) => {
     message.value = await canditerFn(idAnnonce, idTalent.value, apiUrl);
+    refresh();
 }
-
-const isAdmin = computed(() => localStorage.getItem("umanz-isAdmin") === 'true');
 </script>
 
 <template>
@@ -53,9 +58,14 @@ const isAdmin = computed(() => localStorage.getItem("umanz-isAdmin") === 'true')
                             </button>
 
                             <template v-if="!isAdmin">
-                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4"
-                                    @click="handleCandidater(row.idAnnonce)">
-                                    Candidater
+                                <button
+                                    :class="{
+                                        'bg-gray-500 cursor-not-allowed': estDejaPostule(row.idAnnonce),
+                                        'bg-blue-500 hover:bg-blue-700': !estDejaPostule(row.idAnnonce),
+                                        'text-white font-bold py-2 px-4 rounded ml-4': true
+                                    }"
+                                    @click="handleCandidater(row.idAnnonce)" :disabled="estDejaPostule(row.idAnnonce)">
+                                    {{ estDejaPostule(row.idAnnonce) ? "Deja postule" : "Candidater" }}
                                 </button>
                             </template>
                         </div>

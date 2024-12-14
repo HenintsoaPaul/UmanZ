@@ -19,13 +19,13 @@ public class Talent {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "id_talent" )
-    @JsonView( { POV.Public.class, POV.Emp.class, POV.Question.class, POV.Auth.class, POV.Conge.class, POV.Paie.class } )
+    @JsonView( { POV.Public.class, POV.Emp.class, POV.Question.class, POV.Auth.class, POV.Conge.class, POV.Paie.class, POV.CandidatureResponse.class } )
     private Long idTalent;
 
-    @JsonView( { POV.Public.class, POV.Emp.class, POV.Question.class, POV.Conge.class } )
+    @JsonView( { POV.Public.class, POV.Emp.class, POV.Question.class, POV.Conge.class, POV.CandidatureResponse.class } )
     private String nom;
 
-    @JsonView( { POV.Public.class, POV.Emp.class, POV.Question.class, POV.Conge.class } )
+    @JsonView( { POV.Public.class, POV.Emp.class, POV.Question.class, POV.Conge.class, POV.CandidatureResponse.class } )
     private String prenom;
 
     @JsonView( { POV.Public.class, POV.Question.class } )
