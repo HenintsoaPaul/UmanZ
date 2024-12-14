@@ -37,10 +37,16 @@ public class AnnonceController {
         return annonceService.findById( id );
     }
 
-    @GetMapping( "/{id}/candidats" )
+    @GetMapping( "/{id}/candidats/interne" )
     @JsonView( POV.Public.class )
-    public List<Talent> getCandidatsAnnonce(@PathVariable( "id" ) Long id ) {
-        return entretienService.findAllCandidatsOfAnnonce( id );
+    public List<Talent> getCandidatsInterneAnnonce(@PathVariable( "id" ) Long id ) {
+        return entretienService.findAllCandidatsInterneOfAnnonce( id );
+    }
+
+    @GetMapping( "/{id}/candidats/externe" )
+    @JsonView( POV.Public.class )
+    public List<Talent> getCandidatsExterneAnnonce(@PathVariable( "id" ) Long id ) {
+        return entretienService.findAllCandidatsExterneOfAnnonce( id );
     }
 
     @GetMapping( "/{id}/competences" )
