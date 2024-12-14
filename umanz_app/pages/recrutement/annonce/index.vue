@@ -4,7 +4,7 @@ import { computed } from 'vue';
 
 const { canditerFn, headers } = useAnnonceActions();
 const idTalent = computed(() => localStorage.getItem('umanz-idUser') ?? "0");
-const isAdmin = computed(() => localStorage.getItem("isAdmin") === 'true');
+const isAdmin = computed(() => localStorage.getItem("umanz-isAdmin") === 'true');
 
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const { data: annonces } = useFetch<Annonce[]>(`${apiUrl}/annonce/disponible`);

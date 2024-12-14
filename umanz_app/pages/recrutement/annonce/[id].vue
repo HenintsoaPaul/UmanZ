@@ -38,19 +38,13 @@ const refreshCandidats = async () => {
     await refreshExterne();
 }
 
+const { validerFn: valider, refuserFn: refuser } = useAnnonceActions();
+
 const validerFn = async (talentId: number) => {
     try {
-        const response = await $fetch(`${apiUrl}/entretien/validate`, {
-            method: 'POST',
-            body: {
-                idAnnonce: Number(annonceId.value),
-                idTalent: talentId,
-            }
-        });
+        await valider(talentId, Number(annonceId.value), apiUrl);
         successMessage.value = 'Candidat validé avec succès';
         errorMessage.value = '';
-
-        console.log('Candidat validé:', response);
         await refreshCandidats();
     } catch (error) {
         errorMessage.value = 'Erreur lors de la validation du candidat';
@@ -61,17 +55,9 @@ const validerFn = async (talentId: number) => {
 
 const refuserFn = async (talentId: number) => {
     try {
-        const response = await $fetch(`${apiUrl}/entretien/deny`, {
-            method: 'POST',
-            body: {
-                idAnnonce: Number(annonceId.value),
-                idTalent: talentId,
-            }
-        });
+        await refuser(talentId, Number(annonceId.value), apiUrl);
         successMessage.value = 'Candidat refusé avec succès';
         errorMessage.value = '';
-
-        console.log('Candidat refusé:', response);
         await refreshCandidats()
     } catch (error) {
         errorMessage.value = 'Erreur lors du refus du candidat';
