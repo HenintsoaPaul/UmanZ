@@ -8,7 +8,8 @@ const annonceId = computed(() => route.params.id);
 const url = computed(() => `${apiUrl}/annonce/${annonceId.value}`);
 
 const { data: annonce, error: annonceError } = useFetch<Annonce>(`${url.value}`);
-const { data: candidats, error: candidatsError, refresh: refreshCandidats } = useFetch<Talent[]>(`${url.value}/candidats`);
+const { data: candidatsInterne, refresh: refreshInterne } = useFetch<Talent[]>(`${url.value}/candidats`);
+const { data: candidatsExterne, refresh: refreshExterne } = useFetch<Talent[]>(`${url.value}/candidats`);
 const { data: competences, error: competencesError } = useFetch<CompetenceAnnonce[]>(`${url.value}/competences`);
 const { data: experiences, error: experiencesError } = useFetch<ExperiencePoste[]>(`${url.value}/experiences`);
 
@@ -23,10 +24,19 @@ const columnsCandidats = [
     { key: "mail", label: "E-mail" },
 ];
 
-const expand = ref({
+const expandInterne = ref({
     openedRows: [],
     row: {}
 });
+const expandExterne = ref({
+    openedRows: [],
+    row: {}
+});
+
+const refreshCandidats = async () => {
+    await refreshInterne();
+    await refreshExterne();
+}
 
 const validerFn = async (talentId: number) => {
     try {
@@ -95,9 +105,9 @@ const isAdmin = computed(() => localStorage.getItem("umanz-isAdmin") === 'true')
         <br>
 
         <h1 class="text-3xl font-bold mb-6 text-center">Candidats Interne</h1>
-        <div v-if="candidats">
-            <div v-if="candidats.length > 0">
-                <UTable :columns="columnsCandidats" :rows="candidats" v-model:expand="expand"
+        <div v-if="candidatsInterne">
+            <div v-if="candidatsInterne.length > 0">
+                <UTable :columns="columnsCandidats" :rows="candidatsInterne" v-model:expand="expandInterne"
                     class="w-full shadow-md rounded-lg overflow-hidden">
                     <template #expand="{ row }">
                         <template v-if="isAdmin">
@@ -119,17 +129,17 @@ const isAdmin = computed(() => localStorage.getItem("umanz-isAdmin") === 'true')
                 </UTable>
             </div>
             <div v-else>
-                No Candidats
+                No CandidatsInterne
             </div>
         </div>
         <div v-else>
-            Loading Candidats...
+            Loading CandidatsInterne...
         </div>
 
         <h1 class="text-3xl font-bold mb-6 text-center">Candidats Externe</h1>
-        <div v-if="candidats">
-            <div v-if="candidats.length > 0">
-                <UTable :columns="columnsCandidats" :rows="candidats" v-model:expand="expand"
+        <div v-if="candidatsExterne">
+            <div v-if="candidatsExterne.length > 0">
+                <UTable :columns="columnsCandidats" :rows="candidatsExterne" v-model:expand="expandExterne"
                     class="w-full shadow-md rounded-lg overflow-hidden">
                     <template #expand="{ row }">
                         <template v-if="isAdmin">
@@ -151,16 +161,13 @@ const isAdmin = computed(() => localStorage.getItem("umanz-isAdmin") === 'true')
                 </UTable>
             </div>
             <div v-else>
-                No Candidats
+                No CandidatsExterne
             </div>
         </div>
         <div v-else>
-            Loading Candidats...
+            Loading CandidatsExterne...
         </div>
 
-        <div v-if="candidatsError" class="text-red-500">
-            Erreur lors du chargement des candidats: {{ candidatsError.message }}
-        </div>
         <div v-if="successMessage" class="text-green-500">
             {{ successMessage }}
         </div>
