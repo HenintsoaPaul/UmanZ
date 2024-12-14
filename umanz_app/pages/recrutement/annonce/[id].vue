@@ -70,7 +70,7 @@ const refuserFn = async (talentId: number) => {
     }
 }
 
-const isAdmin = computed(() => localStorage.getItem("isAdmin") === 'true');
+const isAdmin = computed(() => localStorage.getItem("umanz-isAdmin") === 'true');
 </script>
 
 <template>

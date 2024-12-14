@@ -1,3 +1,67 @@
+<script>
+import axios from 'axios'; // Assurez-vous d'importer axios
+
+export default {
+    data() {
+        return {
+            email: '',
+            name: '',
+            message: '',
+            success: false
+        };
+    },
+    methods: {
+        async sendEmail() {
+            try {
+                // Vérifiez les données avant l'envoi
+                if (!this.email || !this.name) {
+                    this.message = 'Veuillez remplir tous les champs';
+                    this.success = false;
+                    return;
+                }
+
+                console.log('Données envoyées:', { email: this.email, name: this.name });
+
+                // Envoi de la requête POST
+                const response = await axios.post('http://localhost:911/talents/sendDossier', {
+                    email: this.email,
+                    name: this.name
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json' // Assurez-vous que l'en-tête est bien défini
+                    }
+                });
+
+                // Vérifiez la réponse
+                if (response.data && response.data.message) {
+                    this.message = response.data.message;
+                    this.success = true;
+                } else {
+                    this.message = 'Aucune donnée reçue';
+                    this.success = false;
+                }
+            } catch (error) {
+                console.error('Erreur lors de l\'envoi:', error); // Afficher l'erreur dans la console
+
+                // Gérer les erreurs 400 et autres erreurs spécifiques
+                if (error.response) {
+                    // Vérifier si l'erreur provient d'un code HTTP 400
+                    if (error.response.status === 400) {
+                        this.message = 'Erreur 400 : Requête incorrecte. Vérifiez vos données.';
+                    } else {
+                        this.message = 'Erreur lors de l\'envoi de l\'email: ' + (error.response.data.message || error.response.data);
+                    }
+                } else {
+                    this.message = 'Erreur lors de l\'envoi de l\'email: ' + error.message;
+                }
+
+                this.success = false;
+            }
+        }
+    }
+};
+</script>
+
 <template>
   <div class="container bg-gray-100 min-h-screen flex items-center justify-center">
     <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
@@ -48,67 +112,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import axios from 'axios'; // Assurez-vous d'importer axios
-
-export default {
-  data() {
-    return {
-      email: '',
-      name: '',
-      message: '',
-      success: false
-    };
-  },
-  methods: {
-    async sendEmail() {
-      try {
-        // Vérifiez les données avant l'envoi
-        if (!this.email || !this.name) {
-          this.message = 'Veuillez remplir tous les champs';
-          this.success = false;
-          return;
-        }
-
-        console.log('Données envoyées:', { email: this.email, name: this.name });
-
-        // Envoi de la requête POST
-        const response = await axios.post('http://localhost:911/talents/sendDossier', {
-          email: this.email,
-          name: this.name
-        }, {
-          headers: {
-            'Content-Type': 'application/json' // Assurez-vous que l'en-tête est bien défini
-          }
-        });
-
-        // Vérifiez la réponse
-        if (response.data && response.data.message) {
-          this.message = response.data.message;
-          this.success = true;
-        } else {
-          this.message = 'Aucune donnée reçue';
-          this.success = false;
-        }
-      } catch (error) {
-        console.error('Erreur lors de l\'envoi:', error); // Afficher l'erreur dans la console
-        
-        // Gérer les erreurs 400 et autres erreurs spécifiques
-        if (error.response) {
-          // Vérifier si l'erreur provient d'un code HTTP 400
-          if (error.response.status === 400) {
-            this.message = 'Erreur 400 : Requête incorrecte. Vérifiez vos données.';
-          } else {
-            this.message = 'Erreur lors de l\'envoi de l\'email: ' + (error.response.data.message || error.response.data);
-          }
-        } else {
-          this.message = 'Erreur lors de l\'envoi de l\'email: ' + error.message;
-        }
-
-        this.success = false;
-      }
-    }
-  }
-};
-</script>
