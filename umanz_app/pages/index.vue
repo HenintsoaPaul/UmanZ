@@ -1,7 +1,8 @@
 <script setup lang="ts">
 definePageMeta({
     layout: 'blank',
-    middleware: 'logout'
+    middleware: 'logout',
+    key: 'login-page'
 });
 
 import { z } from 'zod'

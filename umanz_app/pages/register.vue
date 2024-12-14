@@ -1,7 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
     layout: 'blank',
-    middleware: 'logout'
+    key: 'register-page'
 });
 
 import axios from 'axios';

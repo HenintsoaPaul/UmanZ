@@ -1,16 +1,6 @@
 <script setup lang="ts">
 const router = useRouter();
-const idUserStr = computed( () => localStorage.getItem( "umanz-idUser" ) );
 const loggedIn = ref( false );
-
-
-onMounted( () => {
-  if ( idUserStr ) {
-    loggedIn.value = true;
-  } else {
-    logout();
-  }
-} );
 
 interface NavLinkChild {
     label: string;
@@ -94,20 +84,29 @@ const navLinks : NavLink[] = [
   }
 ];
 
-const showProfile = () => {
-    router.push(`/talent/${idUserStr.value}`);
-}
-const showEmpList = () => {
-    router.push(`/interne/emp`);
-}
+const isAdmin = ref(false);
 
-const isAdmin = computed(() => {
-    const bb = localStorage.getItem("umanz-isAdmin");
-    return bb ? Boolean(bb) : false;
+onMounted(() => {
+    if (process.client) {
+        const bb = localStorage.getItem("umanz-isAdmin");
+        isAdmin.value = bb ? Boolean(bb) : false;
+        loggedIn.value = !!localStorage.getItem("umanz-idUser");
+    }
 });
 
+const showProfile = () => {
+    if (process.client) {
+        const idUser = localStorage.getItem("umanz-idUser");
+        router.push(`/talent/${idUser}`);
+    }
+};
+
+const showEmpList = () => {
+    router.push(`/interne/emp`);
+};
+
 const logout = async () => {
-  await router.push( "/" );
+    await router.push("/");
 };
 </script>
 
