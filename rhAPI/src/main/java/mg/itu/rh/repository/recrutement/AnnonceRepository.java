@@ -14,15 +14,18 @@ public interface AnnonceRepository extends JpaRepository<Annonce, Long> {
             "where a.dateRupture is null and a.dateExpiration > CURRENT_DATE " )
     List<Annonce> findAnnonceAvailable();
 
-    @Query("""
-            select a.idAnnonce 
-            from Annonce a 
-            where 
-            a.dateRupture is null 
-                and 
-            a.dateExpiration > CURRENT_DATE 
-                and 
-            a.idAnnonce in (select e.annonce.idAnnonce from Entretien e where e.talent.idTalent=:idTalent)
-           """)
-    public List<Long> findAnnoncePostuledByTalent(@Param("idTalent")Long idTalent);
+    @Query( """
+             select a.idAnnonce 
+             from Annonce a 
+             where 
+             a.dateRupture is null 
+                 and 
+             a.dateExpiration > CURRENT_DATE 
+                 and 
+             a.idAnnonce in (
+                         select e.annonce.idAnnonce 
+                                     from Entretien e 
+                                                 where e.talent.idTalent=:idTalent)
+            """ )
+    List<Long> findAnnoncePostuledByTalent( @Param( "idTalent" ) Long idTalent );
 }
