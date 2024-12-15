@@ -2,7 +2,6 @@ package mg.itu.rh.controller.interne;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import mg.itu.rh.dto.interne.CongeDTO;
-import mg.itu.rh.dto.interne.CongeTalentDTO;
 import mg.itu.rh.dto.interne.PendingCongeDTO;
 import mg.itu.rh.entity.interne.Conge;
 import mg.itu.rh.exception.interne.CongeException;

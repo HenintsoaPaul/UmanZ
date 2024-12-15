@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import type { Annonce } from '~/types';
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 
 const { canditerFn, headers } = useAnnonceActions();
-const idTalent = computed(() => localStorage.getItem('idUser') ?? "0");
+const idTalent = computed(() => localStorage.getItem('umanz-idUser') ?? "0");
+const isAdmin = computed(() => localStorage.getItem("umanz-isAdmin") === 'true');
 
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const { data: annonces } = useFetch<Annonce[]>(`${apiUrl}/annonce/disponible`);
+const { data: idAnnoncesPostules, refresh } = useFetch<number[]>(`${apiUrl}/annonce/postule/${idTalent.value}`);
+
+const estDejaPostule = (idAnnonce: number): boolean | undefined => {
+    return idAnnoncesPostules.value?.includes(idAnnonce);
+};
 
 const { q, filteredRows: filteredAnnonces } = useFilteredRows(annonces);
 const expand = ref({
@@ -17,11 +23,9 @@ const expand = ref({
 const message = ref('');
 
 const handleCandidater = async (idAnnonce: number) => {
-    const msg = await canditerFn(idAnnonce, idTalent.value, apiUrl);
-    message.value = msg;
+    message.value = await canditerFn(idAnnonce, idTalent.value, apiUrl);
+    refresh();
 }
-
-const isAdmin = computed(() => localStorage.getItem("isAdmin") === 'true');
 </script>
 
 <template>
@@ -31,6 +35,10 @@ const isAdmin = computed(() => localStorage.getItem("isAdmin") === 'true');
         <div class="flex justify-center mb-4">
             <UInput v-model="q" placeholder="Filtrer les annonces..."
                 class="w-full max-w-md px-4 py-2  rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+
+        <div v-if="message" class="mt-4 p-4 bg-blue-100 text-blue-700 rounded">
+            {{ message }}
         </div>
 
         <div v-if="annonces">
@@ -50,9 +58,14 @@ const isAdmin = computed(() => localStorage.getItem("isAdmin") === 'true');
                             </button>
 
                             <template v-if="!isAdmin">
-                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4"
-                                    @click="handleCandidater(row.idAnnonce)">
-                                    Candidater
+                                <button
+                                    :class="{
+                                        'bg-gray-500 cursor-not-allowed': estDejaPostule(row.idAnnonce),
+                                        'bg-blue-500 hover:bg-blue-700': !estDejaPostule(row.idAnnonce),
+                                        'text-white font-bold py-2 px-4 rounded ml-4': true
+                                    }"
+                                    @click="handleCandidater(row.idAnnonce)" :disabled="estDejaPostule(row.idAnnonce)">
+                                    {{ estDejaPostule(row.idAnnonce) ? "Deja postule" : "Candidater" }}
                                 </button>
                             </template>
                         </div>
@@ -65,10 +78,6 @@ const isAdmin = computed(() => localStorage.getItem("isAdmin") === 'true');
         </div>
         <div v-else>
             Loading Annonces...
-        </div>
-
-        <div v-if="message" class="mt-4 p-4 bg-blue-100 text-blue-700 rounded">
-            {{ message }}
         </div>
     </div>
 </template>

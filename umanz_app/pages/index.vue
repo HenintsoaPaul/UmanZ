@@ -1,10 +1,10 @@
 <script setup lang="ts">
 definePageMeta({
     layout: 'blank',
-    middleware: 'logout'
+    middleware: 'logout',
+    key: 'login-page'
 });
 
-import { useRouter } from 'vue-router'
 import { z } from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
 
@@ -20,7 +20,6 @@ const formState = reactive({
     error: ''
 });
 
-const router = useRouter();
 const { authenticate, saveUser } = useAuth();
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
@@ -35,7 +34,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
         if (user) {
             saveUser(user);
-            router.push('/Home');
+            await navigateTo('/Home');
         } else {
             formState.error = 'Email ou Mot de passe inconnu'
         }
@@ -44,7 +43,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 </script>
 
 <template>
-    <div class="min-h-screen flex items-center justify-center font-mono">
+    <div :key="$route.fullPath" class="min-h-screen flex items-center justify-center font-mono">
         <div class="border border-slate-50 p-8 rounded-lg shadow-md w-full max-w-md text-slate-500">
             <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
             <UForm :schema="schema" :state="formState" class="space-y-4" @submit="onSubmit">
@@ -69,7 +68,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
                 <div class="text-sm mt-4">
                     Vous n'avez pas encore de compte ?
-                    <NuxtLink class="text-green-400" to="/register">Inscrivez-vous ici</NuxtLink>
+                    <ULink class="text-green-400" to="/register">Inscrivez-vous ici</ULink>
                 </div>
             </UForm>
         </div>

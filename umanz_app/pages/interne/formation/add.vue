@@ -3,6 +3,10 @@ import { z } from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
 import type { Competence, CompetenceAnnonce } from '~/types';
 
+definePageMeta({
+    middleware: ['auth-is-admin']
+})
+
 const schema = z.object({
     nomFormation: z.string().min(5, 'Le nom de la formation est obligatoire'),
     dateDebut: z.string().date('Date Debut incorrect'),

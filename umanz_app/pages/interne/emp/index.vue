@@ -10,6 +10,7 @@ import type { Contrat } from '~/types/interne/contrat';
 const headers = [
     { key: 'idContrat', label: 'ID', sortable: true },
     { key: 'talent.nomPrenom', label: 'Nom et Prenoms' },
+    { key: 'poste.typePoste.typePoste', label: 'Catégorie' },
     { key: 'dateDebut', label: 'Date Debut', sortable: true },
     { key: 'dateFin', label: 'Date Fin', sortable: true },
 ];
@@ -23,13 +24,15 @@ const expand = ref({
     row: {}
 });
 
-async function licencierEmp() {
-    console.log("licencier");
+const router = useRouter();
 
+async function licencierEmp(contrat: Contrat) {
+    router.push(`/interne/rupture/${contrat.idContrat}`);
 }
-async function retraireEmp() {
-    console.log("retraite");
 
+async function goToCvEmp(contrat: Contrat) {
+    console.log("cv");
+    router.push(`/talent/${contrat.talent.idTalent}`);
 }
 </script>
 
@@ -44,7 +47,7 @@ async function retraireEmp() {
         <UTable :columns="headers" :rows="filteredContrats ?? []" v-model:expand="expand">
             <template #expand="{ row }">
                 <div class="p-4">
-                    <RuptureExpend :contrat="row" @licencier="licencierEmp" @retraite="retraireEmp" />
+                    <RuptureExpend :contrat="row" @licencier="licencierEmp" @cv="goToCvEmp" />
                 </div>
             </template>
         </UTable>

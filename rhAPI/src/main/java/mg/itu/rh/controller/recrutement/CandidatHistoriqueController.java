@@ -2,7 +2,6 @@ package mg.itu.rh.controller.recrutement;
 
 import mg.itu.rh.entity.talent.Talent;
 import mg.itu.rh.other.POV;
-import mg.itu.rh.repository.*;
 import mg.itu.rh.entity.recrutement.CandidatHistorique;
 import mg.itu.rh.repository.talent.TalentRepository;
 import mg.itu.rh.service.recrutement.CandidatHistoriqueService;

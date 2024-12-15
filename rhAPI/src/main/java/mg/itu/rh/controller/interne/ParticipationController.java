@@ -36,8 +36,7 @@ public class ParticipationController {
 
     @PostMapping
     @JsonView( POV.Public.class )
-    public Participation save( @RequestBody ParticipationDTO participationDTO )
-            throws Exception {
+    public Participation save( @RequestBody ParticipationDTO participationDTO ) {
         Formation formation = this.formationService.findById( participationDTO.getIdFormation() );
         return participationService.save( participationDTO, formation );
     }

@@ -2,6 +2,7 @@ package mg.itu.rh.service.interne;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import mg.itu.rh.dto.interne.HeureSupplementaireDTO;
 import mg.itu.rh.entity.interne.Contrat;
 import mg.itu.rh.entity.interne.HeureSupplementaire;
 import mg.itu.rh.exception.MaxHeuresSuppDepasseException;
@@ -24,8 +25,8 @@ public class HeureSupplementaireService {
     private final JourFerieService jourFerieService;
     private final ContratService contratService;
 
-    public List<HeureSupplementaire> getByContratAndMois( Long idContrat, int mois ) {
-        return heureSupplementaireRepository.findByContratAndMois( idContrat, mois );
+    public List<HeureSupplementaireDTO> getByContratAndMoisAndAnnee(Long idContrat, int mois, int annee) {
+        return heureSupplementaireRepository.findSumHeuresAndMontantByContratAndMoisAndAnnee(idContrat, mois, annee);
     }
 
     @Transactional

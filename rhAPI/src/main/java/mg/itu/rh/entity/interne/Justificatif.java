@@ -13,21 +13,21 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Justificatif {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_justficatif")
-    @JsonView({POV.Public.class})
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @Column( name = "id_justificatif" )
+    @JsonView( { POV.Public.class } )
     private Long idJustificatif;
 
-    @Column(name = "date_justificatif")
-    @JsonView({POV.Public.class})
+    @Column( name = "date_justificatif" )
+    @JsonView( { POV.Public.class } )
     private LocalDate dateJustificatif;
 
-    @Column(name = "image_justificatif")
-    @JsonView({POV.Public.class})
+    @Column( name = "image_justificatif" )
+    @JsonView( { POV.Public.class } )
     private String imageJustificatif;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonView({POV.Public.class})
-    @JoinColumn(name = "id_type_justficatif")
+    @ManyToOne( fetch = FetchType.LAZY )
+    @JsonView( { POV.Public.class } )
+    @JoinColumn( name = "id_type_justificatif" )
     private TypeJustificatif typeJustificatif;
 }

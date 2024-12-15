@@ -26,7 +26,7 @@ public class ContratController {
     }
 
     @GetMapping( "/now" )
-    @JsonView( POV.Public.class )
+    @JsonView( POV.Emp.class )
     public List<Contrat> findAllEmpNow() {
         return contratService.findAllEmpNow();
     }
@@ -41,11 +41,5 @@ public class ContratController {
     @JsonView( POV.Public.class )
     public Contrat save( @RequestBody ContratDTO contratDTO ) {
         return contratService.save( contratDTO );
-    }
-
-    @GetMapping("/now")
-    @JsonView(POV.Public.class)
-    public List<Contrat> findContrat(){
-        return contratService.findAllContratNow();
     }
 }

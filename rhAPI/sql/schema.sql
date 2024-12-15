@@ -28,9 +28,9 @@ CREATE TABLE type_contrat(
 CREATE TABLE formation(
                           id_formation SERIAL,
                           nom_formation VARCHAR(50)  NOT NULL,
-                         date_debut DATE NOT NULL,
+                          date_debut DATE NOT NULL,
                           date_fin DATE NOT NULL,
-                          est_fini BOOLEAN,
+                          est_fini BOOLEAN NOT NULL DEFAULT false,
                           PRIMARY KEY(id_formation)
 );
 
@@ -148,7 +148,6 @@ CREATE TABLE contrat(
                         date_fin DATE,
                         salaire_horaire NUMERIC(15,2)   NOT NULL,
                         nb_jour_semaine INTEGER NOT NULL,
-                        nb_jour_conge_an INTEGER NOT NULL,
                         nb_heure_jour NUMERIC(15,2)   NOT NULL,
                         id_poste INTEGER NOT NULL,
                         id_talent INTEGER NOT NULL,
@@ -173,6 +172,7 @@ CREATE TABLE annonce(
 CREATE TABLE rupture(
                         id_rupture SERIAL,
                         date_rupture DATE NOT NULL,
+                        date_rupture_validation DATE,
                         motif VARCHAR(50) ,
                         id_type_rupture INTEGER NOT NULL,
                         id_contrat INTEGER NOT NULL,
@@ -241,7 +241,7 @@ CREATE TABLE heure_supplementaire(
                                      id SERIAL,
                                      motif TEXT,
                                      date_heure_debut TIMESTAMP NOT NULL,
-                                     date_heure_creation TIMESTAMP NOT NULL default now(),
+                                     date_heure_creation TIMESTAMP NOT NULL DEFAULT NOW(),
                                      nb_heure NUMERIC(5,2)   NOT NULL,
                                      taux_majoration NUMERIC(5,2)   NOT NULL,
                                      id_contrat INTEGER NOT NULL,

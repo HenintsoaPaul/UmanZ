@@ -3,7 +3,7 @@ import type { Absence } from '~/types/interne/absence';
 
 const headers = [
     { key: 'idAbsence', label: 'ID', sortable: true },
-    { key: 'nomPrenom', label: 'NOM et Prénoms' },
+    { key: 'contrat.talent.nomPrenom', label: 'NOM et Prénoms' },
     { key: 'dateAbsence', label: "Date d'Absence", sortable: true },
     { key: 'motif', label: "Motif", sortable: true },
 ];

@@ -12,13 +12,8 @@ interface Resultat {
   domaine: Domaine;
 }
 
-// const idTalent=Number(localStorage.getItem("idUser"));
-const { promotionFn, expulsionFn, demissionFn } = useContratActions();
-const currency = useRuntimeConfig().public.currency as string;
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const { data: resultats } = useFetch<Resultat[]>(`${apiUrl}/resultat/talent/1`);
-
-console.log(resultats);
 
 const headers = [
     {
@@ -42,11 +37,7 @@ const headers = [
     }
 ];
 
-const { q, filteredRows: filteredContrats } = useFilteredRows(resultats);
-const expand = ref({
-    openedRows: [],
-    row: {}
-});
+const { q, filteredRows: filteredResultats } = useFilteredRows(resultats);
 </script>
 
 <template>
@@ -60,16 +51,16 @@ const expand = ref({
 
         <div v-if="resultats">
             <div v-if="resultats.length > 0">
-                <UTable :columns="headers" :rows="filteredContrats ?? []" v-model:expand="expand"
+                <UTable :columns="headers" :rows="filteredResultats ?? []"
                     class="w-full shadow-md rounded-lg overflow-hidden">
                 </UTable>
             </div>
             <div v-else>
-                Aucun contrats pour le moment ... 😅
+                Aucune évaluation pour le moment 😅
             </div>
         </div>
         <div v-else>
-            Loading Contrats...
+            Chargement des évaluations...
         </div>
     </div>
 </template>

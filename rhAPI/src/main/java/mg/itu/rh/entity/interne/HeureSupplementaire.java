@@ -31,8 +31,4 @@ public class HeureSupplementaire {
     @ManyToOne
     @JoinColumn( nullable = false, name = "id_contrat" )
     private Contrat contrat;
-
-    public double montant() {
-        return tauxMajoration * contrat.getSalaireHoraire();
-    }
 }

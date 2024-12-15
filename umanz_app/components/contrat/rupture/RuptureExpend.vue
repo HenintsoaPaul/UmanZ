@@ -6,9 +6,9 @@ const props = defineProps<{
     contrat: Contrat;
 }>();
 
-const emit = defineEmits(["licencier", "retraite"]);
+const emit = defineEmits(["licencier", "cv"]);
 const licencierFn = () => { emit("licencier", props.contrat); }
-const retraiteFn = () => { emit("retraite", props.contrat); }
+const cvFn = () => { emit("cv", props.contrat); }
 </script>
 
 <template>
@@ -27,8 +27,8 @@ const retraiteFn = () => { emit("retraite", props.contrat); }
                 Licencier
             </button>
 
-            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2" @click="retraiteFn">
-                Retraite
+            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2" @click="cvFn">
+                Consulter CV
             </button>
         </div>
     </div>

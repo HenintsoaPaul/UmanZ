@@ -19,9 +19,6 @@ export default defineNuxtConfig({
     'nuxt-auth-utils',
     '@samk-dev/nuxt-vcalendar',
   ],
-  plugins: [
-    '~/plugins/iconify.js'
-  ],
   runtimeConfig: {
     public: {
       apiUrl: "http://localhost:911",

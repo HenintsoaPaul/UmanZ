@@ -1,18 +1,18 @@
 package mg.itu.rh.service.talent;
 
 import jakarta.transaction.Transactional;
-import mg.itu.rh.dto.talent.AuthDTO;
+import lombok.RequiredArgsConstructor;
 import mg.itu.rh.dto.talent.TalentDTO;
 import mg.itu.rh.entity.talent.Talent;
 
 import java.util.List;
 
 import mg.itu.rh.repository.talent.TalentRepository;
-import mg.itu.rh.service.interne.EmailService;
 import mg.itu.rh.service.recrutement.CandidatHistoriqueService;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class TalentService {
     private final TalentRepository talentRepository;
     private final ExperienceTalentService experienceTalentService;
@@ -20,21 +20,10 @@ public class TalentService {
     private final TalentDiplomeService talentDiplomeService;
     private final TalentLangueService talentLangueService;
     private final CandidatHistoriqueService candidatHistoriqueService;
-    private final EmailService emailService;
-
-    public TalentService( TalentRepository talentRepository, ExperienceTalentService experienceTalentService, CompetenceTalentService competenceTalentService, TalentDiplomeService talentDiplomeService, TalentLangueService talentLangueService, CandidatHistoriqueService candidatHistoriqueService, EmailService emailService ) {
-        this.talentRepository = talentRepository;
-        this.experienceTalentService = experienceTalentService;
-        this.competenceTalentService = competenceTalentService;
-        this.talentDiplomeService = talentDiplomeService;
-        this.talentLangueService = talentLangueService;
-        this.candidatHistoriqueService = candidatHistoriqueService;
-        this.emailService = emailService;
-    }
 
     public Talent findById( Long id ) {
         return talentRepository.findById( id )
-                .orElseThrow( () -> new RuntimeException( "Talent not found" ) );
+                .orElseThrow( () -> new RuntimeException( "Talent introuvable : idTalent = " +  id) );
     }
 
     public List<Talent> findAll() {

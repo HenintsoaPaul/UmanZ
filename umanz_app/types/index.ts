@@ -88,7 +88,13 @@ export interface Entretien {
 
 export interface Rupture {
     dateRupture: string,
-    idContrat: number
+    idContrat: number,
+    typeRupture: TypeRupture
+}
+
+export interface TypeRupture {
+    idTypeRupture: number,
+    typeRupture: string,
 }
 
 export interface Contrat {
@@ -198,4 +204,32 @@ export interface EvaluationNote {
     idTalent?: number,
     dateEvaluation?: string,
     evaluations?: QuestionEvaluationNote[]
+}
+
+export interface PaysLipsHeader {
+    nomPrenom: string;
+    matricule: number,
+    fonction: string;
+    dateEmbauche: string;
+    anciennete: string;
+    classification: string;
+    idCnaps: string;
+    salaire: number;
+    tauxJournalier: number;
+    tauxHoraire: number;
+    indice: number;
+    retenueCnaps: number;
+    retenueSanitaire: number;
+}
+
+export interface PaysLipsDetails {
+    designation: string;
+    taux: number;
+    montant: number;
+    nombre: number;
+}
+
+export interface PaysLipsBody {
+    brute: PaysLipsDetails[];
+    retenue: PaysLipsDetails[];
 }

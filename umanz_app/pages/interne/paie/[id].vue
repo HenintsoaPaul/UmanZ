@@ -1,7 +1,13 @@
 <script setup lang="ts">
-const FichePaie = defineAsyncComponent(() => import('~/components/paie/FichePaie.vue'));
+import FichePaie from "~/components/paie/FichePaie.vue";
+
+const route = useRoute();
+const month = ref(Number(route.query.month));
+const year = ref(Number(route.query.year));
+const idTalent = ref(Number(route.params.id));
+
 </script>
 
 <template>
-    <FichePaie />
+    <FichePaie :id-talent="idTalent" :month="month" :year="year" />
 </template>

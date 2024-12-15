@@ -4,9 +4,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.transaction.Transactional;
 import mg.itu.rh.dto.recrutement.EntretienCandidatureDTO;
 import mg.itu.rh.dto.recrutement.EntretienValidationDTO;
+import mg.itu.rh.entity.interne.Contrat;
 import mg.itu.rh.entity.talent.Talent;
+import mg.itu.rh.repository.interne.ContratRepository;
 import mg.itu.rh.repository.recrutement.EntretienRepository;
 import mg.itu.rh.repository.recrutement.EtatEntretienRepository;
 import mg.itu.rh.service.talent.TalentService;
@@ -25,18 +28,21 @@ public class EntretienService {
 
     private final EtatEntretienRepository etatEntretienRepository;
 
-    public EntretienService( EntretienRepository entretienRepository, AnnonceService annonceService, TalentService talentService, EtatEntretienRepository etatEntretienRepository ) {
+    private final ContratRepository contratRepository;
+
+    public EntretienService(EntretienRepository entretienRepository, AnnonceService annonceService, TalentService talentService, EtatEntretienRepository etatEntretienRepository, ContratRepository contratRepository) {
         this.entretienRepository = entretienRepository;
         this.annonceService = annonceService;
         this.talentService = talentService;
         this.etatEntretienRepository = etatEntretienRepository;
+        this.contratRepository = contratRepository;
     }
 
     public Entretien save( Entretien entretien ) {
         return entretienRepository.save( entretien );
     }
 
-    public Entretien saveCandidat( EntretienCandidatureDTO entretienDTO ) {
+    public Entretien saveCandidature( EntretienCandidatureDTO entretienDTO ) {
         Entretien entretien = new Entretien( entretienDTO );
         entretien.setTalent( talentService.findById( entretienDTO.getIdTalent() ) );
         entretien.setAnnonce( annonceService.findById( entretienDTO.getIdAnnonce() ) );
@@ -45,8 +51,7 @@ public class EntretienService {
         return this.save( entretien );
     }
 
-    public Entretien save( EntretienCandidatureDTO entretienDTO )
-            throws Exception {
+    public Entretien save( EntretienCandidatureDTO entretienDTO ) {
         Entretien entretien = new Entretien( entretienDTO );
         entretien.setTalent( talentService.findById( entretienDTO.getIdTalent() ) );
         entretien.setAnnonce( annonceService.findById( entretienDTO.getIdAnnonce() ) );
@@ -123,10 +128,46 @@ public class EntretienService {
         return entretienRepository.findAllByIdAnnonceAndEtat( idAnnonce, etatCandidature );
     }
 
-    public List<Talent> findAllCandidatsOfAnnonce( Long idAnnonce ) {
+    @Transactional
+    public List<Talent> findAllCandidatsInterneOfAnnonce( Long idAnnonce ) {
         List<Talent> talents = new ArrayList<>();
+        List<Contrat> contrats=contratRepository.findAllContratEnCoursOnDate(LocalDate.now());
+        boolean validated=true;
+        boolean isIn=false;
         for ( Entretien entretien : this.findAllByIdAnnonce( idAnnonce ) ) {
             if ( entretien.getDateValidation() == null ) {
+                validated=false;
+            }
+            for (Contrat contrat:contrats) {
+                if(contrat.getTalent()==entretien.getTalent()){
+                    isIn=true;
+                    break;
+                }
+            }
+            if(!validated && isIn){
+                talents.add( entretien.getTalent() );
+            }
+        }
+        return talents;
+    }
+
+    @Transactional
+    public List<Talent> findAllCandidatsExterneOfAnnonce( Long idAnnonce ) {
+        List<Talent> talents = new ArrayList<>();
+        List<Contrat> contrats=contratRepository.findAllContratEnCoursOnDate(LocalDate.now());
+        boolean validated=true;
+        boolean isIn=false;
+        for ( Entretien entretien : this.findAllByIdAnnonce( idAnnonce ) ) {
+            if ( entretien.getDateValidation() == null ) {
+                validated=false;
+            }
+            for (Contrat contrat:contrats) {
+                if(contrat.getTalent()==entretien.getTalent()){
+                    isIn=true;
+                    break;
+                }
+            }
+            if(!validated && !isIn){
                 talents.add( entretien.getTalent() );
             }
         }
