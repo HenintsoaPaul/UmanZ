@@ -14,8 +14,6 @@ import java.io.ByteArrayOutputStream;
 
 import org.springframework.stereotype.Service;
 
-import com.itextpdf.text.DocumentException;
-
 @Service
 @RequiredArgsConstructor
 public class EmailService {
@@ -52,7 +50,7 @@ public class EmailService {
     }
 
     public void sendEmailWithAttachments( String toEmail, String name )
-            throws Exception, DocumentException {
+            throws Exception {
         ByteArrayOutputStream certPdf = pdfGenerationService.generateCertificate( name );
         ByteArrayOutputStream unemploymentPdf = pdfGenerationService.generateUnemploymentCertificate( name );
 

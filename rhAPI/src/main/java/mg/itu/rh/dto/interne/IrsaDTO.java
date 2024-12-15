@@ -1,8 +1,10 @@
 package mg.itu.rh.dto.interne;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class IrsaDTO {
     public static double minimum = 50000;
 
@@ -11,24 +13,18 @@ public class IrsaDTO {
     double taux;
     double montant;
 
-    public IrsaDTO(double inferieur, double superieur, double taux) {
+    public IrsaDTO( double inferieur, double superieur, double taux ) {
         this.inferieur = inferieur;
         this.superieur = superieur;
         this.taux = taux;
     }
 
-    public IrsaDTO(){}
-
-    public static double getTotalIrsaPayer(IrsaDTO[] tabIrsa){
-        double total=0;
-        for (int i = 0; i < tabIrsa.length; i++) {
-            total+=tabIrsa[i].getMontant();
+    public static double getTotalIrsaPayer( IrsaDTO[] tabIrsa ) {
+        double total = 0;
+        for ( IrsaDTO irsaDTO : tabIrsa ) {
+            total += irsaDTO.getMontant();
         }
-        double aPayer = total;
-        if (total < IrsaDTO.minimum) {
-            aPayer = IrsaDTO.minimum;
-        }
-        return aPayer;
+        return Math.max( total, IrsaDTO.minimum );
     }
 }
 

@@ -3,7 +3,6 @@ package mg.itu.rh.service.interne;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
-import mg.itu.rh.exception.interne.ContratException;
 import org.springframework.stereotype.Service;
 
 import mg.itu.rh.dto.interne.AbsenceDTO;
@@ -25,8 +24,7 @@ public class AbsenceService {
         return absenceRepository.countByContratAndMoisAndAnnee( idContrat, mois, annee );
     }
 
-    public Absence save( AbsenceDTO absenceDTO )
-            throws ContratException {
+    public Absence save( AbsenceDTO absenceDTO ) {
         Absence absence = new Absence();
         absence.setMotif( absenceDTO.getMotif() );
         absence.setDateAbsence( absenceDTO.getDateAbsence() );

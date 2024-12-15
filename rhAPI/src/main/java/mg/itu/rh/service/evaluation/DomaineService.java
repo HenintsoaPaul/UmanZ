@@ -2,7 +2,6 @@ package mg.itu.rh.service.evaluation;
 
 import mg.itu.rh.entity.evaluation.Domaine;
 import mg.itu.rh.repository.evaluation.DomaineRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

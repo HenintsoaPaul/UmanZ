@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Data;
 import mg.itu.rh.entity.critere.Diplome;
-import mg.itu.rh.entity.id.IdTalentAnnonce;
+import mg.itu.rh.entity.id.IdTalentPoste;
+import mg.itu.rh.entity.interne.Poste;
 import mg.itu.rh.entity.talent.ExperienceTalent;
 import mg.itu.rh.entity.talent.Talent;
 import mg.itu.rh.entity.talent.TalentCompetence;
@@ -18,13 +19,13 @@ import java.util.Set;
 @Data
 public class Compatibilite {
     @EmbeddedId
-    private IdTalentAnnonce idTalentAnnonce = new IdTalentAnnonce();
+    private IdTalentPoste idTalentPoste = new IdTalentPoste();
 
     @ManyToOne( fetch = FetchType.LAZY )
-    @MapsId( "idAnnonce" )
-    @JoinColumn( name = "id_annonce", insertable = false, updatable = false )
+    @MapsId( "idPoste" )
+    @JoinColumn( name = "id_poste", insertable = false, updatable = false )
     @JsonView( { POV.Public.class } )
-    private Annonce annonce;
+    private Poste poste;
 
     @ManyToOne( fetch = FetchType.LAZY )
     @MapsId( "idTalent" )
@@ -61,21 +62,21 @@ public class Compatibilite {
         this.setPourcentage( pointPour / coefTotal * 100.0 / 20.0 );
     }
 
-    public Compatibilite( Annonce annonce, Talent talent ) {
+    public Compatibilite( Poste poste, Talent talent ) {
         //this.setIdTalentAnnonce(new IdTalentAnnonce(annonce.getIdAnnonce(),talent.getIdTalent()));
-        this.setAnnonce( annonce );
+        this.setPoste( poste );
         this.setTalent( talent );
         System.out.println( "Tonga eto" );
         this.setPourcentage();
     }
 
     public void setPourcentageAnnonce(){
-        this.getAnnonce().getPoste().setPourcentage(this.getPourcentage());
+        this.getPoste().setPourcentage(this.getPourcentage());
     }
 
     protected double calculateByDiplome() {
         double max = 0;
-        Set<Diplome> diplomesAnnonce = this.getAnnonce().getPoste().getDiplomes();
+        Set<Diplome> diplomesAnnonce = this.getPoste().getDiplomes();
         Set<Diplome> diplomesTalent = this.talent.getDiplomes();
         for ( Diplome diplomeAnnonce : diplomesAnnonce ) {
             for ( Diplome diplomeTalent : diplomesTalent ) {
@@ -90,7 +91,7 @@ public class Compatibilite {
 
     protected double calculateByCompetence() {
         double point = 0;
-        List<CompetencePoste> competenceAnnonces = this.getAnnonce().getPoste().getCompetencePostes();
+        List<CompetencePoste> competenceAnnonces = this.getPoste().getCompetencePostes();
         List<TalentCompetence> talentCompetences = this.talent.getTalentCompetences();
         for ( CompetencePoste competenceAnnonce : competenceAnnonces ) {
             boolean matched = false;
@@ -112,7 +113,7 @@ public class Compatibilite {
 
     protected double calculateByLangue() {
         double point = 0;
-        List<PosteLangue> annonceLangues = this.getAnnonce().getPoste().getPosteLangues();
+        List<PosteLangue> annonceLangues = this.getPoste().getPosteLangues();
         List<TalentLangue> talentLangues = this.talent.getTalentLangues();
         for ( PosteLangue annonceLangue : annonceLangues ) {
             boolean matched = false;
@@ -135,7 +136,7 @@ public class Compatibilite {
     protected double calculateByExperience() {
         double max = 0;
         List<ExperienceTalent> experienceTalents = this.getTalent().getExperienceTalents();
-        List<ExperiencePoste> experiencePostes = this.annonce.getExperiencePostes();
+        List<ExperiencePoste> experiencePostes = this.getPoste().getExperiencePostes();
         for ( ExperiencePoste experiencePoste : experiencePostes ) {
             for ( ExperienceTalent experienceTalent : experienceTalents ) {
                 double point = calculateByExperience( experiencePoste, experienceTalent );

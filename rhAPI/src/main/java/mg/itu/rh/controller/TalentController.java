@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
-import mg.itu.rh.service.interne.ContratService;
-import mg.itu.rh.service.interne.PromotionService;
 import mg.itu.rh.dto.interne.DetailsFichePaieBruteDTO;
 import mg.itu.rh.dto.interne.FicheDTO;
 import org.springframework.web.bind.annotation.GetMapping;

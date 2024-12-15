@@ -10,14 +10,14 @@ import java.io.Serializable;
 @Embeddable
 @EqualsAndHashCode
 @Data
-public class IdTalentAnnonce implements Serializable {
+public class IdTalentPoste implements Serializable {
     @Column(name = "id_talent")
     private Long idTalent;
-    @Column(name = "id_annonce")
-    private Long idAnnonce;
-    public IdTalentAnnonce(){}
-    public IdTalentAnnonce(Long idAnnonce, Long idTalent){
-        this.setIdAnnonce(idAnnonce);
+    @Column(name = "id_poste")
+    private Long idPoste;
+    public IdTalentPoste(){}
+    public IdTalentPoste(Long idPoste, Long idTalent){
+        this.setIdPoste(idPoste);
         this.setIdTalent(idTalent);
     }
 }
