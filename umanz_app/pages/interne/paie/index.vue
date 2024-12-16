@@ -10,17 +10,13 @@ const onSubmit = async () => {
     try {
         if (date.value) {
             const [year, month] = date.value.split('-');
-            console.log(`Year: ${year}, Month: ${month}`);
 
             etatPaies.value = await $fetch<EtatPaie[]>(`${apiUrl}/paies`, {
                 method: 'GET',
                 params: { month, year },
             });
-
-            console.log('EtatPaies data get successfully', etatPaies.value);
         }
     } catch (error) {
-        console.error('Failed to get EtatPaies data', error);
         throw error;
     }
 }
@@ -31,15 +27,19 @@ const onSubmit = async () => {
 // dû"	 ENFANT A CHARGE 	Montant	 IGR NET 	 AUTRES RETENUES 	 TOTAL RETENUES 	 SALAIRE NET 	 AVANCE 	 NET A PAYER 	 AUTRES INDEMNITE 	NET DU MOIS
 
 const headers = [
+    { key: 'talent.idTalent', label: 'Id Employé' },
+    { key: 'nomPrenom', label: 'Nom et Prénom(s)' },
     { key: 'matricule', label: 'No Matricule', sortable: true },
-    { key: 'idCnaps', label: 'No Cnaps', sortable: true },
-    { key: 'nomPrenom', label: 'NOM et Prénoms' },
-    { key: 'dateEmbauche', label: "Date d'embauche", sortable: true },
-    { key: 'anciennete', label: 'Anciennete', sortable: true },
+    { key: 'idCnaps', label: 'No CNAPS', sortable: true },
+    { key: 'dateEmbauche', label: 'Date d\'embauche', sortable: true },
+    { key: 'anciennete', label: 'Ancienneté', sortable: true },
     { key: 'fonction', label: 'Fonction' },
     { key: 'salaire', label: 'Salaire' },
     { key: 'tauxHoraire', label: 'Taux horaire' },
     { key: 'tauxJournalier', label: 'Taux journalier' },
+    { key: 'indice', label: 'Indice' },
+    { key: 'retenueCnaps', label: 'Retenue Cnaps' },
+    { key: 'retenueSanitaire', label: 'Retenue Sanitaire' },
 ];
 
 const expand = ref({
@@ -68,7 +68,7 @@ const constructDetailsUrl = (row : EtatPaie) => {
         </form>
 
         <template v-if="etatPaies">
-            <UTable :headers="headers" :rows="etatPaies" v-model:expand="expand">
+            <UTable :columns="headers" :rows="etatPaies" v-model:expand="expand">
                 <template #expand="{ row }">
                     <div class="p-4">
                         <button class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
