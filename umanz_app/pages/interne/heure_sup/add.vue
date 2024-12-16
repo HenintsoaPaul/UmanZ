@@ -2,10 +2,15 @@
 import { ref, reactive, toRaw } from 'vue';
 import type {  Contrat } from '~/types';
 
-const route = useRoute();
+definePageMeta({
+    middleware: ['auth-is-admin']
+});
+
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
 const { data: contrats } = useFetch<Contrat[]>(`${apiUrl}/contrats/now`);
-var erreur = ref<String>("");
+
+const erreur = ref<String>("");
+
 const form = reactive<{
     idContrat: number;
     motif: string;
@@ -29,14 +34,11 @@ const onSubmit = async () => {
             method: 'POST',
             body: toRaw(form)
         });
-        erreur="";
+        erreur.value="";
+        console.log(response);
+        
     }catch (error) {
-        // Accéder aux détails de l'erreur HTTP 500
-        if (error.response && error.response._data) {
-            erreur=error.response._data;
-        } else {
-            console.error('Erreur réseau ou inconnue:', error);
-        }
+        console.error('Erreur réseau ou inconnue:', error);
     } finally {
         loading.value = false;
     }
