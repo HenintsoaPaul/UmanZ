@@ -56,10 +56,10 @@ public class FicheDTO {
     private double indice;
 
     @JsonView( { POV.Paie.class } )
-    private double retenueCnaps;
+    private final double retenueCnaps;
 
     @JsonView( { POV.Paie.class } )
-    private double retenueSanitaire;
+    private final double retenueSanitaire;
 
     protected void setNomPrenom() {
         this.nomPrenom = this.getTalent().getNom() + " " + this.getTalent().getPrenom();
@@ -114,12 +114,6 @@ public class FicheDTO {
         this.tauxJournalier = ( int ) ( this.getContratActuel().getSalaireHoraire() * nbHeure );
         this.tauxHoraire = ( int ) this.getContratActuel().getSalaireHoraire();
         this.indice = ( int ) ( this.getTauxJournalier() / 1.334 );
-        this.retenueCnaps = PLAFOND_CNAPS;
-        double valueRetenue = this.retenueCnaps / 100.0;
-        if ( valueRetenue < PLAFOND_CNAPS ) {
-            this.retenueCnaps = valueRetenue;
-        }
-        this.retenueSanitaire = valueRetenue;
     }
 
     public void setTalent( Talent talent ) {
@@ -141,11 +135,13 @@ public class FicheDTO {
         this.setDateEmbauche();
     }
 
-    public FicheDTO( Talent talent, Contrat contratEmbauche, Contrat contratActuel, LocalDate date ) {
+    public FicheDTO( Talent talent, Contrat contratEmbauche, Contrat contratActuel, LocalDate date, double retenueCnaps, double retenueSanitaire ) {
         this.setDate( date );
         this.setTalent( talent );
         this.setContratEmbauche( contratEmbauche );
         this.setContratActuel( contratActuel );
         this.setAnciennete();
+        this.retenueCnaps = retenueCnaps;
+        this.retenueSanitaire = retenueSanitaire;
     }
 }

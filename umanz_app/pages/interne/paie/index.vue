@@ -10,17 +10,13 @@ const onSubmit = async () => {
     try {
         if (date.value) {
             const [year, month] = date.value.split('-');
-            console.log(`Year: ${year}, Month: ${month}`);
 
             etatPaies.value = await $fetch<EtatPaie[]>(`${apiUrl}/paies`, {
                 method: 'GET',
                 params: { month, year },
             });
-
-            console.log('EtatPaies data get successfully', etatPaies.value);
         }
     } catch (error) {
-        console.error('Failed to get EtatPaies data', error);
         throw error;
     }
 }
