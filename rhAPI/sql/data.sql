@@ -80,6 +80,12 @@ VALUES ('Dupont', 'Jean', 'jean.dupont@example.com', 'password1', false, '1985-0
        ('Leroy', 'Paul', 'paul.leroy@example.com', 'password5', true, '1992-01-30', 'CNP354632'),
        ('Dupont', 'Jean', 'recipientgestion@gmail.com', 'recepgestion', true, '1985-04-12', 'CNP48962');
 
+INSERT INTO talent (nom, prenom, mail, password, is_admin, date_naissance, id_cnaps)
+VALUES ('Jean', 'Jacques', 'jean.jacques@example.com', 'password1', false, '1985-04-12', 'CNP1264'),
+       ('Dujardin', 'Alice', 'alice.dujardin@example.com', 'password2', false, '1990-07-25', 'CNP15614'),
+       ('Milet', 'Louis', 'louis.milet@example.com', 'password3', false, '1988-11-15', 'CNP346153'),
+       ('John', 'Mahrston', 'john.mahrston@example.com', 'password4', false, '1995-03-08', 'CNP326884');
+
 insert into talent_langue(id_talent, id_langue, id_niveau_langue)
 VALUES (1, 1, 3),
        (1, 2, 2),
@@ -160,12 +166,11 @@ VALUES ('Contrat CDI Developpeur', '2023-01-01', NULL, 20000.00, 5, 8.0, 1, 1, 3
        ('Contrat d''essai Chef de Projet', '2023-06-01', NULL, 25000.00, 15, 7.0, 2, 4, 1),
        ('Contrat CDI Support technique', '2023-01-01', NULL, 19000.50, 25, 7.5, 5, 5, 3);
 
--- INSERT INTO entretien (date_creation, date_validation, note, motif, id_enfant, id_annonce, id_etat_entretien, id_talent)
--- VALUES ('2023-02-15', '2023-02-20', 85, 'Entretien positif', NULL, 1, 4, 1),
---        ('2023-03-10', '2023-03-15', 90, 'Candidat qualifie', NULL, 2, 5, 2),
---        ('2023-04-05', NULL, NULL, 'En attente de validation', 1, 3, 1, 3),
---        ('2023-05-01', NULL, 70, 'Competences insuffisantes', NULL, 4, 2, 4),
---        ('2023-06-01', NULL, NULL, 'Annulation', 2, 5, 6, 5);
+ INSERT INTO entretien (date_creation, date_validation, note, motif, id_enfant, id_annonce, id_etat_entretien, id_talent)
+ VALUES ('2024-02-15', '2023-02-20', 85, 'Entretien positif', NULL, 1, 1, 7),
+        ('2024-03-10', NULL, NULL, 'En attente de validation', NULL, 2, 1, 8),
+        ('2024-04-05', NULL, NULL, 'En attente de validation', 1, 1, 2, 9),
+        ('2024-05-01', NULL, 70, 'Competences insuffisantes', NULL, 4, 2, 10);
 
 INSERT INTO rupture (date_rupture, motif, id_type_rupture, id_contrat)
 VALUES ('2023-08-01', 'Fin de CDD', 1, 2),
