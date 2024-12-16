@@ -10,5 +10,5 @@ import mg.itu.rh.entity.recrutement.EtatEntretien;
 @Repository
 public interface EtatEntretienRepository extends JpaRepository<EtatEntretien, Long>{
     @Query("select e from EtatEntretien e where e.niveau=:niveau")
-    public EtatEntretien findByNiveau(@Param("niveau") int niveau);
+    EtatEntretien findByNiveau( @Param( "niveau" ) int niveau );
 }

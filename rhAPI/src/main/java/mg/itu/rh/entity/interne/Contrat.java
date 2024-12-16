@@ -48,10 +48,6 @@ public class Contrat {
     @JsonView( POV.Public.class )
     private TypeContrat typeContrat;
 
-    @Column( name = "nb_jour_conge_an" )
-    @JsonView( { POV.Public.class, POV.Conge.class } )
-    private int nbJourCongeAn;
-
     @Column( name = "salaire_horaire" )
     @JsonView( POV.Public.class )
     private double salaireHoraire;
@@ -74,7 +70,6 @@ public class Contrat {
         this.setNbHeureJour( contratDTO.getNbHeureJour() );
         this.setNbJourSemaine( contratDTO.getNbJourSemaine() );
         this.setSalaireHoraire( contratDTO.getSalaireHoraire() );
-        this.setNbJourCongeAn( contratDTO.getNbJourCongeAn() );
         this.setDateDebut( contratDTO.getDateDebut() );
         LocalDate dFin = contratDTO.getDateFin();
         if ( dFin != null ) this.setDateFin( contratDTO.getDateFin() );

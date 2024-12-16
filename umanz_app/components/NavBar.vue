@@ -1,18 +1,18 @@
-<script setup>
+<script setup lang="ts">
 const router = useRouter();
-const idUserStr = computed( () => localStorage.getItem( "umanz-idUser" ) );
 const loggedIn = ref( false );
 
+interface NavLinkChild {
+    label: string;
+    link: string;
+}
 
-onMounted( () => {
-  if ( idUserStr ) {
-    loggedIn.value = true;
-  } else {
-    logout();
-  }
-} );
+interface NavLink {
+    label: string;
+    children: NavLinkChild[];
+}
 
-const navLinks = [
+const navLinks : NavLink[] = [
   {
     label: "Annonces",
     children: [
@@ -84,20 +84,29 @@ const navLinks = [
   }
 ];
 
-const showProfile = () => {
-    router.push(`/talent/${idUserStr.value}`);
-}
-const showEmpList = () => {
-    router.push(`/interne/emp`);
-}
+const isAdmin = ref(false);
 
-const isAdmin = computed(() => {
-    const bb = localStorage.getItem("umanz-isAdmin");
-    return bb ? Boolean(bb) : false;
+onMounted(() => {
+    if (process.client) {
+        const bb = localStorage.getItem("umanz-isAdmin");
+        isAdmin.value = bb ? Boolean(bb) : false;
+        loggedIn.value = !!localStorage.getItem("umanz-idUser");
+    }
 });
 
-const logout = () => {
-  router.push( "/" );
+const showProfile = () => {
+    if (process.client) {
+        const idUser = localStorage.getItem("umanz-idUser");
+        router.push(`/talent/${idUser}`);
+    }
+};
+
+const showEmpList = () => {
+    router.push(`/interne/emp`);
+};
+
+const logout = async () => {
+    await router.push("/");
 };
 </script>
 
@@ -115,7 +124,7 @@ const logout = () => {
                         <li v-for="navLink in navLinks" class="relative group">
                               <p class="cursor-pointer">{{ navLink.label }}</p>
                               <ul
-                                    class="absolute z-index-50 left-0 mb-5 w-48 bg-white text-black rounded-lg shadow-lg group-hover:block hidden duration-300">
+                                    class="absolute z-50 left-0 mb-5 w-48 bg-white text-black rounded-lg shadow-lg group-hover:block hidden duration-300">
                                     <li v-for="sub in navLink.children">
                                           <router-link :to="sub.link" class="block px-4 py-2 hover:bg-gray-200 hover:rounded-lg z-index-50">
                                                 {{ sub.label }}

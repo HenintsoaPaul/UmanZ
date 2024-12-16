@@ -42,20 +42,20 @@ public class EntretienController {
     /*
      * { "idTalent":3, "idAnnonce":1 }
      * */
-    @PostMapping( "/candiat" )
+    @PostMapping( "/candidats" )
     @JsonView( POV.Public.class )
-    private Entretien saveCandidat( @RequestBody EntretienCandidatureDTO entretienCandidat ) {
-        return entretienService.saveCandidat( entretienCandidat );
+    private Entretien saveCandidature( @RequestBody EntretienCandidatureDTO entretienCandidat ) {
+        return entretienService.saveCandidature( entretienCandidat );
     }
 
     @PostMapping( "/validate" )
-    @JsonView( POV.Full.class )
+    @JsonView( POV.CandidatureResponse.class )
     public Entretien validate( @RequestBody EntretienValidationDTO validation ) {
         return entretienService.valider( validation );
     }
 
     @PostMapping( "/deny" )
-    @JsonView( POV.Full.class )
+    @JsonView( POV.CandidatureResponse.class )
     public Entretien deny( @RequestBody EntretienValidationDTO validation ) {
         return entretienService.refuser( validation );
     }
