@@ -15,8 +15,9 @@ const refuserFn = () => { emit("refuser", props.conge); }
 const isChangeable = computed(() => props.conge.dateValidation == null || props.conge.dateRefus == null);
 
 const canValidate = computed(() => {
-    if (props.conge.typeConge.idTypeConge === 2) return true;
-    else return props.conge.nbJour <= props.solde;
+    // if (props.conge.typeConge.idTypeConge === 2) return true;
+    // else return props.conge.nbJour <= props.solde;
+    return true;
 })
 
 const canRefuse = computed(() => props.conge.motifRefus && props.conge.motifRefus.length > 0)

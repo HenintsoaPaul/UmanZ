@@ -31,10 +31,10 @@ async function validerFn(arr: any) {
     const cng: Conge = arr[0];
     const solde: number = arr[1];
 
-    if (solde < cng.nbJour && cng.typeConge.idTypeConge !== 2) {
-        console.error("Solde insuffisant");
-        return;
-    }
+    // if (solde < cng.nbJour && cng.typeConge.idTypeConge !== 2) {
+    //     console.error("Solde insuffisant");
+    //     return;
+    // }
     await validerCongerFn(cng.idConge, apiUrl);
     refreshConges();
 }
