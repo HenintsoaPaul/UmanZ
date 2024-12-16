@@ -34,11 +34,6 @@ public class PaieService {
     }
 
     @Transactional
-    public FicheDTO findFiche( int annee, int mois, Long idTalent ) {
-        return findFiche( getLastDateOfMonth( mois, annee ), idTalent );
-    }
-
-    @Transactional
     public FicheDTO findFiche( LocalDate lastDayOfMonth, Long idTalent ) {
         Talent talent = talentService.findById( idTalent );
 
@@ -47,7 +42,16 @@ public class PaieService {
         Contrat contratActuel = contratRepository.findContratByDateTalent( lastDayOfMonth, idTalent )
                 .orElseThrow( () -> new RuntimeException( "Cette personne n'est pas un employe la date du " + lastDayOfMonth ) );
 
-        return new FicheDTO( talent, contratEmbauche, contratActuel, lastDayOfMonth );
+        List<DetailsFichePaieBruteDTO> detailsBrute = findDetailsFichePaieBrute(lastDayOfMonth.getYear(), lastDayOfMonth.getMonthValue(), idTalent);
+        double salaireBrute = detailsBrute.get(detailsBrute.size() - 1).getMontant();
+        return new FicheDTO(
+                talent,
+                contratEmbauche,
+                contratActuel,
+                lastDayOfMonth,
+                getRetenueCNaPS(salaireBrute).getMontant(),
+                getRetenueSanitaire(salaireBrute).getMontant()
+        );
     }
 
     @Transactional
@@ -67,7 +71,7 @@ public class PaieService {
 
         double nbHeureMois=173.33;
         double nbHeure=24.0;
-        LocalDate dateActuel=LocalDate.of(annee,mois+1,1).minusDays(1);
+        LocalDate dateActuel=LocalDate.of(annee,mois,1).plusMonths(1).minusDays(1);
         Contrat contratActuel=contratRepository.findContratByDateTalent(dateActuel,idTalent).orElseThrow(()->new RuntimeException("Cette personne n'est pas un employe la date du "+dateActuel));
         int tauxHoraire = ( int ) contratActuel.getSalaireHoraire();
         int tauxJournalier = (int)(contratActuel.getSalaireHoraire()*nbHeure);
@@ -316,7 +320,7 @@ public class PaieService {
         return details;
     }
 
-    private DetailsFichePaieBruteDTO getRetenueSanitaire(double salaireBrute) {
+    public DetailsFichePaieBruteDTO getRetenueSanitaire(double salaireBrute) {
         DetailsFichePaieBruteDTO retenueSanitaire = new DetailsFichePaieBruteDTO();
 
         retenueSanitaire.setDesignation("Retenue sanitaire");
@@ -325,7 +329,7 @@ public class PaieService {
         return retenueSanitaire;
     }
 
-    private DetailsFichePaieBruteDTO getRetenueCNaPS(double salaireBrute) {
+    public DetailsFichePaieBruteDTO getRetenueCNaPS(double salaireBrute) {
         DetailsFichePaieBruteDTO retenueCNaPS = new DetailsFichePaieBruteDTO();
 
         double retenue = salaireBrute * 1 / 100;
@@ -334,5 +338,24 @@ public class PaieService {
         retenueCNaPS.setMontant(retenue > 20000 ? 20000 : retenue);
 
         return retenueCNaPS;
+    }
+
+    @Transactional
+    public FicheDTO findFiche(int annee, int mois, Long idTalent){
+        Talent talent=talentService.findById(idTalent);
+        LocalDate dateActuel=LocalDate.of(annee, mois, 1).plusMonths(1).minusDays(1);
+        Contrat contratEmbauche=contratRepository.findContratEmbauche(idTalent).orElseThrow(()->new RuntimeException("Cette personne n'a jamais travaille chez nous"));
+        Contrat contratActuel=contratRepository.findContratByDateTalent(dateActuel,idTalent).orElseThrow(()->new RuntimeException("Cette personne n'est pas un employe la date du "+dateActuel));
+
+        List<DetailsFichePaieBruteDTO> detailsBrute = findDetailsFichePaieBrute(annee, mois, idTalent);
+        double salaireBrute = detailsBrute.get(detailsBrute.size() - 1).getMontant();
+        return new FicheDTO(
+                talent,
+                contratEmbauche,
+                contratActuel,
+                dateActuel,
+                getRetenueCNaPS(salaireBrute).getMontant(),
+                getRetenueSanitaire(salaireBrute).getMontant()
+        );
     }
 }

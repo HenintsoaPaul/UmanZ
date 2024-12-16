@@ -82,7 +82,7 @@ public class TalentController {
     @GetMapping("/{idTalent}/fiche-paie-tete")
     @JsonView(POV.Paie.class)
     public FicheDTO findFiche(@PathVariable(name = "idTalent") Long idTalent, @RequestParam(name = "annee") int annee, @RequestParam(name = "mois") int mois) {
-        return contratService.findFiche(annee, mois, idTalent);
+        return paieService.findFiche(annee, mois, idTalent);
     }
 
     @GetMapping("/{idTalent}/fiche-paie-brute")
