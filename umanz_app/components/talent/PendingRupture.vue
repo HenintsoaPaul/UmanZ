@@ -9,30 +9,26 @@ const props = defineProps<{
 const { data: pendingRupture } = useFetch<Rupture>(`${props.apiUrl}/ruptures/pendings/${props.idContrat}`);
 
 const isAdmin = computed(() => {
-    const sstr = localStorage.getItem("umanz-isAdmin");
-    return sstr ? Boolean(sstr) : false;
+    if (process.client) {
+        const sstr = localStorage.getItem("umanz-isAdmin");
+        return sstr ? Boolean(sstr) : false;
+    }
+    return false;
 });
 const canDemissioner = computed(() => {
     if (pendingRupture) return props.idContrat > -1 && isAdmin.value;
     return false;
 });
 
-// TODO: manova anreto
-const motif = "fux u";
-// const daty = new Date(2024, 11, 2);
-// const daty = "2024-11-2";
-const daty = "2021-01-12";
-// TODO: manova anreto
-
 const isLoading = ref(false);
-
 
 const demissionFn = async () => {
     isLoading.value = true;
     console.log("Redirection vers form validation demission");
 
+    const motif = "Demande de demission.";
     const payLoad = {
-        motif: motif, date: daty, idContrat: props.idContrat
+        motif: motif, date: new Date().toDateString(), idContrat: props.idContrat
     }
 
     try {
@@ -49,33 +45,11 @@ const demissionFn = async () => {
     }
 }
 
-const retraiteFn = async () => {
-    isLoading.value = true;
-    console.log("Redirection vers form validation demission");
-
-    const payLoad = {
-        motif: motif, date: daty, idContrat: props.idContrat
-    }
-
-    try {
-        const response = $fetch<Rupture>(`${props.apiUrl}/ruptures/retraite`, {
-            method: 'POST',
-            body: payLoad,
-        });
-        console.log('Demission request sent successfully', response);
-    }
-    catch (error) {
-        console.error('Failed to send demission request', error);
-    } finally {
-        isLoading.value = false;
-    }
-}
-
 const validerFn = async () => {
     isLoading.value = true;
 
     const payLoad = {
-        dateValidation: daty
+        dateValidation: new Date().toDateString()
     }
 
     try {

@@ -12,8 +12,19 @@ const talentId = computed(() => route.params.id);
 const { data: talent } = useFetch<Talent>(`${apiUrl}/talents/${talentId.value}`);
 
 const idContrat = computed(() => {
-    const dd = localStorage.getItem("umanz-idContrat");
-    return dd ? Number(dd) : -1;
+    if (process.client) {
+        const dd = localStorage.getItem("umanz-idContrat");
+        return dd ? Number(dd) : -1;
+    }
+    return -1;
+});
+
+const isAdmin = computed(() => {
+    if (process.client) {
+        const sstr = localStorage.getItem("umanz-isAdmin");
+        return sstr ? Boolean(sstr) : false;
+    }
+    return false;
 });
 </script>
 
@@ -24,8 +35,10 @@ const idContrat = computed(() => {
         <CV :competences="talent.competenceTalents" :experiences="talent.experienceTalents"
             :langues="talent.talentLangues" :diplomes="talent.diplomes" />
         <br>
-        <template v-if="idContrat && idContrat > -1">
-            <PendingRupture :id-contrat="idContrat" :api-url="apiUrl" />
+        <template v-if="!isAdmin">
+            <template v-if="idContrat && idContrat > -1">
+                <PendingRupture :id-contrat="idContrat" :api-url="apiUrl" />
+            </template>
         </template>
     </div>
     <div v-else>

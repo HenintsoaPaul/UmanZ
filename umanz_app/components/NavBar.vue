@@ -77,7 +77,7 @@ const navLinks : NavLink[] = [
     ]
   },
   {
-    label: "Heure supplementaire",
+    label: "Heure supp",
     children: [
       { label: "Insertion heure supplementaire", link: "/interne/heure_sup/add" }
     ]
@@ -113,27 +113,31 @@ const logout = async () => {
 <template>
       <header class="bg-gray-800 text-white p-4 mb-5">
             <nav class="container mx-auto flex justify-between items-center">
-                  <div class="text-xl font-bold">UmanZ</div>
-                  <ul class="flex space-x-4">
-                        <li>
-                            <p class="hover:cursor-pointer" @click="showProfile">Mon profil</p>
-                        </li>
-                        <li v-if="isAdmin">
-                            <p class="hover:cursor-pointer" @click="showEmpList">Nos employes</p>
-                        </li>
-                        <li v-for="navLink in navLinks" class="relative group">
-                              <p class="cursor-pointer">{{ navLink.label }}</p>
-                              <ul
-                                    class="absolute z-50 left-0 mb-5 w-48 bg-white text-black rounded-lg shadow-lg group-hover:block hidden duration-300">
-                                    <li v-for="sub in navLink.children">
-                                          <router-link :to="sub.link" class="block px-4 py-2 hover:bg-gray-200 hover:rounded-lg z-index-50">
-                                                {{ sub.label }}
-                                          </router-link>
-                                    </li>
-                              </ul>
-                        </li>
-                  </ul>
-                  <div>
+              <div class="w-full flex-1 justify-center align-baseline">
+                <div class="text-xl font-bold">UmanZ</div>
+              </div>
+              <div class="w-full ml-auto flex-1 justify-center align-baseline mx-5">
+                <ul class="flex space-x-4">
+                      <li>
+                          <p class="hover:cursor-pointer" @click="showProfile">Mon profil</p>
+                      </li>
+                      <li v-if="isAdmin">
+                          <p class="hover:cursor-pointer" @click="showEmpList">Nos employes</p>
+                      </li>
+                      <li v-for="navLink in navLinks" class="relative group">
+                            <p class="cursor-pointer">{{ navLink.label }}</p>
+                            <ul
+                                  class="absolute z-50 left-0 mb-5 w-48 bg-white text-black rounded-lg shadow-lg group-hover:block hidden duration-300">
+                                  <li v-for="sub in navLink.children">
+                                        <router-link :to="sub.link" class="block px-4 py-2 hover:bg-gray-200 hover:rounded-lg z-index-50">
+                                              {{ sub.label }}
+                                        </router-link>
+                                  </li>
+                            </ul>
+                      </li>
+                </ul>
+              </div>
+                  <div class="w-full ml-auto flex-1 justify-center align-baseline">
                         <template v-if="loggedIn">
                               <button @click="logout" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                                   Me déconnecter
