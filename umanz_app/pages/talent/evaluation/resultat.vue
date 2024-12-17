@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 
 interface Domaine{
     idDomaine: number;
@@ -11,9 +12,10 @@ interface Resultat {
   dateResultat: Date;
   domaine: Domaine;
 }
+const idTalent = computed(() => localStorage.getItem('umanz-idUser') ?? "0");
 
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
-const { data: resultats } = useFetch<Resultat[]>(`${apiUrl}/resultat/talent/1`);
+const { data: resultats } = useFetch<Resultat[]>(`${apiUrl}/resultat/talent/${idTalent.value}`);
 
 const headers = [
     {
