@@ -1,0 +1,23 @@
+version: '3.8'
+
+volumes:
+  umanz-pg-volume:
+
+services:
+  umanz-pg:
+    image: postgres:15
+    container_name: umanz-pg
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_DB: umanz
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: itu16
+    volumes:
+      - umanz-pg-volume:/var/lib/postgresql/data
+      - ./rhAPI/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d umanz" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
