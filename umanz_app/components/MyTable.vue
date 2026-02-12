@@ -67,7 +67,8 @@ watch(expand, (newExpand) => {
         <h2 v-if="title" class="text-2xl font-bold mb-6 text-center">{{ title }}</h2>
 
         <UTable :columns="headers" :rows="lignes" v-model:expand="expand"
-            class="w-full shadow-md rounded-lg overflow-hidden">
+            :ui="{ wrapper: 'rounded-xl border border-gray-100 overflow-hidden shadow-sm' }"
+            class="w-full">
             <template #expand="{ row }">
                 <div class="p-4">
                     <h3 class="text-xl font-semibold mb-2">Description:</h3>
