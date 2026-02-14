@@ -57,7 +57,7 @@ export default {
     </div>
 
     <div class="flex justify-center pt-4">
-      <UButton size="xl" @click="getStarted" class="rounded-full px-8">
+      <UButton size="xl" @click="getStarted" color="primary" class="rounded-full px-8">
         Commencer
       </UButton>
     </div>
