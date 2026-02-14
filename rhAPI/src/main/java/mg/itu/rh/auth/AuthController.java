@@ -1,8 +1,6 @@
 package mg.itu.rh.auth;
 
 import mg.itu.rh.auth.exception.TalentNotFoundException;
-import mg.itu.rh.dto.talent.AuthDTO;
-import mg.itu.rh.dto.talent.AuthResponseDTO;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +16,7 @@ public class AuthController {
     }
 
     @PostMapping
-    public AuthResponseDTO authenticate(@RequestBody AuthDTO authDTO) {
+    public LoginResponse authenticate(@RequestBody LoginRequest authDTO) {
         try {
             return authService.findByEmailAndPassword(authDTO);
         } catch (TalentNotFoundException e) {
