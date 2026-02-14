@@ -2,8 +2,8 @@
 import { useRoute } from 'vue-router';
 import type { Talent } from '~/types';
 
-import Profil from '~/components/talent/Profil.vue';
-import CV from '~/components/talent/CV.vue';
+import ProfilHeader from '~/features/profile/ProfilHeader.component.vue';
+import ProfileBody from '~/features/profile/ProfileBody.component.vue';
 import PendingRupture from '~/components/talent/PendingRupture.vue';
 
 const route = useRoute();
@@ -29,12 +29,17 @@ const isAdmin = computed(() => {
 </script>
 
 <template>
-    <div v-if="talent">
-        <Profil :talent="talent" />
-        <br>
-        <CV :competences="talent.competenceTalents" :experiences="talent.experienceTalents"
-            :langues="talent.talentLangues" :diplomes="talent.diplomes" />
-        <br>
+    <div v-if="talent" class="space-y-8">
+        <!-- Header -->
+        <ProfilHeader :talent="talent" />
+
+        <!-- Body -->
+        <ProfileBody :competences="talent.competenceTalents" 
+            :experiences="talent.experienceTalents"
+            :langues="talent.talentLangues" 
+            :diplomes="talent.diplomes" />
+
+        <!-- Something else -->
         <template v-if="!isAdmin">
             <template v-if="idContrat && idContrat > -1">
                 <PendingRupture :id-contrat="idContrat" :api-url="apiUrl" />
