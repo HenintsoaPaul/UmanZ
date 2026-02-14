@@ -1,5 +1,8 @@
 <template>
-    <div class="font-sans antialiased text-gray-900 bg-white min-h-screen">
+    <div class="font-sans antialiased 
+      text-gray-900 dark:text-gray-100 
+      bg-white dark:bg-slate-950 
+      min-h-screen transition-colors duration-300">
         <NuxtLayout>
             <NuxtPage />
         </NuxtLayout>
