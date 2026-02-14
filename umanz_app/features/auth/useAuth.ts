@@ -1,7 +1,7 @@
 import type { LoginResponse } from "~/features/auth/auth.types";
 
 export function useAuth() {
-    const authenticate = async (email: string, password: string, apiUrl: string): Promise<LoginResponse> => {
+    const login = async (email: string, password: string, apiUrl: string): Promise<LoginResponse> => {
         try {
             const response = await $fetch<LoginResponse>(`${apiUrl}/auth`, {
                 method: 'POST',
@@ -18,15 +18,36 @@ export function useAuth() {
         }
     }
 
-    const beginUserSession = (loginResponse: LoginResponse): void => {
+    const setSession = (loginResponse: LoginResponse): void => {
         localStorage.setItem('umanz-idUser', loginResponse.idTalent.toString());
         localStorage.setItem('umanz-emailUser', loginResponse.email.toString());
         localStorage.setItem('umanz-isAdmin', loginResponse.admin.toString());
         localStorage.setItem('umanz-idContrat', loginResponse.idContrat?.toString() || '');
     }
 
+    const getSession = () => {
+        if (!process.client) return null;
+
+        const idUser = localStorage.getItem('umanz-idUser');
+        if (!idUser) return null;
+
+        return {
+            idUser: Number(idUser),
+            email: localStorage.getItem('umanz-emailUser'),
+            isAdmin: localStorage.getItem('umanz-isAdmin') === 'true',
+            idContrat: localStorage.getItem('umanz-idContrat') ? Number(localStorage.getItem('umanz-idContrat')) : null
+        };
+    }
+
+    const logout = () => {
+        localStorage.clear();
+        navigateTo('/');
+    }
+
     return {
-        authenticate,
-        beginUserSession
+        login,
+        setSession,
+        getSession,
+        logout
     };
 }

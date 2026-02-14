@@ -1,9 +1,9 @@
-export default defineNuxtRouteMiddleware((to, from) => {
-    if (process.client) {
-        localStorage.removeItem('umanz-idUser');
-        localStorage.removeItem('umanz-emailUser');
-        localStorage.removeItem('umanz-isAdmin');
+import { useAuth } from "~/features/auth/useAuth";
 
-        localStorage.removeItem('umanz-idContrat');
+export default defineNuxtRouteMiddleware((to, from) => {
+    const { logout } = useAuth();
+
+    if (process.client) {
+        logout();
     }
 });

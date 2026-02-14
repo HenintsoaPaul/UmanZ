@@ -24,7 +24,7 @@ const formState = reactive({
 });
 
 const isPasswordVisible = ref(false);
-const { authenticate, beginUserSession } = useAuth();
+const { login, setSession } = useAuth();
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
     formState.error = '';
@@ -32,10 +32,10 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
     try {
         const apiUrl = useRuntimeConfig().public.apiUrl;
-        const loginResponse = await authenticate(formState.email, formState.password, apiUrl);
+        const loginResponse = await login(formState.email, formState.password, apiUrl);
 
         if (loginResponse) {
-            beginUserSession(loginResponse);
+            setSession(loginResponse);
             await navigateTo('/Home');
         } else {
             formState.error = 'Email ou mot de passe incorrect';
