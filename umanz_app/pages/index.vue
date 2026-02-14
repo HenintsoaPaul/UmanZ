@@ -9,35 +9,44 @@ import { z } from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
 
 const schema = z.object({
-    email: z.string().email('Invalid email'),
-    password: z.string().min(8, 'Must be at least 8 characters')
+    email: z.string().email('Email invalide'),
+    password: z.string().min(8, 'Le mot de passe doit contenir au moins 8 caractères')
 });
 type Schema = z.output<typeof schema>;
 
 const formState = reactive({
     email: '',
     password: '',
-    error: ''
+    error: '',
+    loading: false
 });
 
+const isPasswordVisible = ref(false);
 const { authenticate, saveUser } = useAuth();
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
-    const isValid = schema.safeParse(event.data).success;
+    formState.error = '';
+    formState.loading = true;
 
-    if (isValid) {
-        const userEmail = formState.email;
-        const userPassword = formState.password;
-
+    try {
         const apiUrl = useRuntimeConfig().public.apiUrl;
-        const user = await authenticate(userEmail, userPassword, apiUrl);
+        const user = await authenticate(formState.email, formState.password, apiUrl);
 
         if (user) {
             saveUser(user);
             await navigateTo('/Home');
         } else {
-            formState.error = 'Email ou Mot de passe inconnu'
+            formState.error = 'Email ou mot de passe incorrect';
         }
+    } catch (err: any) {
+        console.error('Login error:', err);
+        if (err.status === 404) {
+            formState.error = 'Email ou mot de passe incorrect';
+        } else {
+            formState.error = 'Une erreur est survenue lors de la connexion. Veuillez réessayer.';
+        }
+    } finally {
+        formState.loading = false;
     }
 }
 </script>
