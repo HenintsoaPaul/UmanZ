@@ -3,6 +3,9 @@ import { useRoute } from 'vue-router';
 import type { Talent } from '~/types';
 import { useAuth } from '~/features/auth/useAuth';
 
+import PageError from '~/components/layout/PageError.vue';
+import PageLoading from '~/components/layout/PageLoading.vue';
+
 import ProfilHeader from '~/features/profile/ProfilHeader.component.vue';
 import ProfileBody from '~/features/profile/ProfileBody.component.vue';
 import PendingRupture from '~/components/talent/PendingRupture.vue';

@@ -10,7 +10,7 @@ const props = defineProps({
     },
     to: {
         type: String,
-        default: '/Home'
+        default: '/'
     }
 });
 </script>

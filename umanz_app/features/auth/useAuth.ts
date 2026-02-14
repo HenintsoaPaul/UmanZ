@@ -41,7 +41,7 @@ export function useAuth() {
 
     const logout = () => {
         localStorage.clear();
-        navigateTo('/');
+        navigateTo('/login');
     }
 
     return {

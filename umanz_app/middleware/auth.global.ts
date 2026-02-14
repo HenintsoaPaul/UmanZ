@@ -2,7 +2,7 @@ import { useAuth } from "~/features/auth/useAuth";
 
 export default defineNuxtRouteMiddleware((to, from) => {
     // List of public paths that don't require authentication
-    const publicPaths = ['/', '/login', '/register', '/signup'];
+    const publicPaths = ['/login', '/register'];
 
     // If navigating to a public path, skip authentication check
     if (publicPaths.includes(to.path)) {

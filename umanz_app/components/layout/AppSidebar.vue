@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useAuth } from '~/features/auth/useAuth';
+
 const router = useRouter();
 const loggedIn = ref(false);
 const isAdmin = ref(false);
@@ -105,15 +107,7 @@ const showEmpList = () => {
     router.push(`/interne/emp`);
 };
 
-const logout = async () => {
-    if (process.client) {
-        localStorage.removeItem("umanz-idUser");
-        localStorage.removeItem("umanz-isAdmin");
-        localStorage.removeItem("umanz-emailUser");
-        localStorage.removeItem("umanz-idContrat");
-    }
-    await router.push("/");
-};
+const {logout} = useAuth();
 
 const openMenus = ref<string[]>([]);
 
