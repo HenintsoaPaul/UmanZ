@@ -55,16 +55,10 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
 <template>
     <div :key="$route.fullPath" class="min-h-screen flex items-center justify-center bg-slate-50 relative overflow-hidden px-4">
-        <!-- Background Elements -->
-        <!-- <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-            <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-umanz-purple/10 blur-[120px] rounded-full animate-pulse"></div>
-            <div class="absolute -bottom-[10%] -right-[10%] w-[40%] h-[40%] bg-umanz-green/10 blur-[120px] rounded-full animate-pulse" style="animation-delay: 2s;"></div>
-        </div> -->
-
         <div class="w-full max-w-md transition-all duration-500 hover:translate-y-[-2px]">
             <div class="bg-white/80 backdrop-blur-xl p-8 md:p-10 rounded-[2rem] shadow-2xl shadow-slate-200/50 border border-white/20">
                 <div class="text-center mb-8">
-                    <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-umanz-purple to-umanz-purple/80 rounded-[1.25rem] shadow-lg shadow-umanz-purple/25 text-white text-3xl font-bold mb-6 transform transition-transform hover:scale-110 duration-300">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-[1.25rem] shadow-lg shadow-umanz-green/25 text-umanz-green text-3xl font-bold mb-6 transform transition-transform hover:scale-110 duration-300">
                         U
                     </div>
                     <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Connexion</h2>
