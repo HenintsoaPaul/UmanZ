@@ -1,6 +1,6 @@
 package mg.itu.rh.auth;
 
-import mg.itu.rh.auth.exception.TalentNotFoundException;
+import mg.itu.rh.auth.exception.AccountNotFoundException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,7 @@ public class AuthController {
     public LoginResponse authenticate(@RequestBody LoginRequest authDTO) {
         try {
             return authService.findByEmailAndPassword(authDTO);
-        } catch (TalentNotFoundException e) {
+        } catch (AccountNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
