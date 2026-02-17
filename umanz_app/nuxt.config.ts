@@ -26,9 +26,12 @@ export default defineNuxtConfig({
     classSuffix: '',
     storageKey: 'nuxt-color-mode'
   },
+  devServer: {
+    https: true
+  },
   runtimeConfig: {
     public: {
-      apiUrl: "http://localhost:911",
+      apiUrl: "https://localhost:8443",
       currency: "Ariary",
     }
   },
