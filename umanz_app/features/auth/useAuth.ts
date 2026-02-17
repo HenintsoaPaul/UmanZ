@@ -44,8 +44,25 @@ export function useAuth() {
         navigateTo('/login');
     }
 
+    const verifyMfa = async (email: string, code: number, apiUrl: string): Promise<LoginResponse> => {
+        try {
+            const response = await $fetch<LoginResponse>(`${apiUrl}/auth/mfa/verify`, {
+                method: 'POST',
+                body: {
+                    email: email,
+                    code: code
+                }
+            });
+            return response;
+        } catch (error) {
+            console.error('Failed to verify MFA', error);
+            throw error;
+        }
+    }
+
     return {
         login,
+        verifyMfa,
         setSession,
         getSession,
         logout

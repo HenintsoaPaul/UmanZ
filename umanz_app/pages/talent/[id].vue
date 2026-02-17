@@ -9,12 +9,13 @@ import PageLoading from '~/components/layout/PageLoading.vue';
 import ProfilHeader from '~/features/profile/ProfilHeader.component.vue';
 import ProfileBody from '~/features/profile/ProfileBody.component.vue';
 import PendingRupture from '~/components/talent/PendingRupture.vue';
+import TwoFactorSetup from '~/components/talent/TwoFactorSetup.vue';
 
 const route = useRoute();
 const talentId = computed(() => route.params.id);
 
 const apiUrl = useRuntimeConfig().public.apiUrl as string;
-const { data: talent, pending, error } = useFetch<Talent>(`${apiUrl}/talents/${talentId.value}`, {
+const { data: talent, pending, error, refresh } = useFetch<Talent>(`${apiUrl}/talents/${talentId.value}`, {
     key: `talent-${talentId.value}`,
     server: false
 });
@@ -53,8 +54,17 @@ useHead({
                 :diplomes="talent.diplomes" 
             />
 
+            <!-- 2FA Section -->
+            <div v-if="session?.idUser === Number(talentId)" class="max-w-4xl mx-auto px-4 mt-8">
+                <TwoFactorSetup 
+                    :email="talent.mail" 
+                    :mfa-enabled="talent.mfaEnabled" 
+                    @mfa-updated="refresh"
+                />
+            </div>
+
             <!-- Rupture Section -->
-            <div v-if="!isAdmin && idContrat > -1" class="max-w-3xl mx-auto px-4">
+            <div v-if="!isAdmin && idContrat > -1" class="max-w-3xl mx-auto px-4 mt-8">
                 <PendingRupture :id-contrat="idContrat" :api-url="apiUrl" />
             </div>
         </div>

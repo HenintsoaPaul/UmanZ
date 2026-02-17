@@ -24,7 +24,9 @@ const formState = reactive({
 });
 
 const isPasswordVisible = ref(false);
-const { login, setSession } = useAuth();
+const { login, verifyMfa, setSession } = useAuth();
+const mfaStep = ref(false);
+const totpCode = ref('');
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
     formState.error = '';
@@ -32,18 +34,39 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
     try {
         const apiUrl = useRuntimeConfig().public.apiUrl;
-        const loginResponse = await login(formState.email, formState.password, apiUrl);
-
-        if (loginResponse) {
-            setSession(loginResponse);
-            await navigateTo('/');
+        
+        if (mfaStep.value) {
+            const code = parseInt(totpCode.value);
+            if (isNaN(code) || totpCode.value.length !== 6) {
+                formState.error = 'Veuillez entrer un code valide à 6 chiffres';
+                formState.loading = false;
+                return;
+            }
+            const loginResponse = await verifyMfa(formState.email, code, apiUrl);
+            if (loginResponse) {
+                setSession(loginResponse);
+                await navigateTo('/');
+            }
         } else {
-            formState.error = 'Email ou mot de passe incorrect';
+            const loginResponse = await login(formState.email, formState.password, apiUrl);
+
+            if (loginResponse) {
+                if (loginResponse.mfaRequired) {
+                    mfaStep.value = true;
+                } else {
+                    setSession(loginResponse);
+                    await navigateTo('/');
+                }
+            } else {
+                formState.error = 'Email ou mot de passe incorrect';
+            }
         }
     } catch (err: any) {
         console.error('Login error:', err);
         if (err.status === 404) {
             formState.error = 'Email ou mot de passe incorrect';
+        } else if (err.status === 400 && mfaStep.value) {
+            formState.error = 'Code 2FA invalide';
         } else {
             formState.error = 'Une erreur est survenue lors de la connexion. Veuillez réessayer.';
         }
@@ -66,44 +89,78 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                 </div>
 
                 <UForm :schema="schema" :state="formState" class="space-y-5" @submit="onSubmit">
-                    <UFormGroup label="Email" name="email" :ui="{ label: { base: 'text-red-500 font-semibold mb-1.5' } }">
-                        <UInput 
-                            v-model="formState.email" 
-                            icon="i-heroicons-envelope" 
-                            placeholder="email@exemple.com"
-                            type="email"
-                            autocomplete="email"
-                            size="lg"
-                            variant="outline"
-                            :ui="{ rounded: 'rounded-2xl' }"
-                            class="transition-all duration-200"
-                        />
-                    </UFormGroup>
+                    <template v-if="!mfaStep">
+                        <UFormGroup label="Email" name="email" :ui="{ label: { base: 'text-red-500 font-semibold mb-1.5' } }">
+                            <UInput 
+                                v-model="formState.email" 
+                                icon="i-heroicons-envelope" 
+                                placeholder="email@exemple.com"
+                                type="email"
+                                autocomplete="email"
+                                size="lg"
+                                variant="outline"
+                                :ui="{ rounded: 'rounded-2xl' }"
+                                class="transition-all duration-200"
+                            />
+                        </UFormGroup>
 
-                    <UFormGroup label="Mot de passe" name="password" :ui="{ label: { base: 'text-red-500 font-semibold mb-1.5' } }">
-                        <UInput 
-                            v-model="formState.password" 
-                            :type="isPasswordVisible ? 'text' : 'password'" 
-                            autocomplete="current-password"
-                            icon="i-heroicons-lock-closed" 
-                            placeholder="••••••••"
-                            size="lg"
-                            variant="outline"
-                            :ui="{ rounded: 'rounded-2xl', trailing: { padding: { lg: 'pe-12' } } }"
-                            class="transition-all duration-200"
-                        >
-                            <template #trailing>
-                                <UButton
-                                    color="gray"
-                                    variant="ghost"
-                                    :icon="isPasswordVisible ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
-                                    class="mr-1"
-                                    size="sm"
-                                    @click="isPasswordVisible = !isPasswordVisible"
+                        <UFormGroup label="Mot de passe" name="password" :ui="{ label: { base: 'text-red-500 font-semibold mb-1.5' } }">
+                            <UInput 
+                                v-model="formState.password" 
+                                :type="isPasswordVisible ? 'text' : 'password'" 
+                                autocomplete="current-password"
+                                icon="i-heroicons-lock-closed" 
+                                placeholder="••••••••"
+                                size="lg"
+                                variant="outline"
+                                :ui="{ rounded: 'rounded-2xl', trailing: { padding: { lg: 'pe-12' } } }"
+                                class="transition-all duration-200"
+                            >
+                                <template #trailing>
+                                    <UButton
+                                        color="gray"
+                                        variant="ghost"
+                                        :icon="isPasswordVisible ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
+                                        class="mr-1"
+                                        size="sm"
+                                        @click="isPasswordVisible = !isPasswordVisible"
+                                    />
+                                </template>
+                            </UInput>
+                        </UFormGroup>
+                    </template>
+
+                    <template v-else>
+                        <div class="space-y-4">
+                            <div class="text-center bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                                <p class="text-slate-600 text-sm font-medium">L'authentification à deux facteurs est activée pour ce compte.</p>
+                                <p class="text-slate-500 text-xs mt-1">Entrez le code de votre application d'authentification.</p>
+                            </div>
+                            <UFormGroup label="Code 2FA" name="totpCode">
+                                <UInput 
+                                    v-model="totpCode" 
+                                    placeholder="000000"
+                                    type="text"
+                                    inputmode="numeric"
+                                    pattern="[0-9]*"
+                                    maxlength="6"
+                                    size="xl"
+                                    variant="outline"
+                                    class="text-center text-2xl tracking-[1em] font-bold"
+                                    :ui="{ rounded: 'rounded-2xl' }"
                                 />
-                            </template>
-                        </UInput>
-                    </UFormGroup>
+                            </UFormGroup>
+                            <UButton
+                                variant="ghost"
+                                color="gray"
+                                block
+                                size="sm"
+                                @click="mfaStep = false"
+                            >
+                                Retour à la connexion
+                            </UButton>
+                        </div>
+                    </template>
 
                     <div class="flex items-center justify-between">
                         <UCheckbox 
@@ -135,7 +192,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                         class="py-4 font-bold text-base transition-all duration-300"
                         :ui="{ rounded: 'rounded-2xl' }"
                     >
-                        Me connecter
+                        {{ mfaStep ? 'Vérifier le code' : 'Me connecter' }}
                     </UButton>
 
                     <div class="text-center text-sm text-slate-500 mt-8 font-medium">

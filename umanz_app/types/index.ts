@@ -24,7 +24,8 @@ export interface Talent {
     competenceTalents: CompetenceTalent[],
     experienceTalents: ExperienceTalent[],
     diplomes: DiplomeAvecNiveau[],
-    talentLangues: LangueAvecNiveau[]
+    talentLangues: LangueAvecNiveau[],
+    mfaEnabled?: boolean
 }
 
 export interface Competence {
