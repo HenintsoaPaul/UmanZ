@@ -51,8 +51,9 @@
     methods: {
       async handleSubmit() {
         try {
+          const apiUrl = useRuntimeConfig().public.apiUrl;
           const response = await axios.post(
-            "http://localhost:911/talents/ruptureEmail",
+            `${apiUrl}/talents/ruptureEmail`,
             this.formData
           );
           alert("Email envoyé avec succès : " + response.data);

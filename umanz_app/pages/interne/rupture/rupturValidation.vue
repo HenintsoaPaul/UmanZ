@@ -21,9 +21,10 @@ export default {
                 }
 
                 console.log('Données envoyées:', { email: this.email, name: this.name });
-
+                
+                const apiUrl = useRuntimeConfig().public.apiUrl;
                 // Envoi de la requête POST
-                const response = await axios.post('http://localhost:911/ruptures/sendDossier', {
+                const response = await axios.post(`${apiUrl}/ruptures/sendDossier`, {
                     email: this.email,
                     name: this.name
                 }, {
