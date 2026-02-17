@@ -1,9 +1,9 @@
-package mg.itu.rh.dto.talent;
+package mg.itu.rh.auth;
 
 import lombok.Data;
 
 @Data
-public class AuthDTO {
+public class LoginRequest {
     private String email;
     private String password;
 }

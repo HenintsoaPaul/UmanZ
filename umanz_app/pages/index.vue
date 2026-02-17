@@ -1,82 +1,62 @@
-<script setup lang="ts">
-definePageMeta({
-    layout: 'blank',
-    middleware: 'logout',
-    key: 'login-page'
-});
-
-import { z } from 'zod'
-import type { FormSubmitEvent } from '#ui/types'
-
-const schema = z.object({
-    email: z.string().email('Invalid email'),
-    password: z.string().min(8, 'Must be at least 8 characters')
-});
-type Schema = z.output<typeof schema>;
-
-const formState = reactive({
-    email: '',
-    password: '',
-    error: ''
-});
-
-const { authenticate, saveUser } = useAuth();
-
-async function onSubmit(event: FormSubmitEvent<Schema>) {
-    const isValid = schema.safeParse(event.data).success;
-
-    if (isValid) {
-        const userEmail = formState.email;
-        const userPassword = formState.password;
-
-        const apiUrl = useRuntimeConfig().public.apiUrl;
-        const user = await authenticate(userEmail, userPassword, apiUrl);
-
-        if (user) {
-            saveUser(user);
-            await navigateTo('/Home');
-        } else {
-            formState.error = 'Email ou Mot de passe inconnu'
-        }
-    }
+<script>
+export default {
+  name: 'Home',
+  // methods: {
+  //   register() {
+  //     this.$router.push( '/register' );
+  //   },
+  //   login() {
+  //     this.$router.push( '/login' );
+  //   }
+  // }
 }
 </script>
 
 <template>
-    <div :key="$route.fullPath" class="min-h-screen flex items-center justify-center font-mono">
-        <div class="border border-slate-50 p-8 rounded-lg shadow-md w-full max-w-md text-slate-500">
-            <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
-            <UForm :schema="schema" :state="formState" class="space-y-4" @submit="onSubmit">
-                <UFormGroup label="Email" name="email">
-                    <UInput v-model="formState.email"
-                        class="w-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                </UFormGroup>
-
-                <UFormGroup label="Mot de passe" name="password">
-                    <UInput v-model="formState.password" type="password"
-                        class="w-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                </UFormGroup>
-
-                <p v-if="formState.error" class="text-red-500 text-center mt-4">{{ formState.error }}</p>
-
-                <div class="w-full flex justify-center">
-                    <UButton type="submit"
-                        class="w-1/2 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300 flex justify-center">
-                        Me connecter
-                    </UButton>
-                </div>
-
-                <div class="text-sm mt-4">
-                    Vous n'avez pas encore de compte ?
-                    <ULink class="text-green-400" to="/register">Inscrivez-vous ici</ULink>
-                </div>
-            </UForm>
-        </div>
+  <div class="space-y-8">
+    <div class="text-center">
+      <h1 class="text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">Bienvenue sur <span class="text-umanz-purple">UmanZ</span></h1>
+      <p class="text-gray-500 text-lg max-w-2xl mx-auto">
+        Gérez vos ressources humaines facilement et efficacement avec notre plateforme unifiée.
+      </p>
     </div>
-</template>
 
-<style scoped>
-body {
-    font-family: 'Inter', sans-serif;
-}
-</style>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <UCard class="hover:border-umanz-purple transition-colors cursor-pointer group">
+        <template #header>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-umanz-purple/10 flex items-center justify-center text-umanz-purple">
+              <UIcon name="i-heroicons-user-group" class="text-2xl" />
+            </div>
+            <h3 class="font-bold text-gray-900">Employés</h3>
+          </div>
+        </template>
+        <p class="text-sm text-gray-500">Gérez vos talents et leurs informations personnelles.</p>
+      </UCard>
+
+      <UCard class="hover:border-umanz-green transition-colors cursor-pointer group">
+        <template #header>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-umanz-green/10 flex items-center justify-center text-umanz-green">
+              <UIcon name="i-heroicons-calendar" class="text-2xl" />
+            </div>
+            <h3 class="font-bold text-gray-900">Congés</h3>
+          </div>
+        </template>
+        <p class="text-sm text-gray-500">Suivez les demandes de congés et les absences.</p>
+      </UCard>
+
+      <UCard class="hover:border-umanz-orange transition-colors cursor-pointer group">
+        <template #header>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-umanz-orange/10 flex items-center justify-center text-umanz-orange">
+              <UIcon name="i-heroicons-megaphone" class="text-2xl" />
+            </div>
+            <h3 class="font-bold text-gray-900">Annonces</h3>
+          </div>
+        </template>
+        <p class="text-sm text-gray-500">Diffusez des offres et gérez les recrutements.</p>
+      </UCard>
+    </div>
+  </div>
+</template>

@@ -1,4 +1,4 @@
-export interface AuthDTO {
+export interface LoginResponse {
     idTalent: number,
     idContrat?: number,
     email: string,
