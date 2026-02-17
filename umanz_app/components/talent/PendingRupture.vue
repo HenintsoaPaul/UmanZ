@@ -68,23 +68,50 @@ const validerFn = async () => {
 </script>
 
 <template>
-    <div class="container mx-auto">
+    <div class="mx-auto">
         <template v-if="pendingRupture">
-            <div class="flex flex-col items-center justify-center border border-gray-100 p-5 rounded-md">
-                <p class="mb-4 text-lg text-gray-200">Type: {{ pendingRupture.typeRupture.typeRupture }}</p>
-                <p class="mb-4 text-lg text-gray-200">Date declaration: {{ pendingRupture.dateRupture }}</p>
-                <button @click="validerFn"
-                    class="px-4 py-2 font-semibold text-white bg-orange-500 rounded hover:bg-orange-700">
-                    Accepter, sans broncher
-                </button>
+            <div class="flex flex-col items-center justify-center 
+                bg-orange-50/50 dark:bg-orange-950/10 
+                border border-orange-100 dark:border-orange-900/20 
+                p-8 rounded-[2rem] transition-colors duration-300">
+                <div class="w-12 h-12 
+                    bg-orange-100 dark:bg-orange-900/30 
+                    rounded-full flex items-center justify-center mb-4">
+                    <UIcon name="i-heroicons-exclamation-circle" class="w-7 h-7 text-orange-600 dark:text-orange-500" />
+                </div>
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Rupture de contrat en cours</h3>
+                <p class="text-slate-600 dark:text-slate-400 mb-1 font-medium">Type: <span class="text-slate-900 dark:text-slate-200">{{ pendingRupture.typeRupture.typeRupture }}</span></p>
+                <p class="text-slate-600 dark:text-slate-400 mb-6 font-medium">Déclaré le: <span class="text-slate-900 dark:text-slate-200">{{ pendingRupture.dateRupture }}</span></p>
+                
+                <UButton
+                    v-if="isAdmin"
+                    @click="validerFn"
+                    color="orange"
+                    size="lg"
+                    :loading="isLoading"
+                    class="rounded-xl px-6 font-bold shadow-lg shadow-orange-500/20"
+                >
+                    Accepter la rupture
+                </UButton>
+                <UBadge v-else color="orange" variant="soft" class="rounded-full px-4 py-1.5 font-bold">
+                    En attente de validation
+                </UBadge>
             </div>
         </template>
         <template v-else-if="canDemissioner">
-            <div class="mx-auto w-full flex flex-col items-center justify-center">
-                <UButton :loading="isLoading" @click="demissionFn"
-                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                    Demission
+            <div class="flex flex-col items-center justify-center p-8">
+                <UButton 
+                    :loading="isLoading" 
+                    @click="demissionFn"
+                    color="red"
+                    size="xl"
+                    variant="soft"
+                    class="rounded-2xl px-10 font-bold shadow-lg shadow-red-500/10 hover:shadow-red-500/20 transition-all duration-300"
+                    icon="i-heroicons-arrow-right-on-rectangle"
+                >
+                    Démissionner
                 </UButton>
+                <p class="mt-4 text-sm text-slate-400 font-medium italic">Une notification sera envoyée aux administrateurs.</p>
             </div>
         </template>
     </div>
