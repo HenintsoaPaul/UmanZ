@@ -9,6 +9,7 @@ public class LoginResponse {
     private Long idContrat;
     private String email;
     private boolean isAdmin;
+    private boolean mfaRequired;
 
     public LoginResponse(Talent talent) {
         this.idTalent = talent.getIdTalent();

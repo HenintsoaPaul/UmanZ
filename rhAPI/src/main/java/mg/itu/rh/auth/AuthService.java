@@ -25,6 +25,19 @@ public class AuthService {
                 .orElseThrow(() -> new AccountNotFoundException());
 
         LoginResponse responseDTO = new LoginResponse(t);
+        if (t.isMfaEnabled()) {
+            responseDTO.setMfaRequired(true);
+            return responseDTO;
+        }
+
+        Optional<Contrat> c = contratService.findActualContratByIdTalent(t.getIdTalent());
+        c.ifPresent(contrat -> responseDTO.setIdContrat(contrat.getIdContrat()));
+
+        return responseDTO;
+    }
+
+    public LoginResponse findByEmailAndPasswordBypassingMfa(Talent t) {
+        LoginResponse responseDTO = new LoginResponse(t);
         Optional<Contrat> c = contratService.findActualContratByIdTalent(t.getIdTalent());
         c.ifPresent(contrat -> responseDTO.setIdContrat(contrat.getIdContrat()));
 
