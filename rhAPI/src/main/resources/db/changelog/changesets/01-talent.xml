@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="01-talent" author="henintsoa">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="talent"/>
+            </not>
+        </preConditions>
+        <sql>
+            CREATE TABLE talent
+            (
+                id_talent      SERIAL,
+                nom            VARCHAR(50) NOT NULL,
+                prenom         VARCHAR(50) NOT NULL,
+                mail           VARCHAR(50) NOT NULL,
+                password       VARCHAR(255),
+                is_admin       BOOLEAN     NOT NULL,
+                date_naissance DATE        NOT NULL,
+                id_cnaps       VARCHAR(50) NOT NULL,
+                PRIMARY KEY (id_talent),
+                UNIQUE (id_cnaps)
+            );
+
+            CREATE TABLE candidat_historique
+            (
+                id_candidat_historique SERIAL,
+                action                 VARCHAR(255),
+                description            VARCHAR(255),
+                date_action            TIMESTAMP default current_timestamp,
+                id_talent              INTEGER NOT NULL,
+                PRIMARY KEY (id_candidat_historique),
+                FOREIGN KEY (id_talent) REFERENCES talent (id_talent)
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

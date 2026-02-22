@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="05-competence-formation" author="henintsoa">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="competence"/>
+            </not>
+        </preConditions>
+        <sql>
+            CREATE TABLE type_competence
+            (
+                id_type_competence  SERIAL,
+                nom_type_competence VARCHAR(50) NOT NULL,
+                PRIMARY KEY (id_type_competence)
+            );
+
+            CREATE TABLE competence
+            (
+                id_competence      SERIAL,
+                competence         VARCHAR(50) NOT NULL,
+                id_type_competence INTEGER     NOT NULL,
+                PRIMARY KEY (id_competence),
+                UNIQUE (competence),
+                FOREIGN KEY (id_type_competence) REFERENCES type_competence (id_type_competence)
+            );
+
+            CREATE TABLE formation
+            (
+                id_formation  SERIAL,
+                nom_formation VARCHAR(50) NOT NULL,
+                date_debut    DATE        NOT NULL,
+                date_fin      DATE        NOT NULL,
+                est_fini      BOOLEAN     NOT NULL DEFAULT false,
+                PRIMARY KEY (id_formation)
+            );
+
+            CREATE TABLE competence_cible
+            (
+                id_competence INTEGER,
+                id_formation  INTEGER,
+                point_gagne   INTEGER NOT NULL,
+                PRIMARY KEY (id_competence, id_formation),
+                FOREIGN KEY (id_competence) REFERENCES competence (id_competence),
+                FOREIGN KEY (id_formation) REFERENCES formation (id_formation)
+            );
+
+            CREATE TABLE participation
+            (
+                id_contrat       INTEGER,
+                id_formation     INTEGER,
+                date_inscription DATE NOT NULL,
+                PRIMARY KEY (id_contrat, id_formation),
+                FOREIGN KEY (id_contrat) REFERENCES contrat (id_contrat),
+                FOREIGN KEY (id_formation) REFERENCES formation (id_formation)
+            );
+
+            CREATE TABLE talent_competence
+            (
+                id_competence INTEGER,
+                id_talent     INTEGER,
+                point         INTEGER,
+                PRIMARY KEY (id_competence, id_talent),
+                FOREIGN KEY (id_competence) REFERENCES competence (id_competence),
+                FOREIGN KEY (id_talent) REFERENCES talent (id_talent)
+            );
+
+            CREATE TABLE competence_poste
+            (
+                id_competence INTEGER,
+                id_poste      INTEGER,
+                point_requis  INTEGER NOT NULL,
+                PRIMARY KEY (id_competence, id_poste),
+                FOREIGN KEY (id_competence) REFERENCES competence (id_competence),
+                FOREIGN KEY (id_poste) REFERENCES poste (id_poste)
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

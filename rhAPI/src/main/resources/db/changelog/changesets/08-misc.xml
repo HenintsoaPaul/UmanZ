@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="08-misc" author="henintsoa">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="evenement_interne"/>
+            </not>
+        </preConditions>
+        <sql>
+            CREATE TABLE evenement_interne
+            (
+                id_evenement_interne   SERIAL,
+                nom_evenement_libre    VARCHAR(50) NOT NULL,
+                date_evenement_interne DATE        NOT NULL,
+                lieu_evenement_interne VARCHAR(50) NOT NULL,
+                description            TEXT,
+                img_evenement_interne  TEXT,
+                PRIMARY KEY (id_evenement_interne)
+            );
+
+            CREATE TABLE experience_talent
+            (
+                id_talent INTEGER,
+                id_poste  INTEGER,
+                ans       NUMERIC(11, 2) NOT NULL,
+                PRIMARY KEY (id_talent, id_poste),
+                FOREIGN KEY (id_talent) REFERENCES talent (id_talent),
+                FOREIGN KEY (id_poste) REFERENCES poste (id_poste)
+            );
+
+            CREATE TABLE compatibilite
+            (
+                id_talent   INTEGER,
+                id_poste    INTEGER,
+                pourcentage NUMERIC(15, 2),
+                PRIMARY KEY (id_talent, id_poste),
+                FOREIGN KEY (id_talent) REFERENCES talent (id_talent),
+                FOREIGN KEY (id_poste) REFERENCES poste (id_poste)
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
