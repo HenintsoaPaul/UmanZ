@@ -56,6 +56,9 @@ public class Talent {
     @Column(name = "mfa_secret")
     private String mfaSecret;
 
+    @Column(name = "mfa_scratch_codes")
+    private String mfaScratchCodes;
+
     // @ManyToOne
     // @JoinColumns({
     // @JoinColumn(name = "id_poste", referencedColumnName = "id_poste"),

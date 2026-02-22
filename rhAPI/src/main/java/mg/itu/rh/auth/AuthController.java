@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -48,13 +49,16 @@ public class AuthController {
     }
 
     @PostMapping("/mfa/confirm")
-    public void confirmMfa(@RequestBody MFARequest mfaRequest) {
+    public Map<String, List<String>> confirmMfa(@RequestBody MFARequest mfaRequest) {
         Talent talent = talentRepository.findByEmail(mfaRequest.getEmail())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
-        if (twoFactorService.verifyCode(talent.getMfaSecret(), mfaRequest.getCode())) {
+        if (twoFactorService.verifyCode(talent.getMail(), talent.getMfaSecret(), mfaRequest.getCode())) {
             talent.setMfaEnabled(true);
+            List<String> scratchCodes = twoFactorService.generateScratchCodes();
+            talent.setMfaScratchCodes(twoFactorService.encryptScratchCodes(scratchCodes));
             talentRepository.save(talent);
+            return Map.of("scratchCodes", scratchCodes);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid MFA code");
         }
@@ -65,25 +69,29 @@ public class AuthController {
         Talent talent = talentRepository.findByEmail(mfaRequest.getEmail())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
-        if (twoFactorService.verifyCode(talent.getMfaSecret(), mfaRequest.getCode())) {
-            // After verification, return the full login response (similar to what
-            // AuthService does when MFA is disabled)
-            LoginRequest loginRequest = new LoginRequest();
-            loginRequest.setEmail(talent.getMail());
-            loginRequest.setPassword(talent.getPassword()); // This is a bit insecure if we don't have a token system,
-                                                            // but following current pattern
+        boolean verified = false;
+        if (mfaRequest.getScratchCode() != null) {
+            if (twoFactorService.verifyScratchCode(talent.getMail(), talent.getMfaScratchCodes(),
+                    mfaRequest.getScratchCode())) {
+                List<String> updatedCodes = twoFactorService.removeUsedScratchCode(talent.getMfaScratchCodes(),
+                        mfaRequest.getScratchCode());
+                talent.setMfaScratchCodes(twoFactorService.encryptScratchCodes(updatedCodes));
+                talentRepository.save(talent);
+                verified = true;
+            }
+        } else if (twoFactorService.verifyCode(talent.getMail(), talent.getMfaSecret(), mfaRequest.getCode())) {
+            verified = true;
+        }
+
+        if (verified) {
             try {
-                // We need a way to bypass the MFA check in findByEmailAndPassword or a separate
-                // method
-                // For now, let's just manually construct the full response since we verified
-                // the code
                 return authService.findByEmailAndPasswordBypassingMfa(talent);
             } catch (Exception e) {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                         "Error during final authentication");
             }
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid MFA code");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid MFA code or scratch code");
         }
     }
 }

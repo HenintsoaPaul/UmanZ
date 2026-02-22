@@ -6,4 +6,5 @@ import lombok.Data;
 public class MFARequest {
     private String email;
     private int code;
+    private String scratchCode;
 }
