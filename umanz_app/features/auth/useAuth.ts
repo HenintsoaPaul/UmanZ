@@ -44,13 +44,16 @@ export function useAuth() {
         navigateTo('/login');
     }
 
-    const verifyMfa = async (email: string, code: number, apiUrl: string): Promise<LoginResponse> => {
+    const verifyMfa = async (email: string, code?: number, scratchCode?: string, apiUrl?: string): Promise<LoginResponse> => {
         try {
-            const response = await $fetch<LoginResponse>(`${apiUrl}/auth/mfa/verify`, {
+            const config = useRuntimeConfig();
+            const baseUrl = apiUrl || config.public.apiUrl;
+            const response = await $fetch<LoginResponse>(`${baseUrl}/auth/mfa/verify`, {
                 method: 'POST',
                 body: {
-                    email: email,
-                    code: code
+                    email,
+                    code,
+                    scratchCode
                 }
             });
             return response;
@@ -60,9 +63,25 @@ export function useAuth() {
         }
     }
 
+    const setupMfa = async (email: string, apiUrl: string) => {
+        return await $fetch<{ secret: string, qrCodeUri: string }>(`${apiUrl}/auth/mfa/setup`, {
+            method: 'POST',
+            body: { email }
+        });
+    }
+
+    const confirmMfa = async (email: string, code: number, apiUrl: string) => {
+        return await $fetch<{ scratchCodes: string[] }>(`${apiUrl}/auth/mfa/confirm`, {
+            method: 'POST',
+            body: { email, code }
+        });
+    }
+
     return {
         login,
         verifyMfa,
+        setupMfa,
+        confirmMfa,
         setSession,
         getSession,
         logout

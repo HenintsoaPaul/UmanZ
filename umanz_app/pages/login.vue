@@ -27,6 +27,8 @@ const isPasswordVisible = ref(false);
 const { login, verifyMfa, setSession } = useAuth();
 const mfaStep = ref(false);
 const totpCode = ref('');
+const scratchCode = ref('');
+const useScratchCode = ref(false);
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
     formState.error = '';
@@ -36,13 +38,24 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         const apiUrl = useRuntimeConfig().public.apiUrl;
         
         if (mfaStep.value) {
-            const code = parseInt(totpCode.value);
-            if (isNaN(code) || totpCode.value.length !== 6) {
-                formState.error = 'Veuillez entrer un code valide à 6 chiffres';
-                formState.loading = false;
-                return;
+            let loginResponse;
+            if (useScratchCode.value) {
+                if (!scratchCode.value) {
+                    formState.error = 'Veuillez entrer un code de secours';
+                    formState.loading = false;
+                    return;
+                }
+                loginResponse = await verifyMfa(formState.email, undefined, scratchCode.value, apiUrl);
+            } else {
+                const code = parseInt(totpCode.value);
+                if (isNaN(code) || totpCode.value.length !== 6) {
+                    formState.error = 'Veuillez entrer un code valide à 6 chiffres';
+                    formState.loading = false;
+                    return;
+                }
+                loginResponse = await verifyMfa(formState.email, code, undefined, apiUrl);
             }
-            const loginResponse = await verifyMfa(formState.email, code, apiUrl);
+            
             if (loginResponse) {
                 setSession(loginResponse);
                 await navigateTo('/');
@@ -133,10 +146,13 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                     <template v-else>
                         <div class="space-y-4">
                             <div class="text-center bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                                <p class="text-slate-600 text-sm font-medium">L'authentification à deux facteurs est activée pour ce compte.</p>
-                                <p class="text-slate-500 text-xs mt-1">Entrez le code de votre application d'authentification.</p>
+                                <p class="text-slate-600 text-sm font-medium">L'authentification à deux facteurs est activée.</p>
+                                <p class="text-slate-500 text-xs mt-1">
+                                    {{ useScratchCode ? 'Entrez un de vos codes de secours.' : 'Entrez le code de votre application d\'authentification.' }}
+                                </p>
                             </div>
-                            <UFormGroup label="Code 2FA" name="totpCode">
+                            
+                            <UFormGroup v-if="!useScratchCode" label="Code 2FA" name="totpCode">
                                 <UInput 
                                     v-model="totpCode" 
                                     placeholder="000000"
@@ -150,15 +166,37 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                                     :ui="{ rounded: 'rounded-2xl' }"
                                 />
                             </UFormGroup>
-                            <UButton
-                                variant="ghost"
-                                color="gray"
-                                block
-                                size="sm"
-                                @click="mfaStep = false"
-                            >
-                                Retour à la connexion
-                            </UButton>
+
+                            <UFormGroup v-else label="Code de secours" name="scratchCode">
+                                <UInput 
+                                    v-model="scratchCode" 
+                                    placeholder="Code de secours"
+                                    size="lg"
+                                    variant="outline"
+                                    :ui="{ rounded: 'rounded-2xl' }"
+                                />
+                            </UFormGroup>
+
+                            <div class="flex flex-col gap-2">
+                                <UButton
+                                    variant="ghost"
+                                    color="primary"
+                                    block
+                                    size="sm"
+                                    @click="useScratchCode = !useScratchCode"
+                                >
+                                    {{ useScratchCode ? 'Utiliser un code TOTP' : 'Utiliser un code de secours' }}
+                                </UButton>
+                                <UButton
+                                    variant="ghost"
+                                    color="gray"
+                                    block
+                                    size="sm"
+                                    @click="mfaStep = false"
+                                >
+                                    Retour à la connexion
+                                </UButton>
+                            </div>
                         </div>
                     </template>
 

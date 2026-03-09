@@ -21,15 +21,14 @@ const verificationCode = ref('');
 const loading = ref(false);
 const error = ref('');
 const success = ref('');
+const scratchCodes = ref<string[]>([]);
+const { setupMfa, confirmMfa } = useAuth();
 
 async function startSetup() {
     loading.value = true;
     error.value = '';
     try {
-        const response = await $fetch<{ secret: string; qrCodeUri: string }>(`${apiUrl}/auth/mfa/setup`, {
-            method: 'POST',
-            body: { email: props.email }
-        });
+        const response = await setupMfa(props.email, apiUrl);
         setupData.value = response;
     } catch (err) {
         error.value = "Erreur lors de l'initialisation du 2FA";
@@ -47,13 +46,8 @@ async function confirmSetup() {
     loading.value = true;
     error.value = '';
     try {
-        await $fetch(`${apiUrl}/auth/mfa/confirm`, {
-            method: 'POST',
-            body: {
-                email: props.email,
-                code: parseInt(verificationCode.value)
-            }
-        });
+        const response = await confirmMfa(props.email, parseInt(verificationCode.value), apiUrl);
+        scratchCodes.value = response.scratchCodes;
         success.value = "Authentification à deux facteurs activée avec succès !";
         setupData.value = null;
         emit('mfa-updated');
@@ -69,6 +63,10 @@ async function disableMfa() {
     // In a real app, you'd want to verify the code before disabling.
     error.value = "La désactivation du 2FA n'est pas encore implémentée.";
 }
+
+function copyScratchCodes() {
+    navigator.clipboard.writeText(scratchCodes.value.join('\n'));
+}
 </script>
 
 <template>
@@ -83,9 +81,31 @@ async function disableMfa() {
             </div>
         </div>
 
-        <div v-if="success" class="bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 p-4 rounded-2xl mb-4 text-sm font-medium flex items-center gap-2">
-            <UIcon name="i-heroicons-check-circle" />
-            {{ success }}
+        <div v-if="success" class="space-y-4 mb-4">
+            <div class="bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 p-4 rounded-2xl text-sm font-medium flex items-center gap-2">
+                <UIcon name="i-heroicons-check-circle" />
+                {{ success }}
+            </div>
+            
+            <div v-if="scratchCodes.length > 0" class="bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800 p-4 rounded-2xl">
+                <p class="text-amber-800 dark:text-amber-400 font-bold text-sm mb-2">Codes de secours (Sauvegardez-les !)</p>
+                <p class="text-xs text-amber-700 dark:text-amber-500 mb-3">Ces codes ne seront affichés qu'une seule fois. Ils vous permettent d'accéder à votre compte si vous perdez votre téléphone.</p>
+                <div class="grid grid-cols-2 gap-2">
+                    <div v-for="code in scratchCodes" :key="code" class="bg-white dark:bg-slate-800 p-2 rounded-xl text-center font-mono font-bold text-gray-700 dark:text-slate-300 border border-amber-100/50">
+                        {{ code }}
+                    </div>
+                </div>
+                <UButton
+                    class="mt-4"
+                    size="xs"
+                    color="amber"
+                    variant="soft"
+                    icon="i-heroicons-clipboard-document"
+                    @click="copyScratchCodes"
+                >
+                    Copier les codes
+                </UButton>
+            </div>
         </div>
 
         <div v-if="error" class="bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 p-4 rounded-2xl mb-4 text-sm font-medium flex items-center gap-2">
