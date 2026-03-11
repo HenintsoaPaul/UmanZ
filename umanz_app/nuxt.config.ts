@@ -28,8 +28,17 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiUrl: "http://localhost:911",
+      apiUrl: "/api",
       currency: "Ariary",
     }
   },
+  nitro: {
+    devProxy: {
+      '/api': {
+        target: 'https://localhost:8443',
+        changeOrigin: true,
+        secure: false
+      }
+    }
+  }
 })
