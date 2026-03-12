@@ -48,7 +48,7 @@ public class Talent {
     @Column(name = "is_admin")
     private boolean isAdmin;
 
-    @JsonView({ POV.Auth.class })
+    @JsonView({ POV.Public.class, POV.Auth.class })
     @Column(name = "mfa_enabled")
     private boolean mfaEnabled = false;
 
