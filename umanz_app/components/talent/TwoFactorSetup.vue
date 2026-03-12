@@ -46,7 +46,7 @@ async function confirmSetup() {
     loading.value = true;
     error.value = '';
     try {
-        const response = await confirmMfa(props.email, parseInt(verificationCode.value), apiUrl);
+        const response = await confirmMfa(props.email, parseInt(verificationCode.value, 10), apiUrl);
         scratchCodes.value = response.scratchCodes;
         success.value = "Authentification à deux facteurs activée avec succès !";
         setupData.value = null;
@@ -130,7 +130,7 @@ function copyScratchCodes() {
         <div v-else-if="setupData" class="space-y-6">
             <div class="flex flex-col md:flex-row gap-8 items-center md:items-start text-center md:text-left">
                 <div class="p-4 bg-white rounded-2xl shadow-inner border border-gray-100">
-                    <QrcodeVue :value="setupData.qrCodeUri" :size="200" level="H" />
+                    <QrcodeVue :value="setupData.qrCodeUri" :size="200" level="M" />
                 </div>
                 <div class="flex-1 space-y-4">
                     <div class="space-y-2">

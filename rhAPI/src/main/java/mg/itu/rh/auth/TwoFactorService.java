@@ -1,6 +1,8 @@
 package mg.itu.rh.auth;
 
 import com.warrenstrange.googleauth.GoogleAuthenticator;
+import com.warrenstrange.googleauth.GoogleAuthenticatorConfig;
+import com.warrenstrange.googleauth.GoogleAuthenticatorConfig.GoogleAuthenticatorConfigBuilder;
 import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
 import com.warrenstrange.googleauth.GoogleAuthenticatorQRGenerator;
 import com.warrenstrange.googleauth.ICredentialRepository;
@@ -23,7 +25,10 @@ public class TwoFactorService {
     private static final int MAX_ATTEMPTS = 5;
 
     public TwoFactorService(@Value("${mfa.encryption.key:default_key_16ch}") String encryptionKey) {
-        this.gAuth = new GoogleAuthenticator();
+        GoogleAuthenticatorConfig config = new GoogleAuthenticatorConfigBuilder()
+                .setWindowSize(5) // Checks ±2 windows of 30s to allow for time drift
+                .build();
+        this.gAuth = new GoogleAuthenticator(config);
         this.encryptionKey = encryptionKey;
     }
 
@@ -32,9 +37,10 @@ public class TwoFactorService {
         return encrypt(key.getKey());
     }
 
-    public String generateQrCodeUri(String encryptedSecret, String email) {
-        String secret = decrypt(encryptedSecret);
-        return GoogleAuthenticatorQRGenerator.getOtpAuthURL("UmanZ", email,
+    public String generateQrCodeUri(String secret, String email) {
+        return GoogleAuthenticatorQRGenerator.getOtpAuthURL(
+                "UmanZ",
+                email,
                 new GoogleAuthenticatorKey.Builder(secret).build());
     }
 
@@ -43,7 +49,12 @@ public class TwoFactorService {
             return false;
         }
 
+        System.out.println("code: " + code);
+
         String secret = decrypt(encryptedSecret);
+
+        System.out.println(encryptedSecret);
+
         boolean isValid = gAuth.authorize(secret, code);
 
         if (isValid) {
@@ -114,7 +125,7 @@ public class TwoFactorService {
         }
     }
 
-    private String decrypt(String encryptedData) {
+    public String decrypt(String encryptedData) {
         try {
             SecretKeySpec secretKey = new SecretKeySpec(encryptionKey.getBytes(StandardCharsets.UTF_8), "AES");
             Cipher cipher = Cipher.getInstance("AES");

@@ -40,10 +40,11 @@ public class AuthController {
         Talent talent = talentRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
-        String secret = twoFactorService.generateNewSecret();
-        talent.setMfaSecret(secret);
+        String encryptedSecret = twoFactorService.generateNewSecret();
+        talent.setMfaSecret(encryptedSecret);
         talentRepository.save(talent);
 
+        String secret = twoFactorService.decrypt(encryptedSecret);
         String qrCodeUri = twoFactorService.generateQrCodeUri(secret, email);
         return Map.of("secret", secret, "qrCodeUri", qrCodeUri);
     }
