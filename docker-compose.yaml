@@ -22,3 +22,23 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: umanz-pgadmin
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@umanz.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      - umanz-pg
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: umanz-mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
