@@ -148,7 +148,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                             <div class="text-center bg-slate-50 p-4 rounded-2xl border border-slate-100">
                                 <p class="text-slate-600 text-sm font-medium">L'authentification à deux facteurs est activée.</p>
                                 <p class="text-slate-500 text-xs mt-1">
-                                    {{ useScratchCode ? 'Entrez un de vos codes de secours.' : 'Entrez le code de votre application d\'authentification.' }}
+                                    {{ useScratchCode ? 'Entrez un de vos codes de secours.' : 'Entrez le code qui vous a été envoyé par email.' }}
                                 </p>
                             </div>
                             

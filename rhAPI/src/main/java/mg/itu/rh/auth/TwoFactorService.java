@@ -5,7 +5,6 @@ import com.warrenstrange.googleauth.GoogleAuthenticatorConfig;
 import com.warrenstrange.googleauth.GoogleAuthenticatorConfig.GoogleAuthenticatorConfigBuilder;
 import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
 import com.warrenstrange.googleauth.GoogleAuthenticatorQRGenerator;
-import com.warrenstrange.googleauth.ICredentialRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -16,20 +15,25 @@ import java.security.SecureRandom;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import mg.itu.rh.service.interne.EmailService;
 
 @Service
 public class TwoFactorService {
     private final GoogleAuthenticator gAuth;
     private final String encryptionKey;
+    private final EmailService emailService;
     private final Map<String, Integer> attempts = new ConcurrentHashMap<>();
     private static final int MAX_ATTEMPTS = 5;
 
-    public TwoFactorService(@Value("${mfa.encryption.key:default_key_16ch}") String encryptionKey) {
+    public TwoFactorService(
+            @Value("${mfa.encryption.key:default_key_16ch}") String encryptionKey,
+            EmailService emailService) {
         GoogleAuthenticatorConfig config = new GoogleAuthenticatorConfigBuilder()
                 .setWindowSize(5) // Checks ±2 windows of 30s to allow for time drift
                 .build();
         this.gAuth = new GoogleAuthenticator(config);
         this.encryptionKey = encryptionKey;
+        this.emailService = emailService;
     }
 
     public String generateNewSecret() {
@@ -56,6 +60,41 @@ public class TwoFactorService {
         System.out.println(encryptedSecret);
 
         boolean isValid = gAuth.authorize(secret, code);
+
+        if (isValid) {
+            resetAttempts(email);
+        } else {
+            recordAttempt(email);
+        }
+
+        return isValid;
+    }
+
+    public String generateEmailCode() {
+        SecureRandom random = new SecureRandom();
+        int code = 100000 + random.nextInt(900000);
+        return String.valueOf(code);
+    }
+
+    public void sendMfaCodeViaEmail(String email, String code) {
+        try {
+            emailService.sendMfaCode(email, code);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to send MFA code email", e);
+        }
+    }
+
+    public boolean verifyEmailCode(String email, String encryptedStoredCode, String userInputCode) {
+        if (isRateLimited(email)) {
+            return false;
+        }
+
+        if (encryptedStoredCode == null) {
+            return false;
+        }
+
+        String storedCode = decrypt(encryptedStoredCode);
+        boolean isValid = storedCode.equals(userInputCode);
 
         if (isValid) {
             resetAttempts(email);

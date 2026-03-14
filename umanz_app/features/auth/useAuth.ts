@@ -64,7 +64,7 @@ export function useAuth() {
     }
 
     const setupMfa = async (email: string, apiUrl: string) => {
-        return await $fetch<{ secret: string, qrCodeUri: string }>(`${apiUrl}/auth/mfa/setup`, {
+        return await $fetch<{ secret?: string, qrCodeUri?: string, message?: string }>(`${apiUrl}/auth/mfa/setup`, {
             method: 'POST',
             body: { email }
         });

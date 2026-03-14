@@ -16,12 +16,13 @@ const props = defineProps({
 const emit = defineEmits(['mfa-updated']);
 const apiUrl = useRuntimeConfig().public.apiUrl;
 
-const setupData = ref<{ secret: string; qrCodeUri: string } | null>(null);
+const setupData = ref<{ secret?: string; qrCodeUri?: string; message?: string } | null>(null);
 const verificationCode = ref('');
 const loading = ref(false);
 const error = ref('');
 const success = ref('');
 const scratchCodes = ref<string[]>([]);
+const mfaMethod = ref<'email' | 'totp'>('email');
 const { setupMfa, confirmMfa } = useAuth();
 
 async function startSetup() {
@@ -30,6 +31,9 @@ async function startSetup() {
     try {
         const response = await setupMfa(props.email, apiUrl);
         setupData.value = response;
+        if (response.message) {
+            mfaMethod.value = 'email';
+        }
     } catch (err) {
         error.value = "Erreur lors de l'initialisation du 2FA";
     } finally {
@@ -59,8 +63,6 @@ async function confirmSetup() {
 }
 
 async function disableMfa() {
-    // For now, let's just show a message. Disabling might need another endpoint or just setting mfaEnabled to false.
-    // In a real app, you'd want to verify the code before disabling.
     error.value = "La désactivation du 2FA n'est pas encore implémentée.";
 }
 
@@ -115,7 +117,7 @@ function copyScratchCodes() {
 
         <div v-if="!mfaEnabled && !setupData" class="space-y-4">
             <p class="text-sm text-gray-600 dark:text-slate-400">
-                L'authentification à deux facteurs ajoute une couche de sécurité supplémentaire. Une fois activée, vous devrez fournir un code généré par une application (comme Google Authenticator) pour vous connecter.
+                L'authentification à deux facteurs ajoute une couche de sécurité supplémentaire. Une fois activée, vous recevrez un code par email pour vous connecter.
             </p>
             <UButton 
                 color="primary" 
@@ -129,23 +131,36 @@ function copyScratchCodes() {
 
         <div v-else-if="setupData" class="space-y-6">
             <div class="flex flex-col md:flex-row gap-8 items-center md:items-start text-center md:text-left">
-                <div class="p-4 bg-white rounded-2xl shadow-inner border border-gray-100">
+                <!-- QR Code (HIDDEN for now but code preserved) -->
+                <div v-if="mfaMethod === 'totp' && setupData.qrCodeUri" class="p-4 bg-white rounded-2xl shadow-inner border border-gray-100">
                     <QrcodeVue :value="setupData.qrCodeUri" :size="200" level="M" />
                 </div>
+                
+                <div v-else class="w-full md:w-auto p-8 bg-blue-50 dark:bg-blue-900/10 rounded-2xl border border-blue-100 dark:border-blue-800 flex flex-col items-center justify-center">
+                    <UIcon name="i-heroicons-envelope" class="text-5xl text-blue-500 mb-4" />
+                    <p class="text-blue-700 dark:text-blue-400 font-bold">Code envoyé !</p>
+                </div>
+
                 <div class="flex-1 space-y-4">
                     <div class="space-y-2">
-                        <p class="font-bold text-gray-900 dark:text-white">1. Scannez ce code QR</p>
-                        <p class="text-sm text-gray-600 dark:text-slate-400">
+                        <p v-if="mfaMethod === 'totp'" class="font-bold text-gray-900 dark:text-white">1. Scannez ce code QR</p>
+                        <p v-else class="font-bold text-gray-900 dark:text-white">1. Vérifiez votre boîte mail</p>
+                        
+                        <p v-if="mfaMethod === 'totp'" class="text-sm text-gray-600 dark:text-slate-400">
                             Ouvrez votre application d'authentification (Google Authenticator, Authy, etc.) et scannez le code QR ci-contre.
                         </p>
-                        <p class="text-xs text-gray-500 bg-gray-50 dark:bg-slate-800 p-2 rounded-lg break-all">
+                        <p v-else class="text-sm text-gray-600 dark:text-slate-400">
+                            Nous avons envoyé un code de vérification à l'adresse <strong>{{ props.email }}</strong>.
+                        </p>
+                        
+                        <p v-if="mfaMethod === 'totp' && setupData.secret" class="text-xs text-gray-500 bg-gray-50 dark:bg-slate-800 p-2 rounded-lg break-all">
                             Secret: <span class="font-mono font-bold">{{ setupData.secret }}</span>
                         </p>
                     </div>
                     <div class="space-y-2">
                         <p class="font-bold text-gray-900 dark:text-white">2. Vérifiez l'activation</p>
                         <p class="text-sm text-gray-600 dark:text-slate-400">
-                            Entrez le code à 6 chiffres généré par votre application.
+                            Entrez le code à 6 chiffres que vous avez reçu.
                         </p>
                         <div class="flex gap-2">
                             <UInput 

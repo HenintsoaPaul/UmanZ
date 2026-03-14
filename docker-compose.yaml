@@ -2,6 +2,7 @@ version: '3.8'
 
 volumes:
   umanz-pg-volume:
+  pgadmin-data:
 
 services:
   umanz-pg:
