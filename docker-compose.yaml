@@ -3,8 +3,25 @@ version: '3.8'
 volumes:
   umanz-pg-volume:
   pgadmin-data:
+  caddy_data:
+  caddy_config:
 
 services:
+  caddy:
+    image: caddy:alpine
+    container_name: umanz-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - umanz-app
+      - rhapi-api
+
   umanz-pg:
     image: postgres:15
     container_name: umanz-pg
@@ -46,8 +63,8 @@ services:
   rhapi-api:
     build: ./rhAPI
     container_name: umanz-rhapi
-    ports:
-      - "8443:8443"
+    expose:
+      - "8443"
     environment:
       spring.datasource.url: jdbc:postgresql://umanz-pg:5432/umanz
       spring.mail.host: umanz-mailhog
@@ -58,8 +75,8 @@ services:
   umanz-app:
     build: ./umanz_app
     container_name: umanz-app
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     environment:
       NUXT_PUBLIC_API_URL: https://localhost:8443
     depends_on:
