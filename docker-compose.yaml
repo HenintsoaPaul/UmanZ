@@ -42,3 +42,25 @@ services:
     ports:
       - "1025:1025"
       - "8025:8025"
+
+  rhapi-api:
+    build: ./rhAPI
+    container_name: umanz-rhapi
+    ports:
+      - "8443:8443"
+    environment:
+      spring.datasource.url: jdbc:postgresql://umanz-pg:5432/umanz
+      spring.mail.host: umanz-mailhog
+    depends_on:
+      umanz-pg:
+        condition: service_healthy
+
+  umanz-app:
+    build: ./umanz_app
+    container_name: umanz-app
+    ports:
+      - "3000:3000"
+    environment:
+      NUXT_PUBLIC_API_URL: https://localhost:8443
+    depends_on:
+      - rhapi-api
