@@ -12,7 +12,8 @@ class TwoFactorServiceTest {
 
     @BeforeEach
     void setUp() {
-        twoFactorService = new TwoFactorService(encryptionKey);
+        mg.itu.rh.service.interne.EmailService emailService = org.mockito.Mockito.mock(mg.itu.rh.service.interne.EmailService.class);
+        twoFactorService = new TwoFactorService(encryptionKey, emailService);
     }
 
     @Test
