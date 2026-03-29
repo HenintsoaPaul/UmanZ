@@ -1,39 +1,13 @@
-localhost {
-    # General catch-all routing rule to humanity is at the bottom
+umanz.localhost {
+	# Backend - Strip /api prefix
+	handle_path /api/* {
+		reverse_proxy rhapi-api:8080
+	}
 
-    # Route /login to Swagger UI
-    handle_path /login {
-        rewrite * /swagger-ui/index.html
-        reverse_proxy https://rhapi-api:8443 {
-            transport http {
-                tls_insecure_skip_verify
-            }
-        }
-    }
+	# Backend docs (handled directly by backend root)
+	@backend_docs path /swagger-ui/* /v3/api-docs*
+	reverse_proxy @backend_docs rhapi-api:8080
 
-    # Proxy backend API requests (excluding swagger/docs/etc if they shouldn't be public, but usually /api is fine)
-    handle_path /api/* {
-        reverse_proxy https://rhapi-api:8443 {
-            transport http {
-                tls_insecure_skip_verify
-            }
-        }
-    }
-
-    # Proxy Swagger UI assets
-    reverse_proxy /swagger-ui/* https://rhapi-api:8443 {
-        transport http {
-            tls_insecure_skip_verify
-        }
-    }
-
-    # Proxy OpenAPI spec
-    reverse_proxy /v3/api-docs* https://rhapi-api:8443 {
-        transport http {
-            tls_insecure_skip_verify
-        }
-    }
-
-    # Proxy frontend requests
-    reverse_proxy /* umanz-app:3000
+	# Frontend
+	reverse_proxy umanz-app:3000
 }

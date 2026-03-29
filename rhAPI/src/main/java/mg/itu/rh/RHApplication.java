@@ -11,8 +11,8 @@ import io.swagger.v3.oas.models.servers.Server;
 @SpringBootApplication
 public class RHApplication {
 
-    public static void main( String[] args ) {
-        SpringApplication.run( RHApplication.class, args );
+    public static void main(String[] args) {
+        SpringApplication.run(RHApplication.class, args);
     }
 
     @Bean
