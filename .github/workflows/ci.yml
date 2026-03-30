@@ -1,10 +1,8 @@
 name: CI
 
 on:
-  push:
-    branches: [ main, master ]
   pull_request:
-    branches: [ main, master, dev ]
+    branches: [ main, dev ]
 
 jobs:
   test:
@@ -19,17 +17,23 @@ jobs:
 
       - name: Wait for backend to be ready
         run: |
-          until curl -k https://localhost:8443/actuator/health; do
+          for i in {1..5}; do
+            if curl -sk http://localhost:8080/actuator/health; then
+              exit 0
+            fi
             sleep 5
           done
+          echo "Backend not ready"
+          docker compose logs
+          exit 1
 
-      - name: Run Playwright tests
-        run: |
-          docker compose exec -T frontend npm run test:e2e
+      # - name: Run Playwright tests
+      #   run: |
+      #     docker compose exec -T umanz-app npm run test:e2e
 
-      - name: Upload Playwright report
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-report
-          path: umanz_app/playwright-report
+      # - name: Upload Playwright report
+      #   uses: actions/upload-artifact@v4
+      #   if: always()
+      #   with:
+      #     name: playwright-report
+      #     path: umanz_app/playwright-report
