@@ -3,14 +3,11 @@ package mg.itu.rh.auth;
 import mg.itu.rh.auth.dto.LoginRequest;
 import mg.itu.rh.auth.dto.LoginResponse;
 import mg.itu.rh.auth.dto.MFARequest;
-import mg.itu.rh.auth.exception.*;
+
 import mg.itu.rh.auth.service.AuthService;
 import mg.itu.rh.auth.service.MfaService;
-import mg.itu.rh.auth.service.TwoFactorService;
 import jakarta.validation.Valid;
 import mg.itu.rh.entity.talent.Talent;
-import mg.itu.rh.repository.talent.TalentRepository;
-import mg.itu.rh.service.interne.EmailService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -24,13 +21,10 @@ import java.util.Map;
 public class AuthController {
     private final AuthService authService;
     private final MfaService mfaService;
-    private final TalentRepository talentRepository;
 
-    public AuthController(AuthService authService, MfaService mfaService, TwoFactorService twoFactorService,
-            TalentRepository talentRepository, EmailService emailService) {
+    public AuthController(AuthService authService, MfaService mfaService) {
         this.authService = authService;
         this.mfaService = mfaService;
-        this.talentRepository = talentRepository;
     }
 
     @PostMapping
@@ -50,24 +44,13 @@ public class AuthController {
 
     @PostMapping("/mfa/verify")
     public LoginResponse verifyMfa(@RequestBody @Valid MFARequest mfaRequest) {
-        Talent talent = talentRepository.findByEmail(mfaRequest.getEmail())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        Talent talent = mfaService.verifyMfa(mfaRequest);
 
-        return this.verifyMfa(talent, mfaRequest);
-    }
-
-    private LoginResponse verifyMfa(Talent talent, MFARequest mfaRequest) {
-        boolean verified = this.mfaService.verifyMfa(talent, mfaRequest);
-
-        if (verified) {
-            try {
-                return authService.findByEmailAndPasswordBypassingMfa(talent);
-            } catch (Exception e) {
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-                        "Error during final authentication");
-            }
-        } else {
-            throw new InvalidMfaException();
+        try {
+            return authService.findByEmailAndPasswordBypassingMfa(talent);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Error during final authentication");
         }
     }
 }

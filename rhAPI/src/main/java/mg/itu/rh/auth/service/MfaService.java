@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import mg.itu.rh.auth.exception.MfaDeliveryException;
+
 import jakarta.mail.MessagingException;
 
 import java.util.List;
@@ -42,7 +44,7 @@ public class MfaService {
         try {
             emailService.sendMfaCode(email, emailCode);
         } catch (MessagingException e) {
-            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, e.getMessage());
+            throw new MfaDeliveryException(e);
         }
         talentRepository.save(talent);
 
@@ -67,8 +69,9 @@ public class MfaService {
         }
     }
 
-    public boolean verifyMfa(Talent talent, MFARequest mfaRequest) {
-        boolean verified = false;
+    public Talent verifyMfa(MFARequest mfaRequest) {
+        Talent talent = talentRepository.findByEmail(mfaRequest.getEmail())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
         if (mfaRequest.getScratchCode() != null) { // On mfa setup (already logged)
             boolean isScratchCodeValid = twoFactorService.verifyScratchCode(talent.getMail(),
@@ -80,16 +83,14 @@ public class MfaService {
 
                 talent.setMfaScratchCodes(twoFactorService.encryptScratchCodes(updatedCodes));
                 talentRepository.save(talent);
-
-                verified = true;
+                return talent;
             }
         } else if (twoFactorService.verifyEmailCode(talent.getMail(), talent.getMfaEmailCode(),
-                mfaRequest.getCode() + "")) { // On mfa verify (on login)
-            verified = true;
+                String.valueOf(mfaRequest.getCode()))) { // On mfa verify (on login)
             talent.setMfaEmailCode(null); // Clear code after use
-            talentRepository.save(talent);
+            return talentRepository.save(talent);
         }
 
-        return verified;
+        throw new InvalidMfaException();
     }
 }
