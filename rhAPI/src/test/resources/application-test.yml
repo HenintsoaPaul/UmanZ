@@ -11,6 +11,11 @@ spring:
   liquibase:
     enabled: false
 
+  mail:
+    host: localhost
+    port: 1025
+    username: umanz@admin
+
 umanz:
   mfa:
     encryption:
