@@ -31,7 +31,9 @@ async function startSetup() {
     try {
         const response = await setupMfa(props.email, apiUrl);
         setupData.value = response;
-        if (response.message) {
+        if (response.qrCodeUri) {
+            mfaMethod.value = 'totp';
+        } else if (response.message) {
             mfaMethod.value = 'email';
         }
     } catch (err) {
@@ -42,8 +44,9 @@ async function startSetup() {
 }
 
 async function confirmSetup() {
-    if (verificationCode.value.length !== 6) {
-        error.value = "Le code doit contenir 6 chiffres";
+    const code = parseInt(verificationCode.value, 10);
+    if (isNaN(code) || verificationCode.value.length !== 6) {
+        error.value = "Veuillez entrer un code valide à 6 chiffres";
         return;
     }
 
@@ -166,7 +169,10 @@ function copyScratchCodes() {
                             <UInput 
                                 v-model="verificationCode" 
                                 placeholder="000000" 
-                                maxlength="6" 
+                                maxlength="6"
+                                type="text"
+                                inputmode="numeric"
+                                pattern="[0-9]*" 
                                 class="w-32"
                                 :ui="{ rounded: 'rounded-xl' }"
                             />

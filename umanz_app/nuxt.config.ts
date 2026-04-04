@@ -31,14 +31,5 @@ export default defineNuxtConfig({
       apiUrl: "/api",
       currency: "Ariary",
     }
-  },
-  nitro: {
-    devProxy: {
-      '/api': {
-        target: process.env.NUXT_PUBLIC_API_URL || 'https://localhost:8443',
-        changeOrigin: true,
-        secure: false
-      }
-    }
   }
 })
