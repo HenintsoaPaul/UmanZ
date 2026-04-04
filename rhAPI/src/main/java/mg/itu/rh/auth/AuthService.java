@@ -1,6 +1,6 @@
 package mg.itu.rh.auth;
 
-import mg.itu.rh.auth.exception.AccountNotFoundException;
+import mg.itu.rh.auth.exception.InvalidCredentialsException;
 import mg.itu.rh.entity.interne.Contrat;
 import mg.itu.rh.entity.talent.Talent;
 import mg.itu.rh.repository.talent.TalentRepository;
@@ -19,10 +19,10 @@ public class AuthService {
         this.contratService = contratService;
     }
 
-    public LoginResponse findByEmailAndPassword(LoginRequest authDTO) throws AccountNotFoundException {
+    public LoginResponse findByEmailAndPassword(LoginRequest authDTO) throws InvalidCredentialsException {
         String email = authDTO.getEmail(), pwd = authDTO.getPassword();
         Talent t = talentRepository.findByEmailAndPassword(email, pwd)
-                .orElseThrow(() -> new AccountNotFoundException());
+                .orElseThrow(() -> new InvalidCredentialsException());
 
         LoginResponse responseDTO = new LoginResponse(t);
         if (t.isMfaEnabled()) {

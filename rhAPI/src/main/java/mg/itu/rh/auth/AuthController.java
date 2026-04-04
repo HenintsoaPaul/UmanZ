@@ -1,8 +1,10 @@
 package mg.itu.rh.auth;
 
-import mg.itu.rh.auth.exception.AccountNotFoundException;
+import mg.itu.rh.auth.exception.*;
+import jakarta.mail.MessagingException;
 import mg.itu.rh.entity.talent.Talent;
 import mg.itu.rh.repository.talent.TalentRepository;
+import mg.itu.rh.service.interne.EmailService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +20,14 @@ public class AuthController {
     private final AuthService authService;
     private final TwoFactorService twoFactorService;
     private final TalentRepository talentRepository;
+    private final EmailService emailService;
 
     public AuthController(AuthService authService, TwoFactorService twoFactorService,
-            TalentRepository talentRepository) {
+            TalentRepository talentRepository, EmailService emailService) {
         this.authService = authService;
         this.twoFactorService = twoFactorService;
         this.talentRepository = talentRepository;
+        this.emailService = emailService;
     }
 
     @PostMapping
@@ -33,17 +37,18 @@ public class AuthController {
             LoginResponse response = authService.findByEmailAndPassword(authDTO);
             if (response.isMfaRequired()) {
                 Talent talent = talentRepository.findByEmail(authDTO.getEmail())
-                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+                        .orElseThrow(() -> new InvalidCredentialsException());
 
                 String emailCode = twoFactorService.generateEmailCode();
                 talent.setMfaEmailCode(twoFactorService.encryptScratchCodes(List.of(emailCode)));
-                talentRepository.save(talent);
 
-                twoFactorService.sendMfaCodeViaEmail(talent.getMail(), emailCode);
+                emailService.sendMfaCode(talent.getMail(), emailCode);
+
+                talentRepository.save(talent);
             }
             return response;
-        } catch (AccountNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (MessagingException e) {
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, e.getMessage());
         }
     }
 
@@ -53,15 +58,15 @@ public class AuthController {
         Talent talent = talentRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
-        // Keep TOTP secret generation for future use
-        String encryptedSecret = twoFactorService.generateNewSecret();
-        talent.setMfaSecret(encryptedSecret);
-
         // Generate and send email code for setup verification
         String emailCode = twoFactorService.generateEmailCode();
         talent.setMfaEmailCode(twoFactorService.encryptScratchCodes(List.of(emailCode)));
 
-        twoFactorService.sendMfaCodeViaEmail(email, emailCode);
+        try {
+            emailService.sendMfaCode(email, emailCode);
+        } catch (MessagingException e) {
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, e.getMessage());
+        }
         talentRepository.save(talent);
 
         return Map.of("message", "Code envoyé par email");
@@ -80,7 +85,7 @@ public class AuthController {
             talentRepository.save(talent);
             return Map.of("scratchCodes", scratchCodes);
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid MFA code");
+            throw new InvalidMfaException();
         }
     }
 
@@ -89,10 +94,16 @@ public class AuthController {
         Talent talent = talentRepository.findByEmail(mfaRequest.getEmail())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
+        return this.verifyMfa(talent, mfaRequest);
+    }
+
+    private LoginResponse verifyMfa(Talent talent, MFARequest mfaRequest) {
         boolean verified = false;
-        if (mfaRequest.getScratchCode() != null) {
-            if (twoFactorService.verifyScratchCode(talent.getMail(), talent.getMfaScratchCodes(),
-                    mfaRequest.getScratchCode())) {
+
+        if (mfaRequest.getScratchCode() != null) { // On mfa setup (already logged)
+            boolean isScratchCodeValid = twoFactorService.verifyScratchCode(talent.getMail(),
+                    talent.getMfaScratchCodes(), mfaRequest.getScratchCode());
+            if (isScratchCodeValid) {
                 List<String> updatedCodes = twoFactorService.removeUsedScratchCode(talent.getMfaScratchCodes(),
                         mfaRequest.getScratchCode());
                 talent.setMfaScratchCodes(twoFactorService.encryptScratchCodes(updatedCodes));
@@ -100,12 +111,10 @@ public class AuthController {
                 verified = true;
             }
         } else if (twoFactorService.verifyEmailCode(talent.getMail(), talent.getMfaEmailCode(),
-                mfaRequest.getCode() + "")) {
+                mfaRequest.getCode() + "")) { // On mfa verify (on login)
             verified = true;
             talent.setMfaEmailCode(null); // Clear code after use
             talentRepository.save(talent);
-        } else if (twoFactorService.verifyCode(talent.getMail(), talent.getMfaSecret(), mfaRequest.getCode())) {
-            verified = true;
         }
 
         if (verified) {

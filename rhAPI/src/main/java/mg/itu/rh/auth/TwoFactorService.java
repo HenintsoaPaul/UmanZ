@@ -1,10 +1,5 @@
 package mg.itu.rh.auth;
 
-import com.warrenstrange.googleauth.GoogleAuthenticator;
-import com.warrenstrange.googleauth.GoogleAuthenticatorConfig;
-import com.warrenstrange.googleauth.GoogleAuthenticatorConfig.GoogleAuthenticatorConfigBuilder;
-import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
-import com.warrenstrange.googleauth.GoogleAuthenticatorQRGenerator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -15,73 +10,21 @@ import java.security.SecureRandom;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-import mg.itu.rh.service.interne.EmailService;
 
 @Service
 public class TwoFactorService {
-    private final GoogleAuthenticator gAuth;
     private final String encryptionKey;
-    private final EmailService emailService;
     private final Map<String, Integer> attempts = new ConcurrentHashMap<>();
     private static final int MAX_ATTEMPTS = 5;
 
-    public TwoFactorService(
-            @Value("${mfa.encryption.key:default_key_16ch}") String encryptionKey,
-            EmailService emailService) {
-        GoogleAuthenticatorConfig config = new GoogleAuthenticatorConfigBuilder()
-                .setWindowSize(5) // Checks ±2 windows of 30s to allow for time drift
-                .build();
-        this.gAuth = new GoogleAuthenticator(config);
+    public TwoFactorService(@Value("${umanz.mfa.encryption.key}") String encryptionKey) {
         this.encryptionKey = encryptionKey;
-        this.emailService = emailService;
-    }
-
-    public String generateNewSecret() {
-        final GoogleAuthenticatorKey key = gAuth.createCredentials();
-        return encrypt(key.getKey());
-    }
-
-    public String generateQrCodeUri(String secret, String email) {
-        return GoogleAuthenticatorQRGenerator.getOtpAuthURL(
-                "UmanZ",
-                email,
-                new GoogleAuthenticatorKey.Builder(secret).build());
-    }
-
-    public boolean verifyCode(String email, String encryptedSecret, int code) {
-        if (isRateLimited(email)) {
-            return false;
-        }
-
-        System.out.println("code: " + code);
-
-        String secret = decrypt(encryptedSecret);
-
-        System.out.println(encryptedSecret);
-
-        boolean isValid = gAuth.authorize(secret, code);
-
-        if (isValid) {
-            resetAttempts(email);
-        } else {
-            recordAttempt(email);
-        }
-
-        return isValid;
     }
 
     public String generateEmailCode() {
         SecureRandom random = new SecureRandom();
         int code = 100000 + random.nextInt(900000);
         return String.valueOf(code);
-    }
-
-    public void sendMfaCodeViaEmail(String email, String code) {
-        try {
-            emailService.sendMfaCode(email, code);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to send MFA code email", e);
-        }
     }
 
     public boolean verifyEmailCode(String email, String encryptedStoredCode, String userInputCode) {
@@ -145,6 +88,8 @@ public class TwoFactorService {
         return attempts.getOrDefault(email, 0) >= MAX_ATTEMPTS;
     }
 
+    // --- ATTEMPTS ---
+
     private void recordAttempt(String email) {
         attempts.merge(email, 1, Integer::sum);
     }
@@ -152,6 +97,8 @@ public class TwoFactorService {
     private void resetAttempts(String email) {
         attempts.remove(email);
     }
+
+    // --- ENCRYPTION ---
 
     private String encrypt(String data) {
         try {

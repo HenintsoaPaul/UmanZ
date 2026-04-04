@@ -1,6 +1,7 @@
 package mg.itu.rh.service.interne;
 
 import lombok.RequiredArgsConstructor;
+import mg.itu.rh.auth.exception.MfaDeliveryException;
 import mg.itu.rh.dto.rupture.RuptureRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
@@ -9,6 +10,7 @@ import jakarta.mail.MessagingException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import jakarta.mail.internet.MimeMessage;
+import org.springframework.mail.MailException;
 
 import java.io.ByteArrayOutputStream;
 
@@ -45,7 +47,11 @@ public class EmailService {
                 helper.setSubject(subject);
                 helper.setText(body, true);
 
-                javaMailSender.send(mimeMessage);
+                try {
+                        javaMailSender.send(mimeMessage);
+                } catch (MailException e) {
+                        throw new MfaDeliveryException(e);
+                }
         }
 
         public void sendEmailWithAttachments(String toEmail, String name)
@@ -68,7 +74,11 @@ public class EmailService {
                 ByteArrayResource unemploymentResource = new ByteArrayResource(unemploymentPdf.toByteArray());
                 helper.addAttachment("attestation_chomage_" + name + ".pdf", unemploymentResource);
 
-                javaMailSender.send(message);
+                try {
+                        javaMailSender.send(message);
+                } catch (MailException e) {
+                        throw new MessagingException("Service mail non disponible. Veuillez réessayer plus tard.", e);
+                }
         }
 
         public void sendMfaCode(String toEmail, String code) throws MessagingException {

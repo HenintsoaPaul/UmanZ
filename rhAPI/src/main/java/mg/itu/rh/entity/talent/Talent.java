@@ -52,10 +52,6 @@ public class Talent {
     @Column(name = "mfa_enabled")
     private boolean mfaEnabled = false;
 
-    @JsonView({ POV.Auth.class })
-    @Column(name = "mfa_secret")
-    private String mfaSecret;
-
     @Column(name = "mfa_scratch_codes")
     private String mfaScratchCodes;
 
