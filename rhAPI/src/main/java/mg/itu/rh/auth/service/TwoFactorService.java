@@ -1,4 +1,4 @@
-package mg.itu.rh.auth;
+package mg.itu.rh.auth.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

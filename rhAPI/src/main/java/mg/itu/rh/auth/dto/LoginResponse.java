@@ -1,4 +1,4 @@
-package mg.itu.rh.auth;
+package mg.itu.rh.auth.dto;
 
 import lombok.Data;
 import mg.itu.rh.entity.talent.Talent;
