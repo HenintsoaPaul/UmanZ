@@ -1,4 +1,4 @@
-package mg.itu.rh.auth;
+package mg.itu.rh.auth.dto;
 
 import lombok.Data;
 import mg.itu.rh.entity.talent.Talent;
@@ -9,6 +9,7 @@ public class LoginResponse {
     private Long idContrat;
     private String email;
     private boolean isAdmin;
+    private boolean mfaRequired;
 
     public LoginResponse(Talent talent) {
         this.idTalent = talent.getIdTalent();

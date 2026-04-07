@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="07-conge-justificatif" author="henintsoa">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="type_conge"/>
+            </not>
+        </preConditions>
+        <sql>
+            CREATE TABLE type_conge
+            (
+                id_type_conge  SERIAL,
+                nom_type_conge VARCHAR(50) NOT NULL,
+                PRIMARY KEY (id_type_conge)
+            );
+
+            CREATE TABLE type_justificatif
+            (
+                id_type_justificatif  SERIAL,
+                nom_type_justificatif VARCHAR(50) NOT NULL,
+                PRIMARY KEY (id_type_justificatif)
+            );
+
+            CREATE TABLE justificatif
+            (
+                id_justificatif      SERIAL,
+                date_justificatif    DATE    NOT NULL,
+                image_justificatif   TEXT    NOT NULL,
+                id_type_justificatif INTEGER NOT NULL,
+                PRIMARY KEY (id_justificatif),
+                FOREIGN KEY (id_type_justificatif) REFERENCES type_justificatif (id_type_justificatif)
+            );
+
+            CREATE TABLE conge
+            (
+                id_conge        SERIAL,
+                nb_jour         INTEGER NOT NULL,
+                motif           VARCHAR(50),
+                date_debut      DATE    NOT NULL,
+                date_validation DATE,
+                motif_refus     TEXT,
+                date_refus      DATE,
+                id_justificatif INTEGER,
+                id_type_conge   INTEGER NOT NULL,
+                id_contrat      INTEGER NOT NULL,
+                PRIMARY KEY (id_conge),
+                FOREIGN KEY (id_justificatif) REFERENCES justificatif (id_justificatif),
+                FOREIGN KEY (id_type_conge) REFERENCES type_conge (id_type_conge),
+                FOREIGN KEY (id_contrat) REFERENCES contrat (id_contrat)
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

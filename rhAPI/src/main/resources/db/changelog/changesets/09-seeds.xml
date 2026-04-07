@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="09-seeds" author="henintsoa">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM talent</sqlCheck>
+        </preConditions>
+        <insert tableName="talent">
+            <column name="nom" value="Admin"/>
+            <column name="prenom" value="User"/>
+            <column name="mail" value="admin@umanz.mg"/>
+            <column name="password" value="admin123"/>
+            <column name="is_admin" valueBoolean="true"/>
+            <column name="date_naissance" value="1990-01-01"/>
+            <column name="id_cnaps" value="ADMIN001"/>
+        </insert>
+        
+        <insert tableName="type_contrat">
+            <column name="type_contrat" value="CDI"/>
+        </insert>
+        <insert tableName="type_contrat">
+            <column name="type_contrat" value="CDD"/>
+        </insert>
+        <insert tableName="type_contrat">
+            <column name="type_contrat" value="Stage"/>
+        </insert>
+
+        <insert tableName="type_poste">
+            <column name="nom_type_poste" value="Direction"/>
+            <column name="rang_type_poste" valueNumeric="1"/>
+        </insert>
+        <insert tableName="type_poste">
+            <column name="nom_type_poste" value="Management"/>
+            <column name="rang_type_poste" valueNumeric="2"/>
+        </insert>
+        <insert tableName="type_poste">
+            <column name="nom_type_poste" value="Opérationnel"/>
+            <column name="rang_type_poste" valueNumeric="3"/>
+        </insert>
+
+        <insert tableName="etat_entretien">
+            <column name="etat_entretien" value="En attente"/>
+            <column name="niveau" valueNumeric="1"/>
+        </insert>
+        <insert tableName="etat_entretien">
+            <column name="etat_entretien" value="Accepté"/>
+            <column name="niveau" valueNumeric="2"/>
+        </insert>
+        <insert tableName="etat_entretien">
+            <column name="etat_entretien" value="Refusé"/>
+            <column name="niveau" valueNumeric="3"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

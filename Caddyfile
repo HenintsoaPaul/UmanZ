@@ -1,0 +1,13 @@
+umanz.localhost {
+	# Backend - Strip /api prefix
+	handle_path /api/* {
+		reverse_proxy rhapi-api:8080
+	}
+
+	# Backend docs (handled directly by backend root)
+	@backend_docs path /swagger-ui/* /v3/api-docs*
+	reverse_proxy @backend_docs rhapi-api:8080
+
+	# Frontend
+	reverse_proxy umanz-app:3000
+}

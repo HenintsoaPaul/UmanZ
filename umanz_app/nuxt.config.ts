@@ -28,8 +28,8 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiUrl: "http://localhost:911",
+      apiUrl: "/api",
       currency: "Ariary",
     }
-  },
+  }
 })

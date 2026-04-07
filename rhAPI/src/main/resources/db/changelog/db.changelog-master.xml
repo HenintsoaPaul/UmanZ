@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <include file="db/changelog/changesets/01-talent.xml"/>
+    <include file="db/changelog/changesets/02-poste-contrat.xml"/>
+    <include file="db/changelog/changesets/03-recrutement.xml"/>
+    <include file="db/changelog/changesets/04-diplome-langue.xml"/>
+    <include file="db/changelog/changesets/05-competence-formation.xml"/>
+    <include file="db/changelog/changesets/06-evaluation.xml"/>
+    <include file="db/changelog/changesets/07-conge-justificatif.xml"/>
+    <include file="db/changelog/changesets/08-misc.xml"/>
+    <include file="db/changelog/changesets/09-seeds.xml"/>
+    <include file="db/changelog/changesets/10-mfa-updates.xml"/>
+    <include file="db/changelog/changesets/11-mfa-email.xml"/>
+</databaseChangeLog>

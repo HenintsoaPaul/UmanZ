@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="04-diplome-langue" author="henintsoa">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="diplome"/>
+            </not>
+        </preConditions>
+        <sql>
+            CREATE TABLE niveau_diplome
+            (
+                id_niveau_diplome  SERIAL,
+                niveau_diplome     INTEGER     NOT NULL,
+                nom_niveau_diplome VARCHAR(50) NOT NULL,
+                PRIMARY KEY (id_niveau_diplome),
+                UNIQUE (niveau_diplome)
+            );
+
+            CREATE TABLE diplome
+            (
+                id_diplome        SERIAL,
+                nom_diplome       VARCHAR(50),
+                id_niveau_diplome INTEGER NOT NULL,
+                PRIMARY KEY (id_diplome),
+                FOREIGN KEY (id_niveau_diplome) REFERENCES niveau_diplome (id_niveau_diplome)
+            );
+
+            CREATE TABLE talent_diplome
+            (
+                id_talent  INTEGER,
+                id_diplome INTEGER,
+                PRIMARY KEY (id_talent, id_diplome),
+                FOREIGN KEY (id_talent) REFERENCES talent (id_talent),
+                FOREIGN KEY (id_diplome) REFERENCES diplome (id_diplome)
+            );
+
+            CREATE TABLE diplome_poste
+            (
+                id_poste   INTEGER,
+                id_diplome INTEGER,
+                PRIMARY KEY (id_poste, id_diplome),
+                FOREIGN KEY (id_poste) REFERENCES poste (id_poste),
+                FOREIGN KEY (id_diplome) REFERENCES diplome (id_diplome)
+            );
+
+            CREATE TABLE langue
+            (
+                id_langue SERIAL,
+                langue    VARCHAR(50),
+                PRIMARY KEY (id_langue)
+            );
+
+            CREATE TABLE niveau_langue
+            (
+                id_niveau_langue  SERIAL,
+                nom_niveau_langue VARCHAR(50),
+                niveau_langue     INTEGER,
+                PRIMARY KEY (id_niveau_langue),
+                UNIQUE (niveau_langue)
+            );
+
+            CREATE TABLE talent_langue
+            (
+                id_talent        INTEGER,
+                id_langue        INTEGER,
+                id_niveau_langue INTEGER,
+                PRIMARY KEY (id_talent, id_langue, id_niveau_langue),
+                FOREIGN KEY (id_talent) REFERENCES talent (id_talent),
+                FOREIGN KEY (id_langue) REFERENCES langue (id_langue),
+                FOREIGN KEY (id_niveau_langue) REFERENCES niveau_langue (id_niveau_langue)
+            );
+
+            CREATE TABLE langue_poste
+            (
+                id_poste         INTEGER,
+                id_langue        INTEGER,
+                id_niveau_langue INTEGER,
+                PRIMARY KEY (id_poste, id_langue, id_niveau_langue),
+                FOREIGN KEY (id_poste) REFERENCES poste (id_poste),
+                FOREIGN KEY (id_langue) REFERENCES langue (id_langue),
+                FOREIGN KEY (id_niveau_langue) REFERENCES niveau_langue (id_niveau_langue)
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ main, dev ]
+  push:
+    branches: [ main, dev ]
+
+jobs:
+  backend-test:
+    name: Spring Boot Backend Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Make Maven wrapper executable
+        run: chmod +x rhAPI/mvnw
+
+      - name: Run Spring Boot tests
+        run: ./mvnw test
+        working-directory: rhAPI
+
+  frontend-test:
+    name: Nuxt Frontend Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: umanz_app/package-lock.json
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: umanz_app
+
+      - name: Run Nuxt unit tests
+        run: npm test
+        working-directory: umanz_app

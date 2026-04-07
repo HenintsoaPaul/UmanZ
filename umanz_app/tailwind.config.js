@@ -1,12 +1,14 @@
+import colors from 'tailwindcss/colors'
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [],
   theme: {
     extend: {
       colors: {
-        'umanz-green': '#22c55e',
-        'umanz-purple': '#a855f7',
-        'umanz-orange': '#f97316',
+        'umanz-green': colors.green,
+        'umanz-purple': colors.purple,
+        'umanz-orange': colors.orange,
       },
       borderRadius: {
         'xl': '1rem',

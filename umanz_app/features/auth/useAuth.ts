@@ -44,8 +44,44 @@ export function useAuth() {
         navigateTo('/login');
     }
 
+    const verifyMfa = async (email: string, code?: number, scratchCode?: string, apiUrl?: string): Promise<LoginResponse> => {
+        try {
+            const config = useRuntimeConfig();
+            const baseUrl = apiUrl || config.public.apiUrl;
+            const response = await $fetch<LoginResponse>(`${baseUrl}/auth/mfa/verify`, {
+                method: 'POST',
+                body: {
+                    email,
+                    code,
+                    scratchCode
+                }
+            });
+            return response;
+        } catch (error) {
+            console.error('Failed to verify MFA', error);
+            throw error;
+        }
+    }
+
+    const setupMfa = async (email: string, apiUrl: string) => {
+        return await $fetch<{ secret?: string, qrCodeUri?: string, message?: string }>(`${apiUrl}/auth/mfa/setup`, {
+            method: 'POST',
+            body: { email }
+        });
+    }
+
+    const confirmMfa = async (email: string, code: number, apiUrl: string) => {
+        return await $fetch<{ scratchCodes: string[] }>(`${apiUrl}/auth/mfa/confirm`, {
+            method: 'POST',
+            body: { email, code }
+        });
+    }
+
     return {
         login,
+        verifyMfa,
+        setupMfa,
+        confirmMfa,
         setSession,
         getSession,
         logout

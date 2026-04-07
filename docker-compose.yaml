@@ -2,6 +2,9 @@ version: '3.8'
 
 volumes:
   umanz-pg-volume:
+  caddy_data:
+  caddy_config:
+
 
 services:
   umanz-pg:
@@ -21,3 +24,49 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: umanz-mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+  rhapi-api:
+    build: ./rhAPI
+    container_name: umanz-rhapi
+    expose:
+      - "8080"
+    environment:
+      spring.datasource.url: jdbc:postgresql://umanz-pg:5432/umanz
+      spring.mail.host: umanz-mailhog
+    depends_on:
+      umanz-pg:
+        condition: service_healthy
+
+  umanz-app:
+    build: ./umanz_app
+    container_name: umanz-app
+    expose:
+      - "3000"
+    environment:
+      NUXT_PUBLIC_API_URL: /api
+    depends_on:
+      - rhapi-api
+
+  caddy:
+    image: caddy:alpine
+    container_name: umanz-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - umanz-app
+      - rhapi-api
+    networks:
+      - default

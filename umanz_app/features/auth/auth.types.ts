@@ -3,4 +3,5 @@ export interface LoginResponse {
     idContrat?: number,
     email: string,
     admin: boolean,
+    mfaRequired?: boolean,
 }

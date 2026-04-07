@@ -1,26 +1,56 @@
 package mg.itu.rh.auth;
 
-import mg.itu.rh.auth.exception.AccountNotFoundException;
+import mg.itu.rh.auth.dto.LoginRequest;
+import mg.itu.rh.auth.dto.LoginResponse;
+import mg.itu.rh.auth.dto.MFARequest;
+
+import mg.itu.rh.auth.service.AuthService;
+import mg.itu.rh.auth.service.MfaService;
+import jakarta.validation.Valid;
+import mg.itu.rh.entity.talent.Talent;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
     private final AuthService authService;
+    private final MfaService mfaService;
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, MfaService mfaService) {
         this.authService = authService;
+        this.mfaService = mfaService;
     }
 
     @PostMapping
-    public LoginResponse authenticate(@RequestBody LoginRequest authDTO) {
+    public LoginResponse authenticate(@RequestBody @Valid LoginRequest authDTO) {
+        return authService.authenticate(authDTO);
+    }
+
+    @PostMapping("/mfa/setup")
+    public Map<String, String> setupMfa(@RequestBody Map<String, String> request) {
+        return mfaService.setupMfa(request);
+    }
+
+    @PostMapping("/mfa/confirm")
+    public Map<String, List<String>> confirmMfa(@RequestBody @Valid MFARequest mfaRequest) {
+        return mfaService.confirmMfa(mfaRequest);
+    }
+
+    @PostMapping("/mfa/verify")
+    public LoginResponse verifyMfa(@RequestBody @Valid MFARequest mfaRequest) {
+        Talent talent = mfaService.verifyMfa(mfaRequest);
+
         try {
-            return authService.findByEmailAndPassword(authDTO);
-        } catch (AccountNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+            return authService.findByEmailAndPasswordBypassingMfa(talent);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Error during final authentication");
         }
     }
 }

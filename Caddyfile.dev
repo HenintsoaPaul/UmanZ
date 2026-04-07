@@ -1,0 +1,13 @@
+umanz.localhost {
+	# Strip prefix before sending to Spring Boot
+	handle_path /api/* {
+		reverse_proxy localhost:8080
+	}
+
+	# Swagger and Docs (backend root paths)
+	@backend_docs path /swagger-ui/* /v3/api-docs*
+	reverse_proxy @backend_docs localhost:8080
+
+	# Frontend
+	reverse_proxy localhost:3000
+}
